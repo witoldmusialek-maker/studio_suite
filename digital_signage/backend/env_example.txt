@@ -1,0 +1,32 @@
+# Skopiuj ten plik jako .env i uzupełnij wartości
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/digital_signage
+
+# Redis
+REDIS_URL=redis://localhost:6379/0
+
+# Security
+SECRET_KEY=your-secret-key-here-change-in-production
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=15
+
+# Application
+DEBUG=True
+API_V1_PREFIX=/api/v1
+
+# Content Storage
+CONTENT_DIR=./content
+CONTENT_ORIGINAL_DIR=./content/original
+CONTENT_PROCESSED_DIR=./content/processed
+CONTENT_THUMBNAILS_DIR=./content/thumbnails
+
+# Celery
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/0
+
+# Google Drive (opcjonalnie)
+GOOGLE_DRIVE_CLIENT_ID=
+GOOGLE_DRIVE_CLIENT_SECRET=
+GOOGLE_DRIVE_REDIRECT_URI=
+
