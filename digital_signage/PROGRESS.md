@@ -136,7 +136,76 @@
 
 ---
 
-## Status Ogólny
+## Etap 7: Backend - Monitoring i Alerty ✅
+
+**Status:** Zakończony
+
+**Zadania:**
+- [x] Model Alert w bazie danych
+- [x] Model DisplayStatusHistory w bazie danych
+- [x] Schematy alertów (AlertCreate, AlertResponse, DisplayStatusHistoryResponse)
+- [x] Serwis zarządzania alertami (alert_service)
+- [x] Automatyczne tworzenie alertów przy braku komunikacji
+- [x] Automatyczne rozwiązywanie alertów przy przywróceniu komunikacji
+- [x] Zapis historii statusów wyświetlaczy
+- [x] Endpointy API dla alertów (lista, szczegóły, rozwiązanie)
+- [x] Endpoint historii statusów wyświetlacza
+- [x] Integracja z heartbeat (automatyczne alerty)
+- [x] Zadanie monitoringu (sprawdzanie i tworzenie alertów)
+
+**Następne kroki:**
+1. Testowanie monitoringu i alertów
+2. Przejście do Etapu 8 (Raportowanie)
+
+---
+
+## Etap 8: Backend - Raportowanie ✅
+
+**Status:** Zakończony
+
+**Zadania:**
+- [x] Schematy raportów (DailyReportResponse, WeeklyReportResponse, OfflineReportResponse)
+- [x] Serwis generowania raportów (report_service)
+- [x] Funkcja raportu dziennego (statystyki dostępności)
+- [x] Funkcja raportu tygodniowego (statystyki dostępności)
+- [x] Funkcja raportu offline (szczegóły przerw w komunikacji)
+- [x] Endpointy API dla raportów (GET /reports/daily, /reports/weekly, /reports/offline)
+- [x] Eksport do CSV (wszystkie typy raportów)
+- [x] Obliczanie statystyk (czas online/offline, procent dostępności, liczba połączeń)
+
+**Następne kroki:**
+1. Testowanie raportów
+2. Przejście do Etapu 9 (System Dzwonków)
+
+---
+
+## Etap 9: Backend - System Dzwonków ✅
+
+**Status:** Zakończony
+
+**Zadania:**
+- [x] Model BellSchedule w bazie danych
+- [x] Model BellHistory w bazie danych
+- [x] Schematy dzwonków (BellScheduleCreate, BellScheduleResponse, BellPlayCommand)
+- [x] Serwis zarządzania dzwonkami (bell_service)
+- [x] Funkcja pobierania dzwonków do odtworzenia (z tolerancją ±1 minuta)
+- [x] Funkcja pobierania wyświetlaczy dla dzwonka
+- [x] Upload plików dźwiękowych (MP3, WAV, OGG)
+- [x] Endpointy CRUD dla harmonogramów dzwonków (admin)
+- [x] Endpoint pobierania komendy odtwarzania (dla klienta)
+- [x] Endpoint oznaczania dzwonka jako odtworzonego
+- [x] Endpoint historii odtworzeń
+- [x] Zadanie sprawdzania harmonogramu (Celery Beat)
+- [x] Obsługa dni tygodnia i dat
+- [x] Konfiguracja głośności i wyboru wyświetlaczy
+
+**Następne kroki:**
+1. Testowanie systemu dzwonków
+2. Backend zakończony! 🎉
+
+---
+
+## Status Ogólny - BACKEND ZAKOŃCZONY! ✅
 
 - ✅ Etap 0: Przygotowanie środowiska
 - ✅ Etap 1: Backend API - Podstawy
@@ -145,5 +214,123 @@
 - ✅ Etap 4: Backend - Transkodowanie Video
 - ✅ Etap 5: Backend - Harmonogramy Treści
 - ✅ Etap 6: Backend - Grupowanie Wyświetlaczy
-- ⏳ Etap 7: Backend - Monitoring i Alerty
+- ✅ Etap 7: Backend - Monitoring i Alerty
+- ✅ Etap 8: Backend - Raportowanie
+- ✅ Etap 9: Backend - System Dzwonków
+
+**Backend jest kompletny!** Wszystkie 9 etapów zostały zrealizowane.
+
+---
+
+## Frontend - Status
+
+### Etap 10: Frontend - Podstawowa Struktura ✅
+
+**Status:** Zakończony
+
+**Zadania:**
+- [x] Konfiguracja projektu (Vite + React + TypeScript)
+- [x] Konfiguracja Material-UI
+- [x] Routing (React Router)
+- [x] Konfiguracja Axios (API client)
+- [x] Konfiguracja WebSocket (Socket.io)
+- [x] Context autentykacji (AuthContext)
+- [x] Strona logowania
+- [x] Layout główny (sidebar, header)
+- [x] Dashboard (podstawowy)
+
+**Następne kroki:**
+1. Przejście do Etapu 11 (Zarządzanie Wyświetlaczami)
+
+---
+
+### Etap 11: Frontend - Zarządzanie Wyświetlaczami ✅
+
+**Status:** Zakończony
+
+**Zadania:**
+- [x] Strona listy wyświetlaczy (DisplaysPage)
+- [x] Tabela z wyświetlaczami (status, piętro, orientacja)
+- [x] Formularz dodawania/edycji wyświetlacza (dialog)
+- [x] Strona szczegółów wyświetlacza (DisplayDetailPage)
+- [x] Wyświetlanie informacji i aktywnych alertów
+- [x] Przyciski akcji (dodaj, edytuj, usuń, szczegóły)
+- [x] Obsługa ról (admin może edytować/usuwać)
+
+**Następne kroki:**
+1. Przejście do Etapu 12 (Strona Statusu)
+
+---
+
+### Etap 12: Frontend - Strona Statusu ✅
+
+**Status:** Zakończony
+
+**Zadania:**
+- [x] Strona statusu (StatusPage)
+- [x] Wyświetlanie wszystkich wyświetlaczy z statusem
+- [x] Karty wyświetlaczy z kolorowymi ikonami
+- [x] WebSocket dla aktualizacji w czasie rzeczywistym
+- [x] Automatyczne odświeżanie co 30 sekund
+- [x] Przycisk ręcznego odświeżania
+
+---
+
+### Etap 13: Frontend - Upload Treści ✅
+
+**Status:** Zakończony (podstawowy)
+
+**Zadania:**
+- [x] Strona treści (ContentPage)
+- [x] Lista treści z miniaturami
+- [x] Upload plików (drag & drop przez input)
+- [x] Wyświetlanie typu i rozmiaru
+- [x] Usuwanie treści (admin)
+- [ ] Progress bar podczas uploadu (do dodania)
+
+---
+
+### Etap 17: Klient - Podstawowa Aplikacja ✅
+
+**Status:** Zakończony (podstawowy)
+
+**Zadania:**
+- [x] Struktura projektu klienta
+- [x] Konfiguracja (config.py)
+- [x] Klient API (display_client.py)
+- [x] Zarządzanie cache (cache.py)
+- [x] Odtwarzacz treści (player.py)
+- [x] Główna aplikacja (main.py)
+- [x] Rejestracja wyświetlacza
+- [x] Pobieranie harmonogramu
+- [x] Wyświetlanie treści zgodnie z harmonogramem
+- [x] Heartbeat system
+- [x] Systemd service
+
+**Funkcje:**
+- Rejestracja przez MAC address
+- Pobieranie harmonogramu
+- Cache lokalny
+- Wyświetlanie obrazów, PDF, Excel, video
+- Obsługa rotacji ekranu
+- Heartbeat co 30 sekund
+
+---
+
+## Status Ogólny - Gotowe do Testowania! 🧪
+
+### Backend ✅
+- Wszystkie 9 etapów zakończone
+
+### Frontend 🔄
+- ✅ Etap 10: Podstawowa struktura
+- ✅ Etap 11: Zarządzanie Wyświetlaczami
+- ✅ Etap 12: Strona Statusu
+- ✅ Etap 13: Upload Treści (podstawowy)
+- ⏳ Etapy 14-16: Do zrobienia
+
+### Klient ✅
+- ✅ Etap 17: Podstawowa Aplikacja (gotowa do testów)
+
+**System jest gotowy do podstawowych testów!** Zobacz `TESTING.md` dla instrukcji.
 

@@ -2,110 +2,82 @@
 
 ## Aktualny Status
 
-**Etap 3: Backend - Upload i Przetwarzanie Treści** - Zakończony
+**Frontend - Etap 10: Podstawowa Struktura** - Zakończony
 
 ### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
-3. ✅ Schematy Pydantic (User, Token, Display, Content)
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
-7. ✅ Endpointy wyświetlaczy (CRUD, rejestracja, heartbeat, status)
-8. ✅ Serwis zarządzania wyświetlaczami
-9. ✅ Zadanie monitoringu (sprawdzanie offline)
-10. ✅ Endpointy treści (CRUD, upload)
-11. ✅ Konfiguracja Celery
-12. ✅ Zadania przetwarzania (obraz, PDF, Excel)
-13. ✅ Generowanie miniatur
-14. ✅ Narzędzia do obsługi plików
 
-### Co trzeba dokończyć w Etapie 3:
-1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów uploadu
-3. Uruchomienie Celery worker
-4. Testowanie przetwarzania plików
-5. Przejście do Etapu 4 (Transkodowanie Video)
+**Backend (9 etapów - ZAKOŃCZONY):**
+- ✅ Wszystkie modele, endpointy, serwisy, zadania Celery
+
+**Frontend:**
+- ✅ Podstawowa struktura projektu (Vite + React + TypeScript)
+- ✅ Konfiguracja Material-UI
+- ✅ Routing i autentykacja
+- ✅ Strona logowania
+- ✅ Layout z sidebar
+- ✅ Dashboard podstawowy
+
+### Co trzeba dokończyć w Frontendzie:
+
+1. **Etap 11**: Zarządzanie Wyświetlaczami (lista, formularz, szczegóły)
+2. **Etap 12**: Strona Statusu (monitoring w czasie rzeczywistym)
+3. **Etap 13**: Upload Treści (drag & drop, lista treści)
+4. **Etap 14**: Harmonogramy (tworzenie, edycja, kalendarz)
+5. **Etap 15**: Raporty (wyświetlanie, eksport)
+6. **Etap 16**: System Dzwonków (harmonogramy, upload dźwięków)
 
 ## Następne Kroki
 
-### 1. Utworzenie migracji Alembic
+### 1. Uruchomienie Backendu
 
 ```bash
-cd digital_signage/backend
-source venv/bin/activate  # Windows: venv\Scripts\activate
-alembic revision --autogenerate -m "Initial migration"
-alembic upgrade head
-```
-
-### 2. Utworzenie użytkownika admin
-
-```bash
-python scripts/create_admin.py admin password123
-```
-
-### 3. Testowanie API
-
-```bash
-# Uruchomienie serwera
-uvicorn app.main:app --reload
-
-# Test logowania
-curl -X POST http://localhost:8000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"password123"}'
-
-# Test rejestracji wyświetlacza
-curl -X POST http://localhost:8000/api/v1/displays/register \
-  -H "Content-Type: application/json" \
-  -d '{"mac_address":"00:11:22:33:44:55","ip_address":"192.168.1.100"}'
-
-# Test heartbeat
-curl -X POST http://localhost:8000/api/v1/displays/1/heartbeat \
-  -H "Content-Type: application/json" \
-  -d '{"current_content_id":null,"cache_status":{}}'
-
-# Test upload treści (wymaga tokena admin)
-curl -X POST http://localhost:8000/api/v1/content/upload \
-  -H "Authorization: Bearer <token>" \
-  -F "file=@test_image.jpg"
-```
-
-### 4. Uruchomienie Celery Worker
-
-```bash
-# W osobnym terminalu
 cd digital_signage/backend
 source venv/bin/activate
-celery -A app.celery_app worker --loglevel=info
+# Skonfiguruj .env
+alembic revision --autogenerate -m "Initial migration"
+alembic upgrade head
+python scripts/create_admin.py admin password123
+uvicorn app.main:app --reload
 ```
 
-### 5. Przejście do Etapu 4
+### 2. Uruchomienie Celery
 
-Po zakończeniu Etapu 3, przejść do:
-- `app/tasks/processing.py` - implementacja transkodowania video (FFmpeg)
-- `app/services/video_service.py` - serwis do przetwarzania video
+```bash
+# Terminal 1 - Worker
+celery -A app.celery_app worker --loglevel=info
+
+# Terminal 2 - Beat (zadania cykliczne)
+celery -A app.celery_app beat --loglevel=info
+```
+
+### 3. Uruchomienie Frontendu
+
+```bash
+cd digital_signage/frontend
+npm install
+npm run dev
+```
+
+### 4. Przejście do Etapu 11
+
+Po uruchomieniu frontendu, przejść do:
+- `src/pages/DisplaysPage.tsx` - strona zarządzania wyświetlaczami
+- `src/components/DisplayList.tsx` - lista wyświetlaczy
+- `src/components/DisplayForm.tsx` - formularz dodawania/edycji
 
 ## Struktura Plików
 
 ```
 digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+├── backend/          ✅ Zakończony (9 etapów)
+├── frontend/         🔄 W trakcie (Etap 10 zakończony)
+│   └── src/
+│       ├── pages/    (LoginPage, DashboardPage)
+│       ├── components/ (Layout)
+│       ├── contexts/ (AuthContext)
+│       ├── services/ (api, websocket)
+│       └── types/    (TypeScript types)
+└── client/           ⏳ Do zrobienia (Etapy 17-20)
 ```
 
 ## Ważne Uwagi
@@ -113,15 +85,8 @@ digital_signage/
 1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
 2. **Każdy etap jest niezależny** - można testować osobno
 3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
-
-## Problemy do Rozwiązania
-
-- [ ] Sprawdzenie czy wszystkie importy działają
-- [ ] Utworzenie migracji
-- [ ] Testowanie autentykacji
+4. **Backend gotowy** - można testować API przez Swagger (/docs)
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
-
+Po zakończeniu Etapu 10, rozpocząć Etap 11 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.

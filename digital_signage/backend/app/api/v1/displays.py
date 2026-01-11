@@ -74,10 +74,18 @@ async def heartbeat(
             detail="Display not found"
         )
     
+    # Sprawdzenie czy status zmieniał się z offline na online
+    was_offline = display.status == "offline"
+    
     # Aktualizacja statusu
     display.status = "online"
     display.last_seen = datetime.utcnow()
     db.commit()
+    
+    # Jeśli przywrócono połączenie, utwórz alert
+    if was_offline:
+        from app.services.alert_service import create_connection_restored_alert
+        create_connection_restored_alert(db, display_id)
     
     return {"status": "ok", "message": "Heartbeat received"}
 

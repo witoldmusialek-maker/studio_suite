@@ -29,6 +29,23 @@ from app.services.group_service import (
     remove_display_from_group,
     validate_group_type
 )
+from app.services.alert_service import (
+    create_alert,
+    resolve_alert,
+    check_and_create_connection_alerts,
+    create_connection_restored_alert,
+    save_status_history
+)
+from app.services.report_service import (
+    get_daily_report,
+    get_weekly_report,
+    get_offline_report
+)
+from app.services.bell_service import (
+    get_bells_to_play,
+    log_bell_play,
+    get_displays_for_bell
+)
 
 __all__ = [
     # Display service
@@ -54,4 +71,18 @@ __all__ = [
     "add_display_to_group",
     "remove_display_from_group",
     "validate_group_type",
+    # Alert service
+    "create_alert",
+    "resolve_alert",
+    "check_and_create_connection_alerts",
+    "create_connection_restored_alert",
+    "save_status_history",
+    # Report service
+    "get_daily_report",
+    "get_weekly_report",
+    "get_offline_report",
+    # Bell service
+    "get_bells_to_play",
+    "log_bell_play",
+    "get_displays_for_bell",
 ]

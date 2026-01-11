@@ -38,6 +38,9 @@ class Settings(BaseSettings):
     GOOGLE_DRIVE_CLIENT_SECRET: Optional[str] = None
     GOOGLE_DRIVE_REDIRECT_URI: Optional[str] = None
     
+    # Bells
+    BELLS_SOUNDS_DIR: str = "./content/sounds"
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

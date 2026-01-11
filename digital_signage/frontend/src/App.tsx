@@ -1,0 +1,80 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './contexts/AuthContext'
+import LoginPage from './pages/LoginPage'
+import DashboardPage from './pages/DashboardPage'
+import DisplaysPage from './pages/DisplaysPage'
+import DisplayDetailPage from './pages/DisplayDetailPage'
+import StatusPage from './pages/StatusPage'
+import ContentPage from './pages/ContentPage'
+import Layout from './components/Layout'
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return <div>Ładowanie...</div>
+  }
+
+  if (!user) {
+    return <Navigate to="/login" />
+  }
+
+  return <Layout>{children}</Layout>
+}
+
+function App() {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return <div>Ładowanie...</div>
+  }
+
+  return (
+    <Routes>
+      <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/displays"
+        element={
+          <ProtectedRoute>
+            <DisplaysPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/displays/:id"
+        element={
+          <ProtectedRoute>
+            <DisplayDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/status"
+        element={
+          <ProtectedRoute>
+            <StatusPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/content"
+        element={
+          <ProtectedRoute>
+            <ContentPage />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  )
+}
+
+export default App
+
