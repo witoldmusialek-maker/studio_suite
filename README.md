@@ -22,9 +22,9 @@ System składa się z:
 
 ```
 digital_signage/
-├── backend/          # Backend API (FastAPI)
-├── frontend/         # Panel webowy (React) - do zrobienia
-├── client/           # Klient wyświetlacza (Python) - do zrobienia
+├── backend/          # Backend API (FastAPI) ✅
+├── frontend/         # Panel webowy (React) 🔄
+├── client/           # Klient wyświetlacza (Python) ✅
 ├── docs/             # Dokumentacja
 └── scripts/          # Skrypty pomocnicze
 ```
@@ -38,9 +38,27 @@ digital_signage/
 
 ## Status Implementacji
 
+### Backend ✅
 - ✅ Etap 0: Przygotowanie środowiska
 - ✅ Etap 1: Backend API - Podstawy (autentykacja, modele)
-- 🔄 Etap 2: Backend - Zarządzanie Wyświetlaczami (w trakcie)
+- ✅ Etap 2: Backend - Zarządzanie Wyświetlaczami
+- ✅ Etap 3: Backend - Upload i Przetwarzanie Treści
+- ✅ Etap 4: Backend - Transkodowanie Video
+- ✅ Etap 5: Backend - Harmonogramy Treści
+- ✅ Etap 6: Backend - Grupowanie Wyświetlaczy
+- ✅ Etap 7: Backend - Monitoring i Alerty
+- ✅ Etap 8: Backend - Raportowanie
+- ✅ Etap 9: Backend - System Dzwonków
+
+### Frontend 🔄
+- ✅ Etap 10: Podstawowa struktura
+- ✅ Etap 11: Zarządzanie Wyświetlaczami
+- ✅ Etap 12: Strona Statusu
+- ✅ Etap 13: Upload Treści (podstawowy)
+- ⏳ Etapy 14-16: Do zrobienia
+
+### Klient ✅
+- ✅ Etap 17: Podstawowa Aplikacja (gotowa do testów)
 
 ## Wymagania
 

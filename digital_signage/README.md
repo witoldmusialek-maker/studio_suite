@@ -15,16 +15,27 @@ digital_signage/
 
 ## Status Implementacji
 
+### Backend ✅
 - [x] Etap 0: Przygotowanie środowiska
-- [ ] Etap 1: Backend API - Podstawy
-- [ ] Etap 2: Backend - Wyświetlacze
-- [ ] Etap 3: Backend - Upload treści
-- [ ] Etap 4: Backend - Transkodowanie video
-- [ ] Etap 5: Backend - Harmonogramy
-- [ ] Etap 6: Backend - Grupowanie
-- [ ] Etap 7: Backend - Monitoring
-- [ ] Etap 8: Backend - Raportowanie
-- [ ] Etap 9: Backend - Dzwonki
+- [x] Etap 1: Backend API - Podstawy
+- [x] Etap 2: Backend - Wyświetlacze
+- [x] Etap 3: Backend - Upload treści
+- [x] Etap 4: Backend - Transkodowanie video
+- [x] Etap 5: Backend - Harmonogramy
+- [x] Etap 6: Backend - Grupowanie
+- [x] Etap 7: Backend - Monitoring
+- [x] Etap 8: Backend - Raportowanie
+- [x] Etap 9: Backend - Dzwonki
+
+### Frontend 🔄
+- [x] Etap 10: Podstawowa struktura
+- [x] Etap 11: Zarządzanie Wyświetlaczami
+- [x] Etap 12: Strona Statusu
+- [x] Etap 13: Upload Treści (podstawowy)
+- [ ] Etapy 14-16: Do zrobienia
+
+### Klient ✅
+- [x] Etap 17: Podstawowa Aplikacja (gotowa do testów)
 
 ## Wymagania
 
