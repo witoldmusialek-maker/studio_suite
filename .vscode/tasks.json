@@ -32,6 +32,22 @@
       "label": "DS: Dev1 Pull + Deploy",
       "type": "shell",
       "command": "ssh witold@192.168.200.116 \"cd ~/projects/digital_signage_repo && git pull origin master && cd digital_signage && docker compose up -d --build && docker compose ps\""
+    },
+    {
+      "label": "DS: Smoke Test",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/smoke-test.ps1"
+    },
+    {
+      "label": "DS: Sync To Dev",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/sync-to-dev.ps1 -DevHost dev1"
+    },
+    {
+      "label": "DS: Sync From Dev",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/sync-from-dev.ps1 -DevHost dev1"
     }
+
   ]
 }
