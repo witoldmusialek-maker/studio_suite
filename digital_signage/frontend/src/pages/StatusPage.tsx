@@ -52,7 +52,7 @@ useEffect(() => {
       setDisplays(response.data)
       setLastUpdate(new Date())
     } catch (error) {
-      console.error('BĹ‚Ä…d pobierania statusu:', error)
+      console.error('Błąd pobierania statusu:', error)
     } finally {
       setLoading(false)
     }
@@ -85,18 +85,18 @@ useEffect(() => {
   }
 
   if (loading) {
-    return <Typography>Ĺadowanie...</Typography>
+    return <Typography>Ładowanie...</Typography>
   }
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4">Status WyĹ›wietlaczy</Typography>
+        <Typography variant="h4">Status Wyświetlaczy</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Typography variant="body2" color="text.secondary">
             Ostatnia aktualizacja: {lastUpdate.toLocaleTimeString('pl-PL')}
           </Typography>
-          <Tooltip title="OdĹ›wieĹĽ">
+          <Tooltip title="Odśwież">
             <IconButton onClick={fetchStatus}>
               <RefreshIcon />
             </IconButton>
@@ -137,7 +137,7 @@ useEffect(() => {
                 </Typography>
                 {display.floor && (
                   <Typography variant="body2" color="text.secondary">
-                    PiÄ™tro: {display.floor}
+                    Piętro: {display.floor}
                   </Typography>
                 )}
                 {display.last_seen && (
@@ -154,7 +154,7 @@ useEffect(() => {
       {displays.length === 0 && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant="h6" color="text.secondary">
-            Brak wyĹ›wietlaczy
+            Brak wyświetlaczy
           </Typography>
         </Box>
       )}

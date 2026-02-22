@@ -107,11 +107,11 @@ const DisplayDetailPage = () => {
   }
 
   if (loading) {
-    return <Typography>Ĺadowanie...</Typography>
+    return <Typography>Ładowanie...</Typography>
   }
 
   if (!display) {
-    return <Typography>WyĹ›wietlacz nie znaleziony</Typography>
+    return <Typography>Wyświetlacz nie znaleziony</Typography>
   }
 
   return (
@@ -162,19 +162,19 @@ const DisplayDetailPage = () => {
                 </ListItem>
                 <ListItem>
                   <ListItemText
-                    primary="PiÄ™tro"
+                    primary="Piętro"
                     secondary={display.floor || '-'}
                   />
                 </ListItem>
                 <ListItem>
                   <ListItemText
                     primary="Orientacja"
-                    secondary={`${display.orientation}Â°`}
+                    secondary={`${display.orientation}°`}
                   />
                 </ListItem>
                 <ListItem>
                   <ListItemText
-                    primary="RozdzielczoĹ›Ä‡"
+                    primary="Rozdzielczość"
                     secondary={`${display.resolution_width}Ă—${display.resolution_height}`}
                   />
                 </ListItem>
