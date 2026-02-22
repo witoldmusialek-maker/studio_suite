@@ -49,9 +49,16 @@ async def login(
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(
     user_data: UserCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """Rejestracja nowego użytkownika (tylko admin)"""
+    """Rejestracja nowego użytkownika (tylko admin)."""
+    if current_user.role.value != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admin can register users"
+        )
+
     # Sprawdzenie czy użytkownik już istnieje
     existing_user = db.query(User).filter(User.username == user_data.username).first()
     if existing_user:
