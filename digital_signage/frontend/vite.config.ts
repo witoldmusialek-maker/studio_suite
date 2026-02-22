@@ -9,15 +9,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-      },
+server: {
+  host: '0.0.0.0',
+  port: 3000,
+  allowedHosts: ['dev.witold.ovh', 'localhost', '127.0.0.1'],
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8000',
+      changeOrigin: true,
     },
   },
+},
+
 })
 
 
