@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// Prefer relative API path to avoid mixed-content/protocol issues behind reverse proxies.
-const baseApiUrl = import.meta.env.VITE_API_URL || '/api/v1'
+const rawBaseApiUrl = import.meta.env.VITE_API_URL || '/api/v1'
+const baseApiUrl = rawBaseApiUrl.replace(/^http:\/\//i, 'https://')
 const API_URL = baseApiUrl.endsWith('/api/v1') ? baseApiUrl : `${baseApiUrl}/api/v1`
 
 export const api = axios.create({
