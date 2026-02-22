@@ -1,3 +1,6 @@
 
 # Top-level client cache
 client/__pycache__/
+digital_signage/.tmp_sync/
+key2
+key2.pub
