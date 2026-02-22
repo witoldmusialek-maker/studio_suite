@@ -105,7 +105,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - VITE_API_URL=http://localhost:8000/api/v1
+      - VITE_API_URL=https://dev.witold.ovh/api/v1
     command: sh -c "npm install && node ./node_modules/vite/bin/vite.js --host 0.0.0.0"
     restart: unless-stopped
     networks:
