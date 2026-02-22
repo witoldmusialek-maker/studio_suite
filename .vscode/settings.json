@@ -1,0 +1,27 @@
+{
+  "files.encoding": "utf8",
+  "files.autoGuessEncoding": false,
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "git.autofetch": true,
+  "search.followSymlinks": false,
+  "search.exclude": {
+    "**/.git": true,
+    "**/.cursor": true,
+    "**/__pycache__": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/android-client/app/build": true,
+    "**/android-tv-client/app/build": true
+  },
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.cursor/**": true,
+    "**/__pycache__/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/android-client/app/build/**": true,
+    "**/android-tv-client/app/build/**": true
+  }
+}

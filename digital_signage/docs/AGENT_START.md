@@ -1,0 +1,34 @@
+# AGENT START (Digital Signage)
+
+## Cel
+Szybki start bez pe³nego skanowania repo.
+
+## Czytaj w tej kolejnoœci (max 2-3 min)
+1. `digital_signage/docs/AGENT_MAP.md`
+2. `digital_signage/CONTINUE.md`
+3. `digital_signage/docker-compose.yml`
+4. `digital_signage/frontend/src/services/api.ts`
+5. `digital_signage/backend/app/main.py`
+6. `digital_signage/backend/app/api/v1/auth.py`
+
+## Szybka diagnostyka (lokalnie)
+- `docker compose -f digital_signage/docker-compose.yml ps`
+- `docker compose -f digital_signage/docker-compose.yml logs backend --tail 80`
+- `docker compose -f digital_signage/docker-compose.yml logs frontend --tail 80`
+
+## Szybka diagnostyka (dev1)
+- `ssh witold@192.168.200.116`
+- `cd ~/projects/digital_signage_repo/digital_signage`
+- `docker compose ps`
+- `docker compose logs backend --tail 80`
+- `docker compose logs frontend --tail 80`
+
+## Najczêstsze pu³apki
+- mixed content (`http://` przy `https://`) -> sprawdŸ `frontend/src/services/api.ts` i `VITE_API_URL`
+- CORS preflight 400 -> sprawdŸ `backend/.env` `CORS_ORIGINS`
+- websocket error na dev.witold.ovh -> akceptowalne (LAN-only funkcja)
+
+## Definition of done (deploy)
+1. `git push` na `master`
+2. `dev1`: `git pull && docker compose up -d --build`
+3. `https://dev.witold.ovh/` dzia³a i brak czerwonych b³êdów API w Network
