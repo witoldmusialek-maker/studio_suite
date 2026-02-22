@@ -36,6 +36,12 @@ class Display(Base):
 
     # Relationships
     group = relationship("Group", back_populates="displays")
+    alerts = relationship(
+        "Alert",
+        back_populates="display",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
 
     __table_args__ = (
         CheckConstraint("status IN ('online', 'offline', 'error')", name="check_status"),

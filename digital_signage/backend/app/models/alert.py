@@ -23,7 +23,7 @@ class Alert(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
 
     # Relationships
-    display = relationship("Display", backref="alerts")
+    display = relationship("Display", back_populates="alerts", passive_deletes=True)
     resolver = relationship("User", foreign_keys=[resolved_by])
 
     def __repr__(self):

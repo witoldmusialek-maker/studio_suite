@@ -9,6 +9,7 @@ digital_signage/
 ├── backend/          # Backend API (FastAPI)
 ├── frontend/         # Panel webowy (React)
 ├── client/           # Klient wyświetlacza (Python)
+├── android-client/   # Klient wyświetlacza (Android/Kotlin)
 ├── docs/             # Dokumentacja
 └── scripts/          # Skrypty pomocnicze
 ```

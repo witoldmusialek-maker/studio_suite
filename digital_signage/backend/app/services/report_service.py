@@ -1,7 +1,7 @@
 """
 Serwis do generowania raportów
 """
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
@@ -22,8 +22,8 @@ def get_daily_report(db: Session, report_date: date) -> Dict[str, Any]:
     Returns:
         Słownik z danymi raportu
     """
-    start_datetime = datetime.combine(report_date, datetime.min.time())
-    end_datetime = datetime.combine(report_date, datetime.max.time())
+    start_datetime = datetime.combine(report_date, datetime.min.time(), tzinfo=timezone.utc)
+    end_datetime = datetime.combine(report_date, datetime.max.time(), tzinfo=timezone.utc)
     
     # Pobranie wszystkich wyświetlaczy
     displays = db.query(Display).all()
@@ -52,8 +52,9 @@ def get_daily_report(db: Session, report_date: date) -> Dict[str, Any]:
         status_start = start_datetime
         
         for entry in history:
+            entry_created_at = _as_utc(entry.created_at)
             if current_status:
-                duration = (entry.created_at - status_start).total_seconds()
+                duration = (entry_created_at - status_start).total_seconds()
                 if current_status == "online":
                     online_seconds += duration
                 else:
@@ -64,7 +65,7 @@ def get_daily_report(db: Session, report_date: date) -> Dict[str, Any]:
                 if entry.status == "online" and current_status == "offline":
                     connection_count += 1
                 current_status = entry.status
-                status_start = entry.created_at
+                status_start = entry_created_at
         
         # Ostatni okres do końca dnia
         if current_status:
@@ -123,8 +124,8 @@ def get_weekly_report(db: Session, week_start: date) -> Dict[str, Any]:
         Słownik z danymi raportu
     """
     week_end = week_start + timedelta(days=6)
-    start_datetime = datetime.combine(week_start, datetime.min.time())
-    end_datetime = datetime.combine(week_end, datetime.max.time())
+    start_datetime = datetime.combine(week_start, datetime.min.time(), tzinfo=timezone.utc)
+    end_datetime = datetime.combine(week_end, datetime.max.time(), tzinfo=timezone.utc)
     
     displays = db.query(Display).all()
     
@@ -151,8 +152,9 @@ def get_weekly_report(db: Session, week_start: date) -> Dict[str, Any]:
         status_start = start_datetime
         
         for entry in history:
+            entry_created_at = _as_utc(entry.created_at)
             if current_status:
-                duration = (entry.created_at - status_start).total_seconds()
+                duration = (entry_created_at - status_start).total_seconds()
                 if current_status == "online":
                     online_seconds += duration
                 else:
@@ -163,7 +165,7 @@ def get_weekly_report(db: Session, week_start: date) -> Dict[str, Any]:
                 if entry.status == "online" and current_status == "offline":
                     connection_count += 1
                 current_status = entry.status
-                status_start = entry.created_at
+                status_start = entry_created_at
         
         # Ostatni okres do końca tygodnia
         if current_status:
@@ -231,8 +233,8 @@ def get_offline_report(
     if not display:
         return None
     
-    start_datetime = datetime.combine(start_date, datetime.min.time())
-    end_datetime = datetime.combine(end_date, datetime.max.time())
+    start_datetime = datetime.combine(start_date, datetime.min.time(), tzinfo=timezone.utc)
+    end_datetime = datetime.combine(end_date, datetime.max.time(), tzinfo=timezone.utc)
     
     # Historia statusów
     history = db.query(DisplayStatusHistory).filter(
@@ -251,13 +253,14 @@ def get_offline_report(
     status_start = start_datetime
     
     for entry in history:
+        entry_created_at = _as_utc(entry.created_at)
         if current_status:
-            duration = (entry.created_at - status_start).total_seconds()
+            duration = (entry_created_at - status_start).total_seconds()
             if current_status == "offline":
                 total_offline += duration
                 incidents.append({
                     "start": status_start.isoformat(),
-                    "end": entry.created_at.isoformat(),
+                    "end": entry_created_at.isoformat(),
                     "duration_seconds": int(duration),
                     "duration_hours": round(duration / 3600, 2)
                 })
@@ -266,7 +269,7 @@ def get_offline_report(
         
         if entry.status != current_status:
             current_status = entry.status
-            status_start = entry.created_at
+            status_start = entry_created_at
     
     # Ostatni okres
     if current_status:
@@ -284,7 +287,7 @@ def get_offline_report(
     
     total_time = total_online + total_offline
     if total_time == 0:
-        total_time = (end_date - start_date).days * 86400
+        total_time = ((end_date - start_date).days + 1) * 86400
     
     offline_percentage = (total_offline / total_time * 100) if total_time > 0 else 0
     
@@ -298,6 +301,13 @@ def get_offline_report(
         "offline_percentage": round(offline_percentage, 2),
         "incidents": incidents
     }
+
+
+def _as_utc(value: datetime) -> datetime:
+    """Normalizes datetimes from DB to UTC-aware objects for safe arithmetic."""
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value.astimezone(timezone.utc)
 
 
 

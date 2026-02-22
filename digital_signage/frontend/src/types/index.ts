@@ -42,8 +42,11 @@ export interface Schedule {
   group_id?: number
   start_time: string
   end_time: string
+  start_date?: string
+  end_date?: string
   days_of_week?: number[]
   priority: number
+  display_duration_seconds?: number
   active: boolean
 }
 
@@ -69,9 +72,16 @@ export interface BellSchedule {
   id: number
   name: string
   bell_time: string
+  event_type?: string  // 'lesson' | 'break'
   days_of_week?: number[]
+  start_date?: string
+  end_date?: string
   sound_file_path?: string
   volume: number
+  play_on_displays?: boolean
+  display_ids?: number[]
+  group_id?: number
+  playlist_id?: number
   active: boolean
 }
 

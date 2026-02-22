@@ -1,78 +1,63 @@
 """
-Serwis do zarządzania dzwonkami szkolnymi
+Serwis do zarzadzania dzwonkami szkolnymi.
+
+Uproszczony przeplyw (na wzor prostszego projektu):
+1. Sprawdz blokady runtime
+2. Pobierz aktywne dzwonki-kandydaty
+3. Wyznacz aktywny profil
+4. Odfiltruj dzwonki po profilu
+5. Zostaw tylko dzwonki "na teraz"
 """
-from datetime import datetime, time, date
+from datetime import datetime, time
 from typing import List, Optional
+
 from sqlalchemy.orm import Session
 
-from app.models.bell_schedule import BellSchedule
 from app.models.bell_history import BellHistory
+from app.models.bell_profile import BellProfile
+from app.models.bell_runtime import BellCalendarOverride, BellRuntimeControl
+from app.models.bell_schedule import BellSchedule
 from app.models.display import Display
+from app.services.bell_scheduler_logic import (
+    build_bell_context,
+    filter_bells_for_profile,
+    is_bell_due_now,
+    resolve_active_profile,
+)
+from app.utils.time_utils import local_now
 
 
 def get_bells_to_play(db: Session, current_time: Optional[time] = None) -> List[BellSchedule]:
     """
-    Pobranie dzwonków do odtworzenia w danym czasie
-    
-    Args:
-        db: Sesja bazy danych
-        current_time: Aktualny czas (domyślnie teraz)
-    
-    Returns:
-        Lista harmonogramów dzwonków do odtworzenia
+    Zwraca dzwonki do odtworzenia dla biezacej chwili.
     """
-    if current_time is None:
-        current_time = datetime.now().time()
-    
-    current_date = datetime.now().date()
-    current_weekday = datetime.now().weekday() + 1  # 1=poniedziałek, 7=niedziela
-    
-    # Pobranie aktywnych harmonogramów dla tego czasu (z tolerancją ±1 minuta)
-    from sqlalchemy import and_, or_
-    
-    # Sprawdzenie czy czas jest w zakresie ±1 minuta od bell_time
-    bells = db.query(BellSchedule).filter(
-        BellSchedule.active == True,
-        BellSchedule.play_on_displays == True
+    context = build_bell_context(now=local_now(), current_time=current_time)
+
+    if is_bell_playback_blocked(db, context.now):
+        return []
+
+    candidate_bells = db.query(BellSchedule).filter(
+        BellSchedule.active == True,  # noqa: E712
+        BellSchedule.play_on_displays == True,  # noqa: E712
     ).all()
-    
-    bells_to_play = []
-    for bell in bells:
-        # Sprawdzenie czasu (z tolerancją ±1 minuta)
-        bell_time_seconds = bell.bell_time.hour * 3600 + bell.bell_time.minute * 60 + bell.bell_time.second
-        current_time_seconds = current_time.hour * 3600 + current_time.minute * 60 + current_time.second
-        
-        time_diff = abs(current_time_seconds - bell_time_seconds)
-        if time_diff > 60:  # Więcej niż 1 minuta różnicy
-            continue
-        
-        # Sprawdzenie dat
-        if bell.start_date and current_date < bell.start_date:
-            continue
-        if bell.end_date and current_date > bell.end_date:
-            continue
-        
-        # Sprawdzenie dni tygodnia
-        if bell.days_of_week and current_weekday not in bell.days_of_week:
-            continue
-        
-        bells_to_play.append(bell)
-    
-    return bells_to_play
+
+    active_profile = resolve_active_profile(db, context.now)
+    filtered_bells = filter_bells_for_profile(db, candidate_bells, active_profile)
+    return [bell for bell in filtered_bells if is_bell_due_now(bell, context)]
 
 
 def log_bell_play(
     db: Session,
     bell_schedule_id: int,
     status: str = "success",
-    error_message: Optional[str] = None
+    error_message: Optional[str] = None,
 ) -> BellHistory:
-    """Zapisanie historii odtworzenia dzwonka"""
+    """Zapisanie historii odtworzenia dzwonka."""
     history = BellHistory(
         bell_schedule_id=bell_schedule_id,
         played_at=datetime.utcnow(),
         status=status,
-        error_message=error_message
+        error_message=error_message,
     )
     db.add(history)
     db.commit()
@@ -81,13 +66,41 @@ def log_bell_play(
 
 
 def get_displays_for_bell(db: Session, bell: BellSchedule) -> List[Display]:
-    """Pobranie wyświetlaczy dla dzwonka"""
+    """Pobranie wyswietlaczy dla dzwonka."""
     if bell.display_ids:
-        # Konkretne wyświetlacze
         return db.query(Display).filter(Display.id.in_(bell.display_ids)).all()
-    else:
-        # Wszystkie wyświetlacze
-        return db.query(Display).filter(Display.status == "online").all()
+    return db.query(Display).filter(Display.status == "online").all()
 
 
+def get_or_create_runtime_control(db: Session) -> BellRuntimeControl:
+    control = db.query(BellRuntimeControl).first()
+    if control:
+        return control
+    control = BellRuntimeControl(bells_enabled=True)
+    db.add(control)
+    db.commit()
+    db.refresh(control)
+    return control
+
+
+def is_bell_playback_blocked(db: Session, now: Optional[datetime] = None) -> bool:
+    if now is None:
+        now = local_now()
+
+    control = get_or_create_runtime_control(db)
+    if not control.bells_enabled:
+        return True
+    if control.pause_until and control.pause_until > now:
+        return True
+
+    day_override = db.query(BellCalendarOverride).filter(BellCalendarOverride.day == now.date()).first()
+    if day_override and not day_override.bells_enabled:
+        return True
+
+    return False
+
+
+def get_active_bell_profile(db: Session, now: Optional[datetime] = None) -> Optional[BellProfile]:
+    """Alias zachowany dla zgodnosci z API i innymi serwisami."""
+    return resolve_active_profile(db, now)
 

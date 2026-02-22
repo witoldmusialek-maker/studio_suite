@@ -22,7 +22,7 @@ class Content(Base):
     video_format = Column(String(10), nullable=True)
     file_size_mb = Column(Numeric(10, 2), nullable=True)
     duration_seconds = Column(Integer, nullable=True)
-    metadata = Column(JSON, nullable=True)
+    content_metadata = Column(JSON, nullable=True)
     uploaded_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Digital Signage</string>
+    <string name="server_url_label">Adres serwera</string>
+    <string name="server_url_hint">http://192.168.1.100:8000/api/v1/</string>
+    <string name="register_button">Zarejestruj</string>
+    <string name="settings_title">Ustawienia</string>
+    <string name="save_button">Zapisz</string>
+    <string name="cancel_button">Anuluj</string>
+    <string name="clear_cache_button">Wyczyść cache</string>
+    <string name="waiting_for_content">Oczekiwanie na treść...</string>
+    <string name="connecting">Łączenie z serwerem...</string>
+    <string name="no_connection">Brak połączenia</string>
+    <string name="connection_error">Błąd połączenia</string>
+    <string name="display_label">Wyświetlacz</string>
+</resources>

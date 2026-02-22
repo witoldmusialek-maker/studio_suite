@@ -1,5 +1,5 @@
 """
-Zadania przetwarzania treści (Celery tasks)
+Zadania przetwarzania treĹ›ci (Celery tasks)
 """
 import os
 from pathlib import Path
@@ -44,7 +44,7 @@ def process_image_task(content_id: int, job_id: int):
         img.convert("RGB").save(thumbnail_path, "JPEG", quality=85)
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Aktualizacja treści
+        # Aktualizacja treĹ›ci
         content.thumbnail_path = thumbnail_path
         db.commit()
         
@@ -90,7 +90,7 @@ def process_pdf_task(content_id: int, job_id: int):
             img.convert("RGB").save(thumbnail_path, "JPEG", quality=85)
             update_processing_job(db, job_id, "processing", progress=90)
             
-            # Aktualizacja treści
+            # Aktualizacja treĹ›ci
             content.thumbnail_path = thumbnail_path
             db.commit()
         
@@ -142,8 +142,8 @@ def process_excel_task(content_id: int, job_id: int):
         
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Aktualizacja treści
-        content.metadata = metadata
+        # Aktualizacja treĹ›ci
+        content.content_metadata = metadata
         db.commit()
         
         update_processing_job(db, job_id, "completed", progress=100)
@@ -168,12 +168,12 @@ def process_video_task(content_id: int, job_id: int):
         
         from app.services.video_service import transcode_video, get_video_duration
         
-        # Ścieżka do przetworzonego pliku
+        # ĹšcieĹĽka do przetworzonego pliku
         input_path = content.file_path
         output_filename = f"{content_id}_processed.mp4"
         output_path = os.path.join(settings.CONTENT_PROCESSED_DIR, output_filename)
         
-        # Upewnienie się, że katalog istnieje
+        # Upewnienie siÄ™, ĹĽe katalog istnieje
         os.makedirs(settings.CONTENT_PROCESSED_DIR, exist_ok=True)
         
         update_processing_job(db, job_id, "processing", progress=10)
@@ -194,13 +194,13 @@ def process_video_task(content_id: int, job_id: int):
         
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Pobranie długości video
+        # Pobranie dĹ‚ugoĹ›ci video
         duration = get_video_duration(output_path)
         
         update_processing_job(db, job_id, "processing", progress=90)
         
-        # Aktualizacja treści
-        content.file_path = output_path  # Zastąpienie oryginalnego pliku przetworzonym
+        # Aktualizacja treĹ›ci
+        content.file_path = output_path  # ZastÄ…pienie oryginalnego pliku przetworzonym
         content.video_processed = True
         content.video_format = "mp4"
         if duration:
@@ -214,4 +214,5 @@ def process_video_task(content_id: int, job_id: int):
         update_processing_job(db, job_id, "failed", error_message=str(e))
     finally:
         db.close()
+
 

@@ -173,7 +173,8 @@ async def get_display_schedule(
             start_time=s.start_time,
             end_time=s.end_time,
             display_duration_seconds=s.display_duration_seconds,
-            priority=s.priority
+            priority=s.priority,
+            days_of_week=s.days_of_week
         )
         for s in schedules
     ]

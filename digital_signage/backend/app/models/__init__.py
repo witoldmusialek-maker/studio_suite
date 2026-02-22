@@ -11,6 +11,10 @@ from app.models.alert import Alert
 from app.models.display_status_history import DisplayStatusHistory
 from app.models.bell_schedule import BellSchedule
 from app.models.bell_history import BellHistory
+from app.models.bell_runtime import BellRuntimeControl, BellCalendarOverride
+from app.models.bell_profile import BellProfile, BellProfileOverride, BellScheduleProfile, BellProfilePlaceholder
+from app.models.bell_music import BellMusicSchedule, BellMusicTrack
+from app.models.bell_sound import BellSound
 
 __all__ = [
     "User",
@@ -23,5 +27,13 @@ __all__ = [
     "DisplayStatusHistory",
     "BellSchedule",
     "BellHistory",
+    "BellRuntimeControl",
+    "BellCalendarOverride",
+    "BellProfile",
+    "BellProfileOverride",
+    "BellScheduleProfile",
+    "BellProfilePlaceholder",
+    "BellMusicSchedule",
+    "BellMusicTrack",
+    "BellSound",
 ]
-

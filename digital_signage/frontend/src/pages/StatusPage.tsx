@@ -18,7 +18,7 @@ import {
 } from '@mui/icons-material'
 import { api } from '../services/api'
 import { Display } from '../types'
-import { connectWebSocket, getSocket } from '../services/websocket'
+import { connectWebSocket } from '../services/websocket'
 
 const StatusPage = () => {
   const navigate = useNavigate()
@@ -37,7 +37,7 @@ const StatusPage = () => {
       setLastUpdate(new Date())
     })
 
-    // Odświeżanie co 30 sekund
+    // OdĹ›wieĹĽanie co 30 sekund
     const interval = setInterval(fetchStatus, 30000)
 
     return () => {
@@ -52,7 +52,7 @@ const StatusPage = () => {
       setDisplays(response.data)
       setLastUpdate(new Date())
     } catch (error) {
-      console.error('Błąd pobierania statusu:', error)
+      console.error('BĹ‚Ä…d pobierania statusu:', error)
     } finally {
       setLoading(false)
     }
@@ -85,18 +85,18 @@ const StatusPage = () => {
   }
 
   if (loading) {
-    return <Typography>Ładowanie...</Typography>
+    return <Typography>Ĺadowanie...</Typography>
   }
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4">Status Wyświetlaczy</Typography>
+        <Typography variant="h4">Status WyĹ›wietlaczy</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Typography variant="body2" color="text.secondary">
             Ostatnia aktualizacja: {lastUpdate.toLocaleTimeString('pl-PL')}
           </Typography>
-          <Tooltip title="Odśwież">
+          <Tooltip title="OdĹ›wieĹĽ">
             <IconButton onClick={fetchStatus}>
               <RefreshIcon />
             </IconButton>
@@ -137,7 +137,7 @@ const StatusPage = () => {
                 </Typography>
                 {display.floor && (
                   <Typography variant="body2" color="text.secondary">
-                    Piętro: {display.floor}
+                    PiÄ™tro: {display.floor}
                   </Typography>
                 )}
                 {display.last_seen && (
@@ -154,7 +154,7 @@ const StatusPage = () => {
       {displays.length === 0 && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant="h6" color="text.secondary">
-            Brak wyświetlaczy
+            Brak wyĹ›wietlaczy
           </Typography>
         </Box>
       )}
@@ -163,6 +163,7 @@ const StatusPage = () => {
 }
 
 export default StatusPage
+
 
 
 

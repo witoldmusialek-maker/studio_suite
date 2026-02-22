@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Grid, Paper, Typography, Box } from '@mui/material'
+import { Grid, Paper, Typography, Box, Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
 import { Display, Alert } from '../types'
 
 const DashboardPage = () => {
+  const navigate = useNavigate()
   const [displays, setDisplays] = useState<Display[]>([])
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
@@ -73,6 +75,19 @@ const DashboardPage = () => {
           </Paper>
         </Grid>
       </Grid>
+
+      <Paper sx={{ p: 2, mt: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Moduly
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          <Button variant="outlined" onClick={() => navigate('/schedules')}>Harmonogramy</Button>
+          <Button variant="outlined" onClick={() => navigate('/groups')}>Grupy</Button>
+          <Button variant="outlined" onClick={() => navigate('/bells/schedules')}>Harmonogramy dzwonkow</Button>
+          <Button variant="outlined" onClick={() => navigate('/reports')}>Raporty</Button>
+          <Button variant="outlined" onClick={() => navigate('/alerts')}>Alerty</Button>
+        </Box>
+      </Paper>
     </Box>
   )
 }

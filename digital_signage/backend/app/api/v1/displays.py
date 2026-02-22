@@ -216,3 +216,88 @@ async def delete_display(
     db.commit()
     return None
 
+
+# In-memory storage for test content (simple solution for testing)
+_test_content = {}
+
+@router.post("/{display_id}/test-content/{content_id}")
+async def send_test_content(
+    display_id: int,
+    content_id: int,
+    db: Session = Depends(get_db)
+):
+    """Wyślij treść testową do wyświetlacza"""
+    from app.models.content import Content
+    
+    # Sprawdź czy wyświetlacz istnieje
+    display = db.query(Display).filter(Display.id == display_id).first()
+    if not display:
+        raise HTTPException(status_code=404, detail="Display not found")
+    
+    # Sprawdź czy treść istnieje
+    content = db.query(Content).filter(Content.id == content_id).first()
+    if not content:
+        raise HTTPException(status_code=404, detail="Content not found")
+    
+    # Zapisz test content dla tego wyświetlacza
+    _test_content[display_id] = {
+        "content_id": content_id,
+        "timestamp": datetime.utcnow().isoformat()
+    }
+    
+    return {"status": "ok", "message": f"Content {content_id} sent to display {display_id}"}
+
+
+@router.get("/{display_id}/test-content")
+async def get_test_content(
+    display_id: int,
+    db: Session = Depends(get_db)
+):
+    """Pobierz treść testową dla wyświetlacza (endpoint dla klienta)"""
+    from app.models.content import Content
+    from app.schemas.content import ContentResponse
+    
+    # Sprawdź czy wyświetlacz istnieje
+    display = db.query(Display).filter(Display.id == display_id).first()
+    if not display:
+        raise HTTPException(status_code=404, detail="Display not found")
+    
+    # Sprawdź czy jest test content
+    test_data = _test_content.get(display_id)
+    if not test_data:
+        return {"content": None}
+    
+    # Pobierz treść
+    content = db.query(Content).filter(Content.id == test_data["content_id"]).first()
+    if not content:
+        return {"content": None}
+    
+    return {
+        "content": {
+            "id": content.id,
+            "name": content.original_filename,
+            "type": content.type,
+            "file_path": content.file_path,
+            "file_size": float(content.file_size_mb) if content.file_size_mb else None,
+            "mime_type": None,
+            "duration": content.duration_seconds,
+            "width": None,
+            "height": None,
+            "thumbnail": content.thumbnail_path,
+            "created_at": content.created_at.isoformat() if content.created_at else None,
+            "updated_at": content.updated_at.isoformat() if content.updated_at else None
+        },
+        "timestamp": test_data["timestamp"]
+    }
+
+
+@router.delete("/{display_id}/test-content")
+async def clear_test_content(
+    display_id: int,
+    db: Session = Depends(get_db)
+):
+    """Wyczyść treść testową"""
+    if display_id in _test_content:
+        del _test_content[display_id]
+    return {"status": "ok"}
+

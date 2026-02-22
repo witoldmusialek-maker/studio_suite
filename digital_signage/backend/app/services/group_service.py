@@ -40,14 +40,14 @@ def validate_group_type(group_type: str, display_count: int) -> tuple[bool, str]
     Returns:
         (is_valid, error_message)
     """
-    if group_type == "single" and display_count != 1:
-        return False, "Group type 'single' requires exactly 1 display"
-    elif group_type == "vertical" and display_count < 2:
-        return False, "Group type 'vertical' requires at least 2 displays"
-    elif group_type == "horizontal" and display_count < 2:
-        return False, "Group type 'horizontal' requires at least 2 displays"
-    elif group_type == "mixed" and display_count < 2:
-        return False, "Group type 'mixed' requires at least 2 displays"
+    # "single" nigdy nie moze miec wiecej niz 1 wyswietlacza.
+    if group_type == "single" and display_count > 1:
+        return False, "Group type 'single' supports at most 1 display"
+
+    # Pozostale typy grup dopuszczaja etapowe budowanie (1, 2, ... wyswietlaczy).
+    # To pozwala dodac pierwszy wyswietlacz, a dopiero potem kolejne.
+    if group_type in {"vertical", "horizontal", "mixed"} and display_count < 1:
+        return False, f"Group type '{group_type}' requires at least 1 display"
     
     return True, ""
 

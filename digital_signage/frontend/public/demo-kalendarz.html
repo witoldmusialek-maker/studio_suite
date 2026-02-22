@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo - Zakladka 3 Kalendarz miesiaca</title>
+  <style>
+    :root { --bg:#f7f8fb; --card:#fff; --line:#d8dbe5; --text:#1b2333; --muted:#5b6478; --accent:#0b6cff; }
+    * { box-sizing:border-box; } body { margin:0; font-family:"Segoe UI",Tahoma,sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1200px; margin:0 auto; padding:20px; } .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 14px; }
+    .tab { text-decoration:none; color:inherit; border:1px solid var(--line); border-radius:10px; padding:10px 14px; background:#fff; font-weight:600; }
+    .tab.active { border-color:var(--accent); color:var(--accent); background:#eef5ff; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    .muted { color:var(--muted); font-size:13px; } table { width:100%; border-collapse:collapse; margin-top:8px; font-size:14px; }
+    th, td { border-bottom:1px solid var(--line); text-align:left; padding:8px 6px; } th { color:var(--muted); }
+    .btn { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 10px; margin-right:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Zakladka 3: Kalendarz miesiaca</h1>
+    <div class="tabs">
+      <a class="tab" href="demo-playlisty.html">1. Playlisty</a>
+      <a class="tab" href="demo-typy-dnia.html">2. Typy dnia</a>
+      <a class="tab active" href="demo-kalendarz.html">3. Kalendarz miesiaca</a>
+      <a class="tab" href="demo-sterowanie.html">4. Sterowanie teraz</a>
+      <a class="tab" href="demo.html">Start</a>
+    </div>
+
+    <section class="card">
+      <h3>Przypisanie harmonogramow do dni tygodnia</h3>
+      <div class="muted">Wersja minimalna: mapowanie dzien tygodnia -> harmonogram dzienny.</div>
+      <table>
+        <thead><tr><th>Dzien tygodnia</th><th>Harmonogram</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>Poniedzialek</td><td>Poniedzialek</td><td>Edytuj</td></tr>
+          <tr><td>Wtorek</td><td>Wtorek</td><td>Edytuj</td></tr>
+          <tr><td>Sroda</td><td>Sroda</td><td>Edytuj</td></tr>
+          <tr><td>Czwartek</td><td>Czwartek</td><td>Edytuj</td></tr>
+          <tr><td>Piatek</td><td>Piatek</td><td>Edytuj</td></tr>
+          <tr><td>Sobota</td><td>Sobota-Skrocony</td><td>Edytuj</td></tr>
+          <tr><td>Niedziela</td><td>OFF</td><td>Edytuj</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Profile miesieczne dzwonkow</h3>
+      <div class="muted">Profil miesieczny okresla, jaki dzwonek jest przypisany do kazdego zdarzenia w danym miesiacu.</div>
+      <table>
+        <thead><tr><th>Miesiac</th><th>Profil dzwonkow</th><th>Status</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>2026-01</td><td>Styczen 2026</td><td>Zakonczony</td><td>Edytuj | Usun</td></tr>
+          <tr><td>2026-02</td><td>Luty 2026</td><td>Aktywny</td><td>Edytuj | Usun</td></tr>
+          <tr><td>2026-03</td><td>Marzec 2026</td><td>Zaplanowany</td><td>Edytuj | Usun</td></tr>
+        </tbody>
+      </table>
+      <p><button class="btn">+ Dodaj miesiac</button></p>
+    </section>
+
+    <section class="card">
+      <h3>Profil miesieczny: mapowanie zdarzenie -> dzwonek</h3>
+      <div class="muted">Przyklad dla profilu "Luty 2026". Zapowiedz pozostaje przy zdarzeniu, tutaj mapujemy tylko dzwonek.</div>
+      <table>
+        <thead><tr><th>Zdarzenie</th><th>Dzwonek</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>08:00 Na lekcje</td><td>start_lekcji_luty.wav</td><td>Edytuj</td></tr>
+          <tr><td>08:45 Na przerwe</td><td>przerwa_luty.mp3</td><td>Edytuj</td></tr>
+          <tr><td>09:40 Na przerwe</td><td>przerwa_dluga_luty.wav</td><td>Edytuj</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Wyjatki datowe (CRUD)</h3>
+      <div class="muted">Wyjatek nadpisuje mapowanie tygodniowe dla konkretnej daty.</div>
+      <table>
+        <thead><tr><th>Data</th><th>Harmonogram</th><th>Dzwonki OFF</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>2026-02-15</td><td>Egzamin</td><td>Nie</td><td>Edytuj | Usun</td></tr>
+          <tr><td>2026-02-22</td><td>OFF</td><td>Tak</td><td>Edytuj | Usun</td></tr>
+        </tbody>
+      </table>
+      <p><button class="btn">+ Dodaj wyjatek</button></p>
+    </section>
+  </div>
+</body>
+</html>

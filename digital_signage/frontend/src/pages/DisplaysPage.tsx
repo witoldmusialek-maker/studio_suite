@@ -42,6 +42,8 @@ const DisplaysPage = () => {
     name: '',
     mac_address: '',
     orientation: 0,
+    resolution_width: 1920,
+    resolution_height: 1080,
     floor: '',
     cache_size_mb: 1000,
   })
@@ -55,8 +57,8 @@ const DisplaysPage = () => {
     try {
       const response = await api.get('/displays')
       setDisplays(response.data)
-    } catch (error) {
-      console.error('Błąd pobierania wyświetlaczy:', error)
+    } catch (err) {
+      console.error('Display fetch failed:', err)
     } finally {
       setLoading(false)
     }
@@ -69,6 +71,8 @@ const DisplaysPage = () => {
         name: display.name,
         mac_address: display.mac_address,
         orientation: display.orientation,
+        resolution_width: display.resolution_width,
+        resolution_height: display.resolution_height,
         floor: display.floor || '',
         cache_size_mb: display.cache_size_mb,
       })
@@ -78,10 +82,13 @@ const DisplaysPage = () => {
         name: '',
         mac_address: '',
         orientation: 0,
+        resolution_width: 1920,
+        resolution_height: 1080,
         floor: '',
         cache_size_mb: 1000,
       })
     }
+
     setOpenDialog(true)
     setError('')
   }
@@ -99,23 +106,24 @@ const DisplaysPage = () => {
       } else {
         await api.post('/displays', formData)
       }
+
       handleCloseDialog()
       fetchDisplays()
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Błąd zapisu')
+      setError(err.response?.data?.detail || 'Save failed')
     }
   }
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Czy na pewno chcesz usunąć ten wyświetlacz?')) {
+    if (!window.confirm('Delete this display?')) {
       return
     }
 
     try {
       await api.delete(`/displays/${id}`)
       fetchDisplays()
-    } catch (error) {
-      console.error('Błąd usuwania:', error)
+    } catch (err) {
+      console.error('Delete failed:', err)
     }
   }
 
@@ -133,20 +141,16 @@ const DisplaysPage = () => {
   }
 
   if (loading) {
-    return <Typography>Ładowanie...</Typography>
+    return <Typography>Loading...</Typography>
   }
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4">Wyświetlacze</Typography>
+        <Typography variant="h4">Displays</Typography>
         {user?.role === 'admin' && (
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => handleOpenDialog()}
-          >
-            Dodaj Wyświetlacz
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>
+            Add Display
           </Button>
         )}
       </Box>
@@ -155,13 +159,13 @@ const DisplaysPage = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Nazwa</TableCell>
-              <TableCell>MAC Address</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>MAC</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Piętro</TableCell>
-              <TableCell>Orientacja</TableCell>
-              <TableCell>Ostatnio widziany</TableCell>
-              <TableCell align="right">Akcje</TableCell>
+              <TableCell>Floor</TableCell>
+              <TableCell>Orientation</TableCell>
+              <TableCell>Last Seen</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -170,39 +174,21 @@ const DisplaysPage = () => {
                 <TableCell>{display.name}</TableCell>
                 <TableCell>{display.mac_address}</TableCell>
                 <TableCell>
-                  <Chip
-                    label={display.status}
-                    color={getStatusColor(display.status) as any}
-                    size="small"
-                  />
+                  <Chip label={display.status} color={getStatusColor(display.status) as any} size="small" />
                 </TableCell>
                 <TableCell>{display.floor || '-'}</TableCell>
-                <TableCell>{display.orientation}°</TableCell>
-                <TableCell>
-                  {display.last_seen
-                    ? new Date(display.last_seen).toLocaleString('pl-PL')
-                    : '-'}
-                </TableCell>
+                <TableCell>{display.orientation} deg</TableCell>
+                <TableCell>{display.last_seen ? new Date(display.last_seen).toLocaleString() : '-'}</TableCell>
                 <TableCell align="right">
-                  <IconButton
-                    size="small"
-                    onClick={() => navigate(`/displays/${display.id}`)}
-                  >
+                  <IconButton size="small" onClick={() => navigate(`/displays/${display.id}`)}>
                     <ViewIcon />
                   </IconButton>
                   {user?.role === 'admin' && (
                     <>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleOpenDialog(display)}
-                      >
+                      <IconButton size="small" onClick={() => handleOpenDialog(display)}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDelete(display.id)}
-                        color="error"
-                      >
+                      <IconButton size="small" onClick={() => handleDelete(display.id)} color="error">
                         <DeleteIcon />
                       </IconButton>
                     </>
@@ -215,18 +201,17 @@ const DisplaysPage = () => {
       </TableContainer>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>
-          {editingDisplay ? 'Edytuj Wyświetlacz' : 'Dodaj Wyświetlacz'}
-        </DialogTitle>
+        <DialogTitle>{editingDisplay ? 'Edit Display' : 'Add Display'}</DialogTitle>
         <DialogContent>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
+
           <TextField
             fullWidth
-            label="Nazwa"
+            label="Name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             margin="normal"
@@ -236,9 +221,7 @@ const DisplaysPage = () => {
             fullWidth
             label="MAC Address"
             value={formData.mac_address}
-            onChange={(e) =>
-              setFormData({ ...formData, mac_address: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, mac_address: e.target.value })}
             margin="normal"
             required
             disabled={!!editingDisplay}
@@ -246,21 +229,35 @@ const DisplaysPage = () => {
           <TextField
             fullWidth
             select
-            label="Orientacja"
+            label="Orientation"
             value={formData.orientation}
-            onChange={(e) =>
-              setFormData({ ...formData, orientation: Number(e.target.value) })
-            }
+            onChange={(e) => setFormData({ ...formData, orientation: Number(e.target.value) })}
             margin="normal"
           >
-            <MenuItem value={0}>0°</MenuItem>
-            <MenuItem value={90}>90°</MenuItem>
-            <MenuItem value={180}>180°</MenuItem>
-            <MenuItem value={270}>270°</MenuItem>
+            <MenuItem value={0}>0 deg</MenuItem>
+            <MenuItem value={90}>90 deg</MenuItem>
+            <MenuItem value={180}>180 deg</MenuItem>
+            <MenuItem value={270}>270 deg</MenuItem>
           </TextField>
           <TextField
             fullWidth
-            label="Piętro"
+            type="number"
+            label="Resolution Width"
+            value={formData.resolution_width}
+            onChange={(e) => setFormData({ ...formData, resolution_width: Number(e.target.value) })}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            type="number"
+            label="Resolution Height"
+            value={formData.resolution_height}
+            onChange={(e) => setFormData({ ...formData, resolution_height: Number(e.target.value) })}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Floor"
             value={formData.floor}
             onChange={(e) => setFormData({ ...formData, floor: e.target.value })}
             margin="normal"
@@ -268,18 +265,16 @@ const DisplaysPage = () => {
           <TextField
             fullWidth
             type="number"
-            label="Rozmiar cache (MB)"
+            label="Cache Size (MB)"
             value={formData.cache_size_mb}
-            onChange={(e) =>
-              setFormData({ ...formData, cache_size_mb: Number(e.target.value) })
-            }
+            onChange={(e) => setFormData({ ...formData, cache_size_mb: Number(e.target.value) })}
             margin="normal"
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Anuluj</Button>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleSubmit} variant="contained">
-            Zapisz
+            Save
           </Button>
         </DialogActions>
       </Dialog>
@@ -288,6 +283,3 @@ const DisplaysPage = () => {
 }
 
 export default DisplaysPage
-
-
-

@@ -36,6 +36,30 @@ Skopiuj `config.example.py` do `config.py` i uzupełnij:
 python main.py
 ```
 
+## Radio Bell Client (T620 / radiowezel)
+
+Tryb audio-only, bez UI wyswietlacza:
+
+1. Skopiuj `radio_config.example.py` do `radio_config.py` i ustaw:
+- `SERVER_URL`
+- `MAC_ADDRESS`
+- `DISPLAY_NAME`
+
+2. Uruchom:
+
+```bash
+python radio_client.py
+```
+
+Klient:
+- rejestruje sie jako display
+- pobiera komendy dzwonkow z backendu
+- pobiera plik audio (`/bells/{id}/sound-file`)
+- odtwarza lokalnie
+- wysyla `mark-played`
+- gdy nie ma dzwonka, sprawdza aktywna playliste przerwy (`/bells/display/{display_id}/music-playlist`)
+- odtwarza utwory playlisty po kolei w czasie okna przerwy
+
 ## Systemd Service
 
 ```bash

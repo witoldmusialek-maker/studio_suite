@@ -1,33 +1,37 @@
 """
-Schematy treści
+Schematy tresci
 """
-from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ContentBase(BaseModel):
-    """Podstawowy schemat treści"""
+    """Podstawowy schemat tresci"""
     filename: str
     type: str
 
 
 class ContentCreate(BaseModel):
-    """Schemat tworzenia treści (z uploadu)"""
+    """Schemat tworzenia tresci (z uploadu)"""
     original_filename: str
     type: str
     file_size_mb: Optional[float] = None
 
 
 class ContentUpdate(BaseModel):
-    """Schemat aktualizacji treści"""
+    """Schemat aktualizacji tresci"""
     filename: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
 
 
 class ContentResponse(ContentBase):
-    """Schemat odpowiedzi treści"""
+    """Schemat odpowiedzi tresci"""
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
     id: int
+    name: str = Field(validation_alias="original_filename")
     original_filename: str
     file_path: str
     thumbnail_path: Optional[str] = None
@@ -35,17 +39,17 @@ class ContentResponse(ContentBase):
     video_format: Optional[str] = None
     file_size_mb: Optional[float] = None
     duration_seconds: Optional[int] = None
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Optional[Dict[str, Any]] = Field(
+        default=None,
+        validation_alias="content_metadata",
+    )
     uploaded_by: Optional[int] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
-
 
 class ContentListResponse(BaseModel):
-    """Schemat listy treści"""
+    """Schemat listy tresci"""
     items: list[ContentResponse]
     total: int
     skip: int
@@ -54,6 +58,8 @@ class ContentListResponse(BaseModel):
 
 class ProcessingJobResponse(BaseModel):
     """Schemat zadania przetwarzania"""
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     content_id: int
     job_type: str
@@ -63,7 +69,3 @@ class ProcessingJobResponse(BaseModel):
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     created_at: datetime
-
-    class Config:
-        from_attributes = True
-

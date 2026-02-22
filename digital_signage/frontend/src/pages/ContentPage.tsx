@@ -16,7 +16,6 @@ import {
   CircularProgress,
 } from '@mui/material'
 import {
-  Add as AddIcon,
   Delete as DeleteIcon,
   CloudUpload as UploadIcon,
 } from '@mui/icons-material'
@@ -42,7 +41,7 @@ const ContentPage = () => {
       const response = await api.get('/content')
       setContents(response.data.items || response.data)
     } catch (error) {
-      console.error('Błąd pobierania treści:', error)
+      console.error('BĹ‚Ä…d pobierania treĹ›ci:', error)
     } finally {
       setLoading(false)
     }
@@ -77,14 +76,14 @@ const ContentPage = () => {
       setSelectedFile(null)
       fetchContents()
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Błąd uploadu')
+      setError(err.response?.data?.detail || 'BĹ‚Ä…d uploadu')
     } finally {
       setUploading(false)
     }
   }
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Czy na pewno chcesz usunąć tę treść?')) {
+    if (!window.confirm('Czy na pewno chcesz usunÄ…Ä‡ tÄ™ treĹ›Ä‡?')) {
       return
     }
 
@@ -92,7 +91,7 @@ const ContentPage = () => {
       await api.delete(`/content/${id}`)
       fetchContents()
     } catch (error) {
-      console.error('Błąd usuwania:', error)
+      console.error('BĹ‚Ä…d usuwania:', error)
     }
   }
 
@@ -107,13 +106,13 @@ const ContentPage = () => {
   }
 
   if (loading) {
-    return <Typography>Ładowanie...</Typography>
+    return <Typography>Ĺadowanie...</Typography>
   }
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4">Treści</Typography>
+        <Typography variant="h4">TreĹ›ci</Typography>
         {user?.role === 'admin' && (
           <>
             <input
@@ -180,13 +179,13 @@ const ContentPage = () => {
       {contents.length === 0 && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant="h6" color="text.secondary">
-            Brak treści
+            Brak treĹ›ci
           </Typography>
         </Box>
       )}
 
       <Dialog open={openDialog} onClose={() => !uploading && setOpenDialog(false)}>
-        <DialogTitle>Upload Treści</DialogTitle>
+        <DialogTitle>Upload TreĹ›ci</DialogTitle>
         <DialogContent>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
@@ -222,6 +221,7 @@ const ContentPage = () => {
 }
 
 export default ContentPage
+
 
 
 

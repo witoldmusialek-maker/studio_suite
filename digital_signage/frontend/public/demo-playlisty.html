@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo - Zakladka 1 Playlisty</title>
+  <style>
+    :root { --bg:#f7f8fb; --card:#fff; --line:#d8dbe5; --text:#1b2333; --muted:#5b6478; --accent:#0b6cff; }
+    * { box-sizing: border-box; } body { margin:0; font-family:"Segoe UI",Tahoma,sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1200px; margin:0 auto; padding:20px; } .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 14px; }
+    .tab { text-decoration:none; color:inherit; border:1px solid var(--line); border-radius:10px; padding:10px 14px; background:#fff; font-weight:600; }
+    .tab.active { border-color:var(--accent); color:var(--accent); background:#eef5ff; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    .row { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
+    .muted { color:var(--muted); font-size:13px; } .btn { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 10px; }
+    .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; } table { width:100%; border-collapse:collapse; margin-top:8px; font-size:14px; }
+    th, td { border-bottom:1px solid var(--line); text-align:left; padding:8px 6px; } th { color:var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Zakladka 1: Playlisty</h1>
+    <div class="tabs">
+      <a class="tab active" href="demo-playlisty.html">1. Playlisty</a>
+      <a class="tab" href="demo-typy-dnia.html">2. Typy dnia</a>
+      <a class="tab" href="demo-kalendarz.html">3. Kalendarz miesiaca</a>
+      <a class="tab" href="demo-sterowanie.html">4. Sterowanie teraz</a>
+      <a class="tab" href="demo.html">Start</a>
+    </div>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <h3>Lista playlist (CRUD)</h3>
+          <div class="muted">Wersja minimalna: odtwarzanie zawsze na serwerze (driver systemowy).</div>
+        </div>
+        <button class="btn primary">+ Dodaj playliste</button>
+      </div>
+      <table>
+        <thead><tr><th>Nazwa</th><th>Liczba utworow</th><th>Status</th><th>Zapetlenie</th><th>Strefa</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>Relaks 10 min</td><td>12</td><td>Aktywna</td><td>Tak (domyslnie)</td><td>Nie wybrano</td><td>Edytuj | Usun</td></tr>
+          <tr><td>Muzyka korytarz</td><td>8</td><td>Aktywna</td><td>Tak (domyslnie)</td><td>Korytarz A</td><td>Edytuj | Usun</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Formularz: Dodaj / Edytuj playliste</h3>
+      <table>
+        <thead><tr><th>Pole</th><th>Wartosc</th><th>Uwagi</th></tr></thead>
+        <tbody>
+          <tr><td>Nazwa</td><td>Relaks 10 min</td><td>Wymagane</td></tr>
+          <tr><td>Status</td><td>Aktywna</td><td>Aktywna / Nieaktywna</td></tr>
+          <tr><td>Strefa</td><td>Nie wybrano</td><td>Domyslnie pusta (fallback globalny)</td></tr>
+          <tr><td>Zapetlenie</td><td>Wlaczone</td><td>Domyslnie zawsze ON</td></tr>
+          <tr><td>Tryb odtwarzania</td><td>Serwer</td><td>Na sztywno, bez przelacznika</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Utwory playlisty</h3>
+      <div class="muted">Tylko podstawowe akcje: dodaj plik WAV/MP3, usun plik, kolejnosc listy.</div>
+      <table>
+        <thead><tr><th>#</th><th>Plik</th><th>Format</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>track_01.mp3</td><td>MP3</td><td>Usun</td></tr>
+          <tr><td>2</td><td>track_02.wav</td><td>WAV</td><td>Usun</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>

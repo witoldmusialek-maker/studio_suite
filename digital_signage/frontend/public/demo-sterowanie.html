@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo - Zakladka 4 Sterowanie teraz</title>
+  <style>
+    :root { --bg:#f7f8fb; --card:#fff; --line:#d8dbe5; --text:#1b2333; --muted:#5b6478; --accent:#0b6cff; }
+    * { box-sizing:border-box; } body { margin:0; font-family:"Segoe UI",Tahoma,sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1200px; margin:0 auto; padding:20px; } .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 14px; }
+    .tab { text-decoration:none; color:inherit; border:1px solid var(--line); border-radius:10px; padding:10px 14px; background:#fff; font-weight:600; }
+    .tab.active { border-color:var(--accent); color:var(--accent); background:#eef5ff; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    .muted { color:var(--muted); font-size:13px; } table { width:100%; border-collapse:collapse; margin-top:8px; font-size:14px; }
+    th, td { border-bottom:1px solid var(--line); text-align:left; padding:8px 6px; } th { color:var(--muted); }
+    .btn { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 10px; margin-right:6px; margin-bottom:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Zakladka 4: Sterowanie teraz</h1>
+    <div class="tabs">
+      <a class="tab" href="demo-playlisty.html">1. Playlisty</a>
+      <a class="tab" href="demo-typy-dnia.html">2. Typy dnia</a>
+      <a class="tab" href="demo-kalendarz.html">3. Kalendarz miesiaca</a>
+      <a class="tab active" href="demo-sterowanie.html">4. Sterowanie teraz</a>
+      <a class="tab" href="demo.html">Start</a>
+    </div>
+
+    <section class="card">
+      <h3>Szybkie akcje runtime</h3>
+      <p>
+        <button class="btn">Pauza 10 min</button>
+        <button class="btn">Pauza 20 min</button>
+        <button class="btn">Pauza 45 min</button>
+        <button class="btn">Wznow</button>
+        <button class="btn">Globalnie OFF</button>
+        <button class="btn">Globalnie ON</button>
+      </p>
+      <div class="muted">Dziala na scheduler, nie zmienia definicji harmonogramow.</div>
+    </section>
+
+    <section class="card">
+      <h3>Status biezacy</h3>
+      <table>
+        <thead><tr><th>Parametr</th><th>Wartosc</th></tr></thead>
+        <tbody>
+          <tr><td>Scheduler dzwonkow</td><td>AKTYWNY</td></tr>
+          <tr><td>Aktywny harmonogram dnia</td><td>Poniedzialek</td></tr>
+          <tr><td>Aktywny profil miesieczny dzwonkow</td><td>Luty 2026</td></tr>
+          <tr><td>Nastepne zdarzenie</td><td>10:35 - Na przerwe - Dzwonek: przerwa_luty.mp3 - Zapowiedz: Przerwa 10-minutowa</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Wynikowa lista zdarzen na dzis</h3>
+      <div class="muted">Lista skladana z: harmonogram dnia + profil miesieczny dzwonkow + wyjatki datowe.</div>
+      <table>
+        <thead><tr><th>Godzina</th><th>Zdarzenie</th><th>Dzwonek</th><th>Zapowiedz</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>08:00</td><td>Na lekcje</td><td>start_lekcji_luty.wav</td><td>Lekcja pierwsza</td><td>Wykonane</td></tr>
+          <tr><td>08:45</td><td>Na przerwe</td><td>przerwa_luty.mp3</td><td>Przerwa 10-minutowa</td><td>Wykonane</td></tr>
+          <tr><td>09:40</td><td>Na przerwe</td><td>przerwa_dluga_luty.wav</td><td>Przerwa 20-minutowa</td><td>Wykonane</td></tr>
+          <tr><td>10:35</td><td>Na przerwe</td><td>przerwa_luty.mp3</td><td>Przerwa 10-minutowa</td><td>Nastepne</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Podglad skladania dzwonka (debug)</h3>
+      <table>
+        <thead><tr><th>Element</th><th>Zrodlo</th><th>Plik</th></tr></thead>
+        <tbody>
+          <tr><td>Dzwonek</td><td>Profil miesieczny dzwonkow</td><td>przerwa_luty.mp3</td></tr>
+          <tr><td>Zapowiedz</td><td>Zdarzenie harmonogramu</td><td>przerwa_10.mp3</td></tr>
+          <tr><td>Kolejnosc</td><td>Runtime</td><td>Dzwonek -> Zapowiedz -> Playlista (jesli przerwa)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Emergency (awaryjne)</h3>
+      <div class="muted">Uzyj, gdy odtwarzanie sie zawiesi albo scheduler przestanie reagowac.</div>
+      <p>
+        <button class="btn">EMERGENCY STOP AUDIO</button>
+        <button class="btn">EMERGENCY PAUSE 60 MIN</button>
+        <button class="btn">RESTART SCHEDULER</button>
+        <button class="btn">WYCZYSC KOLEJKE</button>
+      </p>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 """
-Endpointy API dla treści
+Endpointy API dla treÄąâ€şci
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
@@ -32,13 +32,13 @@ async def upload_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Upload treści (tylko admin)"""
+    """Upload treÄąâ€şci (tylko admin)"""
     # Walidacja typu pliku
     file_type = get_file_type(file.content_type)
     if file_type is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Nieobsługiwany typ pliku: {file.content_type}"
+            detail=f"NieobsÄąâ€šugiwany typ pliku: {file.content_type}"
         )
     
     # Odczyt pliku do obliczenia rozmiaru
@@ -59,41 +59,41 @@ async def upload_content(
     from io import BytesIO
     file.file = BytesIO(content_bytes)
     file_path, error = save_uploaded_file(file, db_content.id, db)
-        
-        if error:
-            # Usunięcie rekordu z bazy jeśli błąd
-            db.delete(db_content)
-            db.commit()
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=error
-            )
-        
-        # Aktualizacja file_path
-        db_content.file_path = file_path
+    
+    if error:
+        # UsuniĂ„â„˘cie rekordu z bazy jeÄąâ€şli bÄąâ€šĂ„â€¦d
+        db.delete(db_content)
         db.commit()
-        db.refresh(db_content)
-        
-        # Utworzenie zadania przetwarzania
-        job = None
-        if file_type == "video":
-            job = create_processing_job(db, db_content.id, "video_transcode")
-            from app.tasks.processing import process_video_task
-            process_video_task.delay(db_content.id, job.id)
-        elif file_type == "pdf":
-            job = create_processing_job(db, db_content.id, "pdf_convert")
-            from app.tasks.processing import process_pdf_task
-            process_pdf_task.delay(db_content.id, job.id)
-        elif file_type == "excel":
-            job = create_processing_job(db, db_content.id, "excel_process")
-            from app.tasks.processing import process_excel_task
-            process_excel_task.delay(db_content.id, job.id)
-        elif file_type == "image":
-            job = create_processing_job(db, db_content.id, "image_process")
-            from app.tasks.processing import process_image_task
-            process_image_task.delay(db_content.id, job.id)
-        
-        return db_content
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=error
+        )
+    
+    # Aktualizacja file_path
+    db_content.file_path = file_path
+    db.commit()
+    db.refresh(db_content)
+    
+    # Utworzenie zadania przetwarzania
+    job = None
+    if file_type == "video":
+        job = create_processing_job(db, db_content.id, "video_transcode")
+        from app.tasks.processing import process_video_task
+        process_video_task.delay(db_content.id, job.id)
+    elif file_type == "pdf":
+        job = create_processing_job(db, db_content.id, "pdf_convert")
+        from app.tasks.processing import process_pdf_task
+        process_pdf_task.delay(db_content.id, job.id)
+    elif file_type == "excel":
+        job = create_processing_job(db, db_content.id, "excel_process")
+        from app.tasks.processing import process_excel_task
+        process_excel_task.delay(db_content.id, job.id)
+    elif file_type == "image":
+        job = create_processing_job(db, db_content.id, "image_process")
+        from app.tasks.processing import process_image_task
+        process_image_task.delay(db_content.id, job.id)
+    
+    return db_content
 
 
 @router.get("/", response_model=ContentListResponse)
@@ -104,7 +104,7 @@ async def get_contents(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy treści (admin i operator)"""
+    """Pobranie listy treÄąâ€şci (admin i operator)"""
     query = db.query(Content)
     
     if type_filter:
@@ -124,10 +124,9 @@ async def get_contents(
 @router.get("/{content_id}", response_model=ContentResponse)
 async def get_content(
     content_id: int,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów treści"""
+    """Pobranie szczegĂłĹ‚Ăłw treĹ›ci (publiczny endpoint dla klienta)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -144,7 +143,7 @@ async def update_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja treści (tylko admin)"""
+    """Aktualizacja treÄąâ€şci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -153,6 +152,9 @@ async def update_content(
         )
     
     update_data = content_data.dict(exclude_unset=True)
+    if "metadata" in update_data:
+        update_data["content_metadata"] = update_data.pop("metadata")
+
     for field, value in update_data.items():
         setattr(content, field, value)
     
@@ -167,7 +169,7 @@ async def delete_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie treści (tylko admin)"""
+    """UsuniĂ„â„˘cie treÄąâ€şci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -175,7 +177,7 @@ async def delete_content(
             detail="Content not found"
         )
     
-    # Usunięcie pliku z dysku
+    # UsuniĂ„â„˘cie pliku z dysku
     import os
     if os.path.exists(content.file_path):
         os.remove(content.file_path)
@@ -193,7 +195,7 @@ async def get_processing_jobs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie zadań przetwarzania dla treści"""
+    """Pobranie zadaÅ przetwarzania dla treÅci"""
     from app.models.processing_job import ProcessingJob
     
     jobs = db.query(ProcessingJob).filter(
@@ -202,3 +204,61 @@ async def get_processing_jobs(
     
     return jobs
 
+
+@router.get("/{content_id}/download")
+async def download_content(
+    content_id: int,
+    db: Session = Depends(get_db)
+):
+    """Pobranie pliku treÅci (publiczny endpoint dla klienta)"""
+    import os
+    from fastapi.responses import FileResponse
+    
+    content = db.query(Content).filter(Content.id == content_id).first()
+    if not content:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Content not found"
+        )
+    
+    # Pobierz ÅcieÅkÄ do pliku
+    file_path = content.file_path
+    if not file_path or not os.path.exists(file_path):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found"
+        )
+    
+    return FileResponse(
+        path=file_path,
+        filename=content.original_filename,
+        media_type=content.type
+    )
+
+
+@router.get("/{content_id}/thumbnail")
+async def get_thumbnail(
+    content_id: int,
+    db: Session = Depends(get_db)
+):
+    """Pobranie miniatury (publiczny endpoint dla klienta)"""
+    import os
+    from fastapi.responses import FileResponse
+    
+    content = db.query(Content).filter(Content.id == content_id).first()
+    if not content or not content.thumbnail_path:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Thumbnail not found"
+        )
+    
+    if not os.path.exists(content.thumbnail_path):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Thumbnail file not found"
+        )
+    
+    return FileResponse(
+        path=content.thumbnail_path,
+        media_type="image/jpeg"
+    )

@@ -14,6 +14,7 @@ class BellSchedule(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
     bell_time = Column(Time, nullable=False, index=True)
+    event_type = Column(String(20), default='lesson')  # 'lesson' = na lekcję, 'break' = na przerwę
     days_of_week = Column(ARRAY(Integer), nullable=True)  # [1,2,3,4,5] = pon-pt
     start_date = Column(Date, nullable=True)
     end_date = Column(Date, nullable=True)
@@ -21,6 +22,8 @@ class BellSchedule(Base):
     volume = Column(Integer, default=50)
     play_on_displays = Column(Boolean, default=True)
     display_ids = Column(ARRAY(Integer), nullable=True)  # Puste = wszystkie
+    group_id = Column(Integer, ForeignKey("groups.id"), nullable=True)  # Grupa docelowa
+    playlist_id = Column(Integer, ForeignKey("bell_music_schedules.id"), nullable=True)  # Playlista na przerwę
     active = Column(Boolean, default=True, nullable=False, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

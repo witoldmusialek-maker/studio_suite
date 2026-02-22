@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo - Zakladka 2 Typy dnia</title>
+  <style>
+    :root { --bg:#f7f8fb; --card:#fff; --line:#d8dbe5; --text:#1b2333; --muted:#5b6478; --accent:#0b6cff; }
+    * { box-sizing:border-box; } body { margin:0; font-family:"Segoe UI",Tahoma,sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1200px; margin:0 auto; padding:20px; } .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 14px; }
+    .tab { text-decoration:none; color:inherit; border:1px solid var(--line); border-radius:10px; padding:10px 14px; background:#fff; font-weight:600; }
+    .tab.active { border-color:var(--accent); color:var(--accent); background:#eef5ff; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    .muted { color:var(--muted); font-size:13px; } table { width:100%; border-collapse:collapse; margin-top:8px; font-size:14px; }
+    th, td { border-bottom:1px solid var(--line); text-align:left; padding:8px 6px; } th { color:var(--muted); }
+    .btn { border:1px solid var(--line); background:#fff; border-radius:8px; padding:7px 10px; margin-right:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Zakladka 2: Typy dnia (Harmonogramy dzienne)</h1>
+    <div class="tabs">
+      <a class="tab" href="demo-playlisty.html">1. Playlisty</a>
+      <a class="tab active" href="demo-typy-dnia.html">2. Typy dnia</a>
+      <a class="tab" href="demo-kalendarz.html">3. Kalendarz miesiaca</a>
+      <a class="tab" href="demo-sterowanie.html">4. Sterowanie teraz</a>
+      <a class="tab" href="demo.html">Start</a>
+    </div>
+
+    <section class="card">
+      <h3>Lista dni (harmonogramow)</h3>
+      <table>
+        <thead><tr><th>Nazwa harmonogramu</th><th>Status</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>Poniedzialek</td><td>Aktywny</td><td>Edytuj | Usun</td></tr>
+          <tr><td>Wtorek</td><td>Aktywny</td><td>Edytuj | Usun</td></tr>
+          <tr><td>Sroda</td><td>Aktywny</td><td>Edytuj | Usun</td></tr>
+          <tr><td>Czwartek</td><td>Aktywny</td><td>Edytuj | Usun</td></tr>
+          <tr><td>Piatek</td><td>Aktywny</td><td>Edytuj | Usun</td></tr>
+        </tbody>
+      </table>
+      <p><button class="btn">+ Dodaj harmonogram</button></p>
+    </section>
+
+    <section class="card">
+      <h3>CRUD harmonogramu (dodaj / edytuj)</h3>
+      <table>
+        <thead><tr><th>Pole</th><th>Wartosc</th><th>Uwagi</th></tr></thead>
+        <tbody>
+          <tr><td>Nazwa</td><td>Poniedzialek</td><td>Wymagane</td></tr>
+          <tr><td>Status</td><td>Aktywny</td><td>Aktywny / Nieaktywny</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h3>Zdarzenia wybranego harmonogramu</h3>
+      <div class="muted">Lista sortuje sie automatycznie po godzinie po dodaniu zdarzenia.</div>
+      <table>
+        <thead><tr><th>Godzina</th><th>Zdarzenie</th><th>Dzwonek</th><th>Zapowiedz</th><th>Dlugosc przerwy</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>08:00</td><td>Na lekcje</td><td>start_lekcji.wav</td><td>Lekcja pierwsza</td><td>-</td><td>Edytuj | Usun</td></tr>
+          <tr><td>08:45</td><td>Na przerwe</td><td>przerwa.wav</td><td>Przerwa 10-minutowa</td><td>10 min</td><td>Edytuj | Usun</td></tr>
+          <tr><td>09:40</td><td>Na przerwe</td><td>przerwa.wav</td><td>Przerwa 20-minutowa</td><td>20 min</td><td>Edytuj | Usun</td></tr>
+        </tbody>
+      </table>
+      <p><button class="btn">+ Dodaj zdarzenie</button></p>
+    </section>
+
+    <section class="card">
+      <h3>Biblioteka dzwonkow i zapowiedzi (minimal)</h3>
+      <div class="muted">Biblioteka malej skali (ok. 10-20 plikow): szybkie dodanie, podmiana, usuniecie.</div>
+      <table>
+        <thead><tr><th>Typ</th><th>Nazwa logiczna</th><th>Plik</th><th>Format</th><th>Akcje</th></tr></thead>
+        <tbody>
+          <tr><td>Dzwonek</td><td>Start lekcji</td><td>start_lekcji.wav</td><td>WAV</td><td>Podmien | Usun</td></tr>
+          <tr><td>Dzwonek</td><td>Przerwa</td><td>przerwa.mp3</td><td>MP3</td><td>Podmien | Usun</td></tr>
+          <tr><td>Zapowiedz</td><td>Lekcja pierwsza</td><td>lekcja_1.wav</td><td>WAV</td><td>Podmien | Usun</td></tr>
+          <tr><td>Zapowiedz</td><td>Przerwa 10-minutowa</td><td>przerwa_10.mp3</td><td>MP3</td><td>Podmien | Usun</td></tr>
+        </tbody>
+      </table>
+      <p><button class="btn">+ Dodaj plik (WAV/MP3)</button></p>
+    </section>
+  </div>
+</body>
+</html>

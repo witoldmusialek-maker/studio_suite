@@ -5,26 +5,29 @@ import {
   Drawer,
   AppBar,
   Toolbar,
+  Chip,
+  Divider,
   List,
+  ListSubheader,
   Typography,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
 } from '@mui/material'
 import {
   Dashboard as DashboardIcon,
   Tv as TvIcon,
   Folder as FolderIcon,
   Schedule as ScheduleIcon,
-  Groups as GroupsIcon,
-  Notifications as NotificationsIcon,
-  Assessment as AssessmentIcon,
-  NotificationsActive as BellIcon,
+  GridView as GroupsIcon,
+  Notifications as AlertsIcon,
+  Assessment as ReportsIcon,
+  MusicNote as BellsIcon,
   Logout as LogoutIcon,
 } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
+import { APP_VERSION } from '../version'
 
 const drawerWidth = 240
 
@@ -37,16 +40,39 @@ const Layout = ({ children }: LayoutProps) => {
   const location = useLocation()
   const { user, logout } = useAuth()
 
-  const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'Status', icon: <TvIcon />, path: '/status' },
-    { text: 'Wyświetlacze', icon: <TvIcon />, path: '/displays' },
-    { text: 'Treści', icon: <FolderIcon />, path: '/content' },
-    { text: 'Harmonogramy', icon: <ScheduleIcon />, path: '/schedules' },
-    { text: 'Grupy', icon: <GroupsIcon />, path: '/groups' },
-    { text: 'Alerty', icon: <NotificationsIcon />, path: '/alerts' },
-    { text: 'Raporty', icon: <AssessmentIcon />, path: '/reports' },
-    { text: 'Dzwonki', icon: <BellIcon />, path: '/bells' },
+  const menuSections = [
+    {
+      title: 'Start',
+      items: [{ text: 'Dashboard', icon: <DashboardIcon />, path: '/' }],
+    },
+    {
+      title: 'Monitoring',
+      items: [
+        { text: 'Status', icon: <TvIcon />, path: '/status' },
+        { text: 'Alerty', icon: <AlertsIcon />, path: '/alerts' },
+        { text: 'Raporty', icon: <ReportsIcon />, path: '/reports' },
+      ],
+    },
+    {
+      title: 'Wyswietlacze',
+      items: [
+        { text: 'Wyswietlacze', icon: <TvIcon />, path: '/displays' },
+        { text: 'Grupy wyswietlaczy', icon: <GroupsIcon />, path: '/groups' },
+      ],
+    },
+    {
+      title: 'Harmonogramy',
+      items: [
+        { text: 'Harmonogramy tresci', icon: <ScheduleIcon />, path: '/schedules' },
+      ],
+    },
+    {
+      title: 'Tresci',
+      items: [
+        { text: 'Biblioteka tresci', icon: <FolderIcon />, path: '/content' },
+        { text: 'Harmonogram dzwonkow', icon: <BellsIcon />, path: '/bells/schedules' },
+      ],
+    },
   ]
 
   const handleLogout = () => {
@@ -56,14 +82,22 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Digital Signage
           </Typography>
+          <Chip
+            size="small"
+            label={APP_VERSION}
+            sx={{
+              mr: 2,
+              fontWeight: 700,
+              color: '#1a1a1a',
+              bgcolor: '#ffd54f',
+              border: '1px solid #fbc02d',
+            }}
+          />
           <Typography variant="body2" sx={{ mr: 2 }}>
             {user?.username} ({user?.role})
           </Typography>
@@ -74,6 +108,7 @@ const Layout = ({ children }: LayoutProps) => {
           </ListItemButton>
         </Toolbar>
       </AppBar>
+
       <Drawer
         variant="permanent"
         sx={{
@@ -86,22 +121,42 @@ const Layout = ({ children }: LayoutProps) => {
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <List>
-            {menuItems.map((item) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton
-                  selected={location.pathname === item.path}
-                  onClick={() => navigate(item.path)}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+        <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 64px)' }}>
+          {menuSections.map((section, sectionIndex) => (
+            <List
+              key={section.title}
+              subheader={
+                <ListSubheader component="div" sx={{ lineHeight: 1.8 }}>
+                  {section.title}
+                </ListSubheader>
+              }
+            >
+              {section.items.map((item) => {
+                const selected =
+                  item.path === '/'
+                    ? location.pathname === '/'
+                    : location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
+
+                return (
+                  <ListItem key={item.text} disablePadding>
+                    <ListItemButton selected={selected} onClick={() => navigate(item.path)}>
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.text} />
+                    </ListItemButton>
+                  </ListItem>
+                )
+              })}
+              {sectionIndex < menuSections.length - 1 && <Divider sx={{ mt: 1 }} />}
+            </List>
+          ))}
+          <Box sx={{ px: 2, py: 1.5 }}>
+            <Typography variant="caption" color="text.secondary">
+              Wersja: {APP_VERSION}
+            </Typography>
+          </Box>
         </Box>
       </Drawer>
+
       <Box
         component="main"
         sx={{
@@ -118,4 +173,3 @@ const Layout = ({ children }: LayoutProps) => {
 }
 
 export default Layout
-

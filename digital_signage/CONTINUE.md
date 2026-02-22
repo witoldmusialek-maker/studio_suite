@@ -36,7 +36,7 @@ source venv/bin/activate
 # Skonfiguruj .env
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
-python scripts/create_admin.py admin password123
+python3 scripts/create_admin.py admin password123
 uvicorn app.main:app --reload
 ```
 

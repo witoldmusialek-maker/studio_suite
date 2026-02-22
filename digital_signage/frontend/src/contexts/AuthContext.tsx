@@ -9,34 +9,76 @@ interface AuthContextType {
   loading: boolean
 }
 
+interface TokenResponse {
+  access_token: string
+  token_type: string
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const fetchCurrentUser = async (): Promise<User | null> => {
+    try {
+      const response = await api.get<User>('/auth/me')
+      return response.data
+    } catch {
+      return null
+    }
+  }
+
   useEffect(() => {
-    // Sprawdzenie czy użytkownik jest zalogowany
-    const token = localStorage.getItem('token')
-    if (token) {
-      // Pobranie danych użytkownika z tokena (można dodać endpoint /me)
-      // Na razie tylko sprawdzamy czy token istnieje
+    let isMounted = true
+
+    const initAuth = async () => {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        if (isMounted) {
+          setUser(null)
+          setLoading(false)
+        }
+        return
+      }
+
+      const currentUser = await fetchCurrentUser()
+
+      if (!isMounted) {
+        return
+      }
+
+      if (currentUser) {
+        setUser(currentUser)
+      } else {
+        localStorage.removeItem('token')
+        setUser(null)
+      }
+
       setLoading(false)
-    } else {
-      setLoading(false)
+    }
+
+    initAuth()
+
+    return () => {
+      isMounted = false
     }
   }, [])
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await api.post('/auth/login', { username, password })
-      const { access_token } = response.data
-      localStorage.setItem('token', access_token)
-      
-      // Pobranie danych użytkownika (można dodać endpoint /me)
-      // Na razie używamy danych z odpowiedzi lub domyślnych
-      setUser({ username, role: 'admin' } as User)
+      const response = await api.post<TokenResponse>('/auth/login', { username, password })
+      localStorage.setItem('token', response.data.access_token)
+
+      const currentUser = await fetchCurrentUser()
+      if (!currentUser) {
+        localStorage.removeItem('token')
+        throw new Error('Nie udało się pobrać danych użytkownika')
+      }
+
+      setUser(currentUser)
     } catch (error) {
+      setUser(null)
       throw error
     }
   }
@@ -60,6 +102,3 @@ export const useAuth = () => {
   }
   return context
 }
-
-
-

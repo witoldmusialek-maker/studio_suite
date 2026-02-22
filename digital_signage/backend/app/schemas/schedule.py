@@ -65,4 +65,5 @@ class ScheduleForDisplay(BaseModel):
     end_time: time
     display_duration_seconds: Optional[int] = None
     priority: int
+    days_of_week: Optional[List[int]] = None
 

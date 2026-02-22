@@ -6,6 +6,11 @@ import DisplaysPage from './pages/DisplaysPage'
 import DisplayDetailPage from './pages/DisplayDetailPage'
 import StatusPage from './pages/StatusPage'
 import ContentPage from './pages/ContentPage'
+import SchedulesPage from './pages/SchedulesPage'
+import GroupsPage from './pages/GroupsPage'
+import BellsPage from './pages/BellsPage'
+import ReportsPage from './pages/ReportsPage'
+import AlertsPage from './pages/AlertsPage'
 import Layout from './components/Layout'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -72,9 +77,50 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/schedules"
+        element={
+          <ProtectedRoute>
+            <SchedulesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/groups"
+        element={
+          <ProtectedRoute>
+            <GroupsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/bells/schedules"
+        element={
+          <ProtectedRoute>
+            <BellsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/bells" element={<Navigate to="/bells/schedules" />} />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <ReportsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/alerts"
+        element={
+          <ProtectedRoute>
+            <AlertsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/sounds" element={<Navigate to="/bells/schedules" replace />} />
     </Routes>
   )
 }
 
 export default App
-
