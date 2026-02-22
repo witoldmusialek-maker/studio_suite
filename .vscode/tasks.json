@@ -47,7 +47,13 @@
       "label": "DS: Sync From Dev",
       "type": "shell",
       "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/sync-from-dev.ps1 -DevHost dev1"
+    },
+    {
+      "label": "DS: Deploy Dev1 (master + smoke)",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/deploy-dev1.ps1 -DevHost dev1 -Branch master"
     }
+
 
   ]
 }
