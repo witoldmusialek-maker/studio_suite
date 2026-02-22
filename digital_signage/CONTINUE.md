@@ -8,19 +8,19 @@
 - API: /api/v1 (frontend uses relative API_URL) 
  
 ## Standard Deploy 
-`ash 
+```bash 
 cd ~/projects/digital_signage_repo 
 git pull origin master 
 cd digital_signage 
 docker compose up -d --build 
 docker compose ps 
-` 
+`
  
 ## Quick Diagnostics 
-`ash 
+```bash 
 docker compose logs backend --tail 80 
 docker compose logs frontend --tail 80 
-` 
+`
  
 ## Notes 
 - Websocket (socket.io) is LAN-only. 
