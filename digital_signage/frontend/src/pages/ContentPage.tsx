@@ -41,7 +41,7 @@ const ContentPage = () => {
       const response = await api.get('/content')
       setContents(response.data.items || response.data)
     } catch (error) {
-      console.error('BĹ‚Ä…d pobierania treĹ›ci:', error)
+      console.error('Błąd pobierania treści:', error)
     } finally {
       setLoading(false)
     }
@@ -76,14 +76,14 @@ const ContentPage = () => {
       setSelectedFile(null)
       fetchContents()
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'BĹ‚Ä…d uploadu')
+      setError(err.response?.data?.detail || 'Błąd uploadu')
     } finally {
       setUploading(false)
     }
   }
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Czy na pewno chcesz usunÄ…Ä‡ tÄ™ treĹ›Ä‡?')) {
+    if (!window.confirm('Czy na pewno chcesz usunąć tę treść?')) {
       return
     }
 
@@ -91,7 +91,7 @@ const ContentPage = () => {
       await api.delete(`/content/${id}`)
       fetchContents()
     } catch (error) {
-      console.error('BĹ‚Ä…d usuwania:', error)
+      console.error('Błąd usuwania:', error)
     }
   }
 
@@ -106,13 +106,13 @@ const ContentPage = () => {
   }
 
   if (loading) {
-    return <Typography>Ĺadowanie...</Typography>
+    return <Typography>Ładowanie...</Typography>
   }
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h4">TreĹ›ci</Typography>
+        <Typography variant="h4">Treści</Typography>
         {user?.role === 'admin' && (
           <>
             <input
@@ -179,13 +179,13 @@ const ContentPage = () => {
       {contents.length === 0 && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant="h6" color="text.secondary">
-            Brak treĹ›ci
+            Brak treści
           </Typography>
         </Box>
       )}
 
       <Dialog open={openDialog} onClose={() => !uploading && setOpenDialog(false)}>
-        <DialogTitle>Upload TreĹ›ci</DialogTitle>
+        <DialogTitle>Upload Treści</DialogTitle>
         <DialogContent>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
