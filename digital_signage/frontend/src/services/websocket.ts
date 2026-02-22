@@ -5,7 +5,7 @@ let socket: Socket | null = null
 export const connectWebSocket = (): Socket => {
   if (!socket) {
     const token = localStorage.getItem('token')
-    socket = io('http://localhost:8000', {
+    socket = io(window.location.origin, {
       auth: {
         token,
       },
@@ -25,6 +25,4 @@ export const disconnectWebSocket = () => {
 export const getSocket = (): Socket | null => {
   return socket
 }
-
-
 

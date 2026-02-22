@@ -132,7 +132,7 @@ const SoundsPage = () => {
 
     // Utwórz nowy audio
     try {
-      const audioUrl = `http://localhost:8000/api/v1/bells/${sound.id}/sound-file`
+      const audioUrl = `${window.location.origin}/api/v1/bells/${sound.id}/sound-file`
       audioRef.current = new Audio(audioUrl)
       audioRef.current.onended = () => setPlayingId(null)
       audioRef.current.onerror = () => {
@@ -289,3 +289,4 @@ const SoundsPage = () => {
 }
 
 export default SoundsPage
+

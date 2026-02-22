@@ -143,7 +143,7 @@ const ContentPage = () => {
                 <CardMedia
                   component="img"
                   height="200"
-                  image={`http://localhost:8000${content.thumbnail_path}`}
+                  image={`${window.location.origin}${content.thumbnail_path}`}
                   alt={content.filename}
                 />
               )}
@@ -221,7 +221,4 @@ const ContentPage = () => {
 }
 
 export default ContentPage
-
-
-
 
