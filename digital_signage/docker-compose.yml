@@ -97,22 +97,20 @@ services:
     command: celery -A app.celery_app beat --loglevel=info
 
   frontend:
-    image: node:18-alpine
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
-      - frontend_node_modules:/app/node_modules
-    ports:
-      - "3000:3000"
-    environment:
-      - VITE_API_URL=https://dev.witold.ovh/api/v1
-    command: sh -c "npm install && node ./node_modules/vite/bin/vite.js --host 0.0.0.0"
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_URL: /api/v1
     restart: unless-stopped
+    ports:
+      - "8081:80"
     networks:
       - ds_net
     depends_on:
       backend:
         condition: service_healthy
+
 
 networks:
   ds_net:
