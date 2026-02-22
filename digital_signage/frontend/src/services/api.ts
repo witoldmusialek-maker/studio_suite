@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-const rawBaseApiUrl = import.meta.env.VITE_API_URL || '/api/v1'
-const baseApiUrl = rawBaseApiUrl.replace(/^http:\/\//i, 'https://')
-const API_URL = baseApiUrl.endsWith('/api/v1') ? baseApiUrl : `${baseApiUrl}/api/v1`
+const API_URL = '/api/v1'
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -16,7 +14,7 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = Bearer 
     }
     return config
   },
@@ -25,7 +23,7 @@ api.interceptors.request.use(
   }
 )
 
-// Interceptor do obsÅ‚ugi bÅ‚Ä™dÃ³w
+// Interceptor do obs³ugi b³êdów
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -36,6 +34,3 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-
-
