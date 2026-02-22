@@ -26,25 +26,25 @@ const StatusPage = () => {
   const [loading, setLoading] = useState(true)
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date())
 
-  useEffect(() => {
-    fetchStatus()
-    const socket = connectWebSocket()
+useEffect(() => {
+  fetchStatus()
+  const socket = connectWebSocket()
 
-    socket.on('display_status_update', (data: Display) => {
-      setDisplays((prev) =>
-        prev.map((d) => (d.id === data.id ? { ...d, ...data } : d))
-      )
-      setLastUpdate(new Date())
-    })
+  socket?.on('display_status_update', (data: Display) => {
+    setDisplays((prev) =>
+      prev.map((d) => (d.id === data.id ? { ...d, ...data } : d))
+    )
+    setLastUpdate(new Date())
+  })
 
-    // OdĹ›wieĹĽanie co 30 sekund
-    const interval = setInterval(fetchStatus, 30000)
+  const interval = setInterval(fetchStatus, 30000)
 
-    return () => {
-      clearInterval(interval)
-      socket.off('display_status_update')
-    }
-  }, [])
+  return () => {
+    clearInterval(interval)
+    socket?.off('display_status_update')
+  }
+}, [])
+
 
   const fetchStatus = async () => {
     try {
