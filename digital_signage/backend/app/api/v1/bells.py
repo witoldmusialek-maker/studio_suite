@@ -14,6 +14,7 @@ from app.models.bell_runtime import BellCalendarOverride
 from app.models.bell_profile import BellProfile, BellProfileOverride, BellScheduleProfile, BellProfilePlaceholder
 from app.models.bell_music import BellMusicSchedule, BellMusicTrack
 from app.models.bell_sound import BellSound
+from app.models.bell_model_config import BellModelConfig
 from app.models.user import User
 from app.api.deps import get_current_user, get_current_admin
 from app.schemas.bell import (
@@ -42,6 +43,8 @@ from app.schemas.bell import (
     BellMusicScheduleResponse,
     BellMusicTrackCreate,
     BellMusicTrackResponse,
+    BellModelConfigUpsert,
+    BellModelConfigResponse,
 )
 from app.services.bell_service import (
     get_displays_for_bell,
@@ -132,6 +135,35 @@ def _serialize_track_for_profile(
         "resolved_name": resolved_sound.name if resolved_sound else None,
         "created_at": track.created_at,
     }
+
+
+@router.get("/runtime/model-config", response_model=BellModelConfigResponse)
+async def get_bell_model_config(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    row = db.query(BellModelConfig).order_by(BellModelConfig.id.asc()).first()
+    if not row:
+        return BellModelConfigResponse()
+    return row
+
+
+@router.put("/runtime/model-config", response_model=BellModelConfigResponse)
+async def upsert_bell_model_config(
+    payload: BellModelConfigUpsert,
+    current_user: User = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    row = db.query(BellModelConfig).order_by(BellModelConfig.id.asc()).first()
+    if not row:
+        row = BellModelConfig(model_json=payload.model_json, revision=1)
+        db.add(row)
+    else:
+        row.model_json = payload.model_json
+        row.revision = (row.revision or 0) + 1
+    db.commit()
+    db.refresh(row)
+    return row
 
 
 @router.post("/upload-sound", response_model=BellSoundResponse, status_code=status.HTTP_201_CREATED)

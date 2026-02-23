@@ -15,6 +15,7 @@ from app.models.bell_runtime import BellRuntimeControl, BellCalendarOverride
 from app.models.bell_profile import BellProfile, BellProfileOverride, BellScheduleProfile, BellProfilePlaceholder
 from app.models.bell_music import BellMusicSchedule, BellMusicTrack
 from app.models.bell_sound import BellSound
+from app.models.bell_model_config import BellModelConfig
 
 __all__ = [
     "User",
@@ -36,4 +37,5 @@ __all__ = [
     "BellMusicSchedule",
     "BellMusicTrack",
     "BellSound",
+    "BellModelConfig",
 ]
