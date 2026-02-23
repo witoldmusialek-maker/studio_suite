@@ -24,6 +24,8 @@ import {
 } from '@mui/material'
 import {
   Add as AddIcon,
+  ArrowDownward as ArrowDownwardIcon,
+  ArrowUpward as ArrowUpwardIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
   Groups as GroupsIcon,
@@ -45,8 +47,6 @@ type GroupFormData = {
 type LayoutTile = {
   display_id: number
   name: string
-  x: number
-  y: number
   width: number
   height: number
   rotation: 0 | 90 | 180 | 270
@@ -90,6 +90,7 @@ const GroupsPage = () => {
   const [openLayoutDialog, setOpenLayoutDialog] = useState(false)
   const [layoutGroup, setLayoutGroup] = useState<Group | null>(null)
   const [layoutTiles, setLayoutTiles] = useState<LayoutTile[]>([])
+  const [layoutPreset, setLayoutPreset] = useState<'vertical' | 'horizontal'>('horizontal')
 
   useEffect(() => {
     fetchAll()
@@ -246,8 +247,8 @@ const GroupsPage = () => {
         : []
     )
 
-    let nextX = 0
-    let nextY = 0
+    const mode = (group.layout_config as any)?.mode === 'vertical' ? 'vertical' : 'horizontal'
+    setLayoutPreset(mode)
     return members.map((d) => {
       const effectiveWidth = d.orientation === 90 || d.orientation === 270 ? d.resolution_height : d.resolution_width
       const effectiveHeight = d.orientation === 90 || d.orientation === 270 ? d.resolution_width : d.resolution_height
@@ -256,21 +257,11 @@ const GroupsPage = () => {
       const tile: LayoutTile = {
         display_id: d.id,
         name: d.name,
-        x: Number.isFinite(Number(existing?.x)) ? Number(existing.x) : nextX,
-        y: Number.isFinite(Number(existing?.y)) ? Number(existing.y) : nextY,
         width: Number.isFinite(Number(existing?.width)) ? Number(existing.width) : effectiveWidth,
         height: Number.isFinite(Number(existing?.height)) ? Number(existing.height) : effectiveHeight,
         rotation: [0, 90, 180, 270].includes(Number(existing?.rotation))
           ? Number(existing.rotation) as 0 | 90 | 180 | 270
           : (d.orientation as 0 | 90 | 180 | 270),
-      }
-
-      if (!existing) {
-        if (group.type === 'vertical') {
-          nextY += tile.height
-        } else {
-          nextX += tile.width
-        }
       }
       return tile
     })
@@ -283,24 +274,19 @@ const GroupsPage = () => {
     setOpenLayoutDialog(true)
   }
 
-  const applyLayoutPreset = (preset: 'vertical' | 'horizontal') => {
-    let nextX = 0
-    let nextY = 0
-    setLayoutTiles((prev) =>
-      prev.map((tile) => {
-        const updated = {
-          ...tile,
-          x: nextX,
-          y: nextY,
-        }
-        if (preset === 'vertical') {
-          nextY += tile.height
-        } else {
-          nextX += tile.width
-        }
-        return updated
-      })
-    )
+  const moveLayoutTile = (displayId: number, direction: 'up' | 'down') => {
+    setLayoutTiles((prev) => {
+      const idx = prev.findIndex((t) => t.display_id === displayId)
+      if (idx < 0) return prev
+      if (direction === 'up' && idx === 0) return prev
+      if (direction === 'down' && idx === prev.length - 1) return prev
+      const target = direction === 'up' ? idx - 1 : idx + 1
+      const copy = [...prev]
+      const tmp = copy[idx]
+      copy[idx] = copy[target]
+      copy[target] = tmp
+      return copy
+    })
   }
 
   const updateTileRotation = (displayId: number, nextRotation: 0 | 90 | 180 | 270) => {
@@ -324,10 +310,25 @@ const GroupsPage = () => {
     if (!layoutGroup) return
     setError('')
     try {
+      let cursorX = 0
+      let cursorY = 0
+      const tilesWithAutoPosition = layoutTiles.map((t) => {
+        const positioned = {
+          ...t,
+          x: cursorX,
+          y: cursorY,
+        }
+        if (layoutPreset === 'vertical') {
+          cursorY += t.height
+        } else {
+          cursorX += t.width
+        }
+        return positioned
+      })
       await api.put(`/groups/${layoutGroup.id}`, {
         layout_config: {
-          mode: 'span',
-          tiles: layoutTiles.map((t) => ({
+          mode: layoutPreset,
+          tiles: tilesWithAutoPosition.map((t) => ({
             display_id: t.display_id,
             x: t.x,
             y: t.y,
@@ -347,10 +348,24 @@ const GroupsPage = () => {
 
   const layoutBounds = useMemo(() => {
     if (layoutTiles.length === 0) return { width: 1, height: 1, minX: 0, minY: 0 }
-    const minX = Math.min(...layoutTiles.map((t) => t.x))
-    const minY = Math.min(...layoutTiles.map((t) => t.y))
-    const maxX = Math.max(...layoutTiles.map((t) => t.x + t.width))
-    const maxY = Math.max(...layoutTiles.map((t) => t.y + t.height))
+
+    let cursorX = 0
+    let cursorY = 0
+    const withPos = layoutTiles.map((tile) => {
+      const x = cursorX
+      const y = cursorY
+      if (layoutPreset === 'vertical') {
+        cursorY += tile.height
+      } else {
+        cursorX += tile.width
+      }
+      return { ...tile, x, y }
+    })
+
+    const minX = Math.min(...withPos.map((t) => t.x))
+    const minY = Math.min(...withPos.map((t) => t.y))
+    const maxX = Math.max(...withPos.map((t) => t.x + t.width))
+    const maxY = Math.max(...withPos.map((t) => t.y + t.height))
     return {
       minX,
       minY,
@@ -607,23 +622,40 @@ const GroupsPage = () => {
         <DialogTitle>Układ ściany: {layoutGroup?.name || '-'}</DialogTitle>
         <DialogContent>
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1.5 }}>
-            <Button variant="outlined" size="small" onClick={() => applyLayoutPreset('vertical')}>
-              Preset: pionowo
-            </Button>
-            <Button variant="outlined" size="small" onClick={() => applyLayoutPreset('horizontal')}>
-              Preset: poziomo
-            </Button>
+            <TextField
+              select
+              size="small"
+              label="Preset układu"
+              value={layoutPreset}
+              onChange={(e) => setLayoutPreset(e.target.value as 'vertical' | 'horizontal')}
+              sx={{ minWidth: 190 }}
+            >
+              <MenuItem value="horizontal">Poziomo (lewo → prawo)</MenuItem>
+              <MenuItem value="vertical">Pionowo (góra → dół)</MenuItem>
+            </TextField>
+            <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
+              Pozycje X/Y są liczone automatycznie na podstawie kolejności.
+            </Typography>
           </Stack>
 
           <Paper variant="outlined" sx={{ p: 1.5, mb: 1.5, borderRadius: 2 }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>Podgląd canvasu</Typography>
             <Box sx={{ position: 'relative', width: '100%', height: 240, bgcolor: '#f6f8fc', borderRadius: 2, overflow: 'hidden' }}>
-              {layoutTiles.map((tile) => {
+              {layoutTiles.map((tile, index) => {
+                let x = 0
+                let y = 0
+                for (let i = 0; i < index; i++) {
+                  if (layoutPreset === 'vertical') {
+                    y += layoutTiles[i].height
+                  } else {
+                    x += layoutTiles[i].width
+                  }
+                }
                 const scaleX = 760 / layoutBounds.width
                 const scaleY = 220 / layoutBounds.height
                 const scale = Math.min(scaleX, scaleY)
-                const left = (tile.x - layoutBounds.minX) * scale + 8
-                const top = (tile.y - layoutBounds.minY) * scale + 8
+                const left = (x - layoutBounds.minX) * scale + 8
+                const top = (y - layoutBounds.minY) * scale + 8
                 const width = Math.max(24, tile.width * scale)
                 const height = Math.max(24, tile.height * scale)
                 return (
@@ -654,32 +686,22 @@ const GroupsPage = () => {
             </Box>
           </Paper>
 
-          <Stack spacing={1}>
-            {layoutTiles.map((tile) => (
+            <Stack spacing={1}>
+            {layoutTiles.map((tile, index) => (
               <Paper key={tile.display_id} variant="outlined" sx={{ p: 1, borderRadius: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1 }}>{tile.name}</Typography>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                  <Typography variant="subtitle2">{index + 1}. {tile.name}</Typography>
+                  <Stack direction="row" spacing={0.5}>
+                    <IconButton size="small" onClick={() => moveLayoutTile(tile.display_id, 'up')} disabled={index === 0}>
+                      <ArrowUpwardIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton size="small" onClick={() => moveLayoutTile(tile.display_id, 'down')} disabled={index === layoutTiles.length - 1}>
+                      <ArrowDownwardIcon fontSize="inherit" />
+                    </IconButton>
+                  </Stack>
+                </Stack>
                 <Grid container spacing={1}>
-                  <Grid item xs={6} md={2}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="number"
-                      label="X"
-                      value={tile.x}
-                      onChange={(e) => setLayoutTiles((prev) => prev.map((t) => (t.display_id === tile.display_id ? { ...t, x: Number(e.target.value || 0) } : t)))}
-                    />
-                  </Grid>
-                  <Grid item xs={6} md={2}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="number"
-                      label="Y"
-                      value={tile.y}
-                      onChange={(e) => setLayoutTiles((prev) => prev.map((t) => (t.display_id === tile.display_id ? { ...t, y: Number(e.target.value || 0) } : t)))}
-                    />
-                  </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid item xs={12} md={5}>
                     <TextField
                       fullWidth
                       size="small"
@@ -689,7 +711,7 @@ const GroupsPage = () => {
                       onChange={(e) => setLayoutTiles((prev) => prev.map((t) => (t.display_id === tile.display_id ? { ...t, width: Math.max(1, Number(e.target.value || 1)) } : t)))}
                     />
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid item xs={12} md={5}>
                     <TextField
                       fullWidth
                       size="small"

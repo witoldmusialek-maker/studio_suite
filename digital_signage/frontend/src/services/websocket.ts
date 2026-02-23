@@ -20,7 +20,12 @@ export const connectWebSocket = (): Socket | null => {
 
   if (!socket) {
     const token = localStorage.getItem('token')
-    socket = io(window.location.origin, {
+    const explicitUrl = import.meta.env.VITE_WS_URL as string | undefined
+    const isDevPort = ['3000', '5173', '5174', '5175'].includes(window.location.port)
+    const backendUrl = `${window.location.protocol}//${window.location.hostname}:8000`
+    const wsUrl = explicitUrl || (isDevPort ? backendUrl : window.location.origin)
+
+    socket = io(wsUrl, {
       auth: {
         token,
       },

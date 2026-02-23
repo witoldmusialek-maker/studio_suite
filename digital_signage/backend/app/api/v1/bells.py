@@ -281,6 +281,29 @@ async def delete_sound(
     return None
 
 
+@router.get("/sounds/{sound_id}/file")
+async def get_sound_file(
+    sound_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    sound = db.query(BellSound).filter(BellSound.id == sound_id).first()
+    if not sound:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sound not found")
+
+    file_path = os.path.normpath(sound.file_path or "")
+    if not file_path:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sound file is empty")
+    if not os.path.isabs(file_path):
+        if not os.path.exists(file_path):
+            file_path = os.path.normpath(os.path.join(settings.CONTENT_DIR, file_path))
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sound file not found")
+
+    filename = os.path.basename(file_path)
+    return FileResponse(path=file_path, filename=filename)
+
+
 @router.post("/", response_model=BellScheduleResponse, status_code=status.HTTP_201_CREATED)
 async def create_bell_schedule(
     bell_data: BellScheduleCreate,

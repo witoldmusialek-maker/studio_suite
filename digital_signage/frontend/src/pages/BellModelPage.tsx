@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Alert,
   Box,
@@ -136,14 +136,14 @@ const zbudujPusteMapowanie = (nazwaProfilu: string, wzorce: WzorzecDzwieku[]): M
 const domyslnyDraft = (): ModelDzwonkowDraft => {
   const w1 = { id: uid(), klucz: 'DZWONEK_LEKCJA', nazwa: 'Dzwonek na lekcje' }
   const w2 = { id: uid(), klucz: 'DZWONEK_PRZERWA', nazwa: 'Dzwonek na przerwe' }
-  const w3 = { id: uid(), klucz: 'ZAPOWIEDZ_LEKCJA_1', nazwa: 'Zapowiedź na lekcję pierwszą' }
-  const w4 = { id: uid(), klucz: 'ZAPOWIEDZ_PRZERWA_1', nazwa: 'Zapowiedź na przerwę pierwszą' }
+  const w3 = { id: uid(), klucz: 'ZAPOWIEDZ_LEKCJA_1', nazwa: 'ZapowiedĹş na lekcjÄ™ pierwszÄ…' }
+  const w4 = { id: uid(), klucz: 'ZAPOWIEDZ_PRZERWA_1', nazwa: 'ZapowiedĹş na przerwÄ™ pierwszÄ…' }
 
   const s1id = uid()
   const s2id = uid()
   const t1id = uid()
 
-  const profil = 'Profil domyślny'
+  const profil = 'Profil domyĹ›lny'
 
   return {
     wzorce_dzwiekow: [w1, w2, w3, w4],
@@ -180,7 +180,7 @@ const domyslnyDraft = (): ModelDzwonkowDraft => {
       {
         id: uid(),
         miesiac: new Date().toISOString().slice(0, 7),
-        nazwa: 'Plan miesięczny domyślny',
+        nazwa: 'Plan miesiÄ™czny domyĹ›lny',
         typ_dnia_id: t1id,
         profil_dzwiekow: profil,
       },
@@ -274,6 +274,8 @@ const BellModelPage = () => {
   const [wersjaInformacji, setWersjaInformacji] = useState(0)
   const [ostatniaAktualizacjaInformacji, setOstatniaAktualizacjaInformacji] = useState('')
   const [backendRevision, setBackendRevision] = useState(0)
+  const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(draft))
@@ -364,7 +366,7 @@ const BellModelPage = () => {
           setDraft(normalized)
           setWybranyTypDniaId(normalized.typy_dnia[0]?.id || '')
           setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
-          setSaveInfo('Model załadowany z backendu.')
+          setSaveInfo('Model zaĹ‚adowany z backendu.')
         }
         setBackendRevision(res.data?.revision || 0)
       } catch {
@@ -374,6 +376,15 @@ const BellModelPage = () => {
     loadModel()
     return () => {
       mounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
     }
   }, [])
 
@@ -474,7 +485,7 @@ const BellModelPage = () => {
       const del = prev.mapowania_profili.find((m) => m.id === id)
       if (!del) return prev
       const nextProfiles = prev.mapowania_profili.filter((m) => m.id !== id)
-      const fallback = nextProfiles[0]?.nazwa_profilu || 'Profil domyślny'
+      const fallback = nextProfiles[0]?.nazwa_profilu || 'Profil domyĹ›lny'
       return {
         ...prev,
         mapowania_profili: nextProfiles,
@@ -489,7 +500,7 @@ const BellModelPage = () => {
   }
 
   const dodajWzorzec = () => {
-    const nowy = { id: uid(), klucz: `NOWY_${draft.wzorce_dzwiekow.length + 1}`, nazwa: 'Nowy wzorzec dźwięku' }
+    const nowy = { id: uid(), klucz: `NOWY_${draft.wzorce_dzwiekow.length + 1}`, nazwa: 'Nowy wzorzec dĹşwiÄ™ku' }
     setDraft((prev) => ({
       ...prev,
       wzorce_dzwiekow: [...prev.wzorce_dzwiekow, nowy],
@@ -525,7 +536,7 @@ const BellModelPage = () => {
         ...prev.szablony_sygnalow,
         {
           id: uid(),
-          nazwa: 'Nowy sygnał',
+          nazwa: 'Nowy sygnaĹ‚',
           typ_zdarzenia: 'lesson',
           dzwonek_wzorzec: w?.klucz || '',
           zapowiedz_wzorzec: w?.klucz || '',
@@ -589,7 +600,7 @@ const BellModelPage = () => {
 
   const dodajPlanMiesiaca = () => {
     if (draft.typy_dnia.length === 0) return
-    const profil = 'Profil domyślny'
+    const profil = 'Profil domyĹ›lny'
     ensureProfileMapping(profil)
     const id = uid()
     setDraft((prev) => ({
@@ -599,7 +610,7 @@ const BellModelPage = () => {
         {
           id,
           miesiac: new Date().toISOString().slice(0, 7),
-          nazwa: 'Nowy plan miesięczny',
+          nazwa: 'Nowy plan miesiÄ™czny',
           typ_dnia_id: prev.typy_dnia[0].id,
           profil_dzwiekow: profil,
         },
@@ -617,7 +628,7 @@ const BellModelPage = () => {
 
   const dodajWpisKalendarza = () => {
     if (draft.typy_dnia.length === 0) return
-    const profil = 'Profil domyślny'
+    const profil = 'Profil domyĹ›lny'
     ensureProfileMapping(profil)
     setDraft((prev) => ({
       ...prev,
@@ -652,19 +663,47 @@ const BellModelPage = () => {
     await api.post('/bells/upload-sound', form, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-    await odswiezBiblioteke('Dźwięk dodany do biblioteki.')
+    await odswiezBiblioteke('DĹşwiÄ™k dodany do biblioteki.')
   }
 
   const zmienNazweDzwieku = async (id: number, nowaNazwa: string) => {
     await api.put(`/bells/sounds/${id}`, { name: nowaNazwa.trim() })
-    await odswiezBiblioteke('Nazwa dźwięku zaktualizowana.')
+    await odswiezBiblioteke('Nazwa dĹşwiÄ™ku zaktualizowana.')
   }
 
   const usunDzwiekBiblioteki = async (id: number) => {
     await api.delete(`/bells/sounds/${id}`)
-    await odswiezBiblioteke('Dźwięk usunięty z biblioteki.')
+    await odswiezBiblioteke('DĹşwiÄ™k usuniÄ™ty z biblioteki.')
+  }
+  const odsluchajDzwiek = async (id: number) => {
+    try {
+      setBladBiblioteki('')
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current.currentTime = 0
+      }
+      const audio = new Audio(`/api/v1/bells/sounds/${id}/file`)
+      audioRef.current = audio
+      setOdtwarzanyDzwiekId(id)
+      audio.onended = () => setOdtwarzanyDzwiekId((prev) => (prev === id ? null : prev))
+      audio.onerror = () => {
+        setOdtwarzanyDzwiekId((prev) => (prev === id ? null : prev))
+        setBladBiblioteki('Nie udało się odtworzyć dźwięku.')
+      }
+      await audio.play()
+    } catch (err: any) {
+      setOdtwarzanyDzwiekId(null)
+      setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się odtworzyć dźwięku.')
+    }
   }
 
+  const zatrzymajOdsluch = () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+    setOdtwarzanyDzwiekId(null)
+  }
   const dodajPlayliste = async (nazwa: string) => {
     await api.post('/bells/runtime/music-schedules', {
       name: nazwa.trim(),
@@ -685,7 +724,7 @@ const BellModelPage = () => {
 
   const usunPlayliste = async (id: number) => {
     await api.delete(`/bells/runtime/music-schedules/${id}`)
-    await odswiezBiblioteke('Playlista usunięta.')
+    await odswiezBiblioteke('Playlista usuniÄ™ta.')
   }
 
   const resetModelu = () => {
@@ -731,8 +770,19 @@ const BellModelPage = () => {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 1 }}>Model docelowy dzwonków</Typography>
-      <Alert severity="info" sx={{ mb: 2 }}>Model logiki dzwonków. Zapis i odczyt są podłączone do backendu.</Alert>
+      <Typography variant="h4" sx={{ mb: 1 }}>Model docelowy dzwonkĂłw</Typography>
+      <Alert severity="info" sx={{ mb: 2 }}>Model logiki dzwonkĂłw. Zapis i odczyt sÄ… podĹ‚Ä…czone do backendu.</Alert>
+      <Paper variant="outlined" sx={{ mb: 2, p: 1.5 }}>
+        <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+          README / HELP
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          1) Po deployu sprawdĹş wersjÄ™ aplikacji w lewym panelu. 2) Upewnij siÄ™, ĹĽe dziaĹ‚ajÄ… oba profile:
+          operator wyĹ›wietlaczy i operator dzwonkĂłw. 3) Konta tworzysz i resetujesz hasĹ‚a w sekcji
+          Administracja {'->'} UĹĽytkownicy. 4) Po zmianach modelu dzwonkĂłw uĹĽyj â€žZapisz do backenduâ€ť i
+          odĹ›wieĹĽ klientĂłw.
+        </Typography>
+      </Paper>
       {saveInfo && <Alert severity="success" sx={{ mb: 2 }}>{saveInfo}</Alert>}
 
       <Paper
@@ -771,7 +821,7 @@ const BellModelPage = () => {
             color={aktualnySzablon ? 'primary' : 'default'}
           />
           <Chip
-            label={`Następne: ${nastepnySzablon ? `${nastepneZdarzenie?.godzina} ${nastepnySzablon.nazwa}` : 'brak'} `}
+            label={`NastÄ™pne: ${nastepnySzablon ? `${nastepneZdarzenie?.godzina} ${nastepnySzablon.nazwa}` : 'brak'} `}
             variant="outlined"
           />
           <Chip label={`Backend rev: ${backendRevision}`} variant="outlined" />
@@ -780,7 +830,7 @@ const BellModelPage = () => {
             color={draft.awaryjne.stop_globalny ? 'success' : 'warning'}
             onClick={() => setDraft((prev) => ({ ...prev, awaryjne: { ...prev.awaryjne, stop_globalny: !prev.awaryjne.stop_globalny } }))}
           >
-            {draft.awaryjne.stop_globalny ? 'Wznów dzwonki' : 'Awaryjne STOP'}
+            {draft.awaryjne.stop_globalny ? 'WznĂłw dzwonki' : 'Awaryjne STOP'}
           </Button>
           <Button
             variant="contained"
@@ -788,7 +838,7 @@ const BellModelPage = () => {
               try {
                 await zapiszModelDoBackendu()
               } catch (err: any) {
-                setSaveInfo(err?.response?.data?.detail || 'Nie udało się zapisać modelu do backendu.')
+                setSaveInfo(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ zapisaÄ‡ modelu do backendu.')
               }
             }}
           >
@@ -800,7 +850,7 @@ const BellModelPage = () => {
               try {
                 await pobierzModelZBackendu()
               } catch (err: any) {
-                setSaveInfo(err?.response?.data?.detail || 'Nie udało się pobrać modelu z backendu.')
+                setSaveInfo(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ pobraÄ‡ modelu z backendu.')
               }
             }}
           >
@@ -812,7 +862,7 @@ const BellModelPage = () => {
           fullWidth
           size="small"
           sx={{ mt: 1 }}
-          label="Powód awaryjny"
+          label="PowĂłd awaryjny"
           value={draft.awaryjne.powod}
           onChange={(e) => setDraft((prev) => ({ ...prev, awaryjne: { ...prev.awaryjne, powod: e.target.value } }))}
         />
@@ -820,11 +870,11 @@ const BellModelPage = () => {
 
       <Paper sx={{ p: 1 }}>
         <Tabs value={tab} onChange={(_, v) => setTab(v)}>
-          <Tab label="1. Podgląd dnia" />
+          <Tab label="1. PodglÄ…d dnia" />
           <Tab label="2. Kalendarz i profile" />
-          <Tab label="3. Sygnały" />
+          <Tab label="3. SygnaĹ‚y" />
           <Tab label="4. Biblioteka i playlisty" />
-          <Tab label="5. Wzorce dźwięków" />
+          <Tab label="5. Wzorce dĹşwiÄ™kĂłw" />
           <Tab label="6. Typy dnia" />
         </Tabs>
       </Paper>
@@ -833,7 +883,7 @@ const BellModelPage = () => {
         <Card>
           <CardContent>
             <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="h6">Lista wzorców dźwięków</Typography>
+              <Typography variant="h6">Lista wzorcĂłw dĹşwiÄ™kĂłw</Typography>
               <Button variant="contained" size="small" onClick={dodajWzorzec}>Dodaj wzorzec</Button>
             </Stack>
             <TableContainer component={Paper} variant="outlined">
@@ -841,7 +891,7 @@ const BellModelPage = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Klucz</TableCell>
-                    <TableCell>Nazwa (duży tekst)</TableCell>
+                    <TableCell>Nazwa (duĹĽy tekst)</TableCell>
                     <TableCell>Opis</TableCell>
                     <TableCell>Akcje</TableCell>
                   </TableRow>
@@ -859,7 +909,7 @@ const BellModelPage = () => {
                         <TextField size="small" value={p.opis || ''} onChange={(e) => setDraft((prev) => ({ ...prev, wzorce_dzwiekow: prev.wzorce_dzwiekow.map((x) => x.id === p.id ? { ...x, opis: e.target.value } : x) }))} />
                       </TableCell>
                       <TableCell>
-                        <Button color="error" size="small" onClick={() => usunWzorzec(p.id)}>Usuń</Button>
+                        <Button color="error" size="small" onClick={() => usunWzorzec(p.id)}>UsuĹ„</Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -874,11 +924,11 @@ const BellModelPage = () => {
         <Card>
           <CardContent>
             <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="h6">Szablony sygnałów (lekcja/przerwa)</Typography>
+              <Typography variant="h6">Szablony sygnaĹ‚Ăłw (lekcja/przerwa)</Typography>
               <Button variant="contained" size="small" onClick={dodajSzablon}>Dodaj szablon</Button>
             </Stack>
             <Paper variant="outlined" sx={{ p: 1.5, mb: 1.5 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>Konfiguracja odtwarzania dźwięku</Typography>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>Konfiguracja odtwarzania dĹşwiÄ™ku</Typography>
               <Grid container spacing={1}>
                 <Grid item xs={12} md={3}>
                   <TextField
@@ -897,8 +947,8 @@ const BellModelPage = () => {
                       }))
                     }
                   >
-                    <MenuItem value="false">Wyłączone</MenuItem>
-                    <MenuItem value="true">Włączone</MenuItem>
+                    <MenuItem value="false">WyĹ‚Ä…czone</MenuItem>
+                    <MenuItem value="true">WĹ‚Ä…czone</MenuItem>
                   </TextField>
                 </Grid>
                 <Grid item xs={12} md={3}>
@@ -918,8 +968,8 @@ const BellModelPage = () => {
                       }))
                     }
                   >
-                    <MenuItem value="true">Włączone</MenuItem>
-                    <MenuItem value="false">Wyłączone</MenuItem>
+                    <MenuItem value="true">WĹ‚Ä…czone</MenuItem>
+                    <MenuItem value="false">WyĹ‚Ä…czone</MenuItem>
                   </TextField>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -983,7 +1033,7 @@ const BellModelPage = () => {
                     }))
                   }
                 >
-                  Wyczyść ograniczenie klientów
+                  WyczyĹ›Ä‡ ograniczenie klientĂłw
                 </Button>
               </Stack>
             </Paper>
@@ -991,7 +1041,7 @@ const BellModelPage = () => {
               <Paper key={s.id} sx={{ p: 1, mb: 1 }}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} md={4}>
-                    <TextField fullWidth size="small" label="Nazwa sygnału" value={s.nazwa} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, nazwa: e.target.value } : x) }))} />
+                    <TextField fullWidth size="small" label="Nazwa sygnaĹ‚u" value={s.nazwa} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, nazwa: e.target.value } : x) }))} />
                   </Grid>
                   <Grid item xs={12} md={2}>
                     <TextField fullWidth size="small" select label="Typ" value={s.typ_zdarzenia} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, typ_zdarzenia: e.target.value as TypZdarzenia } : x) }))}>
@@ -1010,7 +1060,7 @@ const BellModelPage = () => {
                     </TextField>
                   </Grid>
                   <Grid item xs={12} md={3}>
-                    <TextField fullWidth size="small" select label="Zatrzymaj muzykę" value={s.zatrzymaj_muzyke ? 'true' : 'false'} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, zatrzymaj_muzyke: e.target.value === 'true' } : x) }))}>
+                    <TextField fullWidth size="small" select label="Zatrzymaj muzykÄ™" value={s.zatrzymaj_muzyke ? 'true' : 'false'} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, zatrzymaj_muzyke: e.target.value === 'true' } : x) }))}>
                       <MenuItem value="true">Tak</MenuItem>
                       <MenuItem value="false">Nie</MenuItem>
                     </TextField>
@@ -1022,7 +1072,7 @@ const BellModelPage = () => {
                     </TextField>
                   </Grid>
                   <Grid item xs={12} md={2}>
-                    <Button color="error" variant="outlined" size="small" onClick={() => usunSzablon(s.id)}>Usuń szablon</Button>
+                    <Button color="error" variant="outlined" size="small" onClick={() => usunSzablon(s.id)}>UsuĹ„ szablon</Button>
                   </Grid>
                 </Grid>
               </Paper>
@@ -1043,7 +1093,7 @@ const BellModelPage = () => {
               <TextField fullWidth size="small" select label="Wybrany typ dnia" value={wybranyTypDniaId} onChange={(e) => setWybranyTypDniaId(e.target.value)}>
                 {draft.typy_dnia.map((t) => <MenuItem key={t.id} value={t.id}>{t.nazwa}</MenuItem>)}
               </TextField>
-              {wybranyTypDnia && <Button color="error" variant="outlined" size="small" onClick={() => usunTypDnia(wybranyTypDnia.id)}>Usuń typ</Button>}
+              {wybranyTypDnia && <Button color="error" variant="outlined" size="small" onClick={() => usunTypDnia(wybranyTypDnia.id)}>UsuĹ„ typ</Button>}
             </Stack>
 
             {wybranyTypDnia && (
@@ -1056,7 +1106,7 @@ const BellModelPage = () => {
                     <TableHead>
                       <TableRow>
                         <TableCell>Godzina</TableCell>
-                        <TableCell>Szablon sygnału</TableCell>
+                        <TableCell>Szablon sygnaĹ‚u</TableCell>
                         <TableCell>Akcje</TableCell>
                       </TableRow>
                     </TableHead>
@@ -1072,7 +1122,7 @@ const BellModelPage = () => {
                             </TextField>
                           </TableCell>
                           <TableCell>
-                            <Button color="error" size="small" onClick={() => usunZdarzenie(z.id)}>Usuń</Button>
+                            <Button color="error" size="small" onClick={() => usunZdarzenie(z.id)}>UsuĹ„</Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -1089,22 +1139,22 @@ const BellModelPage = () => {
         <Card>
           <CardContent>
             <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="h6">Kalendarz: plan miesięczny + wyjątki dat</Typography>
-              <Button variant="outlined" size="small" onClick={dodajWpisKalendarza}>Dodaj wyjątek daty</Button>
+              <Typography variant="h6">Kalendarz: plan miesiÄ™czny + wyjÄ…tki dat</Typography>
+              <Button variant="outlined" size="small" onClick={dodajWpisKalendarza}>Dodaj wyjÄ…tek daty</Button>
             </Stack>
 
             <Alert severity="info" sx={{ mb: 2 }}>
-              Domyślnie planujesz raz na miesiąc. Wyjątki dat nadpisują plan miesięczny.
+              DomyĹ›lnie planujesz raz na miesiÄ…c. WyjÄ…tki dat nadpisujÄ… plan miesiÄ™czny.
             </Alert>
 
-            <Typography variant="subtitle1" sx={{ mb: 1 }}>Wyjątki dat (nadpisują plan miesięczny)</Typography>
+            <Typography variant="subtitle1" sx={{ mb: 1 }}>WyjÄ…tki dat (nadpisujÄ… plan miesiÄ™czny)</Typography>
             <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Data</TableCell>
                     <TableCell>Typ dnia</TableCell>
-                    <TableCell>Profil dźwięków</TableCell>
+                    <TableCell>Profil dĹşwiÄ™kĂłw</TableCell>
                     <TableCell>Akcje</TableCell>
                   </TableRow>
                 </TableHead>
@@ -1125,7 +1175,7 @@ const BellModelPage = () => {
                         </TextField>
                       </TableCell>
                       <TableCell>
-                        <Button color="error" size="small" onClick={() => usunWpisKalendarza(w.id)}>Usuń</Button>
+                        <Button color="error" size="small" onClick={() => usunWpisKalendarza(w.id)}>UsuĹ„</Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -1134,18 +1184,18 @@ const BellModelPage = () => {
             </TableContainer>
 
             <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="subtitle1">Plan miesięczny (domyślny)</Typography>
-              <Button variant="contained" size="small" onClick={dodajPlanMiesiaca}>Dodaj plan miesiąca</Button>
+              <Typography variant="subtitle1">Plan miesiÄ™czny (domyĹ›lny)</Typography>
+              <Button variant="contained" size="small" onClick={dodajPlanMiesiaca}>Dodaj plan miesiÄ…ca</Button>
             </Stack>
             <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-              <TextField fullWidth size="small" select label="Wybrany plan miesiąca" value={wybranyPlanMiesiacaId} onChange={(e) => setWybranyPlanMiesiacaId(e.target.value)}>
+              <TextField fullWidth size="small" select label="Wybrany plan miesiÄ…ca" value={wybranyPlanMiesiacaId} onChange={(e) => setWybranyPlanMiesiacaId(e.target.value)}>
                 {draft.plany_miesieczne.map((p) => (
                   <MenuItem key={p.id} value={p.id}>{`${p.miesiac} - ${p.nazwa}`}</MenuItem>
                 ))}
               </TextField>
               {wybranyPlanMiesiaca && (
                 <Button color="error" variant="outlined" size="small" onClick={() => usunPlanMiesiaca(wybranyPlanMiesiaca.id)}>
-                  Usuń plan
+                  UsuĹ„ plan
                 </Button>
               )}
             </Stack>
@@ -1158,7 +1208,7 @@ const BellModelPage = () => {
                       fullWidth
                       size="small"
                       type="month"
-                      label="Miesiąc"
+                      label="MiesiÄ…c"
                       InputLabelProps={{ shrink: true }}
                       value={wybranyPlanMiesiaca.miesiac}
                       onChange={(e) =>
@@ -1192,7 +1242,7 @@ const BellModelPage = () => {
                       fullWidth
                       size="small"
                       select
-                      label="Typ dnia domyślny"
+                      label="Typ dnia domyĹ›lny"
                       value={wybranyPlanMiesiaca.typ_dnia_id}
                       onChange={(e) =>
                         setDraft((prev) => ({
@@ -1211,7 +1261,7 @@ const BellModelPage = () => {
                       fullWidth
                       size="small"
                       select
-                      label="Profil dźwięków domyślny"
+                      label="Profil dĹşwiÄ™kĂłw domyĹ›lny"
                       value={wybranyPlanMiesiaca.profil_dzwiekow}
                       onChange={(e) =>
                         setDraft((prev) => ({
@@ -1230,7 +1280,7 @@ const BellModelPage = () => {
             )}
 
             <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="h6">Profile dźwięków</Typography>
+              <Typography variant="h6">Profile dĹşwiÄ™kĂłw</Typography>
               <Button variant="outlined" size="small" onClick={dodajProfilDzwiekow}>Dodaj profil</Button>
             </Stack>
             <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
@@ -1270,7 +1320,7 @@ const BellModelPage = () => {
                       </TableCell>
                       <TableCell>
                         <Button color="error" size="small" onClick={() => usunProfilDzwiekow(profil.id)} disabled={draft.mapowania_profili.length <= 1}>
-                          Usuń
+                          UsuĹ„
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -1279,7 +1329,7 @@ const BellModelPage = () => {
               </Table>
             </TableContainer>
 
-            <Typography variant="h6" sx={{ mb: 1 }}>Mapowanie dźwięków dla profilu</Typography>
+            <Typography variant="h6" sx={{ mb: 1 }}>Mapowanie dĹşwiÄ™kĂłw dla profilu</Typography>
             <TextField fullWidth size="small" select label="Profil" value={wybranyProfilMapowania} onChange={(e) => setWybranyProfilMapowania(e.target.value)} sx={{ mb: 1 }}>
               {profileNames.map((p) => <MenuItem key={p} value={p}>{p}</MenuItem>)}
             </TextField>
@@ -1290,7 +1340,7 @@ const BellModelPage = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell>Wzorzec</TableCell>
-                      <TableCell>Plik docelowy (nazwa lub ścieżka)</TableCell>
+                      <TableCell>Plik docelowy (nazwa lub Ĺ›cieĹĽka)</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -1333,9 +1383,9 @@ const BellModelPage = () => {
       <Panel value={tab} index={3}>
         <Card sx={{ mb: 2 }}>
           <CardContent>
-            <Typography variant="h6" sx={{ mb: 1 }}>Biblioteka dźwięków i playlist</Typography>
+            <Typography variant="h6" sx={{ mb: 1 }}>Biblioteka dĹşwiÄ™kĂłw i playlist</Typography>
             <Alert severity="info" sx={{ mb: 2 }}>
-              Tu jest obsługa biblioteki dźwięków i playlist po refaktorze z /bells/schedules.
+              Tu jest obsĹ‚uga biblioteki dĹşwiÄ™kĂłw i playlist po refaktorze z /bells/schedules.
             </Alert>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ xs: 'stretch', sm: 'center' }} sx={{ mb: 1 }}>
               <Chip size="small" color="info" label={`Wersja informacji: rev ${wersjaInformacji}`} />
@@ -1348,9 +1398,9 @@ const BellModelPage = () => {
                 onClick={async () => {
                   try {
                     setBladBiblioteki('')
-                    await odswiezBiblioteke('Ręcznie odświeżono informacje o bibliotece.')
+                    await odswiezBiblioteke('RÄ™cznie odĹ›wieĹĽono informacje o bibliotece.')
                   } catch (err: any) {
-                    setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się odświeżyć informacji.')
+                    setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ odĹ›wieĹĽyÄ‡ informacji.')
                   }
                 }}
               >
@@ -1360,13 +1410,13 @@ const BellModelPage = () => {
             {statusBiblioteki && <Alert severity="success" sx={{ mb: 1 }}>{statusBiblioteki}</Alert>}
             {bladBiblioteki && <Alert severity="error" sx={{ mb: 1 }}>{bladBiblioteki}</Alert>}
 
-            <Typography variant="subtitle1" sx={{ mb: 1 }}>Biblioteka dźwięków</Typography>
+            <Typography variant="subtitle1" sx={{ mb: 1 }}>Biblioteka dĹşwiÄ™kĂłw</Typography>
             <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
               <Button
                 variant="outlined"
                 component="label"
               >
-                Wgraj dźwięk (WAV/MP3)
+                Wgraj dĹşwiÄ™k (WAV/MP3)
                 <input
                   hidden
                   type="file"
@@ -1374,12 +1424,12 @@ const BellModelPage = () => {
                   onChange={async (e) => {
                     const file = e.target.files?.[0]
                     if (!file) return
-                    const nazwa = window.prompt('Nazwa dźwięku:', file.name.replace(/\.[^/.]+$/, '')) || ''
+                    const nazwa = window.prompt('Nazwa dĹşwiÄ™ku:', file.name.replace(/\.[^/.]+$/, '')) || ''
                     try {
                       setBladBiblioteki('')
                       await wgrajDzwiek(file, nazwa)
                     } catch (err: any) {
-                      setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się wgrać dźwięku.')
+                      setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ wgraÄ‡ dĹşwiÄ™ku.')
                     } finally {
                       e.currentTarget.value = ''
                     }
@@ -1406,33 +1456,46 @@ const BellModelPage = () => {
                         <Stack direction="row" spacing={1}>
                           <Button
                             size="small"
+                            variant={odtwarzanyDzwiekId === d.id ? 'contained' : 'outlined'}
+                            onClick={() => {
+                              if (odtwarzanyDzwiekId === d.id) {
+                                zatrzymajOdsluch()
+                                return
+                              }
+                              odsluchajDzwiek(d.id)
+                            }}
+                          >
+                            {odtwarzanyDzwiekId === d.id ? 'Stop' : 'Podsłuch'}
+                          </Button>
+                          <Button
+                            size="small"
                             onClick={async () => {
-                              const nowaNazwa = window.prompt('Nowa nazwa dźwięku:', d.name)
+                              const nowaNazwa = window.prompt('Nowa nazwa dĹşwiÄ™ku:', d.name)
                               if (!nowaNazwa || nowaNazwa === d.name) return
                               try {
                                 setBladBiblioteki('')
                                 await zmienNazweDzwieku(d.id, nowaNazwa)
                               } catch (err: any) {
-                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się zmienić nazwy dźwięku.')
+                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ zmieniÄ‡ nazwy dĹşwiÄ™ku.')
                               }
                             }}
                           >
-                            Zmień nazwę
+                            ZmieĹ„ nazwÄ™
                           </Button>
                           <Button
                             size="small"
                             color="error"
                             onClick={async () => {
-                              if (!window.confirm(`Usunąć dźwięk: ${d.name}?`)) return
+                              if (!window.confirm(`UsunÄ…Ä‡ dĹşwiÄ™k: ${d.name}?`)) return
                               try {
                                 setBladBiblioteki('')
                                 await usunDzwiekBiblioteki(d.id)
                               } catch (err: any) {
-                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się usunąć dźwięku.')
+                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ usunÄ…Ä‡ dĹşwiÄ™ku.')
                               }
                             }}
                           >
-                            Usuń
+                            UsuĹ„
                           </Button>
                         </Stack>
                       </TableCell>
@@ -1440,7 +1503,7 @@ const BellModelPage = () => {
                   ))}
                   {dzwiekiBiblioteki.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={3}>Brak dźwięków w bibliotece.</TableCell>
+                      <TableCell colSpan={3}>Brak dĹşwiÄ™kĂłw w bibliotece.</TableCell>
                     </TableRow>
                   )}
                 </TableBody>
@@ -1458,11 +1521,11 @@ const BellModelPage = () => {
                     setBladBiblioteki('')
                     await dodajPlayliste(nazwa)
                   } catch (err: any) {
-                    setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się dodać playlisty.')
+                    setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ dodaÄ‡ playlisty.')
                   }
                 }}
               >
-                Dodaj playlistę
+                Dodaj playlistÄ™
               </Button>
             </Stack>
 
@@ -1489,26 +1552,26 @@ const BellModelPage = () => {
                                 setBladBiblioteki('')
                                 await zmienNazwePlaylisty(p.id, nowaNazwa)
                               } catch (err: any) {
-                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się zmienić nazwy playlisty.')
+                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ zmieniÄ‡ nazwy playlisty.')
                               }
                             }}
                           >
-                            Zmień nazwę
+                            ZmieĹ„ nazwÄ™
                           </Button>
                           <Button
                             size="small"
                             color="error"
                             onClick={async () => {
-                              if (!window.confirm(`Usunąć playlistę: ${p.name}?`)) return
+                              if (!window.confirm(`UsunÄ…Ä‡ playlistÄ™: ${p.name}?`)) return
                               try {
                                 setBladBiblioteki('')
                                 await usunPlayliste(p.id)
                               } catch (err: any) {
-                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się usunąć playlisty.')
+                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udaĹ‚o siÄ™ usunÄ…Ä‡ playlisty.')
                               }
                             }}
                           >
-                            Usuń
+                            UsuĹ„
                           </Button>
                         </Stack>
                       </TableCell>
@@ -1529,11 +1592,11 @@ const BellModelPage = () => {
       <Panel value={tab} index={0}>
         <Card>
           <CardContent>
-            <Typography variant="h6" sx={{ mb: 1 }}>Podgląd dnia i wykonywania</Typography>
+            <Typography variant="h6" sx={{ mb: 1 }}>PodglÄ…d dnia i wykonywania</Typography>
             <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
               <TextField size="small" type="date" label="Data" InputLabelProps={{ shrink: true }} value={podgladData} onChange={(e) => setPodgladData(e.target.value)} />
               <TextField size="small" type="time" label="Godzina" InputLabelProps={{ shrink: true }} value={podgladGodzina} onChange={(e) => setPodgladGodzina(e.target.value)} />
-              <Button variant="contained" onClick={zastosujSymulacje}>Pokaż symulację</Button>
+              <Button variant="contained" onClick={zastosujSymulacje}>PokaĹĽ symulacjÄ™</Button>
             </Stack>
 
             <Alert severity="info" sx={{ mb: 1 }}>
@@ -1555,7 +1618,7 @@ const BellModelPage = () => {
                       <TableCell>Godzina</TableCell>
                       <TableCell>Zdarzenie</TableCell>
                       <TableCell>Dzwonek (podstawiony)</TableCell>
-                      <TableCell>Zapowiedź (podstawiona)</TableCell>
+                      <TableCell>ZapowiedĹş (podstawiona)</TableCell>
                       <TableCell>Playlista</TableCell>
                       <TableCell>Stan</TableCell>
                     </TableRow>
@@ -1594,4 +1657,6 @@ const BellModelPage = () => {
 }
 
 export default BellModelPage
+
+
 

@@ -11,7 +11,9 @@ from app.database import Base
 class UserRole(str, enum.Enum):
     """Role użytkowników"""
     ADMIN = "admin"
-    OPERATOR = "operator"
+    OPERATOR_DISPLAYS = "operator_displays"
+    OPERATOR_BELLS = "operator_bells"
+    OPERATOR = "operator"  # legacy alias; traktowany jak operator wyświetlaczy
 
 
 class User(Base):
@@ -21,7 +23,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
-    role = Column(Enum(UserRole), nullable=False, default=UserRole.OPERATOR)
+    role = Column(Enum(UserRole), nullable=False, default=UserRole.OPERATOR_DISPLAYS)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     last_login = Column(DateTime(timezone=True), nullable=True)
 

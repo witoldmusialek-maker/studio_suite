@@ -14,6 +14,14 @@ interface TokenResponse {
   token_type: string
 }
 
+const normalizeRole = (role: string): User['role'] => {
+  const normalized = String(role || '').toLowerCase()
+  if (normalized === 'admin') return 'admin'
+  if (normalized === 'operator_displays') return 'operator_displays'
+  if (normalized === 'operator_bells') return 'operator_bells'
+  return 'operator'
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -23,7 +31,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchCurrentUser = async (): Promise<User | null> => {
     try {
       const response = await api.get<User>('/auth/me')
-      return response.data
+      return {
+        ...response.data,
+        role: normalizeRole(String(response.data.role)),
+      }
     } catch {
       return null
     }

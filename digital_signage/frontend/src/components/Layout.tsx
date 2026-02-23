@@ -16,7 +16,6 @@ import {
   ListItemText,
 } from '@mui/material'
 import {
-  Dashboard as DashboardIcon,
   Tv as TvIcon,
   Folder as FolderIcon,
   Schedule as ScheduleIcon,
@@ -30,6 +29,7 @@ import {
 import { useAuth } from '../contexts/AuthContext'
 import { APP_VERSION } from '../version'
 import { FEATURE_FLAGS, FeatureKey } from '../config/features'
+import { canAccess, AppSection } from '../config/permissions'
 
 const drawerWidth = 240
 
@@ -42,12 +42,13 @@ type MenuItemDef = {
   icon: ReactNode
   path: string
   feature?: FeatureKey
-  adminOnly?: boolean
+  section?: AppSection
 }
 
 type MenuSectionDef = {
   title: string
   feature?: FeatureKey
+  section?: AppSection
   items: MenuItemDef[]
 }
 
@@ -58,33 +59,39 @@ const Layout = ({ children }: LayoutProps) => {
 
   const menuSections: MenuSectionDef[] = [
     {
-      title: 'Start',
-      items: [{ text: 'Dashboard', icon: <DashboardIcon />, path: '/' }],
-    },
-    {
       title: 'Monitoring',
       feature: 'monitoring',
+      section: 'monitoring',
       items: [
-        { text: 'Status', icon: <TvIcon />, path: '/status' },
-        { text: 'Alerty', icon: <AlertsIcon />, path: '/alerts', feature: 'alerts' },
-        { text: 'Raporty', icon: <ReportsIcon />, path: '/reports', feature: 'reports' },
+        { text: 'Status', icon: <TvIcon />, path: '/status', section: 'monitoring' },
+        { text: 'Alerty', icon: <AlertsIcon />, path: '/alerts', feature: 'alerts', section: 'alerts' },
+        { text: 'Raporty', icon: <ReportsIcon />, path: '/reports', feature: 'reports', section: 'reports' },
       ],
     },
     {
       title: 'Wyświetlacze',
       feature: 'displays',
+      section: 'displays',
       items: [
-        { text: 'Wyświetlacze', icon: <TvIcon />, path: '/displays' },
-        { text: 'Grupy wyświetlaczy', icon: <GroupsIcon />, path: '/groups' },
+        { text: 'Wyświetlacze', icon: <TvIcon />, path: '/displays', section: 'displays' },
+        { text: 'Grupy wyświetlaczy', icon: <GroupsIcon />, path: '/groups', section: 'groups' },
       ],
     },
     {
       title: 'Treści',
       feature: 'content',
+      section: 'content',
       items: [
-        { text: 'Harmonogramy treści', icon: <ScheduleIcon />, path: '/schedules' },
-        { text: 'Biblioteka treści', icon: <FolderIcon />, path: '/content' },
-        { text: 'Dzwonki: model i biblioteka', icon: <BellsIcon />, path: '/bells/model', feature: 'bells' },
+        { text: 'Harmonogramy treści', icon: <ScheduleIcon />, path: '/schedules', section: 'schedules' },
+        { text: 'Biblioteka treści', icon: <FolderIcon />, path: '/content', section: 'content' },
+      ],
+    },
+    {
+      title: 'Dzwonki',
+      feature: 'bells',
+      section: 'bells',
+      items: [
+        { text: 'Model i biblioteka', icon: <BellsIcon />, path: '/bells/model', section: 'bells' },
       ],
     },
     {
@@ -95,19 +102,19 @@ const Layout = ({ children }: LayoutProps) => {
           icon: <ManageAccountsIcon />,
           path: '/admin/users',
           feature: 'adminUsers',
-          adminOnly: true,
+          section: 'adminUsers',
         },
       ],
     },
   ]
 
   const visibleSections = menuSections
-    .filter((section) => !section.feature || FEATURE_FLAGS[section.feature])
+    .filter((section) => (!section.feature || FEATURE_FLAGS[section.feature]) && (!section.section || canAccess(user, section.section)))
     .map((section) => ({
       ...section,
       items: section.items.filter((item) => {
         if (item.feature && !FEATURE_FLAGS[item.feature]) return false
-        if (item.adminOnly && user?.role !== 'admin') return false
+        if (item.section && !canAccess(user, item.section)) return false
         return true
       }),
     }))

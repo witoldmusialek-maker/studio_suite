@@ -24,6 +24,7 @@ import {
 import {
   CloudUpload as UploadIcon,
   Delete as DeleteIcon,
+  PlayArrow as PlayArrowIcon,
   Description as DescriptionIcon,
   Image as ImageIcon,
   Movie as MovieIcon,
@@ -49,6 +50,8 @@ const ContentPage = () => {
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState<ContentTypeFilter>('all')
+  const [previewContent, setPreviewContent] = useState<Content | null>(null)
+  const [failedThumbnails, setFailedThumbnails] = useState<Record<number, boolean>>({})
 
   useEffect(() => {
     fetchContents()
@@ -139,6 +142,9 @@ const ContentPage = () => {
     if (mb === undefined || mb === null) return '-'
     return `${Number(mb).toFixed(2)} MB`
   }
+
+  const getThumbnailUrl = (content: Content) => `/api/v1/content/${content.id}/thumbnail`
+  const getDownloadUrl = (content: Content) => `/api/v1/content/${content.id}/download`
 
   const stats = useMemo(() => {
     return {
@@ -276,10 +282,23 @@ const ContentPage = () => {
                   overflow: 'hidden',
                 }}
               >
-                {content.thumbnail_path ? (
+                {content.thumbnail_path && !failedThumbnails[content.id] ? (
                   <CardMedia
                     component="img"
-                    image={`${window.location.origin}${content.thumbnail_path}`}
+                    image={getThumbnailUrl(content)}
+                    alt={content.filename}
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={() =>
+                      setFailedThumbnails((prev) => ({
+                        ...prev,
+                        [content.id]: true,
+                      }))
+                    }
+                  />
+                ) : content.type === 'image' ? (
+                  <CardMedia
+                    component="img"
+                    image={getDownloadUrl(content)}
                     alt={content.filename}
                     sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
@@ -317,15 +336,28 @@ const ContentPage = () => {
                 </Typography>
               </CardContent>
 
-              {user?.role === 'admin' && (
-                <Box sx={{ px: 2, pb: 1.5, pt: 0.5, display: 'flex', justifyContent: 'flex-end' }}>
+              <Box
+                sx={{
+                  px: 2,
+                  pb: 1.5,
+                  pt: 0.5,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Tooltip title="Podgląd / test">
+                  <IconButton size="small" color="primary" onClick={() => setPreviewContent(content)}>
+                    <PlayArrowIcon />
+                  </IconButton>
+                </Tooltip>
+                {user?.role === 'admin' && (
                   <Tooltip title="Usuń plik">
                     <IconButton size="small" color="error" onClick={() => handleDelete(content.id)}>
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
-                </Box>
-              )}
+                )}
+              </Box>
             </Card>
           </Grid>
         ))}
@@ -361,6 +393,63 @@ const ContentPage = () => {
           <Button onClick={handleUpload} variant="contained" disabled={!selectedFile || uploading}>
             Wyślij
           </Button>
+        </Box>
+      </Dialog>
+
+      <Dialog
+        open={Boolean(previewContent)}
+        onClose={() => setPreviewContent(null)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle>
+          Podgląd testowy: {previewContent?.original_filename}
+        </DialogTitle>
+        <DialogContent>
+          {previewContent?.type === 'image' && (
+            <Box
+              component="img"
+              src={getDownloadUrl(previewContent)}
+              alt={previewContent.original_filename}
+              sx={{ width: '100%', maxHeight: '70vh', objectFit: 'contain', bgcolor: '#111' }}
+            />
+          )}
+          {previewContent?.type === 'video' && (
+            <Box
+              component="video"
+              src={getDownloadUrl(previewContent)}
+              controls
+              autoPlay
+              sx={{ width: '100%', maxHeight: '70vh', bgcolor: '#000' }}
+            />
+          )}
+          {previewContent?.type === 'pdf' && (
+            <Box
+              component="iframe"
+              src={getDownloadUrl(previewContent)}
+              title={previewContent.original_filename}
+              sx={{ width: '100%', height: '70vh', border: 0 }}
+            />
+          )}
+          {previewContent?.type === 'excel' && (
+            <Stack spacing={2}>
+              <Alert severity="info">
+                Podgląd Excel w przeglądarce może być ograniczony. Użyj pobierania pliku.
+              </Alert>
+              <Button
+                variant="contained"
+                component="a"
+                href={getDownloadUrl(previewContent)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Pobierz plik Excel
+              </Button>
+            </Stack>
+          )}
+        </DialogContent>
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button onClick={() => setPreviewContent(null)}>Zamknij</Button>
         </Box>
       </Dialog>
     </Box>

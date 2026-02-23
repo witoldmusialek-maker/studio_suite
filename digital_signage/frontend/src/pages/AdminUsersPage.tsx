@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import {
   Alert,
   Box,
@@ -25,7 +25,7 @@ import {
 import { api } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 
-type UserRole = 'admin' | 'operator'
+type UserRole = 'admin' | 'operator_displays' | 'operator_bells' | 'operator'
 
 type UserAdminDto = {
   id: number
@@ -33,6 +33,24 @@ type UserAdminDto = {
   role: UserRole
   created_at: string
   last_login?: string | null
+}
+
+const roleLabel = (role: UserRole) => {
+  const labels: Record<UserRole, string> = {
+    admin: 'Administrator',
+    operator_displays: 'Operator wyswietlaczy',
+    operator_bells: 'Operator dzwonkow',
+    operator: 'Operator wyswietlaczy (legacy)',
+  }
+  return labels[role] || role
+}
+
+const normalizeRole = (role: string): UserRole => {
+  const normalized = String(role || '').toLowerCase()
+  if (normalized === 'admin') return 'admin'
+  if (normalized === 'operator_displays') return 'operator_displays'
+  if (normalized === 'operator_bells') return 'operator_bells'
+  return 'operator'
 }
 
 const AdminUsersPage = () => {
@@ -43,7 +61,7 @@ const AdminUsersPage = () => {
   const [openCreate, setOpenCreate] = useState(false)
   const [newUsername, setNewUsername] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [newRole, setNewRole] = useState<UserRole>('operator')
+  const [newRole, setNewRole] = useState<UserRole>('operator_displays')
   const [openReset, setOpenReset] = useState(false)
   const [resetUser, setResetUser] = useState<UserAdminDto | null>(null)
   const [resetPassword, setResetPassword] = useState('')
@@ -55,9 +73,14 @@ const AdminUsersPage = () => {
   const fetchUsers = async () => {
     try {
       const res = await api.get<UserAdminDto[]>('/auth/users')
-      setUsers(res.data || [])
+      setUsers(
+        (res.data || []).map((u) => ({
+          ...u,
+          role: normalizeRole(String(u.role)),
+        }))
+      )
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udało się pobrać użytkowników.')
+      setError(err?.response?.data?.detail || 'Nie udalo sie pobrac uzytkownikow.')
     } finally {
       setLoading(false)
     }
@@ -79,11 +102,11 @@ const AdminUsersPage = () => {
       setOpenCreate(false)
       setNewUsername('')
       setNewPassword('')
-      setNewRole('operator')
-      setInfo('Użytkownik został utworzony.')
-      fetchUsers()
+      setNewRole('operator_displays')
+      setInfo('Uzytkownik zostal utworzony.')
+      await fetchUsers()
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udało się utworzyć użytkownika.')
+      setError(err?.response?.data?.detail || 'Nie udalo sie utworzyc uzytkownika.')
     }
   }
 
@@ -92,23 +115,23 @@ const AdminUsersPage = () => {
     setInfo('')
     try {
       await api.patch(`/auth/users/${target.id}`, { role })
-      setInfo(`Zmieniono rolę użytkownika ${target.username}.`)
-      fetchUsers()
+      setInfo(`Zmieniono role uzytkownika ${target.username}.`)
+      await fetchUsers()
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udało się zmienić roli.')
+      setError(err?.response?.data?.detail || 'Nie udalo sie zmienic roli.')
     }
   }
 
   const deleteUser = async (target: UserAdminDto) => {
-    if (!window.confirm(`Usunąć użytkownika ${target.username}?`)) return
+    if (!window.confirm(`Usunac uzytkownika ${target.username}?`)) return
     setError('')
     setInfo('')
     try {
       await api.delete(`/auth/users/${target.id}`)
-      setInfo(`Usunięto użytkownika ${target.username}.`)
-      fetchUsers()
+      setInfo(`Usunieto uzytkownika ${target.username}.`)
+      await fetchUsers()
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udało się usunąć użytkownika.')
+      setError(err?.response?.data?.detail || 'Nie udalo sie usunac uzytkownika.')
     }
   }
 
@@ -122,15 +145,19 @@ const AdminUsersPage = () => {
         `/auth/users/${resetUser.id}/reset-password`,
         { new_password: resetPassword.trim() || null }
       )
+
       if (res.data?.temporary_password) {
         setGeneratedPassword(res.data.temporary_password)
       } else {
-        setInfo(`Hasło użytkownika ${resetUser.username} zostało zresetowane.`)
+        setInfo(`Haslo uzytkownika ${resetUser.username} zostalo zresetowane.`)
       }
+
       setResetPassword('')
-      fetchUsers()
+      setOpenReset(false)
+      setResetUser(null)
+      await fetchUsers()
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udało się zresetować hasła.')
+      setError(err?.response?.data?.detail || 'Nie udalo sie zresetowac hasla.')
     }
   }
 
@@ -144,32 +171,32 @@ const AdminUsersPage = () => {
       })
       setChangeCurrentPassword('')
       setChangeNewPassword('')
-      setInfo('Twoje hasło zostało zmienione.')
+      setInfo('Twoje haslo zostalo zmienione.')
     } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udało się zmienić hasła.')
+      setError(err?.response?.data?.detail || 'Nie udalo sie zmienic hasla.')
     }
   }
 
   if (user?.role !== 'admin') {
-    return <Typography>Brak uprawnień do tej sekcji.</Typography>
+    return <Typography>Brak uprawnien do tej sekcji.</Typography>
   }
 
   if (loading) {
-    return <Typography>Ładowanie użytkowników...</Typography>
+    return <Typography>Ladowanie uzytkownikow...</Typography>
   }
 
   return (
     <Box>
       <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="h4">Administracja użytkownikami</Typography>
-        <Button variant="contained" onClick={() => setOpenCreate(true)}>Dodaj użytkownika</Button>
+        <Typography variant="h4">Administracja uzytkownikami</Typography>
+        <Button variant="contained" onClick={() => setOpenCreate(true)}>Dodaj uzytkownika</Button>
       </Stack>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       {info && <Alert severity="success" sx={{ mb: 2 }}>{info}</Alert>}
       {generatedPassword && (
         <Alert severity="warning" sx={{ mb: 2 }}>
-          Wygenerowane hasło tymczasowe: <strong>{generatedPassword}</strong>
+          Wygenerowane haslo tymczasowe: <strong>{generatedPassword}</strong>
         </Alert>
       )}
 
@@ -179,7 +206,7 @@ const AdminUsersPage = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Użytkownik</TableCell>
+                  <TableCell>Uzytkownik</TableCell>
                   <TableCell>Rola</TableCell>
                   <TableCell>Ostatnie logowanie</TableCell>
                   <TableCell align="right">Akcje</TableCell>
@@ -197,8 +224,10 @@ const AdminUsersPage = () => {
                         value={u.role}
                         onChange={(e) => updateRole(u, e.target.value as UserRole)}
                       >
-                        <MenuItem value="admin">admin</MenuItem>
-                        <MenuItem value="operator">operator</MenuItem>
+                        <MenuItem value="admin">{roleLabel('admin')}</MenuItem>
+                        <MenuItem value="operator_displays">{roleLabel('operator_displays')}</MenuItem>
+                        <MenuItem value="operator_bells">{roleLabel('operator_bells')}</MenuItem>
+                        <MenuItem value="operator">{roleLabel('operator')}</MenuItem>
                       </TextField>
                     </TableCell>
                     <TableCell>{u.last_login ? new Date(u.last_login).toLocaleString() : '-'}</TableCell>
@@ -214,7 +243,7 @@ const AdminUsersPage = () => {
                             setGeneratedPassword('')
                           }}
                         >
-                          Reset hasła
+                          Reset hasla
                         </Button>
                         <Button
                           size="small"
@@ -223,7 +252,7 @@ const AdminUsersPage = () => {
                           disabled={u.id === user?.id}
                           onClick={() => deleteUser(u)}
                         >
-                          Usuń
+                          Usun
                         </Button>
                       </Stack>
                     </TableCell>
@@ -237,23 +266,23 @@ const AdminUsersPage = () => {
         <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
-              <Typography variant="h6" sx={{ mb: 2 }}>Zmiana mojego hasła</Typography>
+              <Typography variant="h6" sx={{ mb: 2 }}>Zmiana mojego hasla</Typography>
               <Stack spacing={1.5}>
                 <TextField
                   type="password"
                   size="small"
-                  label="Aktualne hasło"
+                  label="Aktualne haslo"
                   value={changeCurrentPassword}
                   onChange={(e) => setChangeCurrentPassword(e.target.value)}
                 />
                 <TextField
                   type="password"
                   size="small"
-                  label="Nowe hasło"
+                  label="Nowe haslo"
                   value={changeNewPassword}
                   onChange={(e) => setChangeNewPassword(e.target.value)}
                 />
-                <Button variant="contained" onClick={changeMyPassword}>Zmień hasło</Button>
+                <Button variant="contained" onClick={changeMyPassword}>Zmien haslo</Button>
               </Stack>
             </CardContent>
           </Card>
@@ -261,7 +290,7 @@ const AdminUsersPage = () => {
       </Grid>
 
       <Dialog open={openCreate} onClose={() => setOpenCreate(false)} maxWidth="xs" fullWidth>
-        <DialogTitle>Nowy użytkownik</DialogTitle>
+        <DialogTitle>Nowy uzytkownik</DialogTitle>
         <DialogContent>
           <Stack spacing={1.5} sx={{ mt: 0.5 }}>
             <TextField
@@ -273,7 +302,7 @@ const AdminUsersPage = () => {
             <TextField
               size="small"
               type="password"
-              label="Hasło"
+              label="Haslo"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
@@ -284,35 +313,52 @@ const AdminUsersPage = () => {
               value={newRole}
               onChange={(e) => setNewRole(e.target.value as UserRole)}
             >
-              <MenuItem value="admin">admin</MenuItem>
-              <MenuItem value="operator">operator</MenuItem>
+              <MenuItem value="admin">{roleLabel('admin')}</MenuItem>
+              <MenuItem value="operator_displays">{roleLabel('operator_displays')}</MenuItem>
+              <MenuItem value="operator_bells">{roleLabel('operator_bells')}</MenuItem>
+              <MenuItem value="operator">{roleLabel('operator')}</MenuItem>
             </TextField>
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenCreate(false)}>Anuluj</Button>
-          <Button variant="contained" onClick={createUser}>Utwórz</Button>
+          <Button variant="contained" onClick={createUser}>Utworz</Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={openReset} onClose={() => setOpenReset(false)} maxWidth="xs" fullWidth>
-        <DialogTitle>Reset hasła: {resetUser?.username}</DialogTitle>
+      <Dialog
+        open={openReset}
+        onClose={() => {
+          setOpenReset(false)
+          setResetUser(null)
+        }}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>Reset hasla: {resetUser?.username}</DialogTitle>
         <DialogContent>
           <Stack spacing={1.5} sx={{ mt: 0.5 }}>
             <Typography variant="body2" color="text.secondary">
-              Zostaw puste, aby wygenerować hasło tymczasowe.
+              Zostaw puste, aby wygenerowac haslo tymczasowe.
             </Typography>
             <TextField
               size="small"
               type="password"
-              label="Nowe hasło (opcjonalnie)"
+              label="Nowe haslo (opcjonalnie)"
               value={resetPassword}
               onChange={(e) => setResetPassword(e.target.value)}
             />
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenReset(false)}>Anuluj</Button>
+          <Button
+            onClick={() => {
+              setOpenReset(false)
+              setResetUser(null)
+            }}
+          >
+            Anuluj
+          </Button>
           <Button variant="contained" onClick={submitResetPassword}>Resetuj</Button>
         </DialogActions>
       </Dialog>

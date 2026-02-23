@@ -1,20 +1,21 @@
-"""
-Główny plik aplikacji FastAPI
+﻿"""
+GĹ‚Ăłwny plik aplikacji FastAPI
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.config import settings
 from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
 
-APP_VERSION = "v1.0.0-beta.2026-02-19.10"
+APP_VERSION = "v1.0.0-beta.2026-02-23.15"
 
 # Utworzenie aplikacji
 app = FastAPI(
     title="Digital Signage API",
-    description="API dla systemu zarządzania treścią wyświetlaczy",
+    description="API dla systemu zarzÄ…dzania treĹ›ciÄ… wyĹ›wietlaczy",
     version=APP_VERSION,
     debug=settings.DEBUG
 )
@@ -28,19 +29,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Rejestracja routerów
+# Rejestracja routerĂłw
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.on_event("startup")
 def startup() -> None:
     """Initialize database schema for local/dev environments."""
+    if engine.dialect.name == "postgresql":
+        # Keep enum in sync on existing deployments without explicit Alembic migrations.
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_DISPLAYS'"))
+            conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_BELLS'"))
     Base.metadata.create_all(bind=engine)
 
 
 @app.get("/")
 async def root():
-    """Endpoint główny"""
+    """Endpoint gĹ‚Ăłwny"""
     return {
         "message": "Digital Signage API",
         "version": APP_VERSION,
@@ -52,3 +58,4 @@ async def root():
 async def health():
     """Health check"""
     return {"status": "ok", "version": APP_VERSION}
+

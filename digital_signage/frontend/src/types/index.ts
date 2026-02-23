@@ -1,7 +1,7 @@
 export interface User {
   id: number
   username: string
-  role: 'admin' | 'operator'
+  role: 'admin' | 'operator_displays' | 'operator_bells' | 'operator'
 }
 
 export interface Display {
