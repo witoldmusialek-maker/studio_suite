@@ -248,7 +248,7 @@ const BellModelPage = () => {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(draft))
-    setSaveInfo('Szkic zapisany lokalnie.')
+    setSaveInfo('Model zapisany lokalnie.')
   }, [draft])
 
   useEffect(() => {
@@ -330,7 +330,7 @@ const BellModelPage = () => {
           setDraft(normalized)
           setWybranyTypDniaId(normalized.typy_dnia[0]?.id || '')
           setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
-          setSaveInfo('Szkic zaladowany z backendu.')
+          setSaveInfo('Model zaladowany z backendu.')
         }
         setBackendRevision(res.data?.revision || 0)
       } catch {
@@ -654,7 +654,7 @@ const BellModelPage = () => {
     await odswiezBiblioteke('Playlista usunieta.')
   }
 
-  const resetSzkicu = () => {
+  const resetModelu = () => {
     const next = domyslnyDraft()
     setDraft(next)
     setWybranyTypDniaId(next.typy_dnia[0]?.id || '')
@@ -666,7 +666,7 @@ const BellModelPage = () => {
     const payload = { model_json: draft }
     const res = await api.put<BellModelConfigResponse>('/bells/runtime/model-config', payload)
     setBackendRevision(res.data?.revision || 0)
-    setSaveInfo(`Szkic zapisany w backendzie (rev ${res.data?.revision || 0}).`)
+    setSaveInfo(`Model zapisany w backendzie (rev ${res.data?.revision || 0}).`)
   }
 
   const pobierzModelZBackendu = async () => {
@@ -682,7 +682,7 @@ const BellModelPage = () => {
     setWybranyTypDniaId(normalized.typy_dnia[0]?.id || '')
     setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
     setBackendRevision(res.data?.revision || 0)
-    setSaveInfo(`Szkic pobrany z backendu (rev ${res.data?.revision || 0}).`)
+    setSaveInfo(`Model pobrany z backendu (rev ${res.data?.revision || 0}).`)
   }
 
   const profileNames = draft.mapowania_profili.map((m) => m.nazwa_profilu)
@@ -696,7 +696,7 @@ const BellModelPage = () => {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 1 }}>Model docelowy dzwonkow</Typography>
-      <Alert severity="info" sx={{ mb: 2 }}>Szkic logiki (frontend). Opis skrocony, skupiamy sie na modelu.</Alert>
+      <Alert severity="info" sx={{ mb: 2 }}>Model logiki dzwonkow. Zapis i odczyt sa podlaczone do backendu.</Alert>
       {saveInfo && <Alert severity="success" sx={{ mb: 2 }}>{saveInfo}</Alert>}
 
       <Paper
@@ -758,7 +758,7 @@ const BellModelPage = () => {
           >
             Pobierz z backendu
           </Button>
-          <Button variant="outlined" color="error" onClick={resetSzkicu}>Reset szkicu</Button>
+          <Button variant="outlined" color="error" onClick={resetModelu}>Reset modelu</Button>
         </Stack>
         <TextField
           fullWidth
