@@ -70,7 +70,7 @@ const Layout = ({ children }: LayoutProps) => {
       title: 'Tresci',
       items: [
         { text: 'Biblioteka tresci', icon: <FolderIcon />, path: '/content' },
-        { text: 'Harmonogram dzwonkow', icon: <BellsIcon />, path: '/bells/schedules' },
+        { text: 'Dzwonki: model i biblioteka', icon: <BellsIcon />, path: '/bells/model' },
       ],
     },
   ]
@@ -173,3 +173,4 @@ const Layout = ({ children }: LayoutProps) => {
 }
 
 export default Layout
+

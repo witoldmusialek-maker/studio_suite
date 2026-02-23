@@ -8,7 +8,7 @@ import StatusPage from './pages/StatusPage'
 import ContentPage from './pages/ContentPage'
 import SchedulesPage from './pages/SchedulesPage'
 import GroupsPage from './pages/GroupsPage'
-import BellsPage from './pages/BellsPage'
+import BellModelPage from './pages/BellModelPage'
 import ReportsPage from './pages/ReportsPage'
 import AlertsPage from './pages/AlertsPage'
 import Layout from './components/Layout'
@@ -17,7 +17,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
 
   if (loading) {
-    return <div>Ładowanie...</div>
+    return <div>Ladowanie...</div>
   }
 
   if (!user) {
@@ -31,7 +31,7 @@ function App() {
   const { user, loading } = useAuth()
 
   if (loading) {
-    return <div>Ładowanie...</div>
+    return <div>Ladowanie...</div>
   }
 
   return (
@@ -93,11 +93,12 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/bells/schedules" element={<Navigate to="/bells/model" replace />} />
       <Route
-        path="/bells/schedules"
+        path="/bells/model"
         element={
           <ProtectedRoute>
-            <BellsPage />
+            <BellModelPage />
           </ProtectedRoute>
         }
       />
