@@ -26,14 +26,14 @@ const GroupsPage = () => {
       const response = await api.get('/groups')
       setGroups(response.data || [])
     } catch (error) {
-      console.error('Blad pobierania grup:', error)
+      console.error('Błąd pobierania grup:', error)
     } finally {
       setLoading(false)
     }
   }
 
   if (loading) {
-    return <Typography>Ladowanie...</Typography>
+    return <Typography>Ładowanie...</Typography>
   }
 
   return (
@@ -49,7 +49,7 @@ const GroupsPage = () => {
               <TableCell>ID</TableCell>
               <TableCell>Nazwa</TableCell>
               <TableCell>Typ</TableCell>
-              <TableCell>Pietro</TableCell>
+              <TableCell>Piętro</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

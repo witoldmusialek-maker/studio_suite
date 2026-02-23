@@ -1,7 +1,15 @@
 """
 Schematy Pydantic dla walidacji danych
 """
-from app.schemas.user import UserCreate, UserResponse, UserLogin
+from app.schemas.user import (
+    UserCreate,
+    UserResponse,
+    UserLogin,
+    UserUpdate,
+    PasswordChangeRequest,
+    PasswordResetRequest,
+    PasswordResetResponse,
+)
 from app.schemas.token import Token
 from app.schemas.display import (
     DisplayCreate,
@@ -23,6 +31,10 @@ __all__ = [
     "UserCreate",
     "UserResponse",
     "UserLogin",
+    "UserUpdate",
+    "PasswordChangeRequest",
+    "PasswordResetRequest",
+    "PasswordResetResponse",
     "Token",
     "DisplayCreate",
     "DisplayUpdate",

@@ -30,7 +30,7 @@ const AlertsPage = () => {
       const response = await api.get('/alerts')
       setAlerts(response.data || [])
     } catch (error) {
-      console.error('Blad pobierania alertow:', error)
+      console.error('Błąd pobierania alertów:', error)
     } finally {
       setLoading(false)
     }
@@ -41,12 +41,12 @@ const AlertsPage = () => {
       await api.put(`/alerts/${id}/resolve`)
       fetchAlerts()
     } catch (error) {
-      console.error('Blad rozwiazania alertu:', error)
+      console.error('Błąd rozwiązania alertu:', error)
     }
   }
 
   if (loading) {
-    return <Typography>Ladowanie...</Typography>
+    return <Typography>Ładowanie...</Typography>
   }
 
   return (
@@ -63,7 +63,7 @@ const AlertsPage = () => {
               <TableCell>Display ID</TableCell>
               <TableCell>Typ</TableCell>
               <TableCell>Severity</TableCell>
-              <TableCell>Wiadomosc</TableCell>
+              <TableCell>Wiadomość</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Akcja</TableCell>
             </TableRow>
@@ -79,14 +79,14 @@ const AlertsPage = () => {
                 <TableCell>
                   <Chip
                     size="small"
-                    label={alert.resolved ? 'Rozwiazany' : 'Aktywny'}
+                    label={alert.resolved ? 'Rozwiązany' : 'Aktywny'}
                     color={alert.resolved ? 'success' : 'warning'}
                   />
                 </TableCell>
                 <TableCell>
                   {user?.role === 'admin' && !alert.resolved && (
                     <Button size="small" variant="outlined" onClick={() => resolveAlert(alert.id)}>
-                      Oznacz jako rozwiazany
+                      Oznacz jako rozwiązany
                     </Button>
                   )}
                 </TableCell>

@@ -25,9 +25,11 @@ import {
   Assessment as ReportsIcon,
   MusicNote as BellsIcon,
   Logout as LogoutIcon,
+  ManageAccounts as ManageAccountsIcon,
 } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
 import { APP_VERSION } from '../version'
+import { FEATURE_FLAGS, FeatureKey } from '../config/features'
 
 const drawerWidth = 240
 
@@ -35,45 +37,81 @@ interface LayoutProps {
   children: ReactNode
 }
 
+type MenuItemDef = {
+  text: string
+  icon: ReactNode
+  path: string
+  feature?: FeatureKey
+  adminOnly?: boolean
+}
+
+type MenuSectionDef = {
+  title: string
+  feature?: FeatureKey
+  items: MenuItemDef[]
+}
+
 const Layout = ({ children }: LayoutProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useAuth()
 
-  const menuSections = [
+  const menuSections: MenuSectionDef[] = [
     {
       title: 'Start',
       items: [{ text: 'Dashboard', icon: <DashboardIcon />, path: '/' }],
     },
     {
       title: 'Monitoring',
+      feature: 'monitoring',
       items: [
         { text: 'Status', icon: <TvIcon />, path: '/status' },
-        { text: 'Alerty', icon: <AlertsIcon />, path: '/alerts' },
-        { text: 'Raporty', icon: <ReportsIcon />, path: '/reports' },
+        { text: 'Alerty', icon: <AlertsIcon />, path: '/alerts', feature: 'alerts' },
+        { text: 'Raporty', icon: <ReportsIcon />, path: '/reports', feature: 'reports' },
       ],
     },
     {
-      title: 'Wyswietlacze',
+      title: 'Wyświetlacze',
+      feature: 'displays',
       items: [
-        { text: 'Wyswietlacze', icon: <TvIcon />, path: '/displays' },
-        { text: 'Grupy wyswietlaczy', icon: <GroupsIcon />, path: '/groups' },
+        { text: 'Wyświetlacze', icon: <TvIcon />, path: '/displays' },
+        { text: 'Grupy wyświetlaczy', icon: <GroupsIcon />, path: '/groups' },
       ],
     },
     {
-      title: 'Harmonogramy',
+      title: 'Treści',
+      feature: 'content',
       items: [
-        { text: 'Harmonogramy tresci', icon: <ScheduleIcon />, path: '/schedules' },
+        { text: 'Harmonogramy treści', icon: <ScheduleIcon />, path: '/schedules' },
+        { text: 'Biblioteka treści', icon: <FolderIcon />, path: '/content' },
+        { text: 'Dzwonki: model i biblioteka', icon: <BellsIcon />, path: '/bells/model', feature: 'bells' },
       ],
     },
     {
-      title: 'Tresci',
+      title: 'Administracja',
       items: [
-        { text: 'Biblioteka tresci', icon: <FolderIcon />, path: '/content' },
-        { text: 'Dzwonki: model i biblioteka', icon: <BellsIcon />, path: '/bells/model' },
+        {
+          text: 'Użytkownicy',
+          icon: <ManageAccountsIcon />,
+          path: '/admin/users',
+          feature: 'adminUsers',
+          adminOnly: true,
+        },
       ],
     },
   ]
+
+  const visibleSections = menuSections
+    .filter((section) => !section.feature || FEATURE_FLAGS[section.feature])
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => {
+        if (item.feature && !FEATURE_FLAGS[item.feature]) return false
+        if (item.adminOnly && user?.role !== 'admin') return false
+        return true
+      }),
+    }))
+    .filter((section) => section.items.length > 0)
 
   const handleLogout = () => {
     logout()
@@ -122,7 +160,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         <Toolbar />
         <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 64px)' }}>
-          {menuSections.map((section, sectionIndex) => (
+          {visibleSections.map((section, sectionIndex) => (
             <List
               key={section.title}
               subheader={
@@ -146,7 +184,7 @@ const Layout = ({ children }: LayoutProps) => {
                   </ListItem>
                 )
               })}
-              {sectionIndex < menuSections.length - 1 && <Divider sx={{ mt: 1 }} />}
+              {sectionIndex < visibleSections.length - 1 && <Divider sx={{ mt: 1 }} />}
             </List>
           ))}
           <Box sx={{ px: 2, py: 1.5 }}>

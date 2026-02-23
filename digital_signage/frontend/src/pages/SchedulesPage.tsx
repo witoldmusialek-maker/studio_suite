@@ -68,7 +68,7 @@ const defaultFormData: ScheduleFormData = {
 const dayLabels: Record<number, string> = {
   1: 'Pon',
   2: 'Wt',
-  3: 'Sr',
+  3: 'Śr',
   4: 'Czw',
   5: 'Pt',
   6: 'Sob',
@@ -197,7 +197,7 @@ const SchedulesPage = () => {
   const handleSubmit = async () => {
     try {
       if (!formData.display_id && !formData.group_id) {
-        setError('Wybierz display lub grupe docelowa.')
+        setError('Wybierz display lub grupę docelową.')
         return
       }
 
@@ -228,12 +228,12 @@ const SchedulesPage = () => {
       handleCloseDialog()
       fetchAll()
     } catch (submitError: any) {
-      setError(submitError.response?.data?.detail || 'Nie udalo sie zapisac harmonogramu')
+      setError(submitError.response?.data?.detail || 'Nie udało się zapisać harmonogramu')
     }
   }
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Usunac harmonogram?')) return
+    if (!window.confirm('Usunąć harmonogram?')) return
     try {
       await api.delete(`/schedules/${id}`)
       fetchAll()
@@ -243,7 +243,7 @@ const SchedulesPage = () => {
   }
 
   if (loading) {
-    return <Typography>Ladowanie harmonogramow...</Typography>
+    return <Typography>Ładowanie harmonogramów...</Typography>
   }
 
   return (
@@ -258,8 +258,8 @@ const SchedulesPage = () => {
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Box>
-            <Typography variant="h4">Harmonogramy tresci</Typography>
-            <Typography color="text.secondary">Zarzadzaj emisja tresci na wyswietlaczach i grupach</Typography>
+            <Typography variant="h4">Harmonogramy treści</Typography>
+            <Typography color="text.secondary">Zarządzaj emisją treści na wyświetlaczach i grupach</Typography>
           </Box>
           {user?.role === 'admin' && (
             <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>
@@ -288,7 +288,7 @@ const SchedulesPage = () => {
           <Grid item xs={12} md={3}>
             <Card variant="outlined">
               <CardContent>
-                <Typography variant="body2" color="text.secondary">Na wyswietlacze</Typography>
+                <Typography variant="body2" color="text.secondary">Na wyświetlacze</Typography>
                 <Typography variant="h5">{stats.displayTargets}</Typography>
               </CardContent>
             </Card>
@@ -399,7 +399,7 @@ const SchedulesPage = () => {
               <TableRow>
                 <TableCell colSpan={7} align="center" sx={{ py: 5 }}>
                   <Typography variant="body1" color="text.secondary">
-                    Brak harmonogramow spelniajacych filtry.
+                    Brak harmonogramów spełniających filtry.
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -409,7 +409,7 @@ const SchedulesPage = () => {
       </TableContainer>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
-        <DialogTitle>{editingSchedule ? 'Edycja harmonogramu tresci' : 'Nowy harmonogram tresci'}</DialogTitle>
+        <DialogTitle>{editingSchedule ? 'Edycja harmonogramu treści' : 'Nowy harmonogram treści'}</DialogTitle>
         <DialogContent>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
@@ -429,7 +429,7 @@ const SchedulesPage = () => {
               <TextField
                 fullWidth
                 select
-                label="Tresc"
+                label="Treść"
                 value={formData.content_id}
                 onChange={(event) => setFormData({ ...formData, content_id: event.target.value })}
               >
@@ -534,7 +534,7 @@ const SchedulesPage = () => {
               <TextField
                 fullWidth
                 type="number"
-                label="Czas wyswietlania (sekundy, opcjonalnie)"
+                label="Czas wyświetlania (sekundy, opcjonalnie)"
                 value={formData.display_duration_seconds}
                 onChange={(event) =>
                   setFormData({ ...formData, display_duration_seconds: event.target.value })

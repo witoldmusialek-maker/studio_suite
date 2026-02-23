@@ -878,7 +878,7 @@ const BellModelPage = () => {
               <Button variant="contained" size="small" onClick={dodajSzablon}>Dodaj szablon</Button>
             </Stack>
             <Paper variant="outlined" sx={{ p: 1.5, mb: 1.5 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>Konfiguracja odtwarzania dŸwiêku</Typography>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>Konfiguracja odtwarzania dÅºwiÄ™ku</Typography>
               <Grid container spacing={1}>
                 <Grid item xs={12} md={3}>
                   <TextField
@@ -897,8 +897,8 @@ const BellModelPage = () => {
                       }))
                     }
                   >
-                    <MenuItem value="false">Wy³¹czone</MenuItem>
-                    <MenuItem value="true">W³¹czone</MenuItem>
+                    <MenuItem value="false">WyÅ‚Ä…czone</MenuItem>
+                    <MenuItem value="true">WÅ‚Ä…czone</MenuItem>
                   </TextField>
                 </Grid>
                 <Grid item xs={12} md={3}>
@@ -918,8 +918,8 @@ const BellModelPage = () => {
                       }))
                     }
                   >
-                    <MenuItem value="true">W³¹czone</MenuItem>
-                    <MenuItem value="false">Wy³¹czone</MenuItem>
+                    <MenuItem value="true">WÅ‚Ä…czone</MenuItem>
+                    <MenuItem value="false">WyÅ‚Ä…czone</MenuItem>
                   </TextField>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -983,7 +983,7 @@ const BellModelPage = () => {
                     }))
                   }
                 >
-                  Wyczyœæ ograniczenie klientów
+                  WyczyÅ›Ä‡ ograniczenie klientÃ³w
                 </Button>
               </Stack>
             </Paper>

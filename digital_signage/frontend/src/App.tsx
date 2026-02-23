@@ -11,13 +11,15 @@ import GroupsPage from './pages/GroupsPage'
 import BellModelPage from './pages/BellModelPage'
 import ReportsPage from './pages/ReportsPage'
 import AlertsPage from './pages/AlertsPage'
+import AdminUsersPage from './pages/AdminUsersPage'
 import Layout from './components/Layout'
+import { FEATURE_FLAGS } from './config/features'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
 
   if (loading) {
-    return <div>Ladowanie...</div>
+    return <div>Ładowanie...</div>
   }
 
   if (!user) {
@@ -31,7 +33,7 @@ function App() {
   const { user, loading } = useAuth()
 
   if (loading) {
-    return <div>Ladowanie...</div>
+    return <div>Ładowanie...</div>
   }
 
   return (
@@ -45,81 +47,110 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/displays"
-        element={
-          <ProtectedRoute>
-            <DisplaysPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/displays/:id"
-        element={
-          <ProtectedRoute>
-            <DisplayDetailPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/status"
-        element={
-          <ProtectedRoute>
-            <StatusPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/content"
-        element={
-          <ProtectedRoute>
-            <ContentPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/schedules"
-        element={
-          <ProtectedRoute>
-            <SchedulesPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/groups"
-        element={
-          <ProtectedRoute>
-            <GroupsPage />
-          </ProtectedRoute>
-        }
-      />
+      {FEATURE_FLAGS.displays && (
+        <Route
+          path="/displays"
+          element={
+            <ProtectedRoute>
+              <DisplaysPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.displays && (
+        <Route
+          path="/displays/:id"
+          element={
+            <ProtectedRoute>
+              <DisplayDetailPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.monitoring && (
+        <Route
+          path="/status"
+          element={
+            <ProtectedRoute>
+              <StatusPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.content && (
+        <Route
+          path="/content"
+          element={
+            <ProtectedRoute>
+              <ContentPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.content && (
+        <Route
+          path="/schedules"
+          element={
+            <ProtectedRoute>
+              <SchedulesPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.displays && (
+        <Route
+          path="/groups"
+          element={
+            <ProtectedRoute>
+              <GroupsPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
       <Route path="/bells/schedules" element={<Navigate to="/bells/model" replace />} />
-      <Route
-        path="/bells/model"
-        element={
-          <ProtectedRoute>
-            <BellModelPage />
-          </ProtectedRoute>
-        }
-      />
+      {FEATURE_FLAGS.bells && (
+        <Route
+          path="/bells/model"
+          element={
+            <ProtectedRoute>
+              <BellModelPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
       <Route path="/bells" element={<Navigate to="/bells/schedules" />} />
-      <Route
-        path="/reports"
-        element={
-          <ProtectedRoute>
-            <ReportsPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/alerts"
-        element={
-          <ProtectedRoute>
-            <AlertsPage />
-          </ProtectedRoute>
-        }
-      />
+      {FEATURE_FLAGS.reports && (
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <ReportsPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.alerts && (
+        <Route
+          path="/alerts"
+          element={
+            <ProtectedRoute>
+              <AlertsPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
+      {FEATURE_FLAGS.adminUsers && (
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <AdminUsersPage />
+            </ProtectedRoute>
+          }
+        />
+      )}
       <Route path="/sounds" element={<Navigate to="/bells/schedules" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

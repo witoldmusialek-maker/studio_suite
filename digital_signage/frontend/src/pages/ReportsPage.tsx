@@ -49,14 +49,14 @@ const ReportsPage = () => {
         setOffline(offlineRes.data)
       }
     } catch (error) {
-      console.error('Blad pobierania raportow:', error)
+      console.error('Błąd pobierania raportów:', error)
     } finally {
       setLoading(false)
     }
   }
 
   if (loading) {
-    return <Typography>Ladowanie...</Typography>
+    return <Typography>Ładowanie...</Typography>
   }
 
   return (
@@ -69,20 +69,20 @@ const ReportsPage = () => {
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6">Dzienny</Typography>
-            <Typography>Wyswietlacze: {daily?.total_displays ?? '-'}</Typography>
-            <Typography>Sredni online: {daily?.average_online_percentage ?? '-'}%</Typography>
+            <Typography>Wyświetlacze: {daily?.total_displays ?? '-'}</Typography>
+            <Typography>Średni online: {daily?.average_online_percentage ?? '-'}%</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2 }}>
             <Typography variant="h6">Tygodniowy</Typography>
-            <Typography>Wyswietlacze: {weekly?.total_displays ?? '-'}</Typography>
-            <Typography>Sredni online: {weekly?.average_online_percentage ?? '-'}%</Typography>
+            <Typography>Wyświetlacze: {weekly?.total_displays ?? '-'}</Typography>
+            <Typography>Średni online: {weekly?.average_online_percentage ?? '-'}%</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2 }}>
-            <Typography variant="h6">Offline (1 wyswietlacz)</Typography>
+            <Typography variant="h6">Offline (1 wyświetlacz)</Typography>
             <Typography>Display ID: {offline?.display_id ?? '-'}</Typography>
             <Typography>Offline: {offline?.offline_percentage ?? '-'}%</Typography>
             <Typography>Czas offline: {offline?.total_offline_seconds ?? '-'} s</Typography>
