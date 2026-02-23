@@ -80,6 +80,12 @@ type Awaryjne = {
   powod: string
 }
 
+type KonfiguracjaOdtwarzania = {
+  odtwarzaj_na_serwerze: boolean
+  odtwarzaj_na_klientach: boolean
+  dozwolone_display_ids: number[]
+}
+
 type ModelDzwonkowDraft = {
   wzorce_dzwiekow: WzorzecDzwieku[]
   szablony_sygnalow: SzablonSygnalu[]
@@ -88,6 +94,7 @@ type ModelDzwonkowDraft = {
   kalendarz: WpisKalendarza[]
   mapowania_profili: MapowanieProfilu[]
   awaryjne: Awaryjne
+  konfiguracja_odtwarzania: KonfiguracjaOdtwarzania
 }
 
 type PlaylistaDto = {
@@ -99,6 +106,13 @@ type DzwiekBiblioteki = {
   id: number
   name: string
   file_path: string
+}
+
+type DisplayDto = {
+  id: number
+  name: string
+  status: string
+  ip_address?: string
 }
 
 type BellModelConfigResponse = {
@@ -184,6 +198,11 @@ const domyslnyDraft = (): ModelDzwonkowDraft => {
       stop_globalny: false,
       powod: '',
     },
+    konfiguracja_odtwarzania: {
+      odtwarzaj_na_serwerze: false,
+      odtwarzaj_na_klientach: true,
+      dozwolone_display_ids: [],
+    },
   }
 }
 
@@ -204,6 +223,15 @@ const znormalizujDraft = (raw: Partial<ModelDzwonkowDraft> | null | undefined): 
           powod: raw.awaryjne.powod || '',
         }
       : base.awaryjne,
+    konfiguracja_odtwarzania: raw.konfiguracja_odtwarzania
+      ? {
+          odtwarzaj_na_serwerze: Boolean(raw.konfiguracja_odtwarzania.odtwarzaj_na_serwerze),
+          odtwarzaj_na_klientach: raw.konfiguracja_odtwarzania.odtwarzaj_na_klientach !== false,
+          dozwolone_display_ids: Array.isArray(raw.konfiguracja_odtwarzania.dozwolone_display_ids)
+            ? raw.konfiguracja_odtwarzania.dozwolone_display_ids.map((id) => Number(id)).filter((id) => Number.isFinite(id))
+            : [],
+        }
+      : base.konfiguracja_odtwarzania,
   }
 }
 
@@ -234,6 +262,7 @@ const BellModelPage = () => {
   const [wybranyTypDniaId, setWybranyTypDniaId] = useState('')
   const [playlisty, setPlaylisty] = useState<PlaylistaDto[]>([])
   const [dzwiekiBiblioteki, setDzwiekiBiblioteki] = useState<DzwiekBiblioteki[]>([])
+  const [wyswietlacze, setWyswietlacze] = useState<DisplayDto[]>([])
   const [podgladData, setPodgladData] = useState(new Date().toISOString().slice(0, 10))
   const [podgladGodzina, setPodgladGodzina] = useState(new Date().toTimeString().slice(0, 5))
   const [symulacjaData, setSymulacjaData] = useState(new Date().toISOString().slice(0, 10))
@@ -285,12 +314,14 @@ const BellModelPage = () => {
   }
 
   const odswiezBiblioteke = async (komunikat = 'Pobrano aktualne informacje o bibliotece.') => {
-    const [resPlaylisty, resDzwieki] = await Promise.all([
+    const [resPlaylisty, resDzwieki, resWyswietlacze] = await Promise.all([
       api.get<PlaylistaDto[]>('/bells/runtime/music-schedules'),
       api.get<DzwiekBiblioteki[]>('/bells/sounds'),
+      api.get<DisplayDto[]>('/displays/'),
     ])
     setPlaylisty(resPlaylisty.data || [])
     setDzwiekiBiblioteki(resDzwieki.data || [])
+    setWyswietlacze(resWyswietlacze.data || [])
     oznaczAktualizacjeInformacji(komunikat)
   }
 
@@ -298,18 +329,21 @@ const BellModelPage = () => {
     let mounted = true
     const load = async () => {
       try {
-        const [resPlaylisty, resDzwieki] = await Promise.all([
+        const [resPlaylisty, resDzwieki, resWyswietlacze] = await Promise.all([
           api.get<PlaylistaDto[]>('/bells/runtime/music-schedules'),
           api.get<DzwiekBiblioteki[]>('/bells/sounds'),
+          api.get<DisplayDto[]>('/displays/'),
         ])
         if (!mounted) return
         setPlaylisty(resPlaylisty.data || [])
         setDzwiekiBiblioteki(resDzwieki.data || [])
+        setWyswietlacze(resWyswietlacze.data || [])
         oznaczAktualizacjeInformacji('Pobrano dane startowe biblioteki i playlist.')
       } catch {
         if (!mounted) return
         setPlaylisty([])
         setDzwiekiBiblioteki([])
+        setWyswietlacze([])
       }
     }
     load()
@@ -686,6 +720,8 @@ const BellModelPage = () => {
   }
 
   const profileNames = draft.mapowania_profili.map((m) => m.nazwa_profilu)
+  const wybraneWyswietlacze = draft.konfiguracja_odtwarzania.dozwolone_display_ids
+  const liczbaOnlineWyswietlaczy = wyswietlacze.filter((d) => d.status === 'online').length
   const activeMapping = draft.mapowania_profili.find((m) => m.nazwa_profilu === wybranyProfilMapowania) || null
   const wybranyPlanMiesiaca = draft.plany_miesieczne.find((p) => p.id === wybranyPlanMiesiacaId) || null
   const aktualneZdarzenie = typDniaPodgladu?.zdarzenia.find((z) => z.id === aktualnieWykonywaneId) || null
@@ -718,6 +754,18 @@ const BellModelPage = () => {
           />
           <Chip label={`Symulacja: ${symulacjaData} ${symulacjaGodzina}`} />
           <Chip label={`Profil: ${wpisDnia?.profil_dzwiekow || '-'}`} />
+          <Chip
+            color={draft.konfiguracja_odtwarzania.odtwarzaj_na_serwerze ? 'warning' : 'default'}
+            label={`Serwer audio: ${draft.konfiguracja_odtwarzania.odtwarzaj_na_serwerze ? 'ON' : 'OFF'}`}
+          />
+          <Chip
+            color={draft.konfiguracja_odtwarzania.odtwarzaj_na_klientach ? 'success' : 'default'}
+            label={`Klienci audio: ${draft.konfiguracja_odtwarzania.odtwarzaj_na_klientach ? 'ON' : 'OFF'}`}
+          />
+          <Chip
+            variant="outlined"
+            label={`Klienci docelowi: ${wybraneWyswietlacze.length > 0 ? wybraneWyswietlacze.length : 'wszyscy'}`}
+          />
           <Chip
             label={`Teraz: ${aktualnySzablon ? `${aktualneZdarzenie?.godzina} ${aktualnySzablon.nazwa}` : 'brak zdarzenia'}`}
             color={aktualnySzablon ? 'primary' : 'default'}
@@ -829,6 +877,116 @@ const BellModelPage = () => {
               <Typography variant="h6">Szablony sygnaÅ‚Ã³w (lekcja/przerwa)</Typography>
               <Button variant="contained" size="small" onClick={dodajSzablon}>Dodaj szablon</Button>
             </Stack>
+            <Paper variant="outlined" sx={{ p: 1.5, mb: 1.5 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>Konfiguracja odtwarzania dŸwiêku</Typography>
+              <Grid container spacing={1}>
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    select
+                    label="Odtwarzanie na serwerze"
+                    value={draft.konfiguracja_odtwarzania.odtwarzaj_na_serwerze ? 'true' : 'false'}
+                    onChange={(e) =>
+                      setDraft((prev) => ({
+                        ...prev,
+                        konfiguracja_odtwarzania: {
+                          ...prev.konfiguracja_odtwarzania,
+                          odtwarzaj_na_serwerze: e.target.value === 'true',
+                        },
+                      }))
+                    }
+                  >
+                    <MenuItem value="false">Wy³¹czone</MenuItem>
+                    <MenuItem value="true">W³¹czone</MenuItem>
+                  </TextField>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    select
+                    label="Odtwarzanie na klientach"
+                    value={draft.konfiguracja_odtwarzania.odtwarzaj_na_klientach ? 'true' : 'false'}
+                    onChange={(e) =>
+                      setDraft((prev) => ({
+                        ...prev,
+                        konfiguracja_odtwarzania: {
+                          ...prev.konfiguracja_odtwarzania,
+                          odtwarzaj_na_klientach: e.target.value === 'true',
+                        },
+                      }))
+                    }
+                  >
+                    <MenuItem value="true">W³¹czone</MenuItem>
+                    <MenuItem value="false">Wy³¹czone</MenuItem>
+                  </TextField>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    select
+                    SelectProps={{ multiple: true }}
+                    label="Dozwoleni klienci (displaye)"
+                    value={wybraneWyswietlacze}
+                    onChange={(e) => {
+                      const value = e.target.value as unknown as Array<string | number>
+                      const ids = value.map((v) => Number(v)).filter((v) => Number.isFinite(v))
+                      setDraft((prev) => ({
+                        ...prev,
+                        konfiguracja_odtwarzania: {
+                          ...prev.konfiguracja_odtwarzania,
+                          dozwolone_display_ids: ids,
+                        },
+                      }))
+                    }}
+                    helperText={wybraneWyswietlacze.length === 0
+                      ? `Brak ograniczenia (wszyscy klienci), online: ${liczbaOnlineWyswietlaczy}/${wyswietlacze.length}`
+                      : `Wybrano: ${wybraneWyswietlacze.length}, online: ${liczbaOnlineWyswietlaczy}/${wyswietlacze.length}`}
+                  >
+                    {wyswietlacze.map((d) => (
+                      <MenuItem key={d.id} value={d.id}>
+                        #{d.id} {d.name} ({d.status})
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+              <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() => {
+                    const ids = wyswietlacze.filter((d) => d.status === 'online').map((d) => d.id)
+                    setDraft((prev) => ({
+                      ...prev,
+                      konfiguracja_odtwarzania: {
+                        ...prev.konfiguracja_odtwarzania,
+                        dozwolone_display_ids: ids,
+                      },
+                    }))
+                  }}
+                >
+                  Wybierz tylko online
+                </Button>
+                <Button
+                  size="small"
+                  variant="text"
+                  onClick={() =>
+                    setDraft((prev) => ({
+                      ...prev,
+                      konfiguracja_odtwarzania: {
+                        ...prev.konfiguracja_odtwarzania,
+                        dozwolone_display_ids: [],
+                      },
+                    }))
+                  }
+                >
+                  Wyczyœæ ograniczenie klientów
+                </Button>
+              </Stack>
+            </Paper>
             {draft.szablony_sygnalow.map((s) => (
               <Paper key={s.id} sx={{ p: 1, mb: 1 }}>
                 <Grid container spacing={1}>
@@ -1436,3 +1594,4 @@ const BellModelPage = () => {
 }
 
 export default BellModelPage
+

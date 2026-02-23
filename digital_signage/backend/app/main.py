@@ -9,7 +9,7 @@ from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
 
-APP_VERSION = "v1.0.0-beta.2026-02-19.6"
+APP_VERSION = "v1.0.0-beta.2026-02-19.7"
 
 # Utworzenie aplikacji
 app = FastAPI(
