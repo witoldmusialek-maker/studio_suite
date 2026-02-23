@@ -303,6 +303,23 @@ const GroupsPage = () => {
     )
   }
 
+  const updateTileRotation = (displayId: number, nextRotation: 0 | 90 | 180 | 270) => {
+    setLayoutTiles((prev) =>
+      prev.map((tile) => {
+        if (tile.display_id !== displayId) return tile
+        const prevIsVertical = tile.rotation === 90 || tile.rotation === 270
+        const nextIsVertical = nextRotation === 90 || nextRotation === 270
+        const shouldSwapSides = prevIsVertical !== nextIsVertical
+        return {
+          ...tile,
+          rotation: nextRotation,
+          width: shouldSwapSides ? tile.height : tile.width,
+          height: shouldSwapSides ? tile.width : tile.height,
+        }
+      })
+    )
+  }
+
   const saveLayoutConfig = async () => {
     if (!layoutGroup) return
     setError('')
@@ -628,6 +645,9 @@ const GroupsPage = () => {
                     <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, lineHeight: 1 }}>
                       {tile.name}
                     </Typography>
+                    <Typography variant="caption" sx={{ display: 'block', fontSize: 9, lineHeight: 1 }}>
+                      {tile.rotation}°
+                    </Typography>
                   </Box>
                 )
               })}
@@ -686,7 +706,7 @@ const GroupsPage = () => {
                       select
                       label="Rotacja"
                       value={tile.rotation}
-                      onChange={(e) => setLayoutTiles((prev) => prev.map((t) => (t.display_id === tile.display_id ? { ...t, rotation: Number(e.target.value) as 0 | 90 | 180 | 270 } : t)))}
+                      onChange={(e) => updateTileRotation(tile.display_id, Number(e.target.value) as 0 | 90 | 180 | 270)}
                     >
                       <MenuItem value={0}>0°</MenuItem>
                       <MenuItem value={90}>90°</MenuItem>
