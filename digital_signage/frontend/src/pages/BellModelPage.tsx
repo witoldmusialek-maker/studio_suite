@@ -718,8 +718,10 @@ const BellModelPage = () => {
         audioRef.current.pause()
         audioRef.current.currentTime = 0
       }
-      const res = await api.get(`/bells/sounds/${id}/file`, { responseType: 'blob' })
-      nextBlobUrl = URL.createObjectURL(res.data)
+      const res = await api.get(`/bells/sounds/${id}/file`, { responseType: 'arraybuffer' })
+      const contentType = (res.headers?.['content-type'] as string | undefined) || 'audio/mpeg'
+      const blob = new Blob([res.data], { type: contentType })
+      nextBlobUrl = URL.createObjectURL(blob)
       if (audioBlobUrl) {
         URL.revokeObjectURL(audioBlobUrl)
       }
@@ -732,13 +734,16 @@ const BellModelPage = () => {
         setOdtwarzanyDzwiekId((prev) => (prev === id ? null : prev))
         setBladBiblioteki('Nie udało się odtworzyć dźwięku.')
       }
-      await audio.play()
+      const playPromise = audio.play()
+      if (playPromise) {
+        await playPromise
+      }
     } catch (err: any) {
       if (nextBlobUrl) {
         URL.revokeObjectURL(nextBlobUrl)
       }
       setOdtwarzanyDzwiekId(null)
-      setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się odtworzyć dźwięku.')
+      setBladBiblioteki(err?.response?.data?.detail || err?.message || 'Nie udało się odtworzyć dźwięku.')
     }
   }
 
