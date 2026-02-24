@@ -1,1 +1,1 @@
-﻿export const APP_VERSION = 'v1.0.0-beta.2026-02-24.12'
+﻿export const APP_VERSION = 'v1.0.0-beta.2026-02-24.13'

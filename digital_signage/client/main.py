@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env python3
 """
-Glowny plik aplikacji klienta wyswietlacza
+Main file for Windows display client.
 """
 import sys
 import time
@@ -8,13 +8,12 @@ from datetime import datetime, time as dt_time
 from pathlib import Path
 
 from cache import CacheManager
-import config
 from display_client import DisplayClient
 from player import ContentPlayer
 
 
 class DigitalSignageClient:
-    """Glowna klasa klienta."""
+    """Main client loop."""
 
     def __init__(self):
         self.client = DisplayClient()
@@ -23,49 +22,57 @@ class DigitalSignageClient:
         self.current_schedule = []
         self.current_content_id: int | None = None
 
-    def run(self):
-        """Uruchomienie klienta."""
+    def run(self) -> None:
         print("Uruchamianie klienta Digital Signage...")
-
-        # Inicjalizacja wyswietlacza
         self.player.init_display()
 
-        # Glowna petla
+        next_poll = 0.0
+
         try:
             while True:
+                self.player.pump_events()
+
                 if not self.client.display_id:
                     if not self.client.register():
+                        self.player.display_message("Brak polaczenia z serwerem\nPonawianie...")
                         print("Blad rejestracji - ponawianie za 5s...")
-                        time.sleep(5)
+                        for _ in range(50):
+                            self.player.pump_events()
+                            time.sleep(0.1)
                         continue
                     self.client.start_heartbeat()
+                    self.player.display_message("Polaczono z serwerem\nOczekiwanie na tresc...")
 
-                try:
-                    self.update_schedule()
-                    self.update_content()
-                except Exception as e:
-                    # Nie zamykaj procesu przez pojedynczy blad runtime
-                    print(f"Blad petli glownej: {e}")
+                now = time.monotonic()
+                if now >= next_poll:
+                    next_poll = now + 10.0
+                    try:
+                        self.update_schedule()
+                        self.update_content()
+                    except Exception as e:
+                        print(f"Blad petli glownej: {e}")
 
-                time.sleep(10)
+                time.sleep(0.1)
         except KeyboardInterrupt:
             print("\nZatrzymywanie klienta...")
             self.client.stop_heartbeat()
             sys.exit(0)
 
-    def update_schedule(self):
-        """Aktualizacja harmonogramu."""
+    def update_schedule(self) -> None:
         try:
             schedule = self.client.get_schedule()
-            if schedule:
-                self.current_schedule = schedule
-                print(f"Zaktualizowano harmonogram: {len(schedule)} pozycji")
+            self.current_schedule = schedule or []
+            print(f"Harmonogram: {len(self.current_schedule)} pozycji")
         except Exception as e:
             print(f"Blad aktualizacji harmonogramu: {e}")
+            self.current_schedule = []
 
-    def update_content(self):
-        """Aktualizacja wyswietlanej tresci."""
+    def update_content(self) -> None:
         if not self.current_schedule:
+            if self.current_content_id is not None:
+                self.current_content_id = None
+                self.client.set_runtime_content_state(None, None, False)
+            self.player.display_message("Polaczono z serwerem\nBrak aktywnej tresci")
             return
 
         now = datetime.now().time()
@@ -76,7 +83,6 @@ class DigitalSignageClient:
             end_time = self._parse_schedule_time(item["end_time"])
             if not start_time or not end_time:
                 continue
-
             if start_time <= now <= end_time:
                 current_schedule_item = item
                 break
@@ -90,16 +96,16 @@ class DigitalSignageClient:
             if self.current_content_id is not None:
                 self.current_content_id = None
                 self.client.set_runtime_content_state(None, None, False)
-                print("Brak harmonogramu - oczekiwanie...")
+            self.player.display_message("Polaczono z serwerem\nBrak tresci o tej godzinie")
 
-    def display_content(self, content_id: int):
-        """Wyswietlenie tresci."""
+    def display_content(self, content_id: int) -> None:
         print(f"Wyswietlanie tresci ID: {content_id}")
 
         try:
             response = self.client.session.get(f"{self.client.server_url}/content/{content_id}")
             if response.status_code != 200:
                 print(f"Blad pobierania tresci: {response.status_code}")
+                self.player.display_message("Blad pobierania tresci")
                 return
 
             content = response.json()
@@ -115,11 +121,13 @@ class DigitalSignageClient:
                 if self.client.download_content(content_id, str(cache_path)):
                     print(f"Zapisano do cache: {cache_path}")
                     self._play_content(content, cache_path)
+                else:
+                    self.player.display_message("Blad pobierania pliku tresci")
         except Exception as e:
             print(f"Blad wyswietlania tresci: {e}")
+            self.player.display_message("Wyjatek podczas wyswietlania tresci")
 
-    def _play_content(self, content: dict, file_path: Path):
-        """Odtworzenie tresci."""
+    def _play_content(self, content: dict, file_path: Path) -> None:
         content_type = content["type"]
         self.client.set_runtime_content_state(
             self.current_content_id,
@@ -137,10 +145,10 @@ class DigitalSignageClient:
             self.player.display_video(file_path)
         else:
             print(f"Nieobslugiwany typ tresci: {content_type}")
+            self.player.display_message(f"Nieobslugiwany typ tresci: {content_type}")
 
     @staticmethod
     def _parse_schedule_time(value: str) -> dt_time | None:
-        """Akceptuje format HH:MM:SS oraz HH:MM."""
         for fmt in ("%H:%M:%S", "%H:%M"):
             try:
                 return datetime.strptime(value, fmt).time()

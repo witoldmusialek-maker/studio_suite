@@ -1,39 +1,38 @@
-"""
-Odtwarzanie treści na wyświetlaczu
+﻿"""
+Content playback for display client.
 """
 from pathlib import Path
 from typing import Optional
-from PIL import Image
 import sys
 
 try:
-    from PyQt6.QtWidgets import QApplication, QLabel, QWidget
-    from PyQt6.QtCore import Qt, QTimer
+    from PyQt6.QtCore import Qt
     from PyQt6.QtGui import QPixmap, QTransform
+    from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
     PYQT6_AVAILABLE = True
 except ImportError:
     PYQT6_AVAILABLE = False
-    print("PyQt6 nie jest dostępny - tryb testowy")
+    print("PyQt6 nie jest dostepny - tryb testowy")
 
 import config
 
 
 class ContentPlayer:
-    """Odtwarzacz treści"""
+    """Display content player."""
 
     def __init__(self):
         self.app: Optional[QApplication] = None
         self.window: Optional[QWidget] = None
         self.label: Optional[QLabel] = None
         self.current_content_path: Optional[Path] = None
+        self.vlc_player = None
 
-    def init_display(self):
-        """Inicjalizacja wyświetlacza"""
+    def init_display(self) -> None:
         if not PYQT6_AVAILABLE:
-            print("PyQt6 nie dostępny - tryb testowy")
+            print("PyQt6 nie dostepny - tryb testowy")
             return
 
-        self.app = QApplication(sys.argv)
+        self.app = QApplication.instance() or QApplication(sys.argv)
         self.window = QWidget()
         self.window.setWindowTitle("Digital Signage")
         self.window.setWindowFlags(
@@ -41,70 +40,84 @@ class ContentPlayer:
             | Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.WindowFullscreenButtonHint
         )
-        self.window.showFullScreen()
 
-        from PyQt6.QtWidgets import QVBoxLayout
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel()
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setScaledContents(True)
+        self.label.setStyleSheet("background-color: black; color: white; font-size: 28px;")
+        self.label.setText("Polaczono z serwerem\nOczekiwanie na tresc...")
         layout.addWidget(self.label)
+
         self.window.setLayout(layout)
+        self.window.showFullScreen()
+        self.pump_events()
 
-    def display_image(self, image_path: Path):
-        """Wyświetlenie obrazu"""
+    def pump_events(self) -> None:
+        if PYQT6_AVAILABLE and self.app:
+            self.app.processEvents()
+
+    def display_message(self, message: str) -> None:
         if not PYQT6_AVAILABLE:
-            print(f"Wyświetlanie obrazu: {image_path}")
+            print(message)
             return
+        if not self.label:
+            return
+        self.label.setPixmap(QPixmap())
+        self.label.setText(message)
+        self.pump_events()
 
+    def display_image(self, image_path: Path) -> None:
+        if not PYQT6_AVAILABLE:
+            print(f"Wyswietlanie obrazu: {image_path}")
+            return
         if not self.label:
             return
 
         pixmap = QPixmap(str(image_path))
-        
-        # Rotacja jeśli potrzeba
+        if pixmap.isNull():
+            self.display_message("Nie mozna wczytac pliku obrazu")
+            return
+
         if config.ORIENTATION != 0:
             transform = QTransform().rotate(config.ORIENTATION)
             pixmap = pixmap.transformed(transform)
 
-        # Skalowanie do rozdzielczości ekranu
         scaled_pixmap = pixmap.scaled(
             config.RESOLUTION_WIDTH,
             config.RESOLUTION_HEIGHT,
             Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation
+            Qt.TransformationMode.SmoothTransformation,
         )
 
+        self.label.setText("")
         self.label.setPixmap(scaled_pixmap)
         self.current_content_path = image_path
+        self.pump_events()
 
-    def display_pdf(self, pdf_path: Path):
-        """Wyświetlenie PDF (pierwsza strona jako obraz)"""
+    def display_pdf(self, pdf_path: Path) -> None:
         try:
             from pdf2image import convert_from_path
+
             images = convert_from_path(str(pdf_path), first_page=1, last_page=1)
             if images:
-                # Zapisanie jako tymczasowy obraz
                 temp_image = pdf_path.parent / f"{pdf_path.stem}_temp.jpg"
                 images[0].save(temp_image, "JPEG")
                 self.display_image(temp_image)
         except Exception as e:
-            print(f"Błąd wyświetlania PDF: {e}")
+            print(f"Blad wyswietlania PDF: {e}")
 
-    def display_excel(self, excel_path: Path):
-        """Wyświetlenie Excel (renderowanie do obrazu)"""
+    def display_excel(self, excel_path: Path) -> None:
         try:
             import openpyxl
-            from PIL import Image, ImageDraw, ImageFont
+            from PIL import Image, ImageDraw
 
             workbook = openpyxl.load_workbook(excel_path)
             sheet = workbook.active
 
-            # Renderowanie do obrazu (uproszczone)
             img = Image.new("RGB", (config.RESOLUTION_WIDTH, config.RESOLUTION_HEIGHT), "white")
             draw = ImageDraw.Draw(img)
 
-            # Renderowanie danych (uproszczone - tylko pierwsze wiersze)
             y = 50
             for row in sheet.iter_rows(max_row=20, values_only=True):
                 text = " | ".join(str(cell) if cell else "" for cell in row)
@@ -113,46 +126,42 @@ class ContentPlayer:
                 if y > config.RESOLUTION_HEIGHT - 50:
                     break
 
-            # Zapisanie jako tymczasowy obraz
             temp_image = excel_path.parent / f"{excel_path.stem}_temp.jpg"
             img.save(temp_image, "JPEG")
             self.display_image(temp_image)
         except Exception as e:
-            print(f"Błąd wyświetlania Excel: {e}")
+            print(f"Blad wyswietlania Excel: {e}")
 
-    def display_video(self, video_path: Path):
-        """Wyświetlenie video"""
+    def display_video(self, video_path: Path) -> None:
         if not PYQT6_AVAILABLE:
             print(f"Odtwarzanie video: {video_path}")
             return
 
         try:
             import vlc
+
             instance = vlc.Instance()
             player = instance.media_player_new()
             media = instance.media_new(str(video_path))
             player.set_media(media)
-            
+
             if self.window:
                 try:
-                    # PyQt6 - użyj winId() dla Windows lub windowId() dla Linux
                     if sys.platform == "win32":
                         player.set_hwnd(int(self.window.winId()))
                     else:
-                        # Linux - użyj X11 window ID
                         player.set_xwindow(int(self.window.winId()))
-                except:
-                    # Fallback - odtwarzanie bez okna
+                except Exception:
                     pass
-            
+
+            self.vlc_player = player
             player.play()
             self.current_content_path = video_path
+            self.pump_events()
         except Exception as e:
-            print(f"Błąd odtwarzania video: {e}")
+            print(f"Blad odtwarzania video: {e}")
 
-    def run(self):
-        """Uruchomienie aplikacji"""
+    def run(self) -> None:
         if PYQT6_AVAILABLE and self.app:
             sys.exit(self.app.exec())
-        else:
-            print("Aplikacja w trybie testowym - brak PyQt6")
+        print("Aplikacja w trybie testowym - brak PyQt6")
