@@ -128,6 +128,18 @@ type DisplayDto = {
   ip_address?: string
 }
 
+type AudioClientDto = {
+  id: number
+  name: string
+  mac_address: string
+  ip_address?: string | null
+  status: 'online' | 'offline' | 'error'
+  last_seen?: string | null
+  last_test_status?: string | null
+  last_test_message?: string | null
+  last_test_at?: string | null
+}
+
 type BellModelConfigResponse = {
   id?: number | null
   model_json?: Partial<ModelDzwonkowDraft> | null
@@ -230,13 +242,27 @@ const znormalizujDraft = (raw: Partial<ModelDzwonkowDraft> | null | undefined): 
   const base = domyslnyDraft()
   if (!raw) return base
 
+  const wzorce = Array.isArray(raw.wzorce_dzwiekow) ? raw.wzorce_dzwiekow : base.wzorce_dzwiekow
+  const kluczeWzorcow = wzorce.map((w) => w.klucz)
+  const mapowania = (Array.isArray(raw.mapowania_profili) ? raw.mapowania_profili : base.mapowania_profili).map((m) => {
+    const wejscie = m?.pliki || {}
+    const pliki: Record<string, string> = {}
+    for (const klucz of kluczeWzorcow) {
+      pliki[klucz] = typeof wejscie[klucz] === 'string' ? wejscie[klucz] : ''
+    }
+    return {
+      ...m,
+      pliki,
+    }
+  })
+
   return {
-    wzorce_dzwiekow: Array.isArray(raw.wzorce_dzwiekow) ? raw.wzorce_dzwiekow : base.wzorce_dzwiekow,
+    wzorce_dzwiekow: wzorce,
     szablony_sygnalow: Array.isArray(raw.szablony_sygnalow) ? raw.szablony_sygnalow : base.szablony_sygnalow,
     typy_dnia: Array.isArray(raw.typy_dnia) ? raw.typy_dnia : base.typy_dnia,
     plany_miesieczne: Array.isArray(raw.plany_miesieczne) ? raw.plany_miesieczne : base.plany_miesieczne,
     kalendarz: Array.isArray(raw.kalendarz) ? raw.kalendarz : base.kalendarz,
-    mapowania_profili: Array.isArray(raw.mapowania_profili) ? raw.mapowania_profili : base.mapowania_profili,
+    mapowania_profili: mapowania,
     awaryjne: raw.awaryjne
       ? {
           stop_globalny: Boolean(raw.awaryjne.stop_globalny),
@@ -279,10 +305,12 @@ const BellModelPage = () => {
 
   const [tab, setTab] = useState(0)
   const [saveInfo, setSaveInfo] = useState('')
+  const [lokalneZmiany, setLokalneZmiany] = useState(false)
   const [wybranyTypDniaId, setWybranyTypDniaId] = useState('')
   const [playlisty, setPlaylisty] = useState<PlaylistaDto[]>([])
   const [dzwiekiBiblioteki, setDzwiekiBiblioteki] = useState<DzwiekBiblioteki[]>([])
   const [wyswietlacze, setWyswietlacze] = useState<DisplayDto[]>([])
+  const [audioKlienci, setAudioKlienci] = useState<AudioClientDto[]>([])
   const [podgladData, setPodgladData] = useState(new Date().toISOString().slice(0, 10))
   const [podgladGodzina, setPodgladGodzina] = useState(new Date().toTimeString().slice(0, 5))
   const [symulacjaData, setSymulacjaData] = useState(new Date().toISOString().slice(0, 10))
@@ -295,6 +323,8 @@ const BellModelPage = () => {
   const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
   const audioBlobUrlRef = useRef<string | null>(null)
   const [wybranaPlaylistaId, setWybranaPlaylistaId] = useState<number | null>(null)
+  const [dzwiekTestowyId, setDzwiekTestowyId] = useState('')
+  const [glosnoscTestowa, setGlosnoscTestowa] = useState('50')
   const [utworyPlaylisty, setUtworyPlaylisty] = useState<PlaylistaUtworDto[]>([])
   const [zrodloUtworu, setZrodloUtworu] = useState<'sound' | 'placeholder'>('sound')
   const [wybranyDzwiekId, setWybranyDzwiekId] = useState('')
@@ -302,10 +332,15 @@ const BellModelPage = () => {
   const [tytulUtworu, setTytulUtworu] = useState('')
   const [kolejnoscUtworu, setKolejnoscUtworu] = useState('0')
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const firstDraftPersistRef = useRef(true)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(draft))
-    setSaveInfo('Model zapisany lokalnie.')
+    if (firstDraftPersistRef.current) {
+      firstDraftPersistRef.current = false
+    } else {
+      setLokalneZmiany(true)
+    }
   }, [draft])
 
   useEffect(() => {
@@ -340,14 +375,16 @@ const BellModelPage = () => {
   }
 
   const odswiezBiblioteke = async (komunikat = 'Pobrano aktualne informacje o bibliotece.') => {
-    const [resPlaylisty, resDzwieki, resWyswietlacze] = await Promise.all([
+    const [resPlaylisty, resDzwieki, resWyswietlacze, resAudioKlienci] = await Promise.all([
       api.get<PlaylistaDto[]>('/bells/runtime/music-schedules'),
       api.get<DzwiekBiblioteki[]>('/bells/sounds'),
       api.get<DisplayDto[]>('/displays/'),
+      api.get<AudioClientDto[]>('/bells/runtime/audio-clients'),
     ])
     setPlaylisty(resPlaylisty.data || [])
     setDzwiekiBiblioteki(resDzwieki.data || [])
     setWyswietlacze(resWyswietlacze.data || [])
+    setAudioKlienci(resAudioKlienci.data || [])
     oznaczAktualizacjeInformacji(komunikat)
     if (wybranaPlaylistaId) {
       try {
@@ -363,21 +400,24 @@ const BellModelPage = () => {
     let mounted = true
     const load = async () => {
       try {
-        const [resPlaylisty, resDzwieki, resWyswietlacze] = await Promise.all([
+        const [resPlaylisty, resDzwieki, resWyswietlacze, resAudioKlienci] = await Promise.all([
           api.get<PlaylistaDto[]>('/bells/runtime/music-schedules'),
           api.get<DzwiekBiblioteki[]>('/bells/sounds'),
           api.get<DisplayDto[]>('/displays/'),
+          api.get<AudioClientDto[]>('/bells/runtime/audio-clients'),
         ])
         if (!mounted) return
         setPlaylisty(resPlaylisty.data || [])
         setDzwiekiBiblioteki(resDzwieki.data || [])
         setWyswietlacze(resWyswietlacze.data || [])
+        setAudioKlienci(resAudioKlienci.data || [])
         oznaczAktualizacjeInformacji('Pobrano dane startowe biblioteki i playlist.')
       } catch {
         if (!mounted) return
         setPlaylisty([])
         setDzwiekiBiblioteki([])
         setWyswietlacze([])
+        setAudioKlienci([])
       }
     }
     load()
@@ -748,6 +788,40 @@ const BellModelPage = () => {
     }
   }
 
+  const zmienKluczWzorca = (wzorzecId: string, nowyKluczRaw: string) => {
+    const nowyKlucz = nowyKluczRaw.trim().toUpperCase()
+    if (!nowyKlucz) return
+    setDraft((prev) => {
+      const wzorzec = prev.wzorce_dzwiekow.find((w) => w.id === wzorzecId)
+      if (!wzorzec) return prev
+      const staryKlucz = wzorzec.klucz
+      if (staryKlucz === nowyKlucz) return prev
+      if (prev.wzorce_dzwiekow.some((w) => w.id !== wzorzecId && w.klucz === nowyKlucz)) {
+        setSaveInfo(`Klucz ${nowyKlucz} juz istnieje.`)
+        return prev
+      }
+      return {
+        ...prev,
+        wzorce_dzwiekow: prev.wzorce_dzwiekow.map((w) => (w.id === wzorzecId ? { ...w, klucz: nowyKlucz } : w)),
+        szablony_sygnalow: prev.szablony_sygnalow.map((s) => ({
+          ...s,
+          dzwonek_wzorzec: s.dzwonek_wzorzec === staryKlucz ? nowyKlucz : s.dzwonek_wzorzec,
+          zapowiedz_wzorzec: s.zapowiedz_wzorzec === staryKlucz ? nowyKlucz : s.zapowiedz_wzorzec,
+        })),
+        mapowania_profili: prev.mapowania_profili.map((m) => {
+          const nextPliki = { ...m.pliki }
+          if (Object.prototype.hasOwnProperty.call(nextPliki, staryKlucz)) {
+            nextPliki[nowyKlucz] = nextPliki[staryKlucz] || ''
+            delete nextPliki[staryKlucz]
+          } else if (!Object.prototype.hasOwnProperty.call(nextPliki, nowyKlucz)) {
+            nextPliki[nowyKlucz] = ''
+          }
+          return { ...m, pliki: nextPliki }
+        }),
+      }
+    })
+  }
+
   const zatrzymajOdsluch = () => {
     if (audioRef.current) {
       audioRef.current.pause()
@@ -831,6 +905,7 @@ const BellModelPage = () => {
     setWybranyTypDniaId(next.typy_dnia[0]?.id || '')
     setWybranyProfilMapowania(next.mapowania_profili[0]?.nazwa_profilu || '')
     localStorage.removeItem(STORAGE_KEY)
+    setLokalneZmiany(false)
   }
 
   const zapiszModelDoBackendu = async () => {
@@ -838,6 +913,7 @@ const BellModelPage = () => {
     const res = await api.put<BellModelConfigResponse>('/bells/runtime/model-config', payload)
     setBackendRevision(res.data?.revision || 0)
     setSaveInfo(`Model zapisany w backendzie (rev ${res.data?.revision || 0}).`)
+    setLokalneZmiany(false)
   }
 
   const pobierzModelZBackendu = async () => {
@@ -854,6 +930,20 @@ const BellModelPage = () => {
     setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
     setBackendRevision(res.data?.revision || 0)
     setSaveInfo(`Model pobrany z backendu (rev ${res.data?.revision || 0}).`)
+    setLokalneZmiany(false)
+  }
+
+  const testujKlientaDzwonkow = async (displayId: number) => {
+    if (!dzwiekTestowyId) {
+      setSaveInfo('Wybierz dzwiek testowy.')
+      return
+    }
+    await api.post(`/bells/runtime/audio-clients/${displayId}/test-play`, {
+      sound_id: Number(dzwiekTestowyId),
+      volume: Number(glosnoscTestowa || 50),
+    })
+    setSaveInfo(`Wyslano test odtwarzania do klienta #${displayId}.`)
+    await odswiezBiblioteke('Odswiezono status klientow dzwonkow.')
   }
 
   const profileNames = draft.mapowania_profili.map((m) => m.nazwa_profilu)
@@ -882,6 +972,11 @@ const BellModelPage = () => {
         </Typography>
       </Paper>
       {saveInfo && <Alert severity="success" sx={{ mb: 2 }}>{saveInfo}</Alert>}
+      {lokalneZmiany && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Zmiany sa zapisane tylko lokalnie w tej przegladarce. Uzyj "Zapisz do backendu", aby byly widoczne dla klientow.
+        </Alert>
+      )}
 
       <Paper
         sx={{
@@ -1003,7 +1098,7 @@ const BellModelPage = () => {
                   {draft.wzorce_dzwiekow.map((p) => (
                     <TableRow key={p.id}>
                       <TableCell>
-                        <TextField size="small" value={p.klucz} onChange={(e) => setDraft((prev) => ({ ...prev, wzorce_dzwiekow: prev.wzorce_dzwiekow.map((x) => x.id === p.id ? { ...x, klucz: e.target.value.toUpperCase() } : x) }))} />
+                        <TextField size="small" value={p.klucz} onChange={(e) => zmienKluczWzorca(p.id, e.target.value)} />
                       </TableCell>
                       <TableCell sx={{ minWidth: 320 }}>
                         <TextField size="small" fullWidth value={p.nazwa} onChange={(e) => setDraft((prev) => ({ ...prev, wzorce_dzwiekow: prev.wzorce_dzwiekow.map((x) => x.id === p.id ? { ...x, nazwa: e.target.value } : x) }))} />
@@ -1550,6 +1645,96 @@ const BellModelPage = () => {
             </Stack>
             {statusBiblioteki && <Alert severity="success" sx={{ mb: 1 }}>{statusBiblioteki}</Alert>}
             {bladBiblioteki && <Alert severity="error" sx={{ mb: 1 }}>{bladBiblioteki}</Alert>}
+
+            <Typography variant="subtitle1" sx={{ mb: 1 }}>Klienci dzwonkow</Typography>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mb: 1 }}>
+              <TextField
+                size="small"
+                select
+                label="Dzwiek testowy"
+                value={dzwiekTestowyId}
+                onChange={(e) => setDzwiekTestowyId(e.target.value)}
+                sx={{ minWidth: 280 }}
+              >
+                {dzwiekiBiblioteki.map((d) => (
+                  <MenuItem key={d.id} value={String(d.id)}>
+                    {d.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                size="small"
+                type="number"
+                label="Glosnosc"
+                value={glosnoscTestowa}
+                onChange={(e) => setGlosnoscTestowa(e.target.value)}
+                inputProps={{ min: 0, max: 100 }}
+                sx={{ width: 130 }}
+              />
+            </Stack>
+
+            <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Klient</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>IP</TableCell>
+                    <TableCell>Ostatni test</TableCell>
+                    <TableCell>Akcje</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {audioKlienci.map((k) => (
+                    <TableRow key={k.id}>
+                      <TableCell>
+                        <Typography variant="subtitle2">{k.name}</Typography>
+                        <Typography variant="caption" color="text.secondary">{k.mac_address}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          size="small"
+                          color={k.status === 'online' ? 'success' : k.status === 'error' ? 'warning' : 'default'}
+                          label={k.status.toUpperCase()}
+                        />
+                      </TableCell>
+                      <TableCell>{k.ip_address || '-'}</TableCell>
+                      <TableCell>
+                        {k.last_test_status ? (
+                          <Typography variant="caption">
+                            {k.last_test_status}
+                            {k.last_test_at ? ` (${new Date(k.last_test_at).toLocaleString('pl-PL')})` : ''}
+                            {k.last_test_message ? ` - ${k.last_test_message}` : ''}
+                          </Typography>
+                        ) : '-'}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          disabled={!dzwiekTestowyId || k.status !== 'online'}
+                          onClick={async () => {
+                            try {
+                              setBladBiblioteki('')
+                              await testujKlientaDzwonkow(k.id)
+                            } catch (err: any) {
+                              setBladBiblioteki(err?.response?.data?.detail || 'Nie udalo sie wyslac testu.')
+                            }
+                          }}
+                        >
+                          Test
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {audioKlienci.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5}>Brak klientow dzwonkow.</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
             <Typography variant="subtitle1" sx={{ mb: 1 }}>Biblioteka dźwięków</Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mb: 2 }}>
