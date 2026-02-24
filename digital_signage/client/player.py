@@ -24,6 +24,7 @@ class ContentPlayer:
         self.app: Optional[QApplication] = None
         self.window: Optional[QWidget] = None
         self.label: Optional[QLabel] = None
+        self.status_dot: Optional[QLabel] = None
         self.current_content_path: Optional[Path] = None
         self.vlc_player = None
 
@@ -40,9 +41,11 @@ class ContentPlayer:
             | Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.WindowFullscreenButtonHint
         )
+        self.window.setCursor(Qt.CursorShape.BlankCursor)
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
+
         self.label = QLabel()
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet("background-color: black; color: white; font-size: 28px;")
@@ -50,11 +53,37 @@ class ContentPlayer:
         layout.addWidget(self.label)
 
         self.window.setLayout(layout)
+
+        self.status_dot = QLabel(self.window)
+        self.status_dot.setFixedSize(14, 14)
+        self.status_dot.setStyleSheet("background-color: #2e7d32; border-radius: 7px;")
+        self.status_dot.raise_()
+
         self.window.showFullScreen()
+        self._position_status_dot()
         self.pump_events()
+
+    def _position_status_dot(self) -> None:
+        if not self.window or not self.status_dot:
+            return
+        margin = 12
+        x = max(0, self.window.width() - self.status_dot.width() - margin)
+        y = max(0, self.window.height() - self.status_dot.height() - margin)
+        self.status_dot.move(x, y)
+
+    def set_connection_state(self, state: str) -> None:
+        if not self.status_dot:
+            return
+        color = {
+            "connected": "#2e7d32",
+            "connecting": "#f9a825",
+            "error": "#c62828",
+        }.get(state, "#757575")
+        self.status_dot.setStyleSheet(f"background-color: {color}; border-radius: 7px;")
 
     def pump_events(self) -> None:
         if PYQT6_AVAILABLE and self.app:
+            self._position_status_dot()
             self.app.processEvents()
 
     def display_message(self, message: str) -> None:

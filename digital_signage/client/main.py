@@ -21,10 +21,12 @@ class DigitalSignageClient:
         self.player = ContentPlayer()
         self.current_schedule = []
         self.current_content_id: int | None = None
+        self.current_is_test_content: bool = False
 
     def run(self) -> None:
-        print("Uruchamianie klienta Digital Signage...")
+        print(f"Windows display client starting. server={self.client.server_url}")
         self.player.init_display()
+        self.player.set_connection_state("connecting")
 
         next_poll = 0.0
 
@@ -34,6 +36,7 @@ class DigitalSignageClient:
 
                 if not self.client.display_id:
                     if not self.client.register():
+                        self.player.set_connection_state("error")
                         self.player.display_message("Brak polaczenia z serwerem\nPonawianie...")
                         print("Blad rejestracji - ponawianie za 5s...")
                         for _ in range(50):
@@ -41,6 +44,7 @@ class DigitalSignageClient:
                             time.sleep(0.1)
                         continue
                     self.client.start_heartbeat()
+                    self.player.set_connection_state("connected")
                     self.player.display_message("Polaczono z serwerem\nOczekiwanie na tresc...")
 
                 now = time.monotonic()
@@ -51,6 +55,7 @@ class DigitalSignageClient:
                         self.update_content()
                     except Exception as e:
                         print(f"Blad petli glownej: {e}")
+                        self.player.set_connection_state("error")
 
                 time.sleep(0.1)
         except KeyboardInterrupt:
@@ -63,11 +68,29 @@ class DigitalSignageClient:
             schedule = self.client.get_schedule()
             self.current_schedule = schedule or []
             print(f"Harmonogram: {len(self.current_schedule)} pozycji")
+            self.player.set_connection_state("connected")
         except Exception as e:
             print(f"Blad aktualizacji harmonogramu: {e}")
             self.current_schedule = []
+            self.player.set_connection_state("error")
 
     def update_content(self) -> None:
+        # Priority 1: test content from backend (same behavior as Android client)
+        test_content = self.client.get_test_content()
+        if test_content:
+            content_id = int(test_content["id"])
+            if content_id != self.current_content_id or not self.current_is_test_content:
+                print(f"Test content active: {content_id}")
+                self.display_content_from_payload(test_content)
+                self.current_content_id = content_id
+                self.current_is_test_content = True
+            return
+
+        # When test content was cleared, force refresh regular content on next match
+        if self.current_is_test_content:
+            self.current_content_id = None
+            self.current_is_test_content = False
+
         if not self.current_schedule:
             if self.current_content_id is not None:
                 self.current_content_id = None
@@ -88,7 +111,7 @@ class DigitalSignageClient:
                 break
 
         if current_schedule_item:
-            content_id = current_schedule_item["content_id"]
+            content_id = int(current_schedule_item["content_id"])
             if content_id != self.current_content_id:
                 self.display_content(content_id)
                 self.current_content_id = content_id
@@ -102,30 +125,36 @@ class DigitalSignageClient:
         print(f"Wyswietlanie tresci ID: {content_id}")
 
         try:
-            response = self.client.session.get(f"{self.client.server_url}/content/{content_id}")
+            response = self.client.session.get(f"{self.client.server_url}/content/{content_id}", timeout=10)
             if response.status_code != 200:
                 print(f"Blad pobierania tresci: {response.status_code}")
                 self.player.display_message("Blad pobierania tresci")
                 return
 
             content = response.json()
-            filename = Path(content["file_path"]).name
-
-            cached_file = self.cache.get_file(content_id, filename)
-            if cached_file:
-                print(f"Uzywanie cache: {cached_file}")
-                self._play_content(content, cached_file)
-            else:
-                print("Pobieranie tresci z serwera...")
-                cache_path = self.cache.get_file_path(content_id, filename)
-                if self.client.download_content(content_id, str(cache_path)):
-                    print(f"Zapisano do cache: {cache_path}")
-                    self._play_content(content, cache_path)
-                else:
-                    self.player.display_message("Blad pobierania pliku tresci")
+            self.display_content_from_payload(content)
         except Exception as e:
             print(f"Blad wyswietlania tresci: {e}")
             self.player.display_message("Wyjatek podczas wyswietlania tresci")
+
+    def display_content_from_payload(self, content: dict) -> None:
+        content_id = int(content["id"])
+        file_path_value = content.get("file_path") or content.get("path") or ""
+        filename = Path(file_path_value).name if file_path_value else f"content_{content_id}"
+
+        cached_file = self.cache.get_file(content_id, filename)
+        if cached_file:
+            print(f"Uzywanie cache: {cached_file}")
+            self._play_content(content, cached_file)
+            return
+
+        print("Pobieranie tresci z serwera...")
+        cache_path = self.cache.get_file_path(content_id, filename)
+        if self.client.download_content(content_id, str(cache_path)):
+            print(f"Zapisano do cache: {cache_path}")
+            self._play_content(content, cache_path)
+        else:
+            self.player.display_message("Blad pobierania pliku tresci")
 
     def _play_content(self, content: dict, file_path: Path) -> None:
         content_type = content["type"]

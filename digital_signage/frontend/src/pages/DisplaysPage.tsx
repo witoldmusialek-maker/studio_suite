@@ -278,8 +278,8 @@ const DisplaysPage = () => {
             <Button
               variant="outlined"
               component="a"
-              href="/download/windows_display_client_v1.0.0-beta.2026-02-24.13.exe?v=2026-02-24.14"
-              download="windows_display_client_v1.0.0-beta.2026-02-24.13.exe"
+              href="/download/windows_display_client_v1.0.0-beta.2026-02-24.15.exe?v=2026-02-24.15"
+              download="windows_display_client_v1.0.0-beta.2026-02-24.15.exe"
             >
               Pobierz klienta wideo (EXE)
             </Button>
