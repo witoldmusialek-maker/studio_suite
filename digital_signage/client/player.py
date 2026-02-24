@@ -6,13 +6,23 @@ from typing import Optional
 import sys
 
 try:
-    from PyQt6.QtCore import Qt
+    from PyQt6.QtCore import Qt, QUrl
     from PyQt6.QtGui import QPixmap, QTransform
     from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
     PYQT6_AVAILABLE = True
 except ImportError:
     PYQT6_AVAILABLE = False
     print("PyQt6 nie jest dostępny - tryb testowy")
+
+if PYQT6_AVAILABLE:
+    try:
+        from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+        from PyQt6.QtMultimediaWidgets import QVideoWidget
+        QTMULTIMEDIA_AVAILABLE = True
+    except ImportError:
+        QTMULTIMEDIA_AVAILABLE = False
+else:
+    QTMULTIMEDIA_AVAILABLE = False
 
 import config
 
@@ -24,9 +34,11 @@ class ContentPlayer:
         self.app: Optional[QApplication] = None
         self.window: Optional[QWidget] = None
         self.label: Optional[QLabel] = None
+        self.video_widget: Optional[QVideoWidget] = None
+        self.media_player: Optional[QMediaPlayer] = None
+        self.audio_output: Optional[QAudioOutput] = None
         self.status_dot: Optional[QLabel] = None
         self.current_content_path: Optional[Path] = None
-        self.vlc_player = None
 
     def init_display(self) -> None:
         if not PYQT6_AVAILABLE:
@@ -52,6 +64,19 @@ class ContentPlayer:
         self.label.setStyleSheet("background-color: black; color: white; font-size: 28px;")
         self.label.setText("Połączono z serwerem\nOczekiwanie na treść...")
         layout.addWidget(self.label)
+
+        if QTMULTIMEDIA_AVAILABLE:
+            self.video_widget = QVideoWidget()
+            self.video_widget.setStyleSheet("background-color: black;")
+            self.video_widget.hide()
+            self.video_widget.setCursor(Qt.CursorShape.BlankCursor)
+            layout.addWidget(self.video_widget)
+
+            self.audio_output = QAudioOutput()
+            self.media_player = QMediaPlayer()
+            self.media_player.setAudioOutput(self.audio_output)
+            self.media_player.setVideoOutput(self.video_widget)
+            self.media_player.mediaStatusChanged.connect(self._on_media_status_changed)
 
         self.window.setLayout(layout)
 
@@ -87,12 +112,41 @@ class ContentPlayer:
             self._position_status_dot()
             self.app.processEvents()
 
+    def _show_label(self) -> None:
+        if self.label:
+            self.label.show()
+        if self.video_widget:
+            self.video_widget.hide()
+
+    def _show_video(self) -> None:
+        if self.label:
+            self.label.hide()
+        if self.video_widget:
+            self.video_widget.show()
+
+    def _stop_video(self) -> None:
+        if self.media_player:
+            try:
+                self.media_player.stop()
+            except Exception:
+                pass
+
+    def _on_media_status_changed(self, status) -> None:
+        if not self.media_player:
+            return
+        # Zapętlenie wideo bez użycia VLC.
+        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.media_player.setPosition(0)
+            self.media_player.play()
+
     def display_message(self, message: str) -> None:
         if not PYQT6_AVAILABLE:
             print(message)
             return
         if not self.label:
             return
+        self._stop_video()
+        self._show_label()
         self.label.setPixmap(QPixmap())
         self.label.setText(message)
         self.pump_events()
@@ -104,6 +158,8 @@ class ContentPlayer:
         if not self.label:
             return False
 
+        self._stop_video()
+        self._show_label()
         pixmap = QPixmap(str(image_path))
         if pixmap.isNull():
             self.display_message("Nie można wczytać pliku obrazu")
@@ -174,34 +230,15 @@ class ContentPlayer:
             print(f"Odtwarzanie wideo: {video_path}")
             return True
 
-        try:
-            import vlc
-        except Exception as e:
-            print(f"Błąd importu VLC: {e}")
-            self.display_message("Brak biblioteki VLC do odtwarzania wideo")
+        if not QTMULTIMEDIA_AVAILABLE or not self.media_player or not self.video_widget:
+            self.display_message("Brak modułu multimediów PyQt6 (QMediaPlayer)")
             return False
 
         try:
-            instance = vlc.Instance()
-            player = instance.media_player_new()
-            media = instance.media_new(str(video_path))
-            player.set_media(media)
-
-            if self.window:
-                try:
-                    if sys.platform == "win32":
-                        player.set_hwnd(int(self.window.winId()))
-                    else:
-                        player.set_xwindow(int(self.window.winId()))
-                except Exception:
-                    pass
-
-            self.vlc_player = player
-            rc = player.play()
-            if rc == -1:
-                self.display_message("Nie udało się uruchomić odtwarzania wideo")
-                return False
-
+            self._show_video()
+            self.media_player.stop()
+            self.media_player.setSource(QUrl.fromLocalFile(str(video_path.resolve())))
+            self.media_player.play()
             self.current_content_path = video_path
             self.pump_events()
             return True
