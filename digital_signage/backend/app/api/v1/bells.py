@@ -1,7 +1,7 @@
 """
 Endpointy API dla dzwonkĂłw szkolnych
 """
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -15,6 +15,7 @@ from app.models.bell_profile import BellProfile, BellProfileOverride, BellSchedu
 from app.models.bell_music import BellMusicSchedule, BellMusicTrack
 from app.models.bell_sound import BellSound
 from app.models.bell_model_config import BellModelConfig
+from app.models.display import Display
 from app.models.user import User
 from app.api.deps import get_current_user, get_current_admin
 from app.schemas.bell import (
@@ -45,6 +46,8 @@ from app.schemas.bell import (
     BellMusicTrackResponse,
     BellModelConfigUpsert,
     BellModelConfigResponse,
+    BellAudioClientResponse,
+    BellAudioClientTestPlayRequest,
 )
 from app.services.bell_service import (
     get_displays_for_bell,
@@ -66,6 +69,9 @@ router = APIRouter(prefix="/bells", tags=["bells"])
 
 _SOUND_REF_PREFIX = "sound:"
 _PLACEHOLDER_REF_PREFIX = "placeholder:"
+_TEST_BELL_NAME_PREFIX = "__TEST_CLIENT_BELL__"
+_pending_test_commands: Dict[int, Dict[str, Any]] = {}
+_audio_client_last_report: Dict[int, Dict[str, Any]] = {}
 
 
 def _safe_filename(filename: str) -> str:
@@ -136,6 +142,13 @@ def _serialize_track_for_profile(
         "resolved_name": resolved_sound.name if resolved_sound else None,
         "created_at": track.created_at,
     }
+
+
+def _is_audio_client_display(display: Display) -> bool:
+    return (
+        (display.resolution_width == 1 and display.resolution_height == 1)
+        or (display.name or "").startswith("Bell-")
+    )
 
 
 @router.get("/runtime/model-config", response_model=BellModelConfigResponse)
@@ -422,6 +435,103 @@ async def get_bell_history(
     return history
 
 
+@router.get("/runtime/audio-clients", response_model=List[BellAudioClientResponse])
+async def get_audio_clients_runtime(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    clients = db.query(Display).filter(
+        (Display.name.like("Bell-%"))
+        | ((Display.resolution_width == 1) & (Display.resolution_height == 1))
+    ).order_by(Display.name.asc()).all()
+
+    result: List[BellAudioClientResponse] = []
+    for client in clients:
+        last_report = _audio_client_last_report.get(client.id) or {}
+        result.append(
+            BellAudioClientResponse(
+                id=client.id,
+                name=client.name,
+                mac_address=client.mac_address,
+                ip_address=client.ip_address,
+                status=client.status,
+                last_seen=client.last_seen,
+                last_test_status=last_report.get("status"),
+                last_test_message=last_report.get("message"),
+                last_test_at=last_report.get("at"),
+            )
+        )
+    return result
+
+
+@router.post("/runtime/audio-clients/{display_id}/test-play", status_code=status.HTTP_200_OK)
+async def trigger_audio_client_test_play(
+    display_id: int,
+    payload: BellAudioClientTestPlayRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    display = db.query(Display).filter(Display.id == display_id).first()
+    if not display:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Display not found")
+    if not _is_audio_client_display(display):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Display is not an audio bell client")
+
+    sound = db.query(BellSound).filter(BellSound.id == payload.sound_id, BellSound.active == True).first()
+    if not sound:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sound not found")
+
+    test_bell_name = f"{_TEST_BELL_NAME_PREFIX}{display_id}_{sound.id}"
+    test_bell = db.query(BellSchedule).filter(BellSchedule.name == test_bell_name).first()
+    if not test_bell:
+        test_bell = BellSchedule(
+            name=test_bell_name[:100],
+            bell_time=local_now().time(),
+            event_type="lesson",
+            days_of_week=None,
+            start_date=None,
+            end_date=None,
+            sound_file_path=sound.file_path,
+            volume=max(0, min(100, int(payload.volume))),
+            play_on_displays=True,
+            display_ids=[display_id],
+            group_id=None,
+            playlist_id=None,
+            active=False,
+        )
+        db.add(test_bell)
+        db.commit()
+        db.refresh(test_bell)
+    else:
+        test_bell.sound_file_path = sound.file_path
+        test_bell.volume = max(0, min(100, int(payload.volume)))
+        test_bell.display_ids = [display_id]
+        db.commit()
+        db.refresh(test_bell)
+
+    _pending_test_commands[display_id] = {
+        "bell_schedule_id": test_bell.id,
+        "sound_file_path": test_bell.sound_file_path,
+        "volume": test_bell.volume,
+        "requested_at": datetime.utcnow(),
+        "requested_by": current_user.username if current_user else None,
+    }
+
+    _audio_client_last_report[display_id] = {
+        "status": "pending",
+        "message": f"Queued test sound: {sound.name}",
+        "at": datetime.utcnow(),
+    }
+
+    return {
+        "status": "queued",
+        "display_id": display_id,
+        "bell_schedule_id": test_bell.id,
+        "sound_id": sound.id,
+        "sound_name": sound.name,
+    }
+
+
 @router.get("/display/{display_id}/play-command", response_model=Optional[BellPlayCommand])
 async def get_bell_play_command(
     display_id: int,
@@ -436,6 +546,14 @@ async def get_bell_play_command(
     if is_display_playing_video(display_id):
         # When panel is playing video, keep video audio authoritative.
         return None
+
+    pending = _pending_test_commands.pop(display_id, None)
+    if pending:
+        return BellPlayCommand(
+            bell_schedule_id=int(pending["bell_schedule_id"]),
+            sound_file_path=str(pending["sound_file_path"]),
+            volume=int(pending["volume"]),
+        )
 
     from app.services.bell_service import get_bells_to_play
     
@@ -564,6 +682,13 @@ async def mark_bell_played(
         status=payload.status,
         error_message=payload.error_message,
     )
+
+    if payload.display_id:
+        _audio_client_last_report[payload.display_id] = {
+            "status": payload.status,
+            "message": payload.error_message,
+            "at": datetime.utcnow(),
+        }
 
     return {
         "message": "Bell playback logged",
@@ -1158,5 +1283,3 @@ async def set_bell_schedule_profiles(
         db.add(BellScheduleProfile(bell_schedule_id=bell_id, profile_id=profile_id))
     db.commit()
     return profile_ids
-
-

@@ -83,6 +83,23 @@ class BellPlayCommand(BaseModel):
     volume: int
 
 
+class BellAudioClientResponse(BaseModel):
+    id: int
+    name: str
+    mac_address: str
+    ip_address: Optional[str] = None
+    status: str
+    last_seen: Optional[datetime] = None
+    last_test_status: Optional[str] = None
+    last_test_message: Optional[str] = None
+    last_test_at: Optional[datetime] = None
+
+
+class BellAudioClientTestPlayRequest(BaseModel):
+    sound_id: int
+    volume: int = 50
+
+
 class BellMarkPlayedRequest(BaseModel):
     """Zgloszenie odtworzenia dzwonka przez klienta."""
     bell_schedule_id: Optional[int] = None

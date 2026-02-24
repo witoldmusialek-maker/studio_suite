@@ -108,6 +108,18 @@ type RuntimePreview = {
   bells: Array<{ id: number; name: string; bell_time: string }>
 }
 
+type AudioClient = {
+  id: number
+  name: string
+  mac_address: string
+  ip_address?: string | null
+  status: 'online' | 'offline' | 'error'
+  last_seen?: string | null
+  last_test_status?: string | null
+  last_test_message?: string | null
+  last_test_at?: string | null
+}
+
 type MusicSchedule = {
   id: number
   name: string
@@ -303,6 +315,7 @@ const BellsPage = () => {
   const [profilePlaceholderMap, setProfilePlaceholderMap] = useState<Record<number, ProfilePlaceholderMap[]>>({})
   const [runtimeStatus, setRuntimeStatus] = useState<RuntimeStatus | null>(null)
   const [calendarOverrides, setCalendarOverrides] = useState<CalendarOverride[]>([])
+  const [audioClients, setAudioClients] = useState<AudioClient[]>([])
   const [musicSchedules, setMusicSchedules] = useState<MusicSchedule[]>([])
   const [musicTracks, setMusicTracks] = useState<Record<number, MusicTrack[]>>({})
   const [groups, setGroups] = useState<Group[]>([])
@@ -351,6 +364,8 @@ const BellsPage = () => {
   const [selectedMusicSchedule, setSelectedMusicSchedule] = useState('')
   const [editingMusicSchedule, setEditingMusicSchedule] = useState<MusicSchedule | null>(null)
   const [selectedDaySchedule, setSelectedDaySchedule] = useState<number | null>(null)
+  const [testSoundId, setTestSoundId] = useState('')
+  const [testVolume, setTestVolume] = useState('50')
   
   // Nowy typ dnia
   const [newDayTypeName, setNewDayTypeName] = useState('')
@@ -362,7 +377,7 @@ const BellsPage = () => {
 
   const fetchAll = async () => {
     try {
-      const [bellsRes, soundsRes, runtimeRes, dayOverrideRes, profileRes, activeProfileRes, profileOverrideRes, musicScheduleRes, groupsRes] =
+      const [bellsRes, soundsRes, runtimeRes, dayOverrideRes, profileRes, activeProfileRes, profileOverrideRes, musicScheduleRes, groupsRes, audioClientsRes] =
         await Promise.all([
           api.get('/bells'),
           api.get('/bells/sounds'),
@@ -373,6 +388,7 @@ const BellsPage = () => {
           api.get('/bells/runtime/profile-overrides'),
           api.get('/bells/runtime/music-schedules'),
           api.get('/groups'),
+          api.get('/bells/runtime/audio-clients'),
         ])
 
       const bellsData: BellSchedule[] = bellsRes.data || []
@@ -383,6 +399,7 @@ const BellsPage = () => {
       setProfiles(profileRes.data || [])
       setActiveProfile(activeProfileRes.data || null)
       setProfileOverrides(profileOverrideRes.data || [])
+      setAudioClients(audioClientsRes.data || [])
       const musicSchedulesData: MusicSchedule[] = musicScheduleRes.data || []
       setMusicSchedules(musicSchedulesData)
       setGroups(groupsRes.data || [])
@@ -502,6 +519,23 @@ const BellsPage = () => {
   const setBellsEnabled = async (enabled: boolean) => {
     await api.post(`/bells/runtime/enabled/${enabled}`)
     fetchAll()
+  }
+
+  const triggerAudioClientTest = async (displayId: number) => {
+    if (!testSoundId) {
+      setError('Wybierz dzwiek testowy.')
+      return
+    }
+    try {
+      await api.post(`/bells/runtime/audio-clients/${displayId}/test-play`, {
+        sound_id: Number(testSoundId),
+        volume: Number(testVolume || 50),
+      })
+      setError('')
+      fetchAll()
+    } catch (requestError: any) {
+      setError(requestError?.response?.data?.detail || 'Nie udalo sie wyslac testu do klienta.')
+    }
   }
 
   // Calendar override handlers
@@ -1845,6 +1879,106 @@ const BellsPage = () => {
           </TableContainer>
         </Paper>
 
+        <Paper sx={{ p: 2, mb: 2 }}>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="space-between" sx={{ mb: 2 }}>
+            <Typography variant="h6">Klienci dzwonkow</Typography>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+              <TextField
+                size="small"
+                select
+                label="Dzwiek testowy"
+                value={testSoundId}
+                onChange={(e) => setTestSoundId(e.target.value)}
+                sx={{ minWidth: 260 }}
+              >
+                {sounds.map((sound) => (
+                  <MenuItem key={sound.id} value={String(sound.id)}>
+                    {sound.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                size="small"
+                type="number"
+                label="Glosnosc"
+                value={testVolume}
+                onChange={(e) => setTestVolume(e.target.value)}
+                inputProps={{ min: 0, max: 100 }}
+                sx={{ width: 120 }}
+              />
+            </Stack>
+          </Stack>
+
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Klient</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>IP</TableCell>
+                  <TableCell>Ostatnio widziany</TableCell>
+                  <TableCell>Ostatni test</TableCell>
+                  <TableCell>Akcje</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {audioClients.map((client) => (
+                  <TableRow key={client.id} hover>
+                    <TableCell>
+                      <Typography fontWeight={600}>{client.name}</Typography>
+                      <Typography variant="caption" color="text.secondary">{client.mac_address}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        size="small"
+                        color={client.status === 'online' ? 'success' : client.status === 'error' ? 'warning' : 'default'}
+                        label={client.status.toUpperCase()}
+                      />
+                    </TableCell>
+                    <TableCell>{client.ip_address || '-'}</TableCell>
+                    <TableCell>{client.last_seen ? new Date(client.last_seen).toLocaleString('pl-PL') : '-'}</TableCell>
+                    <TableCell>
+                      {client.last_test_status ? (
+                        <Stack spacing={0.5}>
+                          <Chip
+                            size="small"
+                            color={client.last_test_status === 'played' || client.last_test_status === 'success' ? 'success' : client.last_test_status === 'pending' ? 'info' : 'error'}
+                            label={client.last_test_status}
+                          />
+                          <Typography variant="caption" color="text.secondary">
+                            {client.last_test_at ? new Date(client.last_test_at).toLocaleString('pl-PL') : '-'}
+                            {client.last_test_message ? ` | ${client.last_test_message}` : ''}
+                          </Typography>
+                        </Stack>
+                      ) : (
+                        '-'
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        startIcon={<PlayIcon />}
+                        disabled={!testSoundId || client.status !== 'online'}
+                        onClick={() => triggerAudioClientTest(client.id)}
+                      >
+                        Test
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {audioClients.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6} align="center">
+                      <Typography color="text.secondary">Brak zarejestrowanych klientow dzwonkow.</Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+
         {/* Podgląd logiki */}
         <Paper sx={{ p: 2, mb: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }}>Podgląd logiki dzwonków</Typography>
@@ -2117,8 +2251,3 @@ const BellsPage = () => {
 }
 
 export default BellsPage
-
-
-
-
-
