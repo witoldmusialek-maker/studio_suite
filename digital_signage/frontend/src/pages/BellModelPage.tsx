@@ -102,6 +102,19 @@ type PlaylistaDto = {
   name: string
 }
 
+type PlaylistaUtworDto = {
+  id: number
+  schedule_id: number
+  file_path: string
+  title?: string | null
+  sort_order: number
+  active: boolean
+  sound_id?: number | null
+  placeholder_key?: string | null
+  resolved_name?: string | null
+  resolved_file_path?: string | null
+}
+
 type DzwiekBiblioteki = {
   id: number
   name: string
@@ -124,6 +137,13 @@ type BellModelConfigResponse = {
 
 const STORAGE_KEY = 'modelDzwonkowDraftV5'
 const uid = () => Math.random().toString(36).slice(2, 10)
+const placeholderKeys = ['BELL_MAIN', 'BELL_SOFT', 'BELL_BREAK_START', 'BELL_BREAK_END']
+const placeholderLabels: Record<string, string> = {
+  BELL_MAIN: 'Dzwonek glowny',
+  BELL_SOFT: 'Dzwonek lagodny',
+  BELL_BREAK_START: 'Start przerwy',
+  BELL_BREAK_END: 'Koniec przerwy',
+}
 
 const zbudujPusteMapowanie = (nazwaProfilu: string, wzorce: WzorzecDzwieku[]): MapowanieProfilu => {
   const pliki: Record<string, string> = {}
@@ -275,6 +295,13 @@ const BellModelPage = () => {
   const [ostatniaAktualizacjaInformacji, setOstatniaAktualizacjaInformacji] = useState('')
   const [backendRevision, setBackendRevision] = useState(0)
   const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
+  const [wybranaPlaylistaId, setWybranaPlaylistaId] = useState<number | null>(null)
+  const [utworyPlaylisty, setUtworyPlaylisty] = useState<PlaylistaUtworDto[]>([])
+  const [zrodloUtworu, setZrodloUtworu] = useState<'sound' | 'placeholder'>('sound')
+  const [wybranyDzwiekId, setWybranyDzwiekId] = useState('')
+  const [wybranyPlaceholder, setWybranyPlaceholder] = useState('BELL_MAIN')
+  const [tytulUtworu, setTytulUtworu] = useState('')
+  const [kolejnoscUtworu, setKolejnoscUtworu] = useState('0')
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -325,6 +352,14 @@ const BellModelPage = () => {
     setDzwiekiBiblioteki(resDzwieki.data || [])
     setWyswietlacze(resWyswietlacze.data || [])
     oznaczAktualizacjeInformacji(komunikat)
+    if (wybranaPlaylistaId) {
+      try {
+        const resTracki = await api.get<PlaylistaUtworDto[]>(`/bells/runtime/music-schedules/${wybranaPlaylistaId}/tracks`)
+        setUtworyPlaylisty(resTracki.data || [])
+      } catch {
+        setUtworyPlaylisty([])
+      }
+    }
   }
 
   useEffect(() => {
@@ -724,7 +759,50 @@ const BellModelPage = () => {
 
   const usunPlayliste = async (id: number) => {
     await api.delete(`/bells/runtime/music-schedules/${id}`)
+    if (wybranaPlaylistaId === id) {
+      setWybranaPlaylistaId(null)
+      setUtworyPlaylisty([])
+    }
     await odswiezBiblioteke('Playlista usuniÄ™ta.')
+  }
+
+  const zaladujUtworyPlaylisty = async (playlistId: number) => {
+    const res = await api.get<PlaylistaUtworDto[]>(`/bells/runtime/music-schedules/${playlistId}/tracks`)
+    setUtworyPlaylisty(res.data || [])
+  }
+
+  const dodajUtworDoPlaylisty = async () => {
+    if (!wybranaPlaylistaId) return
+
+    const payload: Record<string, unknown> = {
+      title: tytulUtworu.trim() || null,
+      sort_order: Number(kolejnoscUtworu || 0),
+      active: true,
+    }
+
+    if (zrodloUtworu === 'sound') {
+      if (!wybranyDzwiekId) return
+      payload.sound_id = Number(wybranyDzwiekId)
+    } else {
+      if (!wybranyPlaceholder.trim()) return
+      payload.placeholder_key = wybranyPlaceholder.trim().toUpperCase()
+    }
+
+    await api.post(`/bells/runtime/music-schedules/${wybranaPlaylistaId}/tracks`, payload)
+    setTytulUtworu('')
+    setKolejnoscUtworu('0')
+    setWybranyDzwiekId('')
+    setWybranyPlaceholder('BELL_MAIN')
+    await zaladujUtworyPlaylisty(wybranaPlaylistaId)
+    oznaczAktualizacjeInformacji('Dodano utwor do playlisty.')
+  }
+
+  const usunUtworZPlaylisty = async (trackId: number) => {
+    await api.delete(`/bells/runtime/music-tracks/${trackId}`)
+    if (wybranaPlaylistaId) {
+      await zaladujUtworyPlaylisty(wybranaPlaylistaId)
+    }
+    oznaczAktualizacjeInformacji('Usunieto utwor z playlisty.')
   }
 
   const resetModelu = () => {
@@ -1545,6 +1623,26 @@ const BellModelPage = () => {
                         <Stack direction="row" spacing={1}>
                           <Button
                             size="small"
+                            variant={wybranaPlaylistaId === p.id ? 'contained' : 'outlined'}
+                            onClick={async () => {
+                              if (wybranaPlaylistaId === p.id) {
+                                setWybranaPlaylistaId(null)
+                                setUtworyPlaylisty([])
+                                return
+                              }
+                              try {
+                                setBladBiblioteki('')
+                                setWybranaPlaylistaId(p.id)
+                                await zaladujUtworyPlaylisty(p.id)
+                              } catch (err: any) {
+                                setBladBiblioteki(err?.response?.data?.detail || 'Nie udalo sie pobrac utworow playlisty.')
+                              }
+                            }}
+                          >
+                            {wybranaPlaylistaId === p.id ? 'Ukryj utwory' : 'Edytuj utwory'}
+                          </Button>
+                          <Button
+                            size="small"
                             onClick={async () => {
                               const nowaNazwa = window.prompt('Nowa nazwa playlisty:', p.name)
                               if (!nowaNazwa || nowaNazwa === p.name) return
@@ -1585,6 +1683,135 @@ const BellModelPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            {wybranaPlaylistaId && (
+              <Paper variant="outlined" sx={{ mt: 2, p: 1.5 }}>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                  Utwory playlisty: {playlisty.find((p) => p.id === wybranaPlaylistaId)?.name || `#${wybranaPlaylistaId}`}
+                </Typography>
+                <Grid container spacing={1} sx={{ mb: 2 }} alignItems="center">
+                  <Grid item xs={12} md={2}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      select
+                      label="Zrodlo"
+                      value={zrodloUtworu}
+                      onChange={(e) => setZrodloUtworu(e.target.value as 'sound' | 'placeholder')}
+                    >
+                      <MenuItem value="sound">Dzwiek</MenuItem>
+                      <MenuItem value="placeholder">Placeholder</MenuItem>
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      select
+                      label={zrodloUtworu === 'sound' ? 'Wybierz dzwiek' : 'Wybierz placeholder'}
+                      value={zrodloUtworu === 'sound' ? wybranyDzwiekId : wybranyPlaceholder}
+                      onChange={(e) => {
+                        if (zrodloUtworu === 'sound') {
+                          setWybranyDzwiekId(e.target.value)
+                        } else {
+                          setWybranyPlaceholder(e.target.value)
+                        }
+                      }}
+                    >
+                      <MenuItem value="">-- Wybierz --</MenuItem>
+                      {zrodloUtworu === 'sound' && dzwiekiBiblioteki.map((d) => (
+                        <MenuItem key={d.id} value={String(d.id)}>
+                          {d.name}
+                        </MenuItem>
+                      ))}
+                      {zrodloUtworu === 'placeholder' && placeholderKeys.map((key) => (
+                        <MenuItem key={key} value={key}>
+                          {placeholderLabels[key]} ({key})
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Tytul (opcjonalnie)"
+                      value={tytulUtworu}
+                      onChange={(e) => setTytulUtworu(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={2}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="number"
+                      label="Kolejnosc"
+                      value={kolejnoscUtworu}
+                      onChange={(e) => setKolejnoscUtworu(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={1}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={async () => {
+                        try {
+                          setBladBiblioteki('')
+                          await dodajUtworDoPlaylisty()
+                        } catch (err: any) {
+                          setBladBiblioteki(err?.response?.data?.detail || 'Nie udalo sie dodac utworu do playlisty.')
+                        }
+                      }}
+                      disabled={zrodloUtworu === 'sound' ? !wybranyDzwiekId : !wybranyPlaceholder}
+                    >
+                      Dodaj
+                    </Button>
+                  </Grid>
+                </Grid>
+
+                <TableContainer component={Paper} variant="outlined">
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>#</TableCell>
+                        <TableCell>Zrodlo</TableCell>
+                        <TableCell>Resolved</TableCell>
+                        <TableCell>Akcje</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {utworyPlaylisty.map((u, idx) => (
+                        <TableRow key={u.id}>
+                          <TableCell>{idx + 1}</TableCell>
+                          <TableCell>{u.title || (u.placeholder_key ? (placeholderLabels[u.placeholder_key] || u.placeholder_key) : u.file_path)}</TableCell>
+                          <TableCell>{u.resolved_name || u.resolved_file_path || '-'}</TableCell>
+                          <TableCell>
+                            <Button
+                              size="small"
+                              color="error"
+                              onClick={async () => {
+                                try {
+                                  setBladBiblioteki('')
+                                  await usunUtworZPlaylisty(u.id)
+                                } catch (err: any) {
+                                  setBladBiblioteki(err?.response?.data?.detail || 'Nie udalo sie usunac utworu.')
+                                }
+                              }}
+                            >
+                              Usun
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {utworyPlaylisty.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={4}>Brak utworow w playliscie.</TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            )}
           </CardContent>
         </Card>
       </Panel>

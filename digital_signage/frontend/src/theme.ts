@@ -31,6 +31,16 @@ export const theme = createTheme({
     borderRadius: 12,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        'html, body, #root': {
+          fontFamily: '"Segoe UI", "Trebuchet MS", "Roboto", "Helvetica", "Arial", sans-serif',
+        },
+        'input, textarea, button, select': {
+          fontFamily: 'inherit',
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
