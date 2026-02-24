@@ -28,6 +28,13 @@ def _display_name_prefix(width: int, height: int) -> str:
     return "Bell" if width == 1 and height == 1 else "Display"
 
 
+def _is_audio_only_display(display: Display) -> bool:
+    return (
+        (display.resolution_width == 1 and display.resolution_height == 1)
+        or (display.name or "").startswith("Bell-")
+    )
+
+
 @router.post("/register", response_model=DisplayResponse, status_code=status.HTTP_201_CREATED)
 async def register_display(
     display_data: DisplayRegister,
@@ -255,6 +262,12 @@ async def send_test_content(
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(status_code=404, detail="Content not found")
+
+    if _is_audio_only_display(display) and (content.type or "").lower() != "audio":
+        raise HTTPException(
+            status_code=400,
+            detail="Bell client accepts only audio test content",
+        )
     
     # Zapisz test content dla tego wyświetlacza
     _test_content[display_id] = {

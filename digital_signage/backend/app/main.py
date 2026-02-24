@@ -1,4 +1,4 @@
-﻿"""
+"""
 GĹ‚Ăłwny plik aplikacji FastAPI
 """
 from fastapi import FastAPI
@@ -10,7 +10,7 @@ from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
 
-APP_VERSION = "v1.0.0-beta.2026-02-24.1"
+APP_VERSION = "v1.0.0-beta.2026-02-24.2"
 
 # Utworzenie aplikacji
 app = FastAPI(
@@ -58,5 +58,3 @@ async def root():
 async def health():
     """Health check"""
     return {"status": "ok", "version": APP_VERSION}
-
-

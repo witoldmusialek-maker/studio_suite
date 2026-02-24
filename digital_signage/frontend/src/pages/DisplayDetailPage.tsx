@@ -74,9 +74,9 @@ const DisplayDetailPage = () => {
     try {
       await api.post(`/displays/${id}/test-content/${selectedContentId}`)
       setSnackbar({ open: true, message: 'Treść wysłana na wyświetlacz!', severity: 'success' })
-    } catch (error) {
+    } catch (error: any) {
       console.error('Błąd wysyłania treści:', error)
-      setSnackbar({ open: true, message: 'Błąd wysyłania treści', severity: 'error' })
+      setSnackbar({ open: true, message: error?.response?.data?.detail || 'Błąd wysyłania treści', severity: 'error' })
     } finally {
       setSending(false)
     }
@@ -114,6 +114,13 @@ const DisplayDetailPage = () => {
     return <Typography>Wyświetlacz nie znaleziony</Typography>
   }
 
+  const isBellClient =
+    (display.resolution_width === 1 && display.resolution_height === 1) ||
+    display.name.startsWith('Bell-')
+  const testContents = isBellClient
+    ? contents.filter((content) => content.type === 'audio')
+    : contents
+
   return (
     <Box>
       <Button
@@ -121,7 +128,7 @@ const DisplayDetailPage = () => {
         onClick={() => navigate('/displays')}
         sx={{ mb: 2 }}
       >
-        PowrĂłt
+        Powrót
       </Button>
 
       <Typography variant="h4" gutterBottom>
@@ -175,7 +182,7 @@ const DisplayDetailPage = () => {
                 <ListItem>
                   <ListItemText
                     primary="Rozdzielczość"
-                    secondary={`${display.resolution_width}Ă—${display.resolution_height}`}
+                    secondary={`${display.resolution_width}×${display.resolution_height}`}
                   />
                 </ListItem>
                 <ListItem>
@@ -244,7 +251,9 @@ const DisplayDetailPage = () => {
                 Wyślij treść testową
               </Typography>
               <Typography color="text.secondary" sx={{ mb: 2 }}>
-                Treść testowa zostanie natychmiast wyświetlona na tym wyświetlaczu, pomijając harmonogram.
+                {isBellClient
+                  ? 'Dla klienta dzwonków dostępne są tylko pliki audio.'
+                  : 'Treść testowa zostanie natychmiast wyświetlona na tym wyświetlaczu, pomijając harmonogram.'}
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                 <FormControl sx={{ minWidth: 250 }}>
@@ -254,7 +263,7 @@ const DisplayDetailPage = () => {
                     label="Wybierz treść"
                     onChange={(e) => setSelectedContentId(e.target.value as number)}
                   >
-                    {contents.map((content) => (
+                    {testContents.map((content) => (
                       <MenuItem key={content.id} value={content.id}>
                         {content.original_filename || content.filename} ({content.type})
                       </MenuItem>
@@ -277,6 +286,11 @@ const DisplayDetailPage = () => {
                   Wyczyść test
                 </Button>
               </Box>
+              {isBellClient && testContents.length === 0 && (
+                <Typography color="warning.main" sx={{ mt: 1 }}>
+                  Brak plików audio w bibliotece treści testowych.
+                </Typography>
+              )}
             </CardContent>
           </Card>
         </Grid>
@@ -296,8 +310,3 @@ const DisplayDetailPage = () => {
 }
 
 export default DisplayDetailPage
-
-
-
-
-

@@ -960,24 +960,6 @@ const BellModelPage = () => {
             Pobierz z backendu
           </Button>
           <Button variant="outlined" color="error" onClick={resetModelu}>Reset modelu</Button>
-          <Button
-            variant="outlined"
-            component="a"
-            href="/download/windows_bell_client.exe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Pobierz klienta dzwonków (EXE)
-          </Button>
-          <Button
-            variant="outlined"
-            component="a"
-            href="/download/windows_display_client.exe"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Pobierz klienta treści (EXE)
-          </Button>
         </Stack>
         <TextField
           fullWidth
@@ -1543,6 +1525,16 @@ const BellModelPage = () => {
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ xs: 'stretch', sm: 'center' }} sx={{ mb: 1 }}>
               <Button
                 size="small"
+                variant="contained"
+                component="a"
+                href="/download/windows_bell_client.exe"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Pobierz klienta dzwonkow (EXE)
+              </Button>
+              <Button
+                size="small"
                 variant="outlined"
                 onClick={async () => {
                   try {
@@ -1955,6 +1947,3 @@ const BellModelPage = () => {
 }
 
 export default BellModelPage
-
-
-
