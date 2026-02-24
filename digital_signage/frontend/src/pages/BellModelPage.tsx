@@ -293,7 +293,7 @@ const BellModelPage = () => {
   const [bladBiblioteki, setBladBiblioteki] = useState('')
   const [backendRevision, setBackendRevision] = useState(0)
   const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
-  const [audioBlobUrl, setAudioBlobUrl] = useState<string | null>(null)
+  const audioBlobUrlRef = useRef<string | null>(null)
   const [wybranaPlaylistaId, setWybranaPlaylistaId] = useState<number | null>(null)
   const [utworyPlaylisty, setUtworyPlaylisty] = useState<PlaylistaUtworDto[]>([])
   const [zrodloUtworu, setZrodloUtworu] = useState<'sound' | 'placeholder'>('sound')
@@ -417,11 +417,12 @@ const BellModelPage = () => {
         audioRef.current.pause()
         audioRef.current = null
       }
-      if (audioBlobUrl) {
-        URL.revokeObjectURL(audioBlobUrl)
+      if (audioBlobUrlRef.current) {
+        URL.revokeObjectURL(audioBlobUrlRef.current)
+        audioBlobUrlRef.current = null
       }
     }
-  }, [audioBlobUrl])
+  }, [])
 
   const wybranyTypDnia = useMemo(
     () => draft.typy_dnia.find((t) => t.id === wybranyTypDniaId) || null,
@@ -722,10 +723,10 @@ const BellModelPage = () => {
       const contentType = (res.headers?.['content-type'] as string | undefined) || 'audio/mpeg'
       const blob = new Blob([res.data], { type: contentType })
       nextBlobUrl = URL.createObjectURL(blob)
-      if (audioBlobUrl) {
-        URL.revokeObjectURL(audioBlobUrl)
+      if (audioBlobUrlRef.current) {
+        URL.revokeObjectURL(audioBlobUrlRef.current)
       }
-      setAudioBlobUrl(nextBlobUrl)
+      audioBlobUrlRef.current = nextBlobUrl
       const audio = new Audio(nextBlobUrl)
       audioRef.current = audio
       setOdtwarzanyDzwiekId(id)
@@ -752,9 +753,9 @@ const BellModelPage = () => {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
     }
-    if (audioBlobUrl) {
-      URL.revokeObjectURL(audioBlobUrl)
-      setAudioBlobUrl(null)
+    if (audioBlobUrlRef.current) {
+      URL.revokeObjectURL(audioBlobUrlRef.current)
+      audioBlobUrlRef.current = null
     }
     setOdtwarzanyDzwiekId(null)
   }
@@ -866,7 +867,7 @@ const BellModelPage = () => {
   const nastepnySzablon = nastepneZdarzenie ? mapaSzablonow.get(nastepneZdarzenie.szablon_id) || null : null
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: '100%', overflowX: 'clip' }}>
       <Typography variant="h4" sx={{ mb: 1 }}>Model docelowy dzwonków</Typography>
       <Alert severity="info" sx={{ mb: 2 }}>Model logiki dzwonków. Zapis i odczyt są podłączone do backendu.</Alert>
       <Paper variant="outlined" sx={{ mb: 2, p: 1.5 }}>
@@ -894,7 +895,12 @@ const BellModelPage = () => {
           backgroundColor: 'background.paper',
         }}
       >
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems={{ xs: 'stretch', md: 'center' }}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={1.5}
+          alignItems={{ xs: 'stretch', md: 'center' }}
+          sx={{ flexWrap: { md: 'wrap' }, rowGap: 1, columnGap: 1 }}
+        >
           <Chip
             color={draft.awaryjne.stop_globalny ? 'warning' : 'success'}
             label={draft.awaryjne.stop_globalny ? 'TRYB AWARYJNY: AKTYWNY' : 'TRYB AWARYJNY: NIEAKTYWNY'}
@@ -954,6 +960,15 @@ const BellModelPage = () => {
             Pobierz z backendu
           </Button>
           <Button variant="outlined" color="error" onClick={resetModelu}>Reset modelu</Button>
+          <Button
+            variant="outlined"
+            component="a"
+            href="/download/windows_bell_client.exe"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pobierz klienta Windows (EXE)
+          </Button>
         </Stack>
         <TextField
           fullWidth
@@ -966,7 +981,7 @@ const BellModelPage = () => {
       </Paper>
 
       <Paper sx={{ p: 1 }}>
-        <Tabs value={tab} onChange={(_, v) => setTab(v)}>
+        <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile>
           <Tab label="1. Podgląd dnia" />
           <Tab label="2. Kalendarz i profile" />
           <Tab label="3. Sygnały" />
@@ -1536,7 +1551,7 @@ const BellModelPage = () => {
             {bladBiblioteki && <Alert severity="error" sx={{ mb: 1 }}>{bladBiblioteki}</Alert>}
 
             <Typography variant="subtitle1" sx={{ mb: 1 }}>Biblioteka dźwięków</Typography>
-            <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mb: 2 }}>
               <Button
                 variant="outlined"
                 component="label"
