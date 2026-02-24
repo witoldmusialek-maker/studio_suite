@@ -22,6 +22,11 @@ from app.schemas.display import (
 router = APIRouter(prefix="/displays", tags=["displays"])
 
 
+def _display_name_prefix(width: int, height: int) -> str:
+    # Audio-only clients register as 1x1 "virtual display".
+    return "Bell" if width == 1 and height == 1 else "Display"
+
+
 @router.post("/register", response_model=DisplayResponse, status_code=status.HTTP_201_CREATED)
 async def register_display(
     display_data: DisplayRegister,
@@ -38,6 +43,10 @@ async def register_display(
         existing_display.ip_address = display_data.ip_address
         existing_display.resolution_width = display_data.resolution_width
         existing_display.resolution_height = display_data.resolution_height
+        expected_prefix = _display_name_prefix(display_data.resolution_width, display_data.resolution_height)
+        # Keep custom names, but normalize auto-generated legacy names.
+        if existing_display.name.startswith("Display-") or existing_display.name.startswith("Bell-"):
+            existing_display.name = f"{expected_prefix}-{display_data.mac_address[-6:]}"
         existing_display.status = "online"
         existing_display.last_seen = datetime.utcnow()
         db.commit()
@@ -45,8 +54,9 @@ async def register_display(
         return existing_display
     
     # Utworzenie nowego wyświetlacza
+    name_prefix = _display_name_prefix(display_data.resolution_width, display_data.resolution_height)
     db_display = Display(
-        name=f"Display-{display_data.mac_address[-6:]}",
+        name=f"{name_prefix}-{display_data.mac_address[-6:]}",
         mac_address=display_data.mac_address,
         ip_address=display_data.ip_address,
         resolution_width=display_data.resolution_width,
@@ -300,4 +310,3 @@ async def clear_test_content(
     if display_id in _test_content:
         del _test_content[display_id]
     return {"status": "ok"}
-
