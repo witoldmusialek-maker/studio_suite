@@ -20,6 +20,9 @@ class DisplayClient:
         self.session = requests.Session()
         self.running = False
         self.heartbeat_thread: Optional[threading.Thread] = None
+        self.current_content_id: Optional[int] = None
+        self.current_content_type: Optional[str] = None
+        self.is_playing_video: bool = False
 
     def register(self) -> bool:
         """Rejestracja wyświetlacza na serwerze"""
@@ -73,16 +76,29 @@ class DisplayClient:
             print(f"Błąd pobierania harmonogramu: {e}")
         return []
 
+    def set_runtime_content_state(
+        self,
+        current_content_id: Optional[int],
+        current_content_type: Optional[str],
+        is_playing_video: bool,
+    ) -> None:
+        self.current_content_id = current_content_id
+        self.current_content_type = current_content_type
+        self.is_playing_video = is_playing_video
+
     def send_heartbeat(self, current_content_id: Optional[int] = None) -> bool:
         """Wysłanie heartbeat do serwera"""
         if not self.display_id:
             return False
 
         try:
+            payload_content_id = current_content_id if current_content_id is not None else self.current_content_id
             response = self.session.post(
                 f"{self.server_url}/displays/{self.display_id}/heartbeat",
                 json={
-                    "current_content_id": current_content_id,
+                    "current_content_id": payload_content_id,
+                    "current_content_type": self.current_content_type,
+                    "is_playing_video": self.is_playing_video,
                     "cache_status": {},
                     "errors": [],
                 },

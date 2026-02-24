@@ -47,6 +47,8 @@ class DisplayRegister(BaseModel):
 class DisplayHeartbeat(BaseModel):
     """Schemat heartbeat od wyświetlacza"""
     current_content_id: Optional[int] = None
+    current_content_type: Optional[str] = None
+    is_playing_video: Optional[bool] = None
     cache_status: Optional[dict] = None
     errors: Optional[list] = None
 

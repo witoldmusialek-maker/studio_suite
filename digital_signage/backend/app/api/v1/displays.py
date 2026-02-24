@@ -18,6 +18,7 @@ from app.schemas.display import (
     DisplayResponse,
     DisplayStatusResponse
 )
+from app.services.display_runtime_state import update_display_runtime_state
 
 router = APIRouter(prefix="/displays", tags=["displays"])
 
@@ -90,6 +91,12 @@ async def heartbeat(
     # Aktualizacja statusu
     display.status = "online"
     display.last_seen = datetime.utcnow()
+    update_display_runtime_state(
+        display_id=display_id,
+        current_content_id=heartbeat_data.current_content_id,
+        current_content_type=heartbeat_data.current_content_type,
+        is_playing_video=heartbeat_data.is_playing_video,
+    )
     db.commit()
     
     # Jeśli przywrócono połączenie, utwórz alert

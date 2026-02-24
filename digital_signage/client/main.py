@@ -87,6 +87,7 @@ class DigitalSignageClient:
             # Brak harmonogramu - wyświetl domyślny ekran
             if self.current_content_id is not None:
                 self.current_content_id = None
+                self.client.set_runtime_content_state(None, None, False)
                 print("Brak harmonogramu - oczekiwanie...")
 
     def display_content(self, content_id: int):
@@ -123,6 +124,11 @@ class DigitalSignageClient:
     def _play_content(self, content: dict, file_path: Path):
         """Odtworzenie treści"""
         content_type = content["type"]
+        self.client.set_runtime_content_state(
+            self.current_content_id,
+            content_type,
+            content_type == "video",
+        )
 
         if content_type == "image":
             self.player.display_image(file_path)

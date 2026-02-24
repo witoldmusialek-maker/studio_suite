@@ -55,6 +55,7 @@ from app.services.bell_service import (
     is_bell_playback_blocked,
 )
 from app.services.bell_music_service import get_active_music_schedule, get_active_music_tracks
+from app.services.display_runtime_state import is_display_playing_video
 from app.utils.time_utils import local_now
 from app.config import settings
 import os
@@ -431,6 +432,9 @@ async def get_bell_play_command(
     Sprawdza czy jest dzwonek do odtworzenia w tym momencie
     """
     if not settings.BELL_CLIENT_PLAYBACK_ENABLED:
+        return None
+    if is_display_playing_video(display_id):
+        # When panel is playing video, keep video audio authoritative.
         return None
 
     from app.services.bell_service import get_bells_to_play
@@ -858,6 +862,8 @@ async def get_music_playlist_for_display(
     db: Session = Depends(get_db),
 ):
     """Public endpoint for audio clients: active break playlist for display."""
+    if is_display_playing_video(display_id):
+        return {"active": False}
     schedule = get_active_music_schedule(db, display_id=display_id)
     if not schedule:
         return {"active": False}
