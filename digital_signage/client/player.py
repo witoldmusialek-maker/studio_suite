@@ -39,7 +39,7 @@ class ContentPlayer:
         self.window.setWindowFlags(
             Qt.WindowType.WindowStaysOnTopHint
             | Qt.WindowType.FramelessWindowHint
-            | Qt.WindowType.WindowFullScreenButtonHint
+            | Qt.WindowType.WindowFullscreenButtonHint
         )
         self.window.showFullScreen()
 
@@ -156,4 +156,3 @@ class ContentPlayer:
             sys.exit(self.app.exec())
         else:
             print("Aplikacja w trybie testowym - brak PyQt6")
-

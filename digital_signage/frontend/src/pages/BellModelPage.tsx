@@ -309,7 +309,7 @@ const BellModelPage = () => {
   const [wybranyPlanMiesiacaId, setWybranyPlanMiesiacaId] = useState('')
   const [statusBiblioteki, setStatusBiblioteki] = useState('')
   const [bladBiblioteki, setBladBiblioteki] = useState('')
-  const [backendRevision, setBackendRevision] = useState(0)
+  const [modelReady, setModelReady] = useState(false)
   const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
   const audioBlobUrlRef = useRef<string | null>(null)
   const [wybranaPlaylistaId, setWybranaPlaylistaId] = useState<number | null>(null)
@@ -322,6 +322,8 @@ const BellModelPage = () => {
   const [tytulUtworu, setTytulUtworu] = useState('')
   const [kolejnoscUtworu, setKolejnoscUtworu] = useState('0')
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const autosaveTimerRef = useRef<number | null>(null)
+  const lastSavedSnapshotRef = useRef('')
   useEffect(() => {
     if (!wybranyTypDniaId && draft.typy_dnia.length > 0) {
       setWybranyTypDniaId(draft.typy_dnia[0].id)
@@ -417,11 +419,12 @@ const BellModelPage = () => {
           setDraft(normalized)
           setWybranyTypDniaId(normalized.typy_dnia[0]?.id || '')
           setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
-          setSaveInfo('Model załadowany z backendu.')
+          lastSavedSnapshotRef.current = JSON.stringify(normalized)
         }
-        setBackendRevision(res.data?.revision || 0)
       } catch {
         // fallback pozostaje lokalny
+      } finally {
+        if (mounted) setModelReady(true)
       }
     }
     loadModel()
@@ -429,6 +432,33 @@ const BellModelPage = () => {
       mounted = false
     }
   }, [])
+
+  useEffect(() => {
+    if (!modelReady) return
+    const snapshot = JSON.stringify(draft)
+    if (snapshot === lastSavedSnapshotRef.current) return
+
+    if (autosaveTimerRef.current) {
+      window.clearTimeout(autosaveTimerRef.current)
+    }
+
+    autosaveTimerRef.current = window.setTimeout(async () => {
+      try {
+        const payload = { model_json: draft }
+        await api.put<BellModelConfigResponse>('/bells/runtime/model-config', payload)
+        setSaveInfo('Model zapisany.')
+        lastSavedSnapshotRef.current = snapshot
+      } catch {
+        setSaveInfo('Błąd autozapisu modelu.')
+      }
+    }, 700)
+
+    return () => {
+      if (autosaveTimerRef.current) {
+        window.clearTimeout(autosaveTimerRef.current)
+      }
+    }
+  }, [draft, modelReady])
 
   useEffect(() => {
     return () => {
@@ -885,29 +915,6 @@ const BellModelPage = () => {
     setWybranyProfilMapowania(next.mapowania_profili[0]?.nazwa_profilu || '')
   }
 
-  const zapiszModelDoBackendu = async () => {
-    const payload = { model_json: draft }
-    const res = await api.put<BellModelConfigResponse>('/bells/runtime/model-config', payload)
-    setBackendRevision(res.data?.revision || 0)
-    setSaveInfo(`Model zapisany w backendzie (rev ${res.data?.revision || 0}).`)
-  }
-
-  const pobierzModelZBackendu = async () => {
-    const res = await api.get<BellModelConfigResponse>('/bells/runtime/model-config')
-    const modelJson = res.data?.model_json
-    if (!modelJson || typeof modelJson !== 'object') {
-      setSaveInfo('Brak modelu w backendzie.')
-      setBackendRevision(res.data?.revision || 0)
-      return
-    }
-    const normalized = znormalizujDraft(modelJson)
-    setDraft(normalized)
-    setWybranyTypDniaId(normalized.typy_dnia[0]?.id || '')
-    setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
-    setBackendRevision(res.data?.revision || 0)
-    setSaveInfo(`Model pobrany z backendu (rev ${res.data?.revision || 0}).`)
-  }
-
   const testujKlientaDzwonkow = async (displayId: number) => {
     if (!dzwiekTestowyId) {
       setSaveInfo('Wybierz dzwiek testowy.')
@@ -934,7 +941,6 @@ const BellModelPage = () => {
   return (
     <Box sx={{ maxWidth: '100%', overflowX: 'clip' }}>
       <Typography variant="h4" sx={{ mb: 1 }}>Model docelowy dzwonków</Typography>
-      <Alert severity="info" sx={{ mb: 2 }}>Model logiki dzwonków. Zapis i odczyt są podłączone do backendu.</Alert>
       <Paper variant="outlined" sx={{ mb: 2, p: 1.5 }}>
         <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
           README / HELP
@@ -942,8 +948,7 @@ const BellModelPage = () => {
         <Typography variant="body2" color="text.secondary">
           1) Po deployu sprawdź wersję aplikacji w lewym panelu. 2) Upewnij się, że działają oba profile:
           operator wyświetlaczy i operator dzwonków. 3) Konta tworzysz i resetujesz hasła w sekcji
-          Administracja {'->'} Użytkownicy. 4) Po zmianach modelu dzwonków użyj „Zapisz do backendu” i
-          odśwież klientów.
+          Administracja {'->'} Użytkownicy.
         </Typography>
       </Paper>
       {saveInfo && <Alert severity="success" sx={{ mb: 2 }}>{saveInfo}</Alert>}
@@ -992,37 +997,12 @@ const BellModelPage = () => {
             label={`Następne: ${nastepnySzablon ? `${nastepneZdarzenie?.godzina} ${nastepnySzablon.nazwa}` : 'brak'} `}
             variant="outlined"
           />
-          <Chip label={`Backend rev: ${backendRevision}`} variant="outlined" />
           <Button
             variant="contained"
             color={draft.awaryjne.stop_globalny ? 'success' : 'warning'}
             onClick={() => setDraft((prev) => ({ ...prev, awaryjne: { ...prev.awaryjne, stop_globalny: !prev.awaryjne.stop_globalny } }))}
           >
             {draft.awaryjne.stop_globalny ? 'Wznów dzwonki' : 'Awaryjne STOP'}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={async () => {
-              try {
-                await zapiszModelDoBackendu()
-              } catch (err: any) {
-                setSaveInfo(err?.response?.data?.detail || 'Nie udało się zapisać modelu do backendu.')
-              }
-            }}
-          >
-            Zapisz do backendu
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={async () => {
-              try {
-                await pobierzModelZBackendu()
-              } catch (err: any) {
-                setSaveInfo(err?.response?.data?.detail || 'Nie udało się pobrać modelu z backendu.')
-              }
-            }}
-          >
-            Pobierz z backendu
           </Button>
           <Button variant="outlined" color="error" onClick={resetModelu}>Reset modelu</Button>
         </Stack>
