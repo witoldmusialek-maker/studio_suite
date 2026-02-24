@@ -274,11 +274,22 @@ const DisplaysPage = () => {
             <Typography variant="h4">Wyświetlacze</Typography>
             <Typography color="text.secondary">Podgląd statusu urządzeń i aktualnie emitowanej treści</Typography>
           </Box>
-          {user?.role === 'admin' && (
-            <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={() => handleOpenDialog()}>
-              Dodaj wyświetlacz
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+            <Button
+              variant="outlined"
+              component="a"
+              href="/download/windows_display_client.exe"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Pobierz klienta wideo (EXE)
             </Button>
-          )}
+            {user?.role === 'admin' && (
+              <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={() => handleOpenDialog()}>
+                Dodaj wyświetlacz
+              </Button>
+            )}
+          </Stack>
         </Stack>
 
         <Grid container spacing={1.5} sx={{ mb: 1.5 }}>
