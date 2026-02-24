@@ -60,6 +60,35 @@ Klient:
 - gdy nie ma dzwonka, sprawdza aktywna playliste przerwy (`/bells/display/{display_id}/music-playlist`)
 - odtwarza utwory playlisty po kolei w czasie okna przerwy
 
+## Test zewnętrzny (1 display + 1 radio client)
+
+Dla testu przez internet ustaw w kliencie:
+- `SERVER_URL = "https://dev.witold.ovh/api/v1"`
+
+Przykład uruchomienia bez edycji `config.py` (zmienne środowiskowe):
+
+```bash
+export SERVER_URL="https://dev.witold.ovh/api/v1"
+export MAC_ADDRESS="02:11:22:33:44:55"
+python main.py
+```
+
+Radio client:
+
+```bash
+export SERVER_URL="https://dev.witold.ovh/api/v1"
+export MAC_ADDRESS="02:AA:BB:CC:DD:EE"
+python radio_client.py
+```
+
+Windows bell client (minimal):
+
+```powershell
+$env:SERVER_URL="https://dev.witold.ovh/api/v1"
+$env:MAC_ADDRESS="02:AA:BB:CC:DD:EF"
+python windows_bell_client.py
+```
+
 ## Systemd Service
 
 ```bash

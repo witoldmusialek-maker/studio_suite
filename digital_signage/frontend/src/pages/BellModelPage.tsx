@@ -293,6 +293,7 @@ const BellModelPage = () => {
   const [bladBiblioteki, setBladBiblioteki] = useState('')
   const [backendRevision, setBackendRevision] = useState(0)
   const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
+  const [audioBlobUrl, setAudioBlobUrl] = useState<string | null>(null)
   const [wybranaPlaylistaId, setWybranaPlaylistaId] = useState<number | null>(null)
   const [utworyPlaylisty, setUtworyPlaylisty] = useState<PlaylistaUtworDto[]>([])
   const [zrodloUtworu, setZrodloUtworu] = useState<'sound' | 'placeholder'>('sound')
@@ -416,8 +417,11 @@ const BellModelPage = () => {
         audioRef.current.pause()
         audioRef.current = null
       }
+      if (audioBlobUrl) {
+        URL.revokeObjectURL(audioBlobUrl)
+      }
     }
-  }, [])
+  }, [audioBlobUrl])
 
   const wybranyTypDnia = useMemo(
     () => draft.typy_dnia.find((t) => t.id === wybranyTypDniaId) || null,
@@ -707,13 +711,20 @@ const BellModelPage = () => {
     await odswiezBiblioteke('Dźwięk usunięty z biblioteki.')
   }
   const odsluchajDzwiek = async (id: number) => {
+    let nextBlobUrl: string | null = null
     try {
       setBladBiblioteki('')
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.currentTime = 0
       }
-      const audio = new Audio(`/api/v1/bells/sounds/${id}/file`)
+      const res = await api.get(`/bells/sounds/${id}/file`, { responseType: 'blob' })
+      nextBlobUrl = URL.createObjectURL(res.data)
+      if (audioBlobUrl) {
+        URL.revokeObjectURL(audioBlobUrl)
+      }
+      setAudioBlobUrl(nextBlobUrl)
+      const audio = new Audio(nextBlobUrl)
       audioRef.current = audio
       setOdtwarzanyDzwiekId(id)
       audio.onended = () => setOdtwarzanyDzwiekId((prev) => (prev === id ? null : prev))
@@ -723,6 +734,9 @@ const BellModelPage = () => {
       }
       await audio.play()
     } catch (err: any) {
+      if (nextBlobUrl) {
+        URL.revokeObjectURL(nextBlobUrl)
+      }
       setOdtwarzanyDzwiekId(null)
       setBladBiblioteki(err?.response?.data?.detail || 'Nie udało się odtworzyć dźwięku.')
     }
@@ -732,6 +746,10 @@ const BellModelPage = () => {
     if (audioRef.current) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
+    }
+    if (audioBlobUrl) {
+      URL.revokeObjectURL(audioBlobUrl)
+      setAudioBlobUrl(null)
     }
     setOdtwarzanyDzwiekId(null)
   }

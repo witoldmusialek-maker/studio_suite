@@ -1,6 +1,8 @@
 # Konfiguracja radio-client (T620 / radiowezel)
 
 # URL API (z /api/v1)
+# Lokalnie: "http://localhost:8000/api/v1"
+# Zdalnie: "https://dev.witold.ovh/api/v1"
 SERVER_URL = "http://localhost:8000/api/v1"
 
 # Identyfikator urządzenia audio (rejestrowany jako display)
