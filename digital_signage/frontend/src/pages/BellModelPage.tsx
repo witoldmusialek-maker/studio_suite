@@ -291,8 +291,6 @@ const BellModelPage = () => {
   const [wybranyPlanMiesiacaId, setWybranyPlanMiesiacaId] = useState('')
   const [statusBiblioteki, setStatusBiblioteki] = useState('')
   const [bladBiblioteki, setBladBiblioteki] = useState('')
-  const [wersjaInformacji, setWersjaInformacji] = useState(0)
-  const [ostatniaAktualizacjaInformacji, setOstatniaAktualizacjaInformacji] = useState('')
   const [backendRevision, setBackendRevision] = useState(0)
   const [odtwarzanyDzwiekId, setOdtwarzanyDzwiekId] = useState<number | null>(null)
   const [wybranaPlaylistaId, setWybranaPlaylistaId] = useState<number | null>(null)
@@ -338,8 +336,6 @@ const BellModelPage = () => {
 
   const oznaczAktualizacjeInformacji = (komunikat: string) => {
     setStatusBiblioteki(komunikat)
-    setWersjaInformacji((prev) => prev + 1)
-    setOstatniaAktualizacjaInformacji(new Date().toLocaleString('pl-PL'))
   }
 
   const odswiezBiblioteke = async (komunikat = 'Pobrano aktualne informacje o bibliotece.') => {
@@ -1122,7 +1118,27 @@ const BellModelPage = () => {
                     <TextField fullWidth size="small" label="Nazwa sygnału" value={s.nazwa} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, nazwa: e.target.value } : x) }))} />
                   </Grid>
                   <Grid item xs={12} md={2}>
-                    <TextField fullWidth size="small" select label="Typ" value={s.typ_zdarzenia} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, typ_zdarzenia: e.target.value as TypZdarzenia } : x) }))}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      select
+                      label="Typ"
+                      value={s.typ_zdarzenia}
+                      onChange={(e) =>
+                        setDraft((prev) => ({
+                          ...prev,
+                          szablony_sygnalow: prev.szablony_sygnalow.map((x) =>
+                            x.id === s.id
+                              ? {
+                                  ...x,
+                                  typ_zdarzenia: e.target.value as TypZdarzenia,
+                                  uruchom_playliste: e.target.value === 'break' ? x.uruchom_playliste : '',
+                                }
+                              : x
+                          ),
+                        }))
+                      }
+                    >
                       <MenuItem value="lesson">Lekcja</MenuItem>
                       <MenuItem value="break">Przerwa</MenuItem>
                     </TextField>
@@ -1144,9 +1160,24 @@ const BellModelPage = () => {
                     </TextField>
                   </Grid>
                   <Grid item xs={12} md={4}>
-                    <TextField fullWidth size="small" select label="Playlista po przerwie" value={s.uruchom_playliste || ''} onChange={(e) => setDraft((prev) => ({ ...prev, szablony_sygnalow: prev.szablony_sygnalow.map((x) => x.id === s.id ? { ...x, uruchom_playliste: e.target.value } : x) }))}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      select
+                      label={s.typ_zdarzenia === 'break' ? 'Playlista na przerwę' : 'Playlista'}
+                      value={s.typ_zdarzenia === 'break' ? (s.uruchom_playliste || '') : ''}
+                      disabled={s.typ_zdarzenia !== 'break'}
+                      onChange={(e) =>
+                        setDraft((prev) => ({
+                          ...prev,
+                          szablony_sygnalow: prev.szablony_sygnalow.map((x) =>
+                            x.id === s.id ? { ...x, uruchom_playliste: e.target.value } : x
+                          ),
+                        }))
+                      }
+                    >
                       <MenuItem value="">Brak</MenuItem>
-                      {playlisty.map((p) => <MenuItem key={p.id} value={p.name}>{p.name}</MenuItem>)}
+                      {s.typ_zdarzenia === 'break' && playlisty.map((p) => <MenuItem key={p.id} value={p.name}>{p.name}</MenuItem>)}
                     </TextField>
                   </Grid>
                   <Grid item xs={12} md={2}>
@@ -1462,14 +1493,7 @@ const BellModelPage = () => {
         <Card sx={{ mb: 2 }}>
           <CardContent>
             <Typography variant="h6" sx={{ mb: 1 }}>Biblioteka dźwięków i playlist</Typography>
-            <Alert severity="info" sx={{ mb: 2 }}>
-              Tu jest obsługa biblioteki dźwięków i playlist po refaktorze z /bells/schedules.
-            </Alert>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ xs: 'stretch', sm: 'center' }} sx={{ mb: 1 }}>
-              <Chip size="small" color="info" label={`Wersja informacji: rev ${wersjaInformacji}`} />
-              <Typography variant="caption" color="text.secondary">
-                Ostatnia aktualizacja: {ostatniaAktualizacjaInformacji || 'brak'}
-              </Typography>
               <Button
                 size="small"
                 variant="outlined"
