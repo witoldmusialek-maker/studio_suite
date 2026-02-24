@@ -91,6 +91,15 @@ python windows_bell_client.py
 
 Download EXE (gotowy build):
 - `digital_signage/client/download/windows_bell_client.exe`
+- `digital_signage/client/download/windows_display_client.exe`
+
+Bezpośrednio z serwera:
+- `https://dev.witold.ovh/download/windows_bell_client.exe`
+- `https://dev.witold.ovh/download/windows_display_client.exe`
+
+Rozróżnienie klientów:
+- `windows_bell_client.exe` = klient dzwonków (audio-only, brak wyświetlania treści).
+- `windows_display_client.exe` = klient treści (obrazy/PDF/Excel/wideo na panelu).
 
 ## Systemd Service
 

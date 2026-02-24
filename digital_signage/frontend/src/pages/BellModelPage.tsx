@@ -967,7 +967,16 @@ const BellModelPage = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Pobierz klienta Windows (EXE)
+            Pobierz klienta dzwonków (EXE)
+          </Button>
+          <Button
+            variant="outlined"
+            component="a"
+            href="/download/windows_display_client.exe"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pobierz klienta treści (EXE)
           </Button>
         </Stack>
         <TextField
