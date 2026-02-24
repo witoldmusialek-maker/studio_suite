@@ -89,6 +89,9 @@ $env:MAC_ADDRESS="02:AA:BB:CC:DD:EF"
 python windows_bell_client.py
 ```
 
+Download EXE (gotowy build):
+- `digital_signage/client/download/windows_bell_client.exe`
+
 ## Systemd Service
 
 ```bash
