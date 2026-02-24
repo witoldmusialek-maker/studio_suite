@@ -278,7 +278,7 @@ const DisplaysPage = () => {
             <Button
               variant="outlined"
               component="a"
-              href="/download/windows_display_client_v1.0.0-beta.2026-02-24.8.exe"
+              href="/download/windows_display_client.exe?v=2026-02-24.10"
               target="_blank"
               rel="noopener noreferrer"
             >
