@@ -147,7 +147,6 @@ type BellModelConfigResponse = {
   updated_at?: string | null
 }
 
-const STORAGE_KEY = 'modelDzwonkowDraftV5'
 const uid = () => Math.random().toString(36).slice(2, 10)
 const placeholderKeys = ['BELL_MAIN', 'BELL_SOFT', 'BELL_BREAK_START', 'BELL_BREAK_END']
 const placeholderLabels: Record<string, string> = {
@@ -293,19 +292,10 @@ function Panel({ value, index, children }: PanelProps) {
 }
 
 const BellModelPage = () => {
-  const [draft, setDraft] = useState<ModelDzwonkowDraft>(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (!raw) return domyslnyDraft()
-      return znormalizujDraft(JSON.parse(raw) as Partial<ModelDzwonkowDraft>)
-    } catch {
-      return domyslnyDraft()
-    }
-  })
+  const [draft, setDraft] = useState<ModelDzwonkowDraft>(domyslnyDraft())
 
   const [tab, setTab] = useState(0)
   const [saveInfo, setSaveInfo] = useState('')
-  const [lokalneZmiany, setLokalneZmiany] = useState(false)
   const [wybranyTypDniaId, setWybranyTypDniaId] = useState('')
   const [playlisty, setPlaylisty] = useState<PlaylistaDto[]>([])
   const [dzwiekiBiblioteki, setDzwiekiBiblioteki] = useState<DzwiekBiblioteki[]>([])
@@ -332,17 +322,6 @@ const BellModelPage = () => {
   const [tytulUtworu, setTytulUtworu] = useState('')
   const [kolejnoscUtworu, setKolejnoscUtworu] = useState('0')
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const firstDraftPersistRef = useRef(true)
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(draft))
-    if (firstDraftPersistRef.current) {
-      firstDraftPersistRef.current = false
-    } else {
-      setLokalneZmiany(true)
-    }
-  }, [draft])
-
   useEffect(() => {
     if (!wybranyTypDniaId && draft.typy_dnia.length > 0) {
       setWybranyTypDniaId(draft.typy_dnia[0].id)
@@ -904,8 +883,6 @@ const BellModelPage = () => {
     setDraft(next)
     setWybranyTypDniaId(next.typy_dnia[0]?.id || '')
     setWybranyProfilMapowania(next.mapowania_profili[0]?.nazwa_profilu || '')
-    localStorage.removeItem(STORAGE_KEY)
-    setLokalneZmiany(false)
   }
 
   const zapiszModelDoBackendu = async () => {
@@ -913,7 +890,6 @@ const BellModelPage = () => {
     const res = await api.put<BellModelConfigResponse>('/bells/runtime/model-config', payload)
     setBackendRevision(res.data?.revision || 0)
     setSaveInfo(`Model zapisany w backendzie (rev ${res.data?.revision || 0}).`)
-    setLokalneZmiany(false)
   }
 
   const pobierzModelZBackendu = async () => {
@@ -930,7 +906,6 @@ const BellModelPage = () => {
     setWybranyProfilMapowania(normalized.mapowania_profili[0]?.nazwa_profilu || '')
     setBackendRevision(res.data?.revision || 0)
     setSaveInfo(`Model pobrany z backendu (rev ${res.data?.revision || 0}).`)
-    setLokalneZmiany(false)
   }
 
   const testujKlientaDzwonkow = async (displayId: number) => {
@@ -972,11 +947,6 @@ const BellModelPage = () => {
         </Typography>
       </Paper>
       {saveInfo && <Alert severity="success" sx={{ mb: 2 }}>{saveInfo}</Alert>}
-      {lokalneZmiany && (
-        <Alert severity="warning" sx={{ mb: 2 }}>
-          Zmiany sa zapisane tylko lokalnie w tej przegladarce. Uzyj "Zapisz do backendu", aby byly widoczne dla klientow.
-        </Alert>
-      )}
 
       <Paper
         sx={{
