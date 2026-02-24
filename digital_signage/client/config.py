@@ -2,7 +2,7 @@
 import os
 
 # URL serwera
-SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8000/api/v1")
+SERVER_URL = os.getenv("SERVER_URL", "https://dev.witold.ovh/api/v1")
 
 # MAC address wyświetlacza (do rejestracji)
 # Pobranie MAC address systemu

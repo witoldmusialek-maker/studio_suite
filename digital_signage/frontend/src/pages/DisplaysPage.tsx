@@ -278,11 +278,29 @@ const DisplaysPage = () => {
             <Button
               variant="outlined"
               component="a"
-              href="/download/windows_display_client_v1.0.0-beta.2026-02-24.11.exe"
+              href="/download/windows_display_client_v1.0.0-beta.2026-02-24.12.exe"
               target="_blank"
               rel="noopener noreferrer"
             >
               Pobierz klienta wideo (EXE)
+            </Button>
+            <Button
+              variant="outlined"
+              component="a"
+              href="/download/android_display_client_v1.0.0-beta.2026-02-24.12.apk"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Pobierz Android APK
+            </Button>
+            <Button
+              variant="outlined"
+              component="a"
+              href="/download/android_tv_client_v1.0.0-beta.2026-02-24.12.apk"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Pobierz Android TV APK
             </Button>
             {user?.role === 'admin' && (
               <Button variant="contained" startIcon={<AddIcon />} size="large" onClick={() => handleOpenDialog()}>

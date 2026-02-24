@@ -54,6 +54,7 @@ android-tv-client/app/build/
 # Misc local
 *.apk
 *.aab
+!frontend/public/download/*.apk
 
 # Local Android SDK config
 android-tv-client/local.properties

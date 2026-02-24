@@ -1,4 +1,4 @@
-package com.digitalsignage.client.ui.screen
+﻿package com.digitalsignage.client.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,26 +33,26 @@ fun DisplayScreen(
     val bellCommand by viewModel.bellCommand.collectAsStateWithLifecycle()
     val displayInfo by viewModel.displayInfo.collectAsStateWithLifecycle()
     
-    // Stan dla ustawień
+    // Stan dla ustawieĹ„
     var showSettings by remember { mutableStateOf(false) }
-    var serverUrl by remember { mutableStateOf("http://10.0.2.2:8000/api/v1/") }
+    var serverUrl by remember { mutableStateOf("https://dev.witold.ovh/api/v1/") }
     
     // Stan dla dzwonka
     var isPlayingBell by remember { mutableStateOf(false) }
     
-    // Obsługa błędu
+    // ObsĹ‚uga bĹ‚Ä™du
     LaunchedEffect(error) {
         error?.let {
-            // Pokaż snackbar lub dialog
+            // PokaĹĽ snackbar lub dialog
         }
     }
     
-    // Obsługa dzwonka
+    // ObsĹ‚uga dzwonka
     LaunchedEffect(bellCommand) {
         bellCommand?.let { command ->
             if (command.command == "play" && !isPlayingBell) {
                 isPlayingBell = true
-                // Odtwarzanie dźwięku jest obsługiwane w BellPlayer
+                // Odtwarzanie dĹşwiÄ™ku jest obsĹ‚ugiwane w BellPlayer
             }
         }
     }
@@ -78,9 +78,9 @@ fun DisplayScreen(
                 )
             }
             
-            // Główny ekran wyświetlacza
+            // GĹ‚Ăłwny ekran wyĹ›wietlacza
             else -> {
-                // Treść
+                // TreĹ›Ä‡
                 if (currentContent != null && contentFile != null) {
                     ContentPlayer(
                         content = currentContent!!,
@@ -95,15 +95,15 @@ fun DisplayScreen(
                     )
                 }
                 
-                // Wskaż status połączenia (przezroczysty na górze)
+                // WskaĹĽ status poĹ‚Ä…czenia (prawy dolny rĂłg)
                 ConnectionIndicator(
                     connectionState = connectionState,
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(16.dp)
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 64.dp)
                 )
                 
-                // Przycisk ustawień (ukryty, tylko dla administratora)
+                // Przycisk ustawieĹ„ (ukryty, tylko dla administratora)
                 SettingsButton(
                     onClick = { showSettings = true },
                     modifier = Modifier
@@ -128,7 +128,7 @@ fun DisplayScreen(
         }
     }
     
-    // Dialog ustawień
+    // Dialog ustawieĹ„
     if (showSettings) {
         SettingsDialog(
             serverUrl = serverUrl,
@@ -222,7 +222,7 @@ private fun IdleScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = displayInfo?.name ?: "Wyświetlacz",
+            text = displayInfo?.name ?: "WyĹ›wietlacz",
             style = MaterialTheme.typography.headlineMedium,
             color = Color.White
         )
@@ -231,10 +231,10 @@ private fun IdleScreen(
         
         Text(
             text = when (connectionState) {
-                ConnectionState.CONNECTED -> "Oczekiwanie na treść..."
-                ConnectionState.CONNECTING -> "Łączenie z serwerem..."
-                ConnectionState.DISCONNECTED -> "Brak połączenia"
-                ConnectionState.ERROR -> "Błąd połączenia"
+                ConnectionState.CONNECTED -> "Oczekiwanie na treĹ›Ä‡..."
+                ConnectionState.CONNECTING -> "ĹÄ…czenie z serwerem..."
+                ConnectionState.DISCONNECTED -> "Brak poĹ‚Ä…czenia"
+                ConnectionState.ERROR -> "BĹ‚Ä…d poĹ‚Ä…czenia"
             },
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Gray
@@ -313,7 +313,7 @@ private fun SettingsDialog(
                     onClick = onClearCache,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Wyczyść cache")
+                    Text("WyczyĹ›Ä‡ cache")
                 }
             }
         },
