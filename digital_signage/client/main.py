@@ -48,6 +48,9 @@ class DigitalSignageClient:
         try:
             while True:
                 self.player.pump_events()
+                if self.player.exit_requested:
+                    _log("Zamknięcie awaryjne klienta (Ctrl+Alt+Q)")
+                    break
 
                 if not self.client.display_id:
                     if not self.client.register():
@@ -76,6 +79,7 @@ class DigitalSignageClient:
                 time.sleep(0.1)
         except KeyboardInterrupt:
             _log("Zatrzymywanie klienta")
+        finally:
             self.client.stop_heartbeat()
             sys.exit(0)
 

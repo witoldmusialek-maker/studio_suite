@@ -4,10 +4,11 @@ Odtwarzanie treści na wyświetlaczu.
 from pathlib import Path
 from typing import Optional
 import sys
+import time
 
 try:
     from PyQt6.QtCore import Qt, QUrl
-    from PyQt6.QtGui import QPixmap, QTransform
+    from PyQt6.QtGui import QPixmap, QTransform, QShortcut, QKeySequence
     from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
     PYQT6_AVAILABLE = True
 except ImportError:
@@ -39,6 +40,9 @@ class ContentPlayer:
         self.audio_output: Optional[QAudioOutput] = None
         self.status_dot: Optional[QLabel] = None
         self.current_content_path: Optional[Path] = None
+        self.exit_requested: bool = False
+        self.last_media_error: Optional[str] = None
+        self.exit_shortcut: Optional[QShortcut] = None
 
     def init_display(self) -> None:
         if not PYQT6_AVAILABLE:
@@ -48,13 +52,13 @@ class ContentPlayer:
         self.app = QApplication.instance() or QApplication(sys.argv)
         self.window = QWidget()
         self.window.setWindowTitle("Digital Signage")
-        self.window.setWindowFlags(
-            Qt.WindowType.WindowStaysOnTopHint
-            | Qt.WindowType.FramelessWindowHint
-            | Qt.WindowType.WindowFullscreenButtonHint
-        )
-        self.window.setCursor(Qt.CursorShape.BlankCursor)
-        self.app.setOverrideCursor(Qt.CursorShape.BlankCursor)
+        window_flags = Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowFullscreenButtonHint
+        if config.WINDOW_TOPMOST:
+            window_flags |= Qt.WindowType.WindowStaysOnTopHint
+        self.window.setWindowFlags(window_flags)
+        if config.HIDE_CURSOR:
+            self.window.setCursor(Qt.CursorShape.BlankCursor)
+            self.app.setOverrideCursor(Qt.CursorShape.BlankCursor)
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -69,7 +73,8 @@ class ContentPlayer:
             self.video_widget = QVideoWidget()
             self.video_widget.setStyleSheet("background-color: black;")
             self.video_widget.hide()
-            self.video_widget.setCursor(Qt.CursorShape.BlankCursor)
+            if config.HIDE_CURSOR:
+                self.video_widget.setCursor(Qt.CursorShape.BlankCursor)
             layout.addWidget(self.video_widget)
 
             self.audio_output = QAudioOutput()
@@ -77,8 +82,10 @@ class ContentPlayer:
             self.media_player.setAudioOutput(self.audio_output)
             self.media_player.setVideoOutput(self.video_widget)
             self.media_player.mediaStatusChanged.connect(self._on_media_status_changed)
+            self.media_player.errorOccurred.connect(self._on_media_error)
 
         self.window.setLayout(layout)
+        self._bind_shortcuts()
 
         self.status_dot = QLabel(self.window)
         self.status_dot.setFixedSize(14, 14)
@@ -112,6 +119,17 @@ class ContentPlayer:
             self._position_status_dot()
             self.app.processEvents()
 
+    def _bind_shortcuts(self) -> None:
+        if not self.window:
+            return
+        # Awaryjne wyjście: Ctrl+Alt+Q
+        self.exit_shortcut = QShortcut(QKeySequence("Ctrl+Alt+Q"), self.window)
+        self.exit_shortcut.activated.connect(self.request_exit)
+
+    def request_exit(self) -> None:
+        self.exit_requested = True
+        self.display_message("Zamykanie klienta...")
+
     def _show_label(self) -> None:
         if self.label:
             self.label.show()
@@ -138,6 +156,12 @@ class ContentPlayer:
         if status == QMediaPlayer.MediaStatus.EndOfMedia:
             self.media_player.setPosition(0)
             self.media_player.play()
+
+    def _on_media_error(self, error, error_string: str) -> None:
+        if error == QMediaPlayer.Error.NoError:
+            self.last_media_error = None
+            return
+        self.last_media_error = error_string or str(error)
 
     def display_message(self, message: str) -> None:
         if not PYQT6_AVAILABLE:
@@ -235,13 +259,28 @@ class ContentPlayer:
             return False
 
         try:
+            self.last_media_error = None
             self._show_video()
             self.media_player.stop()
             self.media_player.setSource(QUrl.fromLocalFile(str(video_path.resolve())))
             self.media_player.play()
-            self.current_content_path = video_path
-            self.pump_events()
-            return True
+
+            deadline = time.monotonic() + 1.5
+            while time.monotonic() < deadline:
+                self.pump_events()
+                if self.last_media_error:
+                    self.display_message(f"Błąd odtwarzania wideo: {self.last_media_error}")
+                    return False
+                if self.media_player.playbackState() in (
+                    QMediaPlayer.PlaybackState.PlayingState,
+                    QMediaPlayer.PlaybackState.PausedState,
+                ):
+                    self.current_content_path = video_path
+                    return True
+                time.sleep(0.05)
+
+            self.display_message("Wideo nie wystartowało (brak kodeka lub błąd pliku)")
+            return False
         except Exception as e:
             print(f"Błąd odtwarzania wideo: {e}")
             self.display_message("Błąd odtwarzania wideo")
