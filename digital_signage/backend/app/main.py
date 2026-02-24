@@ -1,5 +1,5 @@
-"""
-GĹ‚Ăłwny plik aplikacji FastAPI
+﻿"""
+GÄąâ€šÄ‚Ĺ‚wny plik aplikacji FastAPI
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,12 +10,12 @@ from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
 
-APP_VERSION = "v1.0.0-beta.2026-02-24.10"
+APP_VERSION = "v1.0.0-beta.2026-02-24.11"
 
 # Utworzenie aplikacji
 app = FastAPI(
     title="Digital Signage API",
-    description="API dla systemu zarzÄ…dzania treĹ›ciÄ… wyĹ›wietlaczy",
+    description="API dla systemu zarzĂ„â€¦dzania treÄąâ€şciĂ„â€¦ wyÄąâ€şwietlaczy",
     version=APP_VERSION,
     debug=settings.DEBUG
 )
@@ -29,7 +29,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Rejestracja routerĂłw
+# Rejestracja routerÄ‚Ĺ‚w
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
 
@@ -46,7 +46,7 @@ def startup() -> None:
 
 @app.get("/")
 async def root():
-    """Endpoint gĹ‚Ăłwny"""
+    """Endpoint gÄąâ€šÄ‚Ĺ‚wny"""
     return {
         "message": "Digital Signage API",
         "version": APP_VERSION,
