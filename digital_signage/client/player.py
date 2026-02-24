@@ -1,5 +1,5 @@
 ﻿"""
-Content playback for display client.
+Odtwarzanie treści na wyświetlaczu.
 """
 from pathlib import Path
 from typing import Optional
@@ -12,13 +12,13 @@ try:
     PYQT6_AVAILABLE = True
 except ImportError:
     PYQT6_AVAILABLE = False
-    print("PyQt6 nie jest dostepny - tryb testowy")
+    print("PyQt6 nie jest dostępny - tryb testowy")
 
 import config
 
 
 class ContentPlayer:
-    """Display content player."""
+    """Odtwarzacz treści wyświetlacza."""
 
     def __init__(self):
         self.app: Optional[QApplication] = None
@@ -30,7 +30,7 @@ class ContentPlayer:
 
     def init_display(self) -> None:
         if not PYQT6_AVAILABLE:
-            print("PyQt6 nie dostepny - tryb testowy")
+            print("PyQt6 nie jest dostępny - tryb testowy")
             return
 
         self.app = QApplication.instance() or QApplication(sys.argv)
@@ -42,6 +42,7 @@ class ContentPlayer:
             | Qt.WindowType.WindowFullscreenButtonHint
         )
         self.window.setCursor(Qt.CursorShape.BlankCursor)
+        self.app.setOverrideCursor(Qt.CursorShape.BlankCursor)
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -49,7 +50,7 @@ class ContentPlayer:
         self.label = QLabel()
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet("background-color: black; color: white; font-size: 28px;")
-        self.label.setText("Polaczono z serwerem\nOczekiwanie na tresc...")
+        self.label.setText("Połączono z serwerem\nOczekiwanie na treść...")
         layout.addWidget(self.label)
 
         self.window.setLayout(layout)
@@ -96,17 +97,17 @@ class ContentPlayer:
         self.label.setText(message)
         self.pump_events()
 
-    def display_image(self, image_path: Path) -> None:
+    def display_image(self, image_path: Path) -> bool:
         if not PYQT6_AVAILABLE:
-            print(f"Wyswietlanie obrazu: {image_path}")
-            return
+            print(f"Wyświetlanie obrazu: {image_path}")
+            return True
         if not self.label:
-            return
+            return False
 
         pixmap = QPixmap(str(image_path))
         if pixmap.isNull():
-            self.display_message("Nie mozna wczytac pliku obrazu")
-            return
+            self.display_message("Nie można wczytać pliku obrazu")
+            return False
 
         if config.ORIENTATION != 0:
             transform = QTransform().rotate(config.ORIENTATION)
@@ -123,8 +124,9 @@ class ContentPlayer:
         self.label.setPixmap(scaled_pixmap)
         self.current_content_path = image_path
         self.pump_events()
+        return True
 
-    def display_pdf(self, pdf_path: Path) -> None:
+    def display_pdf(self, pdf_path: Path) -> bool:
         try:
             from pdf2image import convert_from_path
 
@@ -132,11 +134,15 @@ class ContentPlayer:
             if images:
                 temp_image = pdf_path.parent / f"{pdf_path.stem}_temp.jpg"
                 images[0].save(temp_image, "JPEG")
-                self.display_image(temp_image)
+                return self.display_image(temp_image)
+            self.display_message("Brak stron PDF do wyświetlenia")
+            return False
         except Exception as e:
-            print(f"Blad wyswietlania PDF: {e}")
+            print(f"Błąd wyświetlania PDF: {e}")
+            self.display_message("Błąd renderowania PDF")
+            return False
 
-    def display_excel(self, excel_path: Path) -> None:
+    def display_excel(self, excel_path: Path) -> bool:
         try:
             import openpyxl
             from PIL import Image, ImageDraw
@@ -157,18 +163,25 @@ class ContentPlayer:
 
             temp_image = excel_path.parent / f"{excel_path.stem}_temp.jpg"
             img.save(temp_image, "JPEG")
-            self.display_image(temp_image)
+            return self.display_image(temp_image)
         except Exception as e:
-            print(f"Blad wyswietlania Excel: {e}")
+            print(f"Błąd wyświetlania Excel: {e}")
+            self.display_message("Błąd renderowania pliku Excel")
+            return False
 
-    def display_video(self, video_path: Path) -> None:
+    def display_video(self, video_path: Path) -> bool:
         if not PYQT6_AVAILABLE:
-            print(f"Odtwarzanie video: {video_path}")
-            return
+            print(f"Odtwarzanie wideo: {video_path}")
+            return True
 
         try:
             import vlc
+        except Exception as e:
+            print(f"Błąd importu VLC: {e}")
+            self.display_message("Brak biblioteki VLC do odtwarzania wideo")
+            return False
 
+        try:
             instance = vlc.Instance()
             player = instance.media_player_new()
             media = instance.media_new(str(video_path))
@@ -184,11 +197,18 @@ class ContentPlayer:
                     pass
 
             self.vlc_player = player
-            player.play()
+            rc = player.play()
+            if rc == -1:
+                self.display_message("Nie udało się uruchomić odtwarzania wideo")
+                return False
+
             self.current_content_path = video_path
             self.pump_events()
+            return True
         except Exception as e:
-            print(f"Blad odtwarzania video: {e}")
+            print(f"Błąd odtwarzania wideo: {e}")
+            self.display_message("Błąd odtwarzania wideo")
+            return False
 
     def run(self) -> None:
         if PYQT6_AVAILABLE and self.app:
