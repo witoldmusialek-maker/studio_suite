@@ -263,10 +263,10 @@ async def send_test_content(
     if not content:
         raise HTTPException(status_code=404, detail="Content not found")
 
-    if _is_audio_only_display(display) and (content.type or "").lower() != "audio":
+    if _is_audio_only_display(display):
         raise HTTPException(
             status_code=400,
-            detail="Bell client accepts only audio test content",
+            detail="Bell client does not support display test-content. Use bells module.",
         )
     
     # Zapisz test content dla tego wyświetlacza
@@ -291,6 +291,9 @@ async def get_test_content(
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(status_code=404, detail="Display not found")
+
+    if _is_audio_only_display(display):
+        return {"content": None}
     
     # Sprawdź czy jest test content
     test_data = _test_content.get(display_id)

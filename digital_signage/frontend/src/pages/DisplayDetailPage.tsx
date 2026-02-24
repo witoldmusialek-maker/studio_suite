@@ -117,9 +117,6 @@ const DisplayDetailPage = () => {
   const isBellClient =
     (display.resolution_width === 1 && display.resolution_height === 1) ||
     display.name.startsWith('Bell-')
-  const testContents = isBellClient
-    ? contents.filter((content) => content.type === 'audio')
-    : contents
 
   return (
     <Box>
@@ -252,7 +249,7 @@ const DisplayDetailPage = () => {
               </Typography>
               <Typography color="text.secondary" sx={{ mb: 2 }}>
                 {isBellClient
-                  ? 'Dla klienta dzwonków dostępne są tylko pliki audio.'
+                  ? 'Klient dzwonkow nie obsluguje test-content dla wyswietlaczy. Uzyj sekcji Dzwonki.'
                   : 'Treść testowa zostanie natychmiast wyświetlona na tym wyświetlaczu, pomijając harmonogram.'}
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -262,8 +259,9 @@ const DisplayDetailPage = () => {
                     value={selectedContentId}
                     label="Wybierz treść"
                     onChange={(e) => setSelectedContentId(e.target.value as number)}
+                    disabled={isBellClient}
                   >
-                    {testContents.map((content) => (
+                    {contents.map((content) => (
                       <MenuItem key={content.id} value={content.id}>
                         {content.original_filename || content.filename} ({content.type})
                       </MenuItem>
@@ -274,7 +272,7 @@ const DisplayDetailPage = () => {
                   variant="contained"
                   startIcon={<SendIcon />}
                   onClick={sendTestContent}
-                  disabled={!selectedContentId || sending}
+                  disabled={isBellClient || !selectedContentId || sending}
                 >
                   {sending ? 'Wysyłanie...' : 'Wyślij'}
                 </Button>
@@ -282,15 +280,11 @@ const DisplayDetailPage = () => {
                   variant="outlined"
                   color="warning"
                   onClick={clearTestContent}
+                  disabled={isBellClient}
                 >
                   Wyczyść test
                 </Button>
               </Box>
-              {isBellClient && testContents.length === 0 && (
-                <Typography color="warning.main" sx={{ mt: 1 }}>
-                  Brak plików audio w bibliotece treści testowych.
-                </Typography>
-              )}
             </CardContent>
           </Card>
         </Grid>

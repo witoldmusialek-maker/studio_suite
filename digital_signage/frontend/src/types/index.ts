@@ -26,7 +26,7 @@ export interface Content {
   id: number
   filename: string
   original_filename: string
-  type: 'image' | 'pdf' | 'excel' | 'video' | 'audio'
+  type: 'image' | 'pdf' | 'excel' | 'video'
   file_path: string
   thumbnail_path?: string
   video_processed: boolean
