@@ -1,9 +1,9 @@
 # AGENT START (Digital Signage)
 
 ## Cel
-Szybki start bez pe³nego skanowania repo.
+Szybki start bez peÅ‚nego skanowania repo.
 
-## Czytaj w tej kolejnoœci (max 2-3 min)
+## Czytaj w tej kolejnoÅ›ci (max 2-3 min)
 1. `digital_signage/docs/AGENT_MAP.md`
 2. `digital_signage/CONTINUE.md`
 3. `digital_signage/docker-compose.yml`
@@ -16,19 +16,19 @@ Szybki start bez pe³nego skanowania repo.
 - `docker compose -f digital_signage/docker-compose.yml logs backend --tail 80`
 - `docker compose -f digital_signage/docker-compose.yml logs frontend --tail 80`
 
-## Szybka diagnostyka (dev1)
+## Szybka diagnostyka (dev1 app host)
 - `ssh witold@192.168.200.116`
 - `cd ~/projects/projekt2_repo/digital_signage`
 - `docker compose ps`
 - `docker compose logs backend --tail 80`
 - `docker compose logs frontend --tail 80`
 
-## Najczêstsze pu³apki
-- mixed content (`http://` przy `https://`) -> sprawdŸ `frontend/src/services/api.ts` i `VITE_API_URL`
-- CORS preflight 400 -> sprawdŸ `backend/.env` `CORS_ORIGINS`
+## NajczÄ™stsze puÅ‚apki
+- mixed content (`http://` przy `https://`) -> sprawdÅº `frontend/src/services/api.ts` i `VITE_API_URL`
+- CORS preflight 400 -> sprawdÅº `backend/.env` `CORS_ORIGINS`
 - websocket error na dev2.witold.ovh -> akceptowalne (LAN-only funkcja)
 
 ## Definition of done (deploy)
 1. `git push` na `master`
 2. `dev1`: `git pull && docker compose up -d --build`
-3. `https://dev2.witold.ovh/` dzia³a i brak czerwonych b³êdów API w Network
+3. gateway ma aktywny vhost `dev2.witold.ovh` (`setup-gateway-dev2-nginx.ps1`)`r`n4. `https://dev2.witold.ovh/` dziaÅ‚a i brak czerwonych bÅ‚Ä™dÃ³w API w Network

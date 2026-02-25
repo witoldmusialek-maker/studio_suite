@@ -78,3 +78,8 @@ SSH
 Alias w C:\Users\Wit\.ssh\config:
 
 dev1 -> 192.168.200.116
+
+Gateway routing
+- Host: gateway (192.168.200.115)
+- Nginx config dir: /home/witold/gateway-services/nginx/conf.d
+- Script: digital_signage/scripts/setup-gateway-dev2-nginx.ps1
