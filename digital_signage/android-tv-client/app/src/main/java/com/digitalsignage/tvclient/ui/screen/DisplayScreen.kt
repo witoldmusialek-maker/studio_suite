@@ -1,4 +1,4 @@
-﻿package com.digitalsignage.tvclient.ui.screen
+package com.digitalsignage.tvclient.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,8 +18,8 @@ import com.digitalsignage.tvclient.ui.components.ContentPlayer
 import com.digitalsignage.tvclient.ui.viewmodel.MainViewModel
 
 /**
- * GĹ‚Ăłwny ekran wyĹ›wietlacza dla Android TV
- * Zoptymalizowany pod kÄ…tem duĹĽych ekranĂłw i nawigacji pilotem
+ * Główny ekran wyświetlacza dla Android TV
+ * Zoptymalizowany pod kątem dużych ekranów i nawigacji pilotem
  */
 @Composable
 fun DisplayScreen(
@@ -36,9 +36,9 @@ fun DisplayScreen(
     val contentFile by viewModel.contentFile.collectAsStateWithLifecycle()
     val displayInfo by viewModel.displayInfo.collectAsStateWithLifecycle()
     
-    // Stan dla ustawieĹ„
+    // Stan dla ustawień
     var showSettings by remember { mutableStateOf(false) }
-    var serverUrl by remember { mutableStateOf("https://dev.witold.ovh/api/v1/") }
+    var serverUrl by remember { mutableStateOf("https://dev2.witold.ovh/api/v1/") }
     
     Box(
         modifier = Modifier
@@ -60,9 +60,9 @@ fun DisplayScreen(
                 )
             }
             
-            // GĹ‚Ăłwny ekran wyĹ›wietlacza
+            // Główny ekran wyświetlacza
             else -> {
-                // TreĹ›Ä‡
+                // Treść
                 if (currentContent != null && contentFile != null) {
                     ContentPlayer(
                         content = currentContent!!,
@@ -77,7 +77,7 @@ fun DisplayScreen(
                     )
                 }
                 
-                // WskaĹşnik statusu poĹ‚Ä…czenia (prawy dolny rĂłg)
+                // Wskaźnik statusu połączenia (prawy dolny róg)
                 ConnectionIndicator(
                     connectionState = connectionState,
                     modifier = Modifier
@@ -90,7 +90,7 @@ fun DisplayScreen(
 }
 
 /**
- * Ekran konfiguracji dla TV - duĹĽe elementy UI
+ * Ekran konfiguracji dla TV - duże elementy UI
  */
 @Composable
 private fun SetupScreen(
@@ -117,7 +117,7 @@ private fun SetupScreen(
         Spacer(modifier = Modifier.height(48.dp))
         
         Text(
-            text = "WprowadĹş adres serwera:",
+            text = "Wprowadź adres serwera:",
             style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
             color = Color.White,
             textAlign = TextAlign.Center
@@ -135,7 +135,7 @@ private fun SetupScreen(
         Spacer(modifier = Modifier.height(48.dp))
         
         Text(
-            text = if (isLoading) "ĹÄ…czenie..." else "NaciĹ›nij OK aby poĹ‚Ä…czyÄ‡",
+            text = if (isLoading) "Łączenie..." else "Naciśnij OK aby połączyć",
             style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
             color = if (isLoading) Color.Yellow else Color.Green,
             textAlign = TextAlign.Center
@@ -154,7 +154,7 @@ private fun SetupScreen(
 }
 
 /**
- * Ekran oczekiwania - duĹĽy tekst dla TV
+ * Ekran oczekiwania - duży tekst dla TV
  */
 @Composable
 private fun IdleScreen(
@@ -167,7 +167,7 @@ private fun IdleScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = displayInfo?.name ?: "WyĹ›wietlacz TV",
+            text = displayInfo?.name ?: "Wyświetlacz TV",
             style = androidx.compose.material3.MaterialTheme.typography.displayMedium,
             color = Color.White,
             textAlign = TextAlign.Center
@@ -177,10 +177,10 @@ private fun IdleScreen(
         
         Text(
             text = when (connectionState) {
-                ConnectionState.CONNECTED -> "Oczekiwanie na treĹ›Ä‡..."
-                ConnectionState.CONNECTING -> "ĹÄ…czenie z serwerem..."
-                ConnectionState.DISCONNECTED -> "Brak poĹ‚Ä…czenia"
-                ConnectionState.ERROR -> "BĹ‚Ä…d poĹ‚Ä…czenia"
+                ConnectionState.CONNECTED -> "Oczekiwanie na treść..."
+                ConnectionState.CONNECTING -> "Łączenie z serwerem..."
+                ConnectionState.DISCONNECTED -> "Brak połączenia"
+                ConnectionState.ERROR -> "Błąd połączenia"
             },
             style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
             color = Color.Gray,
@@ -200,7 +200,7 @@ private fun IdleScreen(
 }
 
 /**
- * WskaĹşnik poĹ‚Ä…czenia - wiÄ™kszy dla TV
+ * Wskaźnik połączenia - większy dla TV
  */
 @Composable
 private fun ConnectionIndicator(

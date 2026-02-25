@@ -23,7 +23,7 @@ export default defineConfig({
       clientPort: devPort,
       port: devPort,
     },
-    allowedHosts: ['dev.witold.ovh', 'localhost', '127.0.0.1'],
+    allowedHosts: ['dev2.witold.ovh', 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
         target: proxyTarget,

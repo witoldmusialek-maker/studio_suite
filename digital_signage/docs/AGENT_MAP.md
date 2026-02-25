@@ -17,13 +17,13 @@
 - Runtime env (nie commitowaæ): `backend/.env`
 
 ## Routing produkcyjny (obecny)
-- FE: `https://dev.witold.ovh/`
-- API: `https://dev.witold.ovh/api/v1/...`
+- FE: `https://dev2.witold.ovh/`
+- API: `https://dev2.witold.ovh/api/v1/...`
 
 ## Deploy flow
 1. Lokalnie: commit/push `master`
 2. dev1:
-   - `cd ~/projects/digital_signage_repo`
+   - `cd ~/projects/projekt2_repo`
    - `git pull origin master`
    - `cd digital_signage`
    - `docker compose up -d --build`

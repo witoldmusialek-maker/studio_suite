@@ -2,7 +2,7 @@
 
 # URL serwera
 # Lokalnie: "http://localhost:8000/api/v1"
-# Zdalnie: "https://dev.witold.ovh/api/v1"
+# Zdalnie: "https://dev2.witold.ovh/api/v1"
 SERVER_URL = "http://localhost:8000/api/v1"
 
 # MAC address wyświetlacza (do rejestracji)

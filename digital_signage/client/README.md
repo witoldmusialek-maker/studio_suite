@@ -63,12 +63,12 @@ Klient:
 ## Test zewnętrzny (1 display + 1 radio client)
 
 Dla testu przez internet ustaw w kliencie:
-- `SERVER_URL = "https://dev.witold.ovh/api/v1"`
+- `SERVER_URL = "https://dev2.witold.ovh/api/v1"`
 
 Przykład uruchomienia bez edycji `config.py` (zmienne środowiskowe):
 
 ```bash
-export SERVER_URL="https://dev.witold.ovh/api/v1"
+export SERVER_URL="https://dev2.witold.ovh/api/v1"
 export MAC_ADDRESS="02:11:22:33:44:55"
 python main.py
 ```
@@ -76,7 +76,7 @@ python main.py
 Radio client:
 
 ```bash
-export SERVER_URL="https://dev.witold.ovh/api/v1"
+export SERVER_URL="https://dev2.witold.ovh/api/v1"
 export MAC_ADDRESS="02:AA:BB:CC:DD:EE"
 python radio_client.py
 ```
@@ -84,7 +84,7 @@ python radio_client.py
 Windows bell client (minimal):
 
 ```powershell
-$env:SERVER_URL="https://dev.witold.ovh/api/v1"
+$env:SERVER_URL="https://dev2.witold.ovh/api/v1"
 $env:MAC_ADDRESS="02:AA:BB:CC:DD:EF"
 python windows_bell_client.py
 ```
@@ -94,8 +94,8 @@ Download EXE (gotowy build):
 - `digital_signage/client/download/windows_display_client.exe`
 
 Bezpośrednio z serwera:
-- `https://dev.witold.ovh/download/windows_bell_client.exe`
-- `https://dev.witold.ovh/download/windows_display_client.exe`
+- `https://dev2.witold.ovh/download/windows_bell_client.exe`
+- `https://dev2.witold.ovh/download/windows_display_client.exe`
 
 Rozróżnienie klientów:
 - `windows_bell_client.exe` = klient dzwonków (audio-only, brak wyświetlania treści).

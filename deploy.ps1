@@ -3,8 +3,8 @@
 
 $DEV_HOST = "192.168.200.116"
 $DEV_USER = "witold"
-$DEV_PATH = "/home/witold/digital_signage"  # Zmień jeśli ścieżka jest inna
-$LOCAL_PATH = "c:\Users\Wit\projekty\cline\projekt1\digital_signage"
+$DEV_PATH = "/home/witold/projects/projekt2_repo/digital_signage"  # Zmień jeśli ścieżka jest inna
+$LOCAL_PATH = "c:\Users\Wit\projekty\cline\projekt2\digital_signage"
 
 Write-Host "=== Deploy Digital Signage na dev1 ===" -ForegroundColor Cyan
 Write-Host ""

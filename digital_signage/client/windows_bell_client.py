@@ -24,7 +24,7 @@ from typing import Optional
 import requests
 
 
-SERVER_URL = os.getenv("SERVER_URL", "https://dev.witold.ovh/api/v1").rstrip("/")
+SERVER_URL = os.getenv("SERVER_URL", "https://dev2.witold.ovh/api/v1").rstrip("/")
 MAC_ADDRESS = os.getenv(
     "MAC_ADDRESS",
     ":".join([f"{(uuid.getnode() >> bits) & 0xFF:02x}" for bits in range(0, 2 * 6, 2)][::-1]),

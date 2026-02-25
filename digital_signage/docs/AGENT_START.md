@@ -18,7 +18,7 @@ Szybki start bez pe³nego skanowania repo.
 
 ## Szybka diagnostyka (dev1)
 - `ssh witold@192.168.200.116`
-- `cd ~/projects/digital_signage_repo/digital_signage`
+- `cd ~/projects/projekt2_repo/digital_signage`
 - `docker compose ps`
 - `docker compose logs backend --tail 80`
 - `docker compose logs frontend --tail 80`
@@ -26,9 +26,9 @@ Szybki start bez pe³nego skanowania repo.
 ## Najczêstsze pu³apki
 - mixed content (`http://` przy `https://`) -> sprawdŸ `frontend/src/services/api.ts` i `VITE_API_URL`
 - CORS preflight 400 -> sprawdŸ `backend/.env` `CORS_ORIGINS`
-- websocket error na dev.witold.ovh -> akceptowalne (LAN-only funkcja)
+- websocket error na dev2.witold.ovh -> akceptowalne (LAN-only funkcja)
 
 ## Definition of done (deploy)
 1. `git push` na `master`
 2. `dev1`: `git pull && docker compose up -d --build`
-3. `https://dev.witold.ovh/` dzia³a i brak czerwonych b³êdów API w Network
+3. `https://dev2.witold.ovh/` dzia³a i brak czerwonych b³êdów API w Network

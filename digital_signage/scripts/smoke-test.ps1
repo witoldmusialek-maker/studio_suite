@@ -1,5 +1,5 @@
 param(
-  [string]$BaseUrl = "https://dev.witold.ovh"
+  [string]$BaseUrl = "https://dev2.witold.ovh"
 )
 
 $ErrorActionPreference = "Stop"

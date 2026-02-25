@@ -1,4 +1,4 @@
-﻿package com.digitalsignage.client.ui.screen
+package com.digitalsignage.client.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,26 +33,26 @@ fun DisplayScreen(
     val bellCommand by viewModel.bellCommand.collectAsStateWithLifecycle()
     val displayInfo by viewModel.displayInfo.collectAsStateWithLifecycle()
     
-    // Stan dla ustawieĹ„
+    // Stan dla ustawień
     var showSettings by remember { mutableStateOf(false) }
-    var serverUrl by remember { mutableStateOf("https://dev.witold.ovh/api/v1/") }
+    var serverUrl by remember { mutableStateOf("https://dev2.witold.ovh/api/v1/") }
     
     // Stan dla dzwonka
     var isPlayingBell by remember { mutableStateOf(false) }
     
-    // ObsĹ‚uga bĹ‚Ä™du
+    // Obsługa błędu
     LaunchedEffect(error) {
         error?.let {
-            // PokaĹĽ snackbar lub dialog
+            // Pokaż snackbar lub dialog
         }
     }
     
-    // ObsĹ‚uga dzwonka
+    // Obsługa dzwonka
     LaunchedEffect(bellCommand) {
         bellCommand?.let { command ->
             if (command.command == "play" && !isPlayingBell) {
                 isPlayingBell = true
-                // Odtwarzanie dĹşwiÄ™ku jest obsĹ‚ugiwane w BellPlayer
+                // Odtwarzanie dźwięku jest obsługiwane w BellPlayer
             }
         }
     }
@@ -78,9 +78,9 @@ fun DisplayScreen(
                 )
             }
             
-            // GĹ‚Ăłwny ekran wyĹ›wietlacza
+            // Główny ekran wyświetlacza
             else -> {
-                // TreĹ›Ä‡
+                // Treść
                 if (currentContent != null && contentFile != null) {
                     ContentPlayer(
                         content = currentContent!!,
@@ -95,7 +95,7 @@ fun DisplayScreen(
                     )
                 }
                 
-                // WskaĹĽ status poĹ‚Ä…czenia (prawy dolny rĂłg)
+                // Wskaż status połączenia (prawy dolny róg)
                 ConnectionIndicator(
                     connectionState = connectionState,
                     modifier = Modifier
@@ -103,7 +103,7 @@ fun DisplayScreen(
                         .padding(end = 16.dp, bottom = 64.dp)
                 )
                 
-                // Przycisk ustawieĹ„ (ukryty, tylko dla administratora)
+                // Przycisk ustawień (ukryty, tylko dla administratora)
                 SettingsButton(
                     onClick = { showSettings = true },
                     modifier = Modifier
@@ -128,7 +128,7 @@ fun DisplayScreen(
         }
     }
     
-    // Dialog ustawieĹ„
+    // Dialog ustawień
     if (showSettings) {
         SettingsDialog(
             serverUrl = serverUrl,
@@ -222,7 +222,7 @@ private fun IdleScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = displayInfo?.name ?: "WyĹ›wietlacz",
+            text = displayInfo?.name ?: "Wyświetlacz",
             style = MaterialTheme.typography.headlineMedium,
             color = Color.White
         )
@@ -231,10 +231,10 @@ private fun IdleScreen(
         
         Text(
             text = when (connectionState) {
-                ConnectionState.CONNECTED -> "Oczekiwanie na treĹ›Ä‡..."
-                ConnectionState.CONNECTING -> "ĹÄ…czenie z serwerem..."
-                ConnectionState.DISCONNECTED -> "Brak poĹ‚Ä…czenia"
-                ConnectionState.ERROR -> "BĹ‚Ä…d poĹ‚Ä…czenia"
+                ConnectionState.CONNECTED -> "Oczekiwanie na treść..."
+                ConnectionState.CONNECTING -> "Łączenie z serwerem..."
+                ConnectionState.DISCONNECTED -> "Brak połączenia"
+                ConnectionState.ERROR -> "Błąd połączenia"
             },
             style = MaterialTheme.typography.bodyLarge,
             color = Color.Gray
@@ -313,7 +313,7 @@ private fun SettingsDialog(
                     onClick = onClearCache,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("WyczyĹ›Ä‡ cache")
+                    Text("Wyczyść cache")
                 }
             }
         },

@@ -1,13 +1,13 @@
-﻿
+
 CONTINUE
 Current State
 Source repo: witoldmusialek-maker/digital_signage (private)
 Dev server: 192.168.200.116
-Deploy path: ~/projects/digital_signage_repo/digital_signage
-URL: https://dev.witold.ovh/
+Deploy path: ~/projects/projekt2_repo/digital_signage
+URL: https://dev2.witold.ovh/
 API: /api/v1 (frontend uses relative API_URL)
 Standard Deploy
-cd ~/projects/digital_signage_repo
+cd ~/projects/projekt2_repo
 git pull origin master
 cd digital_signage
 docker compose up -d --build
@@ -19,7 +19,7 @@ docker compose logs frontend --tail 80
 
 Notes
 Websocket (socket.io) is LAN-only.
-On dev.witold.ovh warnings are expected if backend has no socket endpoint.
+On dev2.witold.ovh warnings are expected if backend has no socket endpoint.
 Operacyjny workflow (stan aktualny)
 Branching
 master = stabilne wydania
@@ -30,7 +30,7 @@ Skrypt:
 
 digital_signage/scripts/deploy-dev1.ps1
 Uruchomienie:
-Set-Location C:\Users\Wit\projekty\cline\projekt1\digital_signage
+Set-Location C:\Users\Wit\projekty\cline\projekt2\digital_signage
 .\scripts\deploy-dev1.ps1 -DevHost dev1 -Branch master
 
 Co robi:
