@@ -1,154 +1,80 @@
 import { ReactNode } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
-  Box,
-  Drawer,
   AppBar,
-  Toolbar,
+  Box,
   Chip,
-  Divider,
+  Drawer,
   List,
-  ListSubheader,
-  Typography,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Toolbar,
+  Typography,
 } from '@mui/material'
 import {
-  Tv as TvIcon,
-  Folder as FolderIcon,
-  Schedule as ScheduleIcon,
-  GridView as GroupsIcon,
-  Notifications as AlertsIcon,
-  Assessment as ReportsIcon,
-  MusicNote as BellsIcon,
-  Logout as LogoutIcon,
-  ManageAccounts as ManageAccountsIcon,
+  CalendarMonth,
+  Groups,
+  LocalOffer,
+  Logout,
+  Palette,
+  People,
+  PersonSearch,
+  Speed,
+  Summarize,
+  ViewKanban,
 } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
 import { APP_VERSION } from '../version'
-import { FEATURE_FLAGS, FeatureKey } from '../config/features'
-import { canAccess, AppSection } from '../config/permissions'
+import { AppSection, canAccess } from '../config/permissions'
+import { mockSalons } from '../mocks/bookingData'
 
-const drawerWidth = 240
+const drawerWidth = 280
 
 interface LayoutProps {
   children: ReactNode
 }
 
-type MenuItemDef = {
-  text: string
-  icon: ReactNode
+type NavItem = {
+  label: string
   path: string
-  feature?: FeatureKey
-  section?: AppSection
+  section: AppSection
+  icon: ReactNode
 }
 
-type MenuSectionDef = {
-  title: string
-  feature?: FeatureKey
-  section?: AppSection
-  items: MenuItemDef[]
-}
+const navItems: NavItem[] = [
+  { label: 'Dashboard', path: '/dashboard', section: 'dashboard', icon: <Speed /> },
+  { label: 'Kalendarz wizyt', path: '/calendar', section: 'calendar', icon: <CalendarMonth /> },
+  { label: 'Kartoteka klientow', path: '/clients', section: 'clients', icon: <PersonSearch /> },
+  { label: 'Salony i zasoby', path: '/resources', section: 'resources', icon: <Groups /> },
+  { label: 'Cennik uslug', path: '/services', section: 'services', icon: <LocalOffer /> },
+  { label: 'Pakiety (forfety)', path: '/bundles', section: 'bundles', icon: <ViewKanban /> },
+  { label: 'Farby i kolory', path: '/colors', section: 'colors', icon: <Palette /> },
+  { label: 'Raporty', path: '/reports', section: 'reports', icon: <Summarize /> },
+  { label: 'Uzytkownicy i role', path: '/users', section: 'users', icon: <People /> },
+]
 
 const Layout = ({ children }: LayoutProps) => {
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const { user, logout } = useAuth()
 
-  const menuSections: MenuSectionDef[] = [
-    {
-      title: 'Monitoring',
-      feature: 'monitoring',
-      section: 'monitoring',
-      items: [
-        { text: 'Status', icon: <TvIcon />, path: '/status', section: 'monitoring' },
-        { text: 'Alerty', icon: <AlertsIcon />, path: '/alerts', feature: 'alerts', section: 'alerts' },
-        { text: 'Raporty', icon: <ReportsIcon />, path: '/reports', feature: 'reports', section: 'reports' },
-      ],
-    },
-    {
-      title: 'Wyświetlacze',
-      feature: 'displays',
-      section: 'displays',
-      items: [
-        { text: 'Wyświetlacze', icon: <TvIcon />, path: '/displays', section: 'displays' },
-        { text: 'Grupy wyświetlaczy', icon: <GroupsIcon />, path: '/groups', section: 'groups' },
-      ],
-    },
-    {
-      title: 'Treści',
-      feature: 'content',
-      section: 'content',
-      items: [
-        { text: 'Harmonogramy treści', icon: <ScheduleIcon />, path: '/schedules', section: 'schedules' },
-        { text: 'Biblioteka treści', icon: <FolderIcon />, path: '/content', section: 'content' },
-      ],
-    },
-    {
-      title: 'Dzwonki',
-      feature: 'bells',
-      section: 'bells',
-      items: [
-        { text: 'Model i biblioteka', icon: <BellsIcon />, path: '/bells/model', section: 'bells' },
-      ],
-    },
-    {
-      title: 'Administracja',
-      items: [
-        {
-          text: 'Użytkownicy',
-          icon: <ManageAccountsIcon />,
-          path: '/admin/users',
-          feature: 'adminUsers',
-          section: 'adminUsers',
-        },
-      ],
-    },
-  ]
-
-  const visibleSections = menuSections
-    .filter((section) => (!section.feature || FEATURE_FLAGS[section.feature]) && (!section.section || canAccess(user, section.section)))
-    .map((section) => ({
-      ...section,
-      items: section.items.filter((item) => {
-        if (item.feature && !FEATURE_FLAGS[item.feature]) return false
-        if (item.section && !canAccess(user, item.section)) return false
-        return true
-      }),
-    }))
-    .filter((section) => section.items.length > 0)
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
+  const visible = navItems.filter((item) => canAccess(user, item.section))
+  const salons = mockSalons.filter((salon) => user?.assigned_salon_ids?.includes(salon.id))
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Digital Signage
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Booking Studio Suite
           </Typography>
-          <Chip
-            size="small"
-            label={APP_VERSION}
-            sx={{
-              mr: 2,
-              fontWeight: 700,
-              color: '#1a1a1a',
-              bgcolor: '#ffd54f',
-              border: '1px solid #fbc02d',
-            }}
-          />
-          <Typography variant="body2" sx={{ mr: 2 }}>
-            {user?.username} ({user?.role})
-          </Typography>
-          <ListItemButton onClick={handleLogout} sx={{ color: 'white' }}>
-            <ListItemIcon sx={{ color: 'white' }}>
-              <LogoutIcon />
+          <Chip label={user?.role} size="small" sx={{ mr: 1, textTransform: 'uppercase' }} />
+          <Chip label={APP_VERSION} size="small" sx={{ mr: 2 }} />
+          <ListItemButton onClick={() => { logout(); navigate('/login') }} sx={{ width: 'auto' }}>
+            <ListItemIcon sx={{ minWidth: 32, color: 'white' }}>
+              <Logout />
             </ListItemIcon>
           </ListItemButton>
         </Toolbar>
@@ -158,58 +84,33 @@ const Layout = ({ children }: LayoutProps) => {
         variant="permanent"
         sx={{
           width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
+          '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
         <Toolbar />
-        <Box sx={{ overflowY: 'auto', height: 'calc(100vh - 64px)' }}>
-          {visibleSections.map((section, sectionIndex) => (
-            <List
-              key={section.title}
-              subheader={
-                <ListSubheader component="div" sx={{ lineHeight: 1.8 }}>
-                  {section.title}
-                </ListSubheader>
-              }
-            >
-              {section.items.map((item) => {
-                const selected =
-                  item.path === '/'
-                    ? location.pathname === '/'
-                    : location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
-
-                return (
-                  <ListItem key={item.text} disablePadding>
-                    <ListItemButton selected={selected} onClick={() => navigate(item.path)}>
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText primary={item.text} />
-                    </ListItemButton>
-                  </ListItem>
-                )
-              })}
-              {sectionIndex < visibleSections.length - 1 && <Divider sx={{ mt: 1 }} />}
-            </List>
-          ))}
-          <Box sx={{ px: 2, py: 1.5 }}>
-            <Typography variant="caption" color="text.secondary">
-              Wersja: {APP_VERSION}
-            </Typography>
+        <Box sx={{ p: 2, borderBottom: '1px solid #e5e7eb' }}>
+          <Typography variant="overline">Zalogowany</Typography>
+          <Typography variant="body1" sx={{ fontWeight: 700 }}>{user?.full_name}</Typography>
+          <Typography variant="caption" color="text.secondary">{user?.username}</Typography>
+          <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {salons.map((salon) => (
+              <Chip key={salon.id} size="small" label={salon.name} />
+            ))}
           </Box>
         </Box>
+        <List>
+          {visible.map((item) => (
+            <ListItem key={item.path} disablePadding>
+              <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          bgcolor: 'background.default',
-          p: 3,
-        }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: 'background.default' }}>
         <Toolbar />
         {children}
       </Box>
@@ -218,4 +119,3 @@ const Layout = ({ children }: LayoutProps) => {
 }
 
 export default Layout
-

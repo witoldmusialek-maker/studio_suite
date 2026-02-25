@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { api } from '../services/api'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { mockUsers } from '../mocks/bookingData'
 import { User } from '../types'
 
 interface AuthContextType {
@@ -9,107 +9,53 @@ interface AuthContextType {
   loading: boolean
 }
 
-interface TokenResponse {
-  access_token: string
-  token_type: string
-}
-
-const normalizeRole = (role: string): User['role'] => {
-  const normalized = String(role || '').toLowerCase()
-  if (normalized === 'admin') return 'admin'
-  if (normalized === 'operator_displays') return 'operator_displays'
-  if (normalized === 'operator_bells') return 'operator_bells'
-  return 'operator'
-}
+const STORAGE_KEY = 'booking_demo_user'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+const findDemoUser = (username: string): User | undefined =>
+  mockUsers.find((u) => u.username.toLowerCase() === username.trim().toLowerCase())
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const fetchCurrentUser = async (): Promise<User | null> => {
-    try {
-      const response = await api.get<User>('/auth/me')
-      return {
-        ...response.data,
-        role: normalizeRole(String(response.data.role)),
-      }
-    } catch {
-      return null
-    }
-  }
-
   useEffect(() => {
-    let isMounted = true
-
-    const initAuth = async () => {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        if (isMounted) {
-          setUser(null)
-          setLoading(false)
-        }
-        return
-      }
-
-      const currentUser = await fetchCurrentUser()
-
-      if (!isMounted) {
-        return
-      }
-
-      if (currentUser) {
-        setUser(currentUser)
-      } else {
-        localStorage.removeItem('token')
-        setUser(null)
-      }
-
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) {
       setLoading(false)
+      return
     }
 
-    initAuth()
-
-    return () => {
-      isMounted = false
-    }
+    const restored = findDemoUser(raw)
+    setUser(restored ?? null)
+    setLoading(false)
   }, [])
 
   const login = async (username: string, password: string) => {
-    try {
-      const response = await api.post<TokenResponse>('/auth/login', { username, password })
-      localStorage.setItem('token', response.data.access_token)
-
-      const currentUser = await fetchCurrentUser()
-      if (!currentUser) {
-        localStorage.removeItem('token')
-        throw new Error('Nie udało się pobrać danych użytkownika')
-      }
-
-      setUser(currentUser)
-    } catch (error) {
-      setUser(null)
-      throw error
+    const found = findDemoUser(username)
+    if (!found || password.length < 3) {
+      throw new Error('Nieprawidlowe dane logowania (demo: admin/manager/recepcja).')
     }
+
+    localStorage.setItem(STORAGE_KEY, found.username)
+    setUser(found)
   }
 
   const logout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem(STORAGE_KEY)
     setUser(null)
   }
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  const value = useMemo(() => ({ user, login, logout, loading }), [user, loading])
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider')
   }
   return context
 }

@@ -1,19 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
+  Alert,
+  Box,
+  Button,
   Container,
   Paper,
+  Stack,
   TextField,
-  Button,
   Typography,
-  Box,
-  Alert,
 } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('admin')
+  const [password, setPassword] = useState('demo123')
   const [error, setError] = useState('')
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -25,62 +26,46 @@ const LoginPage = () => {
     try {
       await login(username, password)
       navigate('/')
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Błąd logowania')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Blad logowania')
     }
   }
 
   return (
     <Container maxWidth="sm">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-        }}
-      >
-        <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
-            Digital Signage
-          </Typography>
-          <Typography variant="subtitle1" align="center" color="text.secondary" gutterBottom>
-            Panel Zarządzania
+      <Box sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>
+        <Paper sx={{ width: '100%', p: 4 }}>
+          <Typography variant="h4" sx={{ mb: 1 }}>Salon Booking Frontend</Typography>
+          <Typography color="text.secondary" sx={{ mb: 3 }}>
+            Demo UX do konsultacji przed implementacja backendu.
           </Typography>
 
-          {error && (
-            <Alert severity="error" sx={{ mt: 2 }}>
-              {error}
-            </Alert>
-          )}
+          <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap' }}>
+            <Button size="small" variant="outlined" onClick={() => setUsername('admin')}>admin</Button>
+            <Button size="small" variant="outlined" onClick={() => setUsername('manager')}>manager</Button>
+            <Button size="small" variant="outlined" onClick={() => setUsername('recepcja')}>recepcja</Button>
+          </Stack>
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+          <Box component="form" onSubmit={handleSubmit}>
             <TextField
+              label="Login"
               fullWidth
-              label="Nazwa użytkownika"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              margin="normal"
-              required
-              autoFocus
+              sx={{ mb: 2 }}
             />
             <TextField
-              fullWidth
-              label="Hasło"
+              label="Haslo"
               type="password"
+              fullWidth
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              margin="normal"
-              required
+              sx={{ mb: 2 }}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Zaloguj się
+            <Button type="submit" variant="contained" fullWidth>
+              Wejdz do panelu
             </Button>
           </Box>
         </Paper>
@@ -90,6 +75,3 @@ const LoginPage = () => {
 }
 
 export default LoginPage
-
-
-

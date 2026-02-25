@@ -1,98 +1,54 @@
-import { useEffect, useState } from 'react'
-import { Grid, Paper, Typography, Box, Button } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import { api } from '../services/api'
-import { Display, Alert } from '../types'
+import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material'
+import { mockAppointments, mockClients, mockResources, mockSalons } from '../mocks/bookingData'
 
 const DashboardPage = () => {
-  const navigate = useNavigate()
-  const [displays, setDisplays] = useState<Display[]>([])
-  const [alerts, setAlerts] = useState<Alert[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchDashboardData()
-  }, [])
-
-  const fetchDashboardData = async () => {
-    try {
-      const [displaysRes, alertsRes] = await Promise.all([
-        api.get('/displays'),
-        api.get('/alerts/active'),
-      ])
-      setDisplays(displaysRes.data)
-      setAlerts(alertsRes.data)
-    } catch (error) {
-      console.error('B≈ÇƒÖd pobierania danych:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const onlineCount = displays.filter((d) => d.status === 'online').length
-  const offlineCount = displays.filter((d) => d.status === 'offline').length
-  const activeAlertsCount = alerts.length
-
-  if (loading) {
-    return <Typography>≈Åadowanie...</Typography>
-  }
+  const done = mockAppointments.filter((a) => a.status === 'done').length
+  const planned = mockAppointments.filter((a) => a.status !== 'done' && a.status !== 'cancelled').length
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Dashboard
-      </Typography>
-
-      <Grid container spacing={3} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6">Wy≈õwietlacze</Typography>
-            <Typography variant="h4">{displays.length}</Typography>
-          </Paper>
+    <Stack spacing={3}>
+      <Typography variant="h4">Dashboard operacyjny</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={3}>
+          <Card><CardContent><Typography variant="overline">Salony</Typography><Typography variant="h4">{mockSalons.length}</Typography></CardContent></Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6">Online</Typography>
-            <Typography variant="h4" color="success.main">
-              {onlineCount}
-            </Typography>
-          </Paper>
+        <Grid item xs={12} md={3}>
+          <Card><CardContent><Typography variant="overline">Klienci</Typography><Typography variant="h4">{mockClients.length}</Typography></CardContent></Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6">Offline</Typography>
-            <Typography variant="h4" color="error.main">
-              {offlineCount}
-            </Typography>
-          </Paper>
+        <Grid item xs={12} md={3}>
+          <Card><CardContent><Typography variant="overline">Wizyty aktywne</Typography><Typography variant="h4">{planned}</Typography></CardContent></Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6">Aktywne Alerty</Typography>
-            <Typography variant="h4" color="warning.main">
-              {activeAlertsCount}
-            </Typography>
-          </Paper>
+        <Grid item xs={12} md={3}>
+          <Card><CardContent><Typography variant="overline">Wykonane</Typography><Typography variant="h4">{done}</Typography></CardContent></Card>
         </Grid>
       </Grid>
 
-      <Paper sx={{ p: 2, mt: 3 }}>
-        <Typography variant="h6" gutterBottom>
-          Moduly
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          <Button variant="outlined" onClick={() => navigate('/schedules')}>Harmonogramy</Button>
-          <Button variant="outlined" onClick={() => navigate('/groups')}>Grupy</Button>
-          <Button variant="outlined" onClick={() => navigate('/bells/schedules')}>Harmonogramy dzwonkow</Button>
-          <Button variant="outlined" onClick={() => navigate('/reports')}>Raporty</Button>
-          <Button variant="outlined" onClick={() => navigate('/alerts')}>Alerty</Button>
-        </Box>
-      </Paper>
-    </Box>
+      <Card>
+        <CardContent>
+          <Typography variant="h6" sx={{ mb: 1 }}>Za≥oøenia MVP (frontend-only)</Typography>
+          <Stack direction="row" spacing={1} flexWrap="wrap">
+            <Chip label="Role: admin / manager / recepcjonista" />
+            <Chip label="Kalendarz multi-resource" />
+            <Chip label="Cenniki us≥ug i pakietÛw" />
+            <Chip label="Historia klienta i zabiegÛw" />
+            <Chip label="Snapshot cen w czasie" />
+          </Stack>
+          <Typography sx={{ mt: 2 }} color="text.secondary">
+            Ten ekran jest makietπ do konsultacji przep≥ywÛw. Dane sπ demonstracyjne i trzymane lokalnie.
+          </Typography>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <Typography variant="h6" sx={{ mb: 1 }}>DostÍpni pracownicy (demo)</Typography>
+          <Stack direction="row" spacing={1} flexWrap="wrap">
+            {mockResources.map((r) => <Chip key={r.id} label={r.name} color="primary" variant="outlined" />)}
+          </Stack>
+        </CardContent>
+      </Card>
+    </Stack>
   )
 }
 
 export default DashboardPage
-
-
-

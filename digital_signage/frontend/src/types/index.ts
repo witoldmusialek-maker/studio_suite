@@ -1,7 +1,15 @@
 export interface User {
   id: number
   username: string
-  role: 'admin' | 'operator_displays' | 'operator_bells' | 'operator'
+  role:
+    | 'admin'
+    | 'manager'
+    | 'receptionist'
+    | 'operator_displays'
+    | 'operator_bells'
+    | 'operator'
+  full_name?: string
+  assigned_salon_ids?: number[]
 }
 
 export interface Display {
@@ -83,6 +91,81 @@ export interface BellSchedule {
   group_id?: number
   playlist_id?: number
   active: boolean
+}
+
+export interface Salon {
+  id: number
+  name: string
+  city: string
+}
+
+export interface StaffRole {
+  id: number
+  code: string
+  name: string
+}
+
+export interface StaffResource {
+  id: number
+  salon_id: number
+  name: string
+  role_ids: number[]
+}
+
+export interface ClientCard {
+  id: number
+  full_name: string
+  phone: string
+  email?: string
+  notes?: string
+}
+
+export interface ServiceCatalogItem {
+  id: number
+  code: string
+  name: string
+  duration_minutes: number
+}
+
+export interface PriceListItem {
+  id: number
+  salon_id: number
+  service_id: number
+  price: number
+}
+
+export interface BundleItem {
+  service_id: number
+  override_price?: number
+}
+
+export interface BundleCatalog {
+  id: number
+  salon_id: number
+  code: string
+  name: string
+  price: number
+  items: BundleItem[]
+}
+
+export interface ColorProduct {
+  id: number
+  code: string
+  name: string
+  brand: string
+}
+
+export interface Appointment {
+  id: number
+  salon_id: number
+  client_id: number
+  start_at: string
+  end_at: string
+  status: 'planned' | 'confirmed' | 'done' | 'cancelled'
+  resources: number[]
+  services: number[]
+  bundle_id?: number
+  total_price_snapshot: number
 }
 
 
