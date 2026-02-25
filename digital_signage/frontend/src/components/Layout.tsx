@@ -62,6 +62,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   const visible = navItems.filter((item) => canAccess(user, item.section))
   const salons = mockSalons.filter((salon) => user?.assigned_salon_ids?.includes(salon.id))
+  const showSalonChips = user?.role !== 'receptionist'
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -92,11 +93,13 @@ const Layout = ({ children }: LayoutProps) => {
           <Typography variant="overline">Zalogowany</Typography>
           <Typography variant="body1" sx={{ fontWeight: 700 }}>{user?.full_name}</Typography>
           <Typography variant="caption" color="text.secondary">{user?.username}</Typography>
-          <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-            {salons.map((salon) => (
-              <Chip key={salon.id} size="small" label={salon.name} />
-            ))}
-          </Box>
+          {showSalonChips && (
+            <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              {salons.map((salon) => (
+                <Chip key={salon.id} size="small" label={salon.name} />
+              ))}
+            </Box>
+          )}
         </Box>
         <List>
           {visible.map((item) => (

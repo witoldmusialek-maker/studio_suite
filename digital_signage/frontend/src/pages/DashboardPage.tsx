@@ -4,11 +4,19 @@ import { useBooking } from '../contexts/BookingContext'
 
 const DashboardPage = () => {
   const { user } = useAuth()
-  const { salons, clients, appointments, resources } = useBooking()
+  const { salons, clients, appointments, resources, staffRoles } = useBooking()
 
   const visibleAppointments = appointments.filter((a) => user?.assigned_salon_ids?.includes(a.salon_id))
   const done = visibleAppointments.filter((a) => a.status === 'done').length
   const planned = visibleAppointments.filter((a) => a.status !== 'done' && a.status !== 'cancelled').length
+
+  const bookableRoleIds = staffRoles
+    .filter((role) => role.code === 'FRYZJER' || role.code === 'MANICURZYSTKA')
+    .map((role) => role.id)
+
+  const bookableResources = resources.filter((resource) =>
+    resource.role_ids.some((roleId) => bookableRoleIds.includes(roleId)),
+  )
 
   return (
     <Stack spacing={3}>
@@ -46,9 +54,9 @@ const DashboardPage = () => {
 
       <Card>
         <CardContent>
-          <Typography variant="h6" sx={{ mb: 1 }}>Dostepni pracownicy (demo)</Typography>
+          <Typography variant="h6" sx={{ mb: 1 }}>Dostepni pracownicy (fryzjer / manicure)</Typography>
           <Stack direction="row" spacing={1} flexWrap="wrap">
-            {resources.map((r) => <Chip key={r.id} label={r.name} color="primary" variant="outlined" />)}
+            {bookableResources.map((r) => <Chip key={r.id} label={r.name} color="primary" variant="outlined" />)}
           </Stack>
         </CardContent>
       </Card>
