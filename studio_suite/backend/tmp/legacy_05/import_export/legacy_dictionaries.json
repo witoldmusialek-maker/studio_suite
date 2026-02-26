@@ -1,0 +1,444 @@
+{
+  "serviceTypes": [
+    {
+      "code": "1",
+      "label": "PANI",
+      "extra": ""
+    },
+    {
+      "code": "2",
+      "label": "PAN",
+      "extra": ""
+    },
+    {
+      "code": "3",
+      "label": "ESTETYKA",
+      "extra": ""
+    },
+    {
+      "code": "4",
+      "label": "SPRZEDAZ",
+      "extra": ""
+    },
+    {
+      "code": "5",
+      "label": "MLODZIEZ",
+      "extra": ""
+    },
+    {
+      "code": "6",
+      "label": "PODPIS",
+      "extra": ""
+    }
+  ],
+  "families": [
+    {
+      "code": "00",
+      "label": "MYCIE",
+      "extra": "2"
+    },
+    {
+      "code": "01",
+      "label": "PIELEGNACJA",
+      "extra": "1"
+    },
+    {
+      "code": "02",
+      "label": "COUPE",
+      "extra": "2"
+    },
+    {
+      "code": "03",
+      "label": "CZESANIE",
+      "extra": "2"
+    },
+    {
+      "code": "04",
+      "label": "ODBARWIANIE",
+      "extra": "1"
+    },
+    {
+      "code": "06",
+      "label": "KOLORYZACJA",
+      "extra": "1"
+    },
+    {
+      "code": "07",
+      "label": "TRWALA",
+      "extra": "1"
+    },
+    {
+      "code": "08",
+      "label": "SPRZEDAZ",
+      "extra": "4"
+    },
+    {
+      "code": "09",
+      "label": "AMPULKI",
+      "extra": "1"
+    },
+    {
+      "code": "10",
+      "label": "KOSMETYKA",
+      "extra": "3"
+    },
+    {
+      "code": "11",
+      "label": "MANICURE",
+      "extra": "3"
+    },
+    {
+      "code": "12",
+      "label": "STYLIZACJA",
+      "extra": "2"
+    },
+    {
+      "code": "13",
+      "label": "UTLENIACZE",
+      "extra": "2"
+    },
+    {
+      "code": "14",
+      "label": "PRZEDLUZANIE WLOSOW",
+      "extra": "2"
+    },
+    {
+      "code": "15",
+      "label": "CONFIDANSCE",
+      "extra": "1"
+    },
+    {
+      "code": "16",
+      "label": "HENNA",
+      "extra": "3"
+    },
+    {
+      "code": "17",
+      "label": "WOSK",
+      "extra": "3"
+    },
+    {
+      "code": "18",
+      "label": "MANICURE",
+      "extra": "3"
+    },
+    {
+      "code": "19",
+      "label": "TIPSY",
+      "extra": "3"
+    },
+    {
+      "code": "20",
+      "label": "PEDICURE",
+      "extra": "3"
+    },
+    {
+      "code": "21",
+      "label": "ZABIEGI PODSTAWOWE",
+      "extra": "3"
+    },
+    {
+      "code": "22",
+      "label": "ZABIEGI SPECJALNE",
+      "extra": "3"
+    },
+    {
+      "code": "23",
+      "label": "ENDERMOLOGIA",
+      "extra": "3"
+    },
+    {
+      "code": "24",
+      "label": "MASAZ",
+      "extra": "3"
+    },
+    {
+      "code": "25",
+      "label": "CIALO",
+      "extra": "3"
+    },
+    {
+      "code": "26",
+      "label": "TWARZ",
+      "extra": "3"
+    },
+    {
+      "code": "27",
+      "label": "SOLARIUM",
+      "extra": "3"
+    },
+    {
+      "code": "28",
+      "label": "KONSULTACJA",
+      "extra": "3"
+    },
+    {
+      "code": "29",
+      "label": "AMPULKA KOSMETYCZNA",
+      "extra": "3"
+    },
+    {
+      "code": "30",
+      "label": "MASKA KOSMETYCZNA",
+      "extra": "3"
+    },
+    {
+      "code": "31",
+      "label": "KREM KOSMETYCZNY",
+      "extra": "3"
+    },
+    {
+      "code": "32",
+      "label": "MASZYNY KOSMETYCZNE",
+      "extra": "3"
+    },
+    {
+      "code": "33",
+      "label": "CZYSZCZENIE",
+      "extra": "3"
+    },
+    {
+      "code": "34",
+      "label": "ZABIEG ESTETYCZNY",
+      "extra": "3"
+    },
+    {
+      "code": "35",
+      "label": "ZABIEGI TWARZY",
+      "extra": "3"
+    },
+    {
+      "code": "36",
+      "label": "ZABIEGI TRADYCYJNE",
+      "extra": "3"
+    },
+    {
+      "code": "37",
+      "label": "PAKIETY PREZENTY",
+      "extra": "3"
+    },
+    {
+      "code": "38",
+      "label": "OCZY",
+      "extra": "3"
+    },
+    {
+      "code": "39",
+      "label": "MAKIJAZ",
+      "extra": "3"
+    },
+    {
+      "code": "40",
+      "label": "DEPILACJA",
+      "extra": "3"
+    },
+    {
+      "code": "41",
+      "label": "PAKIETY",
+      "extra": "3"
+    },
+    {
+      "code": "42",
+      "label": "PROSTOWANIE KERATYNOWE",
+      "extra": "1"
+    },
+    {
+      "code": "43",
+      "label": "ZAGESZCZANIE",
+      "extra": ""
+    },
+    {
+      "code": "44",
+      "label": "PRIMELLE",
+      "extra": "3"
+    }
+  ],
+  "groups": [
+    {
+      "code": "1",
+      "label": "TECHNIQUE",
+      "extra": ""
+    },
+    {
+      "code": "2",
+      "label": "COIFFURE",
+      "extra": ""
+    },
+    {
+      "code": "3",
+      "label": "ESTHETIQUE",
+      "extra": ""
+    },
+    {
+      "code": "4",
+      "label": "VENTE",
+      "extra": "IQUE"
+    },
+    {
+      "code": "5",
+      "label": "RESTAURANT",
+      "extra": ""
+    }
+  ],
+  "estheticTypes": [
+    {
+      "code": "01",
+      "label": "RECE",
+      "extra": ""
+    },
+    {
+      "code": "02",
+      "label": "NOGI",
+      "extra": ""
+    },
+    {
+      "code": "03",
+      "label": "RECE I NOGI",
+      "extra": ""
+    },
+    {
+      "code": "04",
+      "label": "PIELEGNACJA TWARZY",
+      "extra": ""
+    },
+    {
+      "code": "05",
+      "label": "PIELEGNACJA CIALA",
+      "extra": ""
+    },
+    {
+      "code": "06",
+      "label": "MAKIJAZ",
+      "extra": ""
+    },
+    {
+      "code": "07",
+      "label": "SAUNA",
+      "extra": ""
+    },
+    {
+      "code": "09",
+      "label": "RACOON",
+      "extra": ""
+    },
+    {
+      "code": "1",
+      "label": "RECE",
+      "extra": ""
+    },
+    {
+      "code": "10",
+      "label": "LOREAL",
+      "extra": ""
+    },
+    {
+      "code": "11",
+      "label": "KERASTASE",
+      "extra": ""
+    },
+    {
+      "code": "12",
+      "label": "RACOON/DIAMOND",
+      "extra": ""
+    },
+    {
+      "code": "13",
+      "label": "JOICO",
+      "extra": ""
+    },
+    {
+      "code": "14",
+      "label": "STRZYZENIE",
+      "extra": ""
+    },
+    {
+      "code": "15",
+      "label": "FRANCK PROVOST",
+      "extra": ""
+    },
+    {
+      "code": "16",
+      "label": "OCZY",
+      "extra": ""
+    },
+    {
+      "code": "17",
+      "label": "HENNA",
+      "extra": ""
+    },
+    {
+      "code": "18",
+      "label": "MANICURE",
+      "extra": ""
+    },
+    {
+      "code": "19",
+      "label": "PEDICURE",
+      "extra": ""
+    },
+    {
+      "code": "20",
+      "label": "DEPILACJA",
+      "extra": ""
+    },
+    {
+      "code": "21",
+      "label": "KOSMETYKA",
+      "extra": ""
+    },
+    {
+      "code": "22",
+      "label": "MASAZ",
+      "extra": ""
+    },
+    {
+      "code": "23",
+      "label": "KINESIOTAPING",
+      "extra": ""
+    },
+    {
+      "code": "24",
+      "label": "STAR MY HAIR",
+      "extra": ""
+    },
+    {
+      "code": "25",
+      "label": "DIAMOND",
+      "extra": ""
+    },
+    {
+      "code": "26",
+      "label": "RACOON",
+      "extra": ""
+    }
+  ],
+  "vatCodes": [
+    {
+      "code": "1",
+      "label": "°AVAT",
+      "extra": ""
+    },
+    {
+      "code": "2",
+      "label": "à@VAT",
+      "extra": ""
+    }
+  ],
+  "clientTypes": [
+    {
+      "code": "1",
+      "label": "Staly",
+      "extra": ""
+    },
+    {
+      "code": "2",
+      "label": "Przechodni",
+      "extra": ""
+    },
+    {
+      "code": "3",
+      "label": "Polecony",
+      "extra": ""
+    }
+  ]
+}

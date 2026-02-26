@@ -1,59 +1,60 @@
-{
+﻿{
   "version": "2.0.0",
   "tasks": [
     {
       "type": "typescript",
-      "tsconfig": "digital_signage/frontend/tsconfig.json",
+      "tsconfig": "studio_suite/frontend/tsconfig.json",
       "problemMatcher": ["$tsc"],
       "group": "build",
-      "label": "tsc: build - digital_signage/frontend/tsconfig.json"
+      "label": "tsc: build - studio_suite/frontend/tsconfig.json"
     },
     {
       "label": "DS: Compose Up --build",
       "type": "shell",
-      "command": "docker compose -f digital_signage/docker-compose.yml up -d --build"
+      "command": "docker compose -f studio_suite/docker-compose.yml up -d --build"
     },
     {
       "label": "DS: Compose PS",
       "type": "shell",
-      "command": "docker compose -f digital_signage/docker-compose.yml ps"
+      "command": "docker compose -f studio_suite/docker-compose.yml ps"
     },
     {
       "label": "DS: Logs Backend",
       "type": "shell",
-      "command": "docker compose -f digital_signage/docker-compose.yml logs backend --tail 120"
+      "command": "docker compose -f studio_suite/docker-compose.yml logs backend --tail 120"
     },
     {
       "label": "DS: Logs Frontend",
       "type": "shell",
-      "command": "docker compose -f digital_signage/docker-compose.yml logs frontend --tail 120"
+      "command": "docker compose -f studio_suite/docker-compose.yml logs frontend --tail 120"
     },
     {
       "label": "DS: Dev1 Pull + Deploy",
       "type": "shell",
-      "command": "ssh witold@192.168.200.116 \"cd ~/projects/digital_signage_repo && git pull origin master && cd digital_signage && docker compose up -d --build && docker compose ps\""
+      "command": "ssh witold@192.168.200.116 \"cd ~/projects/studio_suite_repo && git pull origin master && cd studio_suite && docker compose up -d --build && docker compose ps\""
     },
     {
       "label": "DS: Smoke Test",
       "type": "shell",
-      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/smoke-test.ps1"
+      "command": "powershell -ExecutionPolicy Bypass -File studio_suite/scripts/smoke-test.ps1"
     },
     {
       "label": "DS: Sync To Dev",
       "type": "shell",
-      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/sync-to-dev.ps1 -DevHost dev1"
+      "command": "powershell -ExecutionPolicy Bypass -File studio_suite/scripts/sync-to-dev.ps1 -DevHost dev1"
     },
     {
       "label": "DS: Sync From Dev",
       "type": "shell",
-      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/sync-from-dev.ps1 -DevHost dev1"
+      "command": "powershell -ExecutionPolicy Bypass -File studio_suite/scripts/sync-from-dev.ps1 -DevHost dev1"
     },
     {
       "label": "DS: Deploy Dev1 (master + smoke)",
       "type": "shell",
-      "command": "powershell -ExecutionPolicy Bypass -File digital_signage/scripts/deploy-dev1.ps1 -DevHost dev1 -Branch master"
+      "command": "powershell -ExecutionPolicy Bypass -File studio_suite/scripts/deploy-dev1.ps1 -DevHost dev1 -Branch master"
     }
 
 
   ]
 }
+

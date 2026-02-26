@@ -1,5 +1,5 @@
-"""
-Odtwarzanie treści na wyświetlaczu
+﻿"""
+Odtwarzanie treĹ›ci na wyĹ›wietlaczu
 """
 from pathlib import Path
 from typing import Optional
@@ -13,13 +13,13 @@ try:
     PYQT6_AVAILABLE = True
 except ImportError:
     PYQT6_AVAILABLE = False
-    print("PyQt6 nie jest dostępny - tryb testowy")
+    print("PyQt6 nie jest dostÄ™pny - tryb testowy")
 
 import config
 
 
 class ContentPlayer:
-    """Odtwarzacz treści"""
+    """Odtwarzacz treĹ›ci"""
 
     def __init__(self):
         self.app: Optional[QApplication] = None
@@ -28,14 +28,14 @@ class ContentPlayer:
         self.current_content_path: Optional[Path] = None
 
     def init_display(self):
-        """Inicjalizacja wyświetlacza"""
+        """Inicjalizacja wyĹ›wietlacza"""
         if not PYQT6_AVAILABLE:
-            print("PyQt6 nie dostępny - tryb testowy")
+            print("PyQt6 nie dostÄ™pny - tryb testowy")
             return
 
         self.app = QApplication(sys.argv)
         self.window = QWidget()
-        self.window.setWindowTitle("Digital Signage")
+        self.window.setWindowTitle("Studio Suite")
         self.window.setWindowFlags(
             Qt.WindowType.WindowStaysOnTopHint
             | Qt.WindowType.FramelessWindowHint
@@ -52,9 +52,9 @@ class ContentPlayer:
         self.window.setLayout(layout)
 
     def display_image(self, image_path: Path):
-        """Wyświetlenie obrazu"""
+        """WyĹ›wietlenie obrazu"""
         if not PYQT6_AVAILABLE:
-            print(f"Wyświetlanie obrazu: {image_path}")
+            print(f"WyĹ›wietlanie obrazu: {image_path}")
             return
 
         if not self.label:
@@ -62,12 +62,12 @@ class ContentPlayer:
 
         pixmap = QPixmap(str(image_path))
         
-        # Rotacja jeśli potrzeba
+        # Rotacja jeĹ›li potrzeba
         if config.ORIENTATION != 0:
             transform = QTransform().rotate(config.ORIENTATION)
             pixmap = pixmap.transformed(transform)
 
-        # Skalowanie do rozdzielczości ekranu
+        # Skalowanie do rozdzielczoĹ›ci ekranu
         scaled_pixmap = pixmap.scaled(
             config.RESOLUTION_WIDTH,
             config.RESOLUTION_HEIGHT,
@@ -79,7 +79,7 @@ class ContentPlayer:
         self.current_content_path = image_path
 
     def display_pdf(self, pdf_path: Path):
-        """Wyświetlenie PDF (pierwsza strona jako obraz)"""
+        """WyĹ›wietlenie PDF (pierwsza strona jako obraz)"""
         try:
             from pdf2image import convert_from_path
             images = convert_from_path(str(pdf_path), first_page=1, last_page=1)
@@ -89,10 +89,10 @@ class ContentPlayer:
                 images[0].save(temp_image, "JPEG")
                 self.display_image(temp_image)
         except Exception as e:
-            print(f"Błąd wyświetlania PDF: {e}")
+            print(f"BĹ‚Ä…d wyĹ›wietlania PDF: {e}")
 
     def display_excel(self, excel_path: Path):
-        """Wyświetlenie Excel (renderowanie do obrazu)"""
+        """WyĹ›wietlenie Excel (renderowanie do obrazu)"""
         try:
             import openpyxl
             from PIL import Image, ImageDraw, ImageFont
@@ -118,10 +118,10 @@ class ContentPlayer:
             img.save(temp_image, "JPEG")
             self.display_image(temp_image)
         except Exception as e:
-            print(f"Błąd wyświetlania Excel: {e}")
+            print(f"BĹ‚Ä…d wyĹ›wietlania Excel: {e}")
 
     def display_video(self, video_path: Path):
-        """Wyświetlenie video"""
+        """WyĹ›wietlenie video"""
         if not PYQT6_AVAILABLE:
             print(f"Odtwarzanie video: {video_path}")
             return
@@ -135,11 +135,11 @@ class ContentPlayer:
             
             if self.window:
                 try:
-                    # PyQt6 - użyj winId() dla Windows lub windowId() dla Linux
+                    # PyQt6 - uĹĽyj winId() dla Windows lub windowId() dla Linux
                     if sys.platform == "win32":
                         player.set_hwnd(int(self.window.winId()))
                     else:
-                        # Linux - użyj X11 window ID
+                        # Linux - uĹĽyj X11 window ID
                         player.set_xwindow(int(self.window.winId()))
                 except:
                     # Fallback - odtwarzanie bez okna
@@ -148,7 +148,7 @@ class ContentPlayer:
             player.play()
             self.current_content_path = video_path
         except Exception as e:
-            print(f"Błąd odtwarzania video: {e}")
+            print(f"BĹ‚Ä…d odtwarzania video: {e}")
 
     def run(self):
         """Uruchomienie aplikacji"""
@@ -156,4 +156,5 @@ class ContentPlayer:
             sys.exit(self.app.exec())
         else:
             print("Aplikacja w trybie testowym - brak PyQt6")
+
 

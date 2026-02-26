@@ -1,60 +1,60 @@
-# Digital signage system requirements
+﻿# Digital signage system requirements
 _Exported on 12/13/2025 at 10:41:26 GMT+1 from Cursor (2.2.20)_
 
 ---
 
 **User**
 
-mamy zadanie: napisać aplikację podobną do digital singage ale z własnym serwerem treści. na maszynie wirtualnej z ubuntu mamy serwer treści z panelem zarządzającym dostępnym przez przeglądarkę. serwer musi obsługiwać do 10 wyświetlaczy. wyświetlacz będzie obsługiwany przez terminal typu hp  t630 lub podobny z systemem linux.
-system. wyświetlacze będą pracowały przez sieć WiFi i mogą być opóźnienia w propagacji treści a nawet zrywane połączenia. Wyświetlacze powinny się dać grupować logicznie aby móc wyświetlać treści w sposób zależny. obsługiwane formaty to pdf, excel i formaty graficzne musi też obsługiwać wybrany format video. pliki powinny byc buforowane a plik wideo przygotowany na serwerze w momencie uploadu. dalsze założenia będą wypracowane później. potrzebna analiza możliwości i doboru technologii.
+mamy zadanie: napisaÄ‡ aplikacjÄ™ podobnÄ… do digital singage ale z wĹ‚asnym serwerem treĹ›ci. na maszynie wirtualnej z ubuntu mamy serwer treĹ›ci z panelem zarzÄ…dzajÄ…cym dostÄ™pnym przez przeglÄ…darkÄ™. serwer musi obsĹ‚ugiwaÄ‡ do 10 wyĹ›wietlaczy. wyĹ›wietlacz bÄ™dzie obsĹ‚ugiwany przez terminal typu hp  t630 lub podobny z systemem linux.
+system. wyĹ›wietlacze bÄ™dÄ… pracowaĹ‚y przez sieÄ‡ WiFi i mogÄ… byÄ‡ opĂłĹşnienia w propagacji treĹ›ci a nawet zrywane poĹ‚Ä…czenia. WyĹ›wietlacze powinny siÄ™ daÄ‡ grupowaÄ‡ logicznie aby mĂłc wyĹ›wietlaÄ‡ treĹ›ci w sposĂłb zaleĹĽny. obsĹ‚ugiwane formaty to pdf, excel i formaty graficzne musi teĹĽ obsĹ‚ugiwaÄ‡ wybrany format video. pliki powinny byc buforowane a plik wideo przygotowany na serwerze w momencie uploadu. dalsze zaĹ‚oĹĽenia bÄ™dÄ… wypracowane pĂłĹşniej. potrzebna analiza moĹĽliwoĹ›ci i doboru technologii.
 dodatkowo:
 jeszcze zobacz to:
- 
+Â 
 MIN-imum
-1) możliwość wyświetlania EXCEL lub PDF – w taki sposób aby skalowało się na jednej stronie/na jednym ekranie – a MPG i JPG
-2) możliwość wyświetlania w pionie (planujemy zawieszenie 3 monitorów w pionie – czyli przekręcone o 90 stopni w stosunku do standardu)
-3) powinna być możliwość wyświetlenia równolegle lub osobno na TV – zakładam 4sztuki (dwa na 1 piętrze, jeden, parter, jeden 2 piętro)
+1) moĹĽliwoĹ›Ä‡ wyĹ›wietlania EXCEL lub PDF â€“ w taki sposĂłb aby skalowaĹ‚o siÄ™ na jednej stronie/na jednym ekranie â€“ a MPG i JPG
+2) moĹĽliwoĹ›Ä‡ wyĹ›wietlania w pionie (planujemy zawieszenie 3 monitorĂłw w pionie â€“ czyli przekrÄ™cone o 90 stopni w stosunku do standardu)
+3) powinna byÄ‡ moĹĽliwoĹ›Ä‡ wyĹ›wietlenia rĂłwnolegle lub osobno na TV â€“ zakĹ‚adam 4sztuki (dwa na 1 piÄ™trze, jeden, parter, jeden 2 piÄ™tro)
 - wszystko poprzez internet
-4) powinna być możliwość ustawienia czasu włączenia TV i czasu wyświetlania danej/wybranej informacji
- 
+4) powinna byÄ‡ moĹĽliwoĹ›Ä‡ ustawienia czasu wĹ‚Ä…czenia TV i czasu wyĹ›wietlania danej/wybranej informacji
+Â 
 MAX-imum
-- to co na górze + podpięcie do folderu ZASTĘPSTWA (mam w chmurze (aby samodzielnie wyświetlał aktualizacje ( w momencie zmiany)
-jeszcze taki jeden problem: niektóre pliki np zastępstwa w formie listy w excelu mogą być długie (wiele wierszy). powinna być możliwość aby w grupie monitorów wiszących pionowo obok siebie (zadeklarowana konfiguracja) można wyświetlać dzielony plik dla większej czytelności
-czy dużym problemem jest konfigurowanie przypisania pięter i rozkładu monitorów w sposób graficzny ? i późniejsze wyświetlanie symulacji tego co jest (powinno być) na ekranach na stronie informacyjnej (oddzielna podstrona bez logowania)?
-przeanalizuj problem i przedstaw pomysł na razie bez kodowania
+- to co na gĂłrze + podpiÄ™cie do folderu ZASTÄPSTWA (mam w chmurze (aby samodzielnie wyĹ›wietlaĹ‚ aktualizacje ( w momencie zmiany)
+jeszcze taki jeden problem: niektĂłre pliki np zastÄ™pstwa w formie listy w excelu mogÄ… byÄ‡ dĹ‚ugie (wiele wierszy). powinna byÄ‡ moĹĽliwoĹ›Ä‡ aby w grupie monitorĂłw wiszÄ…cych pionowo obok siebie (zadeklarowana konfiguracja) moĹĽna wyĹ›wietlaÄ‡ dzielony plik dla wiÄ™kszej czytelnoĹ›ci
+czy duĹĽym problemem jest konfigurowanie przypisania piÄ™ter i rozkĹ‚adu monitorĂłw w sposĂłb graficzny ? i pĂłĹşniejsze wyĹ›wietlanie symulacji tego co jest (powinno byÄ‡) na ekranach na stronie informacyjnej (oddzielna podstrona bez logowania)?
+przeanalizuj problem i przedstaw pomysĹ‚ na razie bez kodowania
 
 ---
 
 **Cursor**
 
-Analizuję wymagania i przygotowuję propozycję architektury i technologii.
+AnalizujÄ™ wymagania i przygotowujÄ™ propozycjÄ™ architektury i technologii.
 
 
-Analiza wymagań i propozycja rozwiązania dla systemu digital signage.
+Analiza wymagaĹ„ i propozycja rozwiÄ…zania dla systemu digital signage.
 
-## Analiza wymagań
+## Analiza wymagaĹ„
 
 ### Wymagania funkcjonalne
 
 **MIN-imum:**
-1. Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. Obrót 90° (3 monitory pionowe obok siebie)
-3. Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. Harmonogram: czas włączenia TV i czas wyświetlania treści
+1. WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
 
 **MAX-imum:**
-- Wszystko z MIN + integracja z folderem ZASTĘPSTWA w chmurze (auto-aktualizacja)
-- Dzielenie długich plików Excel na grupy monitorów pionowych
-- Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- Symulacja wyświetlania na stronie informacyjnej (bez logowania)
+- Wszystko z MIN + integracja z folderem ZASTÄPSTWA w chmurze (auto-aktualizacja)
+- Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
 
 ### Wymagania techniczne
 - Serwer: Ubuntu VM z panelem webowym
-- Wyświetlacze: HP T630 lub podobne (Linux)
-- Sieć: WiFi (opóźnienia, zrywane połączenia)
-- Skalowanie: do 10 wyświetlaczy
+- WyĹ›wietlacze: HP T630 lub podobne (Linux)
+- SieÄ‡: WiFi (opĂłĹşnienia, zrywane poĹ‚Ä…czenia)
+- Skalowanie: do 10 wyĹ›wietlaczy
 - Formaty: PDF, Excel, grafika, video
-- Buforowanie plików lokalnie
+- Buforowanie plikĂłw lokalnie
 - Przetwarzanie video na serwerze przy uploadzie
 
 ## Propozycja architektury
@@ -62,192 +62,192 @@ Analiza wymagań i propozycja rozwiązania dla systemu digital signage.
 ### 1. Architektura systemu
 
 ```
-┌─────────────────────────────────────────┐
-│         SERWER (Ubuntu VM)              │
-│  ┌───────────────────────────────────┐  │
-│  │   Backend API (Python/Node.js)    │  │
-│  │   - Zarządzanie treścią           │  │
-│  │   - Harmonogramy                  │  │
-│  │   - Grupowanie wyświetlaczy       │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Panel Webowy (React/Vue)        │  │
-│  │   - Upload treści                 │  │
-│  │   - Konfiguracja wyświetlaczy     │  │
-│  │   - Harmonogramy                  │  │
-│  │   - Symulacja wyświetlania        │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Baza danych (PostgreSQL)        │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Storage (pliki)                 │  │
-│  │   - Oryginalne pliki              │  │
-│  │   - Przetworzone video            │  │
-│  │   - Cache dla wyświetlaczy        │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Worker (przetwarzanie video)    │  │
-│  └───────────────────────────────────┘  │
-└─────────────────────────────────────────┘
-           │         │         │
-           │ WiFi    │ WiFi    │ WiFi
-           ▼         ▼         ▼
-    ┌──────────┐ ┌──────────┐ ┌──────────┐
-    │ Wyświetl.│ │ Wyświetl.│ │ Wyświetl.│
-    │ HP T630  │ │ HP T630  │ │ HP T630  │
-    │ (Linux)  │ │ (Linux)  │ │ (Linux)  │
-    └──────────┘ └──────────┘ └──────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚         SERWER (Ubuntu VM)              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Backend API (Python/Node.js)    â”‚  â”‚
+â”‚  â”‚   - ZarzÄ…dzanie treĹ›ciÄ…           â”‚  â”‚
+â”‚  â”‚   - Harmonogramy                  â”‚  â”‚
+â”‚  â”‚   - Grupowanie wyĹ›wietlaczy       â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Panel Webowy (React/Vue)        â”‚  â”‚
+â”‚  â”‚   - Upload treĹ›ci                 â”‚  â”‚
+â”‚  â”‚   - Konfiguracja wyĹ›wietlaczy     â”‚  â”‚
+â”‚  â”‚   - Harmonogramy                  â”‚  â”‚
+â”‚  â”‚   - Symulacja wyĹ›wietlania        â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Baza danych (PostgreSQL)        â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Storage (pliki)                 â”‚  â”‚
+â”‚  â”‚   - Oryginalne pliki              â”‚  â”‚
+â”‚  â”‚   - Przetworzone video            â”‚  â”‚
+â”‚  â”‚   - Cache dla wyĹ›wietlaczy        â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Worker (przetwarzanie video)    â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+           â”‚         â”‚         â”‚
+           â”‚ WiFi    â”‚ WiFi    â”‚ WiFi
+           â–Ľ         â–Ľ         â–Ľ
+    â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+    â”‚ WyĹ›wietl.â”‚ â”‚ WyĹ›wietl.â”‚ â”‚ WyĹ›wietl.â”‚
+    â”‚ HP T630  â”‚ â”‚ HP T630  â”‚ â”‚ HP T630  â”‚
+    â”‚ (Linux)  â”‚ â”‚ (Linux)  â”‚ â”‚ (Linux)  â”‚
+    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
-### 2. Stack technologiczny — propozycja
+### 2. Stack technologiczny â€” propozycja
 
 **Backend:**
 - Python (FastAPI/Django) lub Node.js (Express/NestJS)
-- PostgreSQL — baza danych
-- Redis — cache, kolejki, sesje
-- Celery (Python) / Bull (Node.js) — przetwarzanie video w tle
-- FFmpeg — konwersja/optymalizacja video
+- PostgreSQL â€” baza danych
+- Redis â€” cache, kolejki, sesje
+- Celery (Python) / Bull (Node.js) â€” przetwarzanie video w tle
+- FFmpeg â€” konwersja/optymalizacja video
 
-**Frontend (Panel zarządzający):**
+**Frontend (Panel zarzÄ…dzajÄ…cy):**
 - React lub Vue.js
-- Biblioteki: react-grid-layout / vue-grid-layout — graficzna konfiguracja
-- Chart.js / D3.js — wizualizacje i symulacje
+- Biblioteki: react-grid-layout / vue-grid-layout â€” graficzna konfiguracja
+- Chart.js / D3.js â€” wizualizacje i symulacje
 
-**Klient (wyświetlacze):**
+**Klient (wyĹ›wietlacze):**
 - Python (Electron niepotrzebny na Linuxie)
 - Biblioteki:
-  - PyQt5/PyQt6 lub Kivy — interfejs wyświetlania
-  - Pillow — obrazy
-  - PyPDF2/pdf2image — PDF
-  - openpyxl/pandas — Excel
-  - VLC Python bindings lub mpv — video
-- Systemd — autostart i zarządzanie procesem
+  - PyQt5/PyQt6 lub Kivy â€” interfejs wyĹ›wietlania
+  - Pillow â€” obrazy
+  - PyPDF2/pdf2image â€” PDF
+  - openpyxl/pandas â€” Excel
+  - VLC Python bindings lub mpv â€” video
+- Systemd â€” autostart i zarzÄ…dzanie procesem
 
 **Komunikacja:**
-- REST API — podstawowa komunikacja
-- WebSocket (Socket.io) — status w czasie rzeczywistym, push aktualizacji
-- MQTT (opcjonalnie) — lekka komunikacja dla wyświetlaczy
+- REST API â€” podstawowa komunikacja
+- WebSocket (Socket.io) â€” status w czasie rzeczywistym, push aktualizacji
+- MQTT (opcjonalnie) â€” lekka komunikacja dla wyĹ›wietlaczy
 
 **Storage:**
-- Lokalny system plików lub S3-compatible storage
-- Nginx — serwowanie plików statycznych
+- Lokalny system plikĂłw lub S3-compatible storage
+- Nginx â€” serwowanie plikĂłw statycznych
 
-**Integracja z chmurą:**
-- Webhook lub polling — monitorowanie zmian w folderze ZASTĘPSTWA
-- API klienta chmury (OneDrive/Google Drive/Dropbox) — synchronizacja
+**Integracja z chmurÄ…:**
+- Webhook lub polling â€” monitorowanie zmian w folderze ZASTÄPSTWA
+- API klienta chmury (OneDrive/Google Drive/Dropbox) â€” synchronizacja
 
 ### 3. Kluczowe komponenty
 
-#### A. System zarządzania treścią
-- Upload plików (drag & drop)
+#### A. System zarzÄ…dzania treĹ›ciÄ…
+- Upload plikĂłw (drag & drop)
 - Automatyczne wykrywanie typu
-- Przetwarzanie video przy uploadzie (FFmpeg → H.264/MP4)
+- Przetwarzanie video przy uploadzie (FFmpeg â†’ H.264/MP4)
 - Generowanie miniatur
-- Wersjonowanie plików
+- Wersjonowanie plikĂłw
 
-#### B. System grupowania wyświetlaczy
-- Grupy logiczne (np. "Piętro 1", "Pionowe 3x", "Wszystkie")
-- Hierarchia: Piętro → Grupa → Wyświetlacz
-- Graficzny edytor układu (drag & drop)
+#### B. System grupowania wyĹ›wietlaczy
+- Grupy logiczne (np. "PiÄ™tro 1", "Pionowe 3x", "Wszystkie")
+- Hierarchia: PiÄ™tro â†’ Grupa â†’ WyĹ›wietlacz
+- Graficzny edytor ukĹ‚adu (drag & drop)
 
-#### C. System harmonogramów
-- Harmonogramy dla grup/pojedynczych wyświetlaczy
-- Okna czasowe wyświetlania
-- Harmonogramy włączania/wyłączania TV (HDMI CEC lub smart plug)
-- Priorytety treści
+#### C. System harmonogramĂłw
+- Harmonogramy dla grup/pojedynczych wyĹ›wietlaczy
+- Okna czasowe wyĹ›wietlania
+- Harmonogramy wĹ‚Ä…czania/wyĹ‚Ä…czania TV (HDMI CEC lub smart plug)
+- Priorytety treĹ›ci
 
 #### D. System buforowania
-- Lokalny cache na każdym wyświetlaczu
-- Pobieranie w tle (przed wyświetleniem)
-- Weryfikacja integralności (checksum)
-- Automatyczne uzupełnianie cache przy połączeniu
+- Lokalny cache na kaĹĽdym wyĹ›wietlaczu
+- Pobieranie w tle (przed wyĹ›wietleniem)
+- Weryfikacja integralnoĹ›ci (checksum)
+- Automatyczne uzupeĹ‚nianie cache przy poĹ‚Ä…czeniu
 
-#### E. Obsługa formatów
+#### E. ObsĹ‚uga formatĂłw
 
 **PDF:**
-- Konwersja do obrazów (pdf2image)
-- Skalowanie do rozdzielczości ekranu
-- Obsługa wielu stron (przewijanie lub podział)
+- Konwersja do obrazĂłw (pdf2image)
+- Skalowanie do rozdzielczoĹ›ci ekranu
+- ObsĹ‚uga wielu stron (przewijanie lub podziaĹ‚)
 
 **Excel:**
-- Konwersja do obrazów (openpyxl + renderowanie)
+- Konwersja do obrazĂłw (openpyxl + renderowanie)
 - Skalowanie do jednej strony
-- Dzielenie długich plików na wiele ekranów (dla grup pionowych)
-- Auto-podział wierszy między monitory
+- Dzielenie dĹ‚ugich plikĂłw na wiele ekranĂłw (dla grup pionowych)
+- Auto-podziaĹ‚ wierszy miÄ™dzy monitory
 
 **Grafika:**
 - JPG, PNG, GIF
 - Skalowanie z zachowaniem proporcji
-- Obsługa animacji GIF
+- ObsĹ‚uga animacji GIF
 
 **Video:**
-- MP4 (H.264) — standard
+- MP4 (H.264) â€” standard
 - Przetwarzanie na serwerze (FFmpeg)
-- Różne rozdzielczości dla różnych wyświetlaczy
+- RĂłĹĽne rozdzielczoĹ›ci dla rĂłĹĽnych wyĹ›wietlaczy
 - Streaming lub lokalne odtwarzanie
 
-#### F. Obsługa obrotu ekranu
-- Konfiguracja orientacji (0°, 90°, 180°, 270°)
-- Automatyczna rotacja treści
+#### F. ObsĹ‚uga obrotu ekranu
+- Konfiguracja orientacji (0Â°, 90Â°, 180Â°, 270Â°)
+- Automatyczna rotacja treĹ›ci
 - Testowanie w symulacji
 
-#### G. Integracja z chmurą (ZASTĘPSTWA)
+#### G. Integracja z chmurÄ… (ZASTÄPSTWA)
 - Monitorowanie folderu (webhook/polling)
 - Automatyczne pobieranie zmian
-- Wykrywanie nowych/zmienionych plików
+- Wykrywanie nowych/zmienionych plikĂłw
 - Aktualizacja harmonogramu
 
-#### H. Symulacja wyświetlania
-- Podgląd na żywo (WebSocket)
-- Wizualizacja układu monitorów
-- Symulacja harmonogramów
+#### H. Symulacja wyĹ›wietlania
+- PodglÄ…d na ĹĽywo (WebSocket)
+- Wizualizacja ukĹ‚adu monitorĂłw
+- Symulacja harmonogramĂłw
 - Publiczna strona (bez logowania)
 
-### 4. Wyzwania i rozwiązania
+### 4. Wyzwania i rozwiÄ…zania
 
-#### A. Niezawodność WiFi
+#### A. NiezawodnoĹ›Ä‡ WiFi
 - Buforowanie offline
 - Retry z exponential backoff
-- Queue lokalna na wyświetlaczu
-- Status połączenia w czasie rzeczywistym
-- Fallback: wyświetlanie z cache
+- Queue lokalna na wyĹ›wietlaczu
+- Status poĹ‚Ä…czenia w czasie rzeczywistym
+- Fallback: wyĹ›wietlanie z cache
 
-#### B. Synchronizacja wielu wyświetlaczy
+#### B. Synchronizacja wielu wyĹ›wietlaczy
 - Timestamp synchronizacji
 - WebSocket dla push
-- NTP na wyświetlaczach
-- Tolerancja opóźnień (okno synchronizacji)
+- NTP na wyĹ›wietlaczach
+- Tolerancja opĂłĹşnieĹ„ (okno synchronizacji)
 
-#### C. Dzielenie długich plików Excel
-- Algorytm podziału:
-  - Oblicz liczbę wierszy
-  - Podziel na N części (liczba monitorów w grupie)
-  - Renderuj każdą część osobno
-  - Wyślij odpowiednią część do każdego wyświetlacza
+#### C. Dzielenie dĹ‚ugich plikĂłw Excel
+- Algorytm podziaĹ‚u:
+  - Oblicz liczbÄ™ wierszy
+  - Podziel na N czÄ™Ĺ›ci (liczba monitorĂłw w grupie)
+  - Renderuj kaĹĽdÄ… czÄ™Ĺ›Ä‡ osobno
+  - WyĹ›lij odpowiedniÄ… czÄ™Ĺ›Ä‡ do kaĹĽdego wyĹ›wietlacza
 
 #### D. Graficzna konfiguracja
-- Drag & drop układu
-- Wizualizacja pięter i monitorów
-- Przypisywanie wyświetlaczy do pozycji
+- Drag & drop ukĹ‚adu
+- Wizualizacja piÄ™ter i monitorĂłw
+- Przypisywanie wyĹ›wietlaczy do pozycji
 - Eksport/import konfiguracji
 
-#### E. Zarządzanie zasobami
-- Limit równoczesnych przetwarzań video
-- Kolejkowanie zadań
-- Monitorowanie użycia CPU/RAM
-- Automatyczne czyszczenie starych plików
+#### E. ZarzÄ…dzanie zasobami
+- Limit rĂłwnoczesnych przetwarzaĹ„ video
+- Kolejkowanie zadaĹ„
+- Monitorowanie uĹĽycia CPU/RAM
+- Automatyczne czyszczenie starych plikĂłw
 
 ### 5. Struktura bazy danych (szkic)
 
 ```
-Wyświetlacze (Displays)
+WyĹ›wietlacze (Displays)
 - id, name, mac_address, ip, status, orientation, resolution, group_id
 
 Grupy (Groups)
 - id, name, type (horizontal/vertical/mixed), floor, layout_config (JSON)
 
-Treści (Content)
+TreĹ›ci (Content)
 - id, filename, type, file_path, thumbnail_path, video_processed, metadata (JSON)
 
 Harmonogramy (Schedules)
@@ -260,101 +260,101 @@ Synchronizacja chmury (CloudSync)
 - id, folder_path, last_sync, status, config (JSON)
 ```
 
-### 6. Przepływ działania
+### 6. PrzepĹ‚yw dziaĹ‚ania
 
-1. Upload treści:
-   - Upload → Walidacja → Zapis → Przetwarzanie (video) → Gotowe
+1. Upload treĹ›ci:
+   - Upload â†’ Walidacja â†’ Zapis â†’ Przetwarzanie (video) â†’ Gotowe
 
 2. Konfiguracja:
-   - Utworzenie grup → Przypisanie wyświetlaczy → Konfiguracja układu
+   - Utworzenie grup â†’ Przypisanie wyĹ›wietlaczy â†’ Konfiguracja ukĹ‚adu
 
 3. Harmonogram:
-   - Utworzenie harmonogramu → Przypisanie treści → Aktywacja
+   - Utworzenie harmonogramu â†’ Przypisanie treĹ›ci â†’ Aktywacja
 
-4. Wyświetlanie:
-   - Wyświetlacz łączy się z serwerem → Pobiera harmonogram → Pobiera treści (cache) → Wyświetla zgodnie z harmonogramem
+4. WyĹ›wietlanie:
+   - WyĹ›wietlacz Ĺ‚Ä…czy siÄ™ z serwerem â†’ Pobiera harmonogram â†’ Pobiera treĹ›ci (cache) â†’ WyĹ›wietla zgodnie z harmonogramem
 
 5. Aktualizacja:
-   - Zmiana w chmurze → Webhook → Pobranie → Aktualizacja harmonogramu → Push do wyświetlaczy
+   - Zmiana w chmurze â†’ Webhook â†’ Pobranie â†’ Aktualizacja harmonogramu â†’ Push do wyĹ›wietlaczy
 
-### 7. Bezpieczeństwo
+### 7. BezpieczeĹ„stwo
 
 - Autentykacja (JWT)
 - HTTPS
 - Autoryzacja (role: admin/operator/viewer)
 - Szyfrowanie komunikacji
 - Firewall na serwerze
-- Aktualizacje bezpieczeństwa
+- Aktualizacje bezpieczeĹ„stwa
 
 ## Rekomendacje
 
 1. Faza 1 (MVP): MIN-imum
-   - Podstawowy panel, upload, wyświetlanie, harmonogramy, grupowanie
+   - Podstawowy panel, upload, wyĹ›wietlanie, harmonogramy, grupowanie
 
 2. Faza 2: Rozszerzenia
-   - Integracja z chmurą, dzielenie Excel, graficzna konfiguracja
+   - Integracja z chmurÄ…, dzielenie Excel, graficzna konfiguracja
 
 3. Faza 3: Zaawansowane
    - Symulacja, analytics, zaawansowane harmonogramy
 
 ## Pytania do doprecyzowania
 
-1. Jaki system chmurowy dla ZASTĘPSTWA? (OneDrive, Google Drive, Dropbox, własny)
-2. Rozdzielczość wyświetlaczy?
-3. Czy potrzebne jest zarządzanie zasilaniem TV? (HDMI CEC, smart plug, ręczne)
-4. Czy potrzebne są analytics? (statystyki wyświetleń, status)
-5. Czy potrzebna jest autoryzacja na wyświetlaczach? (kto może zmieniać treść)
+1. Jaki system chmurowy dla ZASTÄPSTWA? (OneDrive, Google Drive, Dropbox, wĹ‚asny)
+2. RozdzielczoĹ›Ä‡ wyĹ›wietlaczy?
+3. Czy potrzebne jest zarzÄ…dzanie zasilaniem TV? (HDMI CEC, smart plug, rÄ™czne)
+4. Czy potrzebne sÄ… analytics? (statystyki wyĹ›wietleĹ„, status)
+5. Czy potrzebna jest autoryzacja na wyĹ›wietlaczach? (kto moĹĽe zmieniaÄ‡ treĹ›Ä‡)
 6. Jaki format video preferowany? (MP4/H.264 standardowo)
 
-Czy chcesz, żebym rozwinął któryś z elementów lub przygotował szczegółowy plan implementacji?
+Czy chcesz, ĹĽebym rozwinÄ…Ĺ‚ ktĂłryĹ› z elementĂłw lub przygotowaĹ‚ szczegĂłĹ‚owy plan implementacji?
 
 ```plaintext
-┌─────────────────────────────────────────┐
-│         SERWER (Ubuntu VM)              │
-│  ┌───────────────────────────────────┐  │
-│  │   Backend API (Python/Node.js)    │  │
-│  │   - Zarządzanie treścią           │  │
-│  │   - Harmonogramy                  │  │
-│  │   - Grupowanie wyświetlaczy       │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Panel Webowy (React/Vue)        │  │
-│  │   - Upload treści                 │  │
-│  │   - Konfiguracja wyświetlaczy     │  │
-│  │   - Harmonogramy                  │  │
-│  │   - Symulacja wyświetlania        │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Baza danych (PostgreSQL)        │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Storage (pliki)                 │  │
-│  │   - Oryginalne pliki              │  │
-│  │   - Przetworzone video            │  │
-│  │   - Cache dla wyświetlaczy        │  │
-│  └───────────────────────────────────┘  │
-│  ┌───────────────────────────────────┐  │
-│  │   Worker (przetwarzanie video)    │  │
-│  └───────────────────────────────────┘  │
-└─────────────────────────────────────────┘
-           │         │         │
-           │ WiFi    │ WiFi    │ WiFi
-           ▼         ▼         ▼
-    ┌──────────┐ ┌──────────┐ ┌──────────┐
-    │ Wyświetl.│ │ Wyświetl.│ │ Wyświetl.│
-    │ HP T630  │ │ HP T630  │ │ HP T630  │
-    │ (Linux)  │ │ (Linux)  │ │ (Linux)  │
-    └──────────┘ └──────────┘ └──────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚         SERWER (Ubuntu VM)              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Backend API (Python/Node.js)    â”‚  â”‚
+â”‚  â”‚   - ZarzÄ…dzanie treĹ›ciÄ…           â”‚  â”‚
+â”‚  â”‚   - Harmonogramy                  â”‚  â”‚
+â”‚  â”‚   - Grupowanie wyĹ›wietlaczy       â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Panel Webowy (React/Vue)        â”‚  â”‚
+â”‚  â”‚   - Upload treĹ›ci                 â”‚  â”‚
+â”‚  â”‚   - Konfiguracja wyĹ›wietlaczy     â”‚  â”‚
+â”‚  â”‚   - Harmonogramy                  â”‚  â”‚
+â”‚  â”‚   - Symulacja wyĹ›wietlania        â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Baza danych (PostgreSQL)        â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Storage (pliki)                 â”‚  â”‚
+â”‚  â”‚   - Oryginalne pliki              â”‚  â”‚
+â”‚  â”‚   - Przetworzone video            â”‚  â”‚
+â”‚  â”‚   - Cache dla wyĹ›wietlaczy        â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚   Worker (przetwarzanie video)    â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+           â”‚         â”‚         â”‚
+           â”‚ WiFi    â”‚ WiFi    â”‚ WiFi
+           â–Ľ         â–Ľ         â–Ľ
+    â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+    â”‚ WyĹ›wietl.â”‚ â”‚ WyĹ›wietl.â”‚ â”‚ WyĹ›wietl.â”‚
+    â”‚ HP T630  â”‚ â”‚ HP T630  â”‚ â”‚ HP T630  â”‚
+    â”‚ (Linux)  â”‚ â”‚ (Linux)  â”‚ â”‚ (Linux)  â”‚
+    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
 ```plaintext
-Wyświetlacze (Displays)
+WyĹ›wietlacze (Displays)
 - id, name, mac_address, ip, status, orientation, resolution, group_id
 
 Grupy (Groups)
 - id, name, type (horizontal/vertical/mixed), floor, layout_config (JSON)
 
-Treści (Content)
+TreĹ›ci (Content)
 - id, filename, type, file_path, thumbnail_path, video_processed, metadata (JSON)
 
 Harmonogramy (Schedules)
@@ -371,119 +371,119 @@ Synchronizacja chmury (CloudSync)
 
 **User**
 
-ad1. jeszcze nie zdefiniowany. zakładamy googledrive. 
+ad1. jeszcze nie zdefiniowany. zakĹ‚adamy googledrive. 
 ad.2. fhd telewizory
-ad3. możliwość konfiguracji później (w konfiguracji konkretnego panela)
+ad3. moĹĽliwoĹ›Ä‡ konfiguracji pĂłĹşniej (w konfiguracji konkretnego panela)
 ad4. nie, bo to tylko tablice informacyjne w szkole
-ad5. zarządzanie treścią tylko z poziomu serwera. zdefiniowane dwie role : admin - konfiguruje wszystko, wrzuca treści (za hasłem), operator - pani x tylko obserwuje co się gdzie wyświetla i czy wszystko działa
-ad6. format który obsłuży terminal (klient). transkodowanie na serwerze po uploadzie 
+ad5. zarzÄ…dzanie treĹ›ciÄ… tylko z poziomu serwera. zdefiniowane dwie role : admin - konfiguruje wszystko, wrzuca treĹ›ci (za hasĹ‚em), operator - pani x tylko obserwuje co siÄ™ gdzie wyĹ›wietla i czy wszystko dziaĹ‚a
+ad6. format ktĂłry obsĹ‚uĹĽy terminal (klient). transkodowanie na serwerze po uploadzie 
 
 ---
 
 **Cursor**
 
-Aktualizuję analizę z uwzględnieniem doprecyzowanych wymagań.
+AktualizujÄ™ analizÄ™ z uwzglÄ™dnieniem doprecyzowanych wymagaĹ„.
 
 
 ```markdown
-# Analiza Systemu Digital Signage - Szczegółowa Specyfikacja
+# Analiza Systemu Digital Signage - SzczegĂłĹ‚owa Specyfikacja
 
 ## 1. Wymagania Funkcjonalne - Aktualizacja
 
 ### MIN-imum
-1. ✅ Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. ✅ Obrót 90° (3 monitory pionowe obok siebie)
-3. ✅ Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. ✅ Harmonogram: czas włączenia TV i czas wyświetlania treści
+1. âś… WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. âś… ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. âś… RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. âś… Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
 
 ### MAX-imum
-- ✅ Wszystko z MIN + integracja z Google Drive (folder ZASTĘPSTWA) - auto-aktualizacja
-- ✅ Dzielenie długich plików Excel na grupy monitorów pionowych
-- ✅ Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- ✅ Symulacja wyświetlania na stronie informacyjnej (bez logowania)
+- âś… Wszystko z MIN + integracja z Google Drive (folder ZASTÄPSTWA) - auto-aktualizacja
+- âś… Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- âś… Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- âś… Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
 
 ### Doprecyzowania
-- **Chmura**: Google Drive (folder ZASTĘPSTWA)
-- **Rozdzielczość**: FHD (1920×1080) telewizory
-- **Zarządzanie TV**: Konfigurowalne później (HDMI CEC lub smart plug)
+- **Chmura**: Google Drive (folder ZASTÄPSTWA)
+- **RozdzielczoĹ›Ä‡**: FHD (1920Ă—1080) telewizory
+- **ZarzÄ…dzanie TV**: Konfigurowalne pĂłĹşniej (HDMI CEC lub smart plug)
 - **Analytics**: NIE (tylko tablice informacyjne)
 - **Role**: 
-  - **Admin**: Konfiguracja wszystkiego, upload treści (za hasłem)
-  - **Operator**: Tylko obserwacja (co się gdzie wyświetla, czy działa)
-- **Video**: Transkodowanie na serwerze po uploadzie, klient obsługuje standardowe formaty
+  - **Admin**: Konfiguracja wszystkiego, upload treĹ›ci (za hasĹ‚em)
+  - **Operator**: Tylko obserwacja (co siÄ™ gdzie wyĹ›wietla, czy dziaĹ‚a)
+- **Video**: Transkodowanie na serwerze po uploadzie, klient obsĹ‚uguje standardowe formaty
 
 ---
 
-## 2. Architektura Systemu - Szczegółowa
+## 2. Architektura Systemu - SzczegĂłĹ‚owa
 
 ### 2.1. Komponenty Systemu
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    SERWER (Ubuntu VM)                        │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Backend API (FastAPI/Django)                  │  │
-│  │  - REST API dla panelu webowego                       │  │
-│  │  - WebSocket dla statusu w czasie rzeczywistym        │  │
-│  │  - Autentykacja (JWT) - Admin/Operator                │  │
-│  │  - Zarządzanie treścią                                │  │
-│  │  - Harmonogramy                                        │  │
-│  │  - Grupowanie wyświetlaczy                            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Panel Webowy (React/Vue.js)                   │  │
-│  │  - Dashboard Admin (upload, konfiguracja)             │  │
-│  │  - Dashboard Operator (obserwacja, status)            │  │
-│  │  - Graficzny edytor układu monitorów                  │  │
-│  │  - Symulacja wyświetlania (publiczna, bez logowania)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Worker (Celery/Bull)                          │  │
-│  │  - Transkodowanie video (FFmpeg)                      │  │
-│  │  - Przetwarzanie PDF/Excel                            │  │
-│  │  - Generowanie miniatur                               │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Google Drive Sync Service                     │  │
-│  │  - Monitorowanie folderu ZASTĘPSTWA                   │  │
-│  │  - Webhook/polling zmian                              │  │
-│  │  - Automatyczne pobieranie i aktualizacja             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Baza Danych (PostgreSQL)                      │  │
-│  │  - Wyświetlacze, grupy, treści, harmonogramy         │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Storage (lokalny system plików)               │  │
-│  │  - /content/original/ - oryginalne pliki             │  │
-│  │  - /content/processed/ - przetworzone video          │  │
-│  │  - /content/thumbnails/ - miniatury                  │  │
-│  │  - /content/cache/ - cache dla wyświetlaczy          │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Nginx (serwowanie plików statycznych)         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                    │              │              │
-                    │ WiFi         │ WiFi         │ WiFi
-                    ▼              ▼              ▼
-         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-         │ Wyświetlacz 1 │  │ Wyświetlacz 2│  │ Wyświetlacz N│
-         │ HP T630       │  │ HP T630      │  │ HP T630      │
-         │ Linux         │  │ Linux        │  │ Linux        │
-         │              │  │              │  │              │
-         │ - Klient API  │  │ - Klient API │  │ - Klient API │
-         │ - Cache lokal │  │ - Cache lokal│  │ - Cache lokal│
-         │ - Player      │  │ - Player     │  │ - Player     │
-         │ - Systemd     │  │ - Systemd    │  │ - Systemd    │
-         └──────────────┘  └──────────────┘  └──────────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    SERWER (Ubuntu VM)                        â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Backend API (FastAPI/Django)                  â”‚  â”‚
+â”‚  â”‚  - REST API dla panelu webowego                       â”‚  â”‚
+â”‚  â”‚  - WebSocket dla statusu w czasie rzeczywistym        â”‚  â”‚
+â”‚  â”‚  - Autentykacja (JWT) - Admin/Operator                â”‚  â”‚
+â”‚  â”‚  - ZarzÄ…dzanie treĹ›ciÄ…                                â”‚  â”‚
+â”‚  â”‚  - Harmonogramy                                        â”‚  â”‚
+â”‚  â”‚  - Grupowanie wyĹ›wietlaczy                            â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Panel Webowy (React/Vue.js)                   â”‚  â”‚
+â”‚  â”‚  - Dashboard Admin (upload, konfiguracja)             â”‚  â”‚
+â”‚  â”‚  - Dashboard Operator (obserwacja, status)            â”‚  â”‚
+â”‚  â”‚  - Graficzny edytor ukĹ‚adu monitorĂłw                  â”‚  â”‚
+â”‚  â”‚  - Symulacja wyĹ›wietlania (publiczna, bez logowania)  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Worker (Celery/Bull)                          â”‚  â”‚
+â”‚  â”‚  - Transkodowanie video (FFmpeg)                      â”‚  â”‚
+â”‚  â”‚  - Przetwarzanie PDF/Excel                            â”‚  â”‚
+â”‚  â”‚  - Generowanie miniatur                               â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Google Drive Sync Service                     â”‚  â”‚
+â”‚  â”‚  - Monitorowanie folderu ZASTÄPSTWA                   â”‚  â”‚
+â”‚  â”‚  - Webhook/polling zmian                              â”‚  â”‚
+â”‚  â”‚  - Automatyczne pobieranie i aktualizacja             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Baza Danych (PostgreSQL)                      â”‚  â”‚
+â”‚  â”‚  - WyĹ›wietlacze, grupy, treĹ›ci, harmonogramy         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Storage (lokalny system plikĂłw)               â”‚  â”‚
+â”‚  â”‚  - /content/original/ - oryginalne pliki             â”‚  â”‚
+â”‚  â”‚  - /content/processed/ - przetworzone video          â”‚  â”‚
+â”‚  â”‚  - /content/thumbnails/ - miniatury                  â”‚  â”‚
+â”‚  â”‚  - /content/cache/ - cache dla wyĹ›wietlaczy          â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Nginx (serwowanie plikĂłw statycznych)         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                    â”‚              â”‚              â”‚
+                    â”‚ WiFi         â”‚ WiFi         â”‚ WiFi
+                    â–Ľ              â–Ľ              â–Ľ
+         â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚ WyĹ›wietlacz 1 â”‚  â”‚ WyĹ›wietlacz 2â”‚  â”‚ WyĹ›wietlacz Nâ”‚
+         â”‚ HP T630       â”‚  â”‚ HP T630      â”‚  â”‚ HP T630      â”‚
+         â”‚ Linux         â”‚  â”‚ Linux        â”‚  â”‚ Linux        â”‚
+         â”‚              â”‚  â”‚              â”‚  â”‚              â”‚
+         â”‚ - Klient API  â”‚  â”‚ - Klient API â”‚  â”‚ - Klient API â”‚
+         â”‚ - Cache lokal â”‚  â”‚ - Cache lokalâ”‚  â”‚ - Cache lokalâ”‚
+         â”‚ - Player      â”‚  â”‚ - Player     â”‚  â”‚ - Player     â”‚
+         â”‚ - Systemd     â”‚  â”‚ - Systemd    â”‚  â”‚ - Systemd    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
 ---
@@ -492,18 +492,18 @@ Aktualizuję analizę z uwzględnieniem doprecyzowanych wymagań.
 
 ### 3.1. Backend Serwera
 
-**Główny framework:**
+**GĹ‚Ăłwny framework:**
 - **Python + FastAPI** (rekomendowane) lub Django
   - Szybki, asynchroniczny
   - Automatyczna dokumentacja API (Swagger)
-  - Łatwa integracja z Celery
-  - Dobra obsługa WebSocket
+  - Ĺatwa integracja z Celery
+  - Dobra obsĹ‚uga WebSocket
 
 **Baza danych:**
 - **PostgreSQL 14+**
   - Relacyjna struktura
   - JSONB dla elastycznych konfiguracji
-  - Wsparcie dla pełnotekstowego wyszukiwania
+  - Wsparcie dla peĹ‚notekstowego wyszukiwania
 
 **Cache i kolejki:**
 - **Redis**
@@ -514,38 +514,38 @@ Aktualizuję analizę z uwzględnieniem doprecyzowanych wymagań.
 **Przetwarzanie w tle:**
 - **Celery** + **Redis** (broker)
   - Transkodowanie video
-  - Przetwarzanie plików
+  - Przetwarzanie plikĂłw
   - Synchronizacja z Google Drive
 
 **Przetwarzanie multimedia:**
 - **FFmpeg**
   - Transkodowanie video do MP4 (H.264)
-  - Optymalizacja dla FHD (1920×1080)
-  - Generowanie różnych wersji (jeśli potrzeba)
+  - Optymalizacja dla FHD (1920Ă—1080)
+  - Generowanie rĂłĹĽnych wersji (jeĹ›li potrzeba)
 
 **Biblioteki Python:**
-- `python-multipart` - upload plików
-- `Pillow` - przetwarzanie obrazów
-- `pdf2image` - konwersja PDF do obrazów
+- `python-multipart` - upload plikĂłw
+- `Pillow` - przetwarzanie obrazĂłw
+- `pdf2image` - konwersja PDF do obrazĂłw
 - `openpyxl` / `pandas` - przetwarzanie Excel
 - `google-api-python-client` - integracja Google Drive
 - `python-jose` - JWT tokens
-- `passlib` - hashowanie haseł
+- `passlib` - hashowanie haseĹ‚
 
 ### 3.2. Frontend Panelu
 
 **Framework:**
 - **React 18+** (rekomendowane) lub Vue 3
-  - Duża społeczność
-- **TypeScript** - bezpieczeństwo typów
+  - DuĹĽa spoĹ‚ecznoĹ›Ä‡
+- **TypeScript** - bezpieczeĹ„stwo typĂłw
 
 **Biblioteki UI:**
 - **Material-UI (MUI)** lub **Ant Design**
   - Gotowe komponenty
-  - Responsywność
+  - ResponsywnoĹ›Ä‡
   - Tematyzacja
 
-**Graficzny edytor układu:**
+**Graficzny edytor ukĹ‚adu:**
 - **react-grid-layout** lub **react-dnd**
   - Drag & drop
   - Responsywne siatki
@@ -556,41 +556,41 @@ Aktualizuję analizę z uwzględnieniem doprecyzowanych wymagań.
 - **Socket.io-client** - WebSocket dla statusu
 
 **Wizualizacja:**
-- **react-player** - podgląd video
-- **react-pdf** - podgląd PDF
-- **Chart.js** - wykresy (jeśli potrzeba)
+- **react-player** - podglÄ…d video
+- **react-pdf** - podglÄ…d PDF
+- **Chart.js** - wykresy (jeĹ›li potrzeba)
 
-### 3.3. Klient (Wyświetlacze - HP T630)
+### 3.3. Klient (WyĹ›wietlacze - HP T630)
 
 **System operacyjny:**
 - **Ubuntu 22.04 LTS** lub **Debian 11+**
-  - Stabilność
-  - Długie wsparcie
-  - Łatwa konfiguracja
+  - StabilnoĹ›Ä‡
+  - DĹ‚ugie wsparcie
+  - Ĺatwa konfiguracja
 
-**Framework wyświetlania:**
+**Framework wyĹ›wietlania:**
 - **Python 3.10+**
   - **PyQt6** lub **Kivy**
-    - Pełnoekranowy tryb
-    - Obsługa rotacji ekranu
-    - Dobra wydajność
+    - PeĹ‚noekranowy tryb
+    - ObsĹ‚uga rotacji ekranu
+    - Dobra wydajnoĹ›Ä‡
 
 **Biblioteki Python dla klienta:**
 - `requests` - komunikacja z API
 - `websocket-client` - WebSocket
-- `Pillow` - wyświetlanie obrazów
+- `Pillow` - wyĹ›wietlanie obrazĂłw
 - `pdf2image` - PDF
 - `openpyxl` / `pandas` - Excel
 - `vlc-python` lub `mpv` - video
 - `pygame` (opcjonalnie) - alternatywa dla prostych animacji
 
-**Zarządzanie procesem:**
+**ZarzÄ…dzanie procesem:**
 - **systemd** - autostart, restart, monitoring
 - **cron** - synchronizacja czasu (NTP)
 
-**Obsługa rotacji ekranu:**
+**ObsĹ‚uga rotacji ekranu:**
 - `xrandr` (X11) lub konfiguracja w systemie
-- Automatyczna rotacja treści w aplikacji
+- Automatyczna rotacja treĹ›ci w aplikacji
 
 ### 3.4. Integracja Google Drive
 
@@ -605,36 +605,36 @@ Aktualizuję analizę z uwzględnieniem doprecyzowanych wymagań.
 - `google-auth`
 
 **Mechanizm:**
-1. Konfiguracja folderu ZASTĘPSTWA w panelu admin
+1. Konfiguracja folderu ZASTÄPSTWA w panelu admin
 2. Autoryzacja OAuth 2.0 (jednorazowa)
 3. Monitorowanie zmian (webhook + polling)
-4. Automatyczne pobieranie nowych/zmienionych plików
+4. Automatyczne pobieranie nowych/zmienionych plikĂłw
 5. Aktualizacja harmonogramu
 
 ### 3.5. Komunikacja
 
 **REST API:**
 - Endpointy dla CRUD operacji
-- Upload/download plików
-- Status wyświetlaczy
+- Upload/download plikĂłw
+- Status wyĹ›wietlaczy
 
 **WebSocket:**
 - Status w czasie rzeczywistym
-- Push aktualizacji treści
-- Synchronizacja harmonogramów
+- Push aktualizacji treĹ›ci
+- Synchronizacja harmonogramĂłw
 
-**Protokół:**
+**ProtokĂłĹ‚:**
 - HTTPS (TLS 1.3)
 - WSS (WebSocket Secure)
 
 ---
 
-## 4. Szczegółowa Struktura Bazy Danych
+## 4. SzczegĂłĹ‚owa Struktura Bazy Danych
 
 ### 4.1. Tabele
 
 ```sql
--- Użytkownicy (role: admin, operator)
+-- UĹĽytkownicy (role: admin, operator)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -644,7 +644,7 @@ CREATE TABLE users (
     last_login TIMESTAMP
 );
 
--- Wyświetlacze
+-- WyĹ›wietlacze
 CREATE TABLE displays (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -656,7 +656,7 @@ CREATE TABLE displays (
     resolution_height INTEGER DEFAULT 1080,
     group_id INTEGER REFERENCES groups(id),
     floor VARCHAR(50),
-    position_x INTEGER,  -- Pozycja w graficznym układzie
+    position_x INTEGER,  -- Pozycja w graficznym ukĹ‚adzie
     position_y INTEGER,
     last_seen TIMESTAMP,
     cache_size_mb INTEGER DEFAULT 1000,
@@ -664,17 +664,17 @@ CREATE TABLE displays (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Grupy wyświetlaczy
+-- Grupy wyĹ›wietlaczy
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
     floor VARCHAR(50),
-    layout_config JSONB,  -- Konfiguracja graficznego układu
+    layout_config JSONB,  -- Konfiguracja graficznego ukĹ‚adu
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Treści
+-- TreĹ›ci
 CREATE TABLE content (
     id SERIAL PRIMARY KEY,
     filename VARCHAR(255) NOT NULL,
@@ -705,12 +705,12 @@ CREATE TABLE schedules (
     end_date DATE,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     priority INTEGER DEFAULT 0,
-    display_duration_seconds INTEGER,  -- Czas wyświetlania treści
+    display_duration_seconds INTEGER,  -- Czas wyĹ›wietlania treĹ›ci
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy włączania TV
+-- Harmonogramy wĹ‚Ä…czania TV
 CREATE TABLE tv_schedules (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -763,7 +763,7 @@ CREATE TABLE cloud_files (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logi aktywności (dla operatora)
+-- Logi aktywnoĹ›ci (dla operatora)
 CREATE TABLE activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
@@ -774,7 +774,7 @@ CREATE TABLE activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Status wyświetlaczy (cache)
+-- Status wyĹ›wietlaczy (cache)
 CREATE TABLE display_status (
     display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
     current_content_id INTEGER REFERENCES content(id),
@@ -801,191 +801,191 @@ CREATE INDEX idx_activity_logs_created ON activity_logs(created_at DESC);
 
 ---
 
-## 5. Szczegółowe Przepływy Działania
+## 5. SzczegĂłĹ‚owe PrzepĹ‚ywy DziaĹ‚ania
 
-### 5.1. Upload Treści (Admin)
+### 5.1. Upload TreĹ›ci (Admin)
 
-1. **Admin loguje się** → JWT token
-2. **Upload pliku** → POST `/api/content/upload`
+1. **Admin loguje siÄ™** â†’ JWT token
+2. **Upload pliku** â†’ POST `/api/content/upload`
    - Walidacja typu pliku
    - Zapis do `/content/original/`
    - Utworzenie rekordu w `content`
-   - Zwrócenie `content_id`
+   - ZwrĂłcenie `content_id`
 3. **Przetwarzanie w tle** (Celery):
-   - **Video**: Transkodowanie do MP4 (H.264, 1920×1080)
+   - **Video**: Transkodowanie do MP4 (H.264, 1920Ă—1080)
    - **PDF**: Generowanie miniatur
    - **Excel**: Analiza struktury (liczba wierszy, kolumn)
    - **Obrazy**: Generowanie miniatur, optymalizacja
-4. **Aktualizacja statusu** → `processing_jobs.status = 'completed'`
-5. **Gotowe do użycia** → Treść dostępna w harmonogramach
+4. **Aktualizacja statusu** â†’ `processing_jobs.status = 'completed'`
+5. **Gotowe do uĹĽycia** â†’ TreĹ›Ä‡ dostÄ™pna w harmonogramach
 
-### 5.2. Konfiguracja Grup i Wyświetlaczy (Admin)
+### 5.2. Konfiguracja Grup i WyĹ›wietlaczy (Admin)
 
-1. **Graficzny edytor układu**:
-   - Drag & drop wyświetlaczy na wizualizacji budynku
-   - Przypisanie do pięter
+1. **Graficzny edytor ukĹ‚adu**:
+   - Drag & drop wyĹ›wietlaczy na wizualizacji budynku
+   - Przypisanie do piÄ™ter
    - Konfiguracja grup (np. "3 monitory pionowe")
 2. **Zapis konfiguracji**:
    - `groups.layout_config` (JSON) - pozycje, rozmiary
    - `displays.group_id`, `displays.floor`, `displays.position_x/y`
 3. **Walidacja**:
-   - Sprawdzenie czy wyświetlacz nie jest w wielu grupach
-   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyświetlacze)
+   - Sprawdzenie czy wyĹ›wietlacz nie jest w wielu grupach
+   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyĹ›wietlacze)
 
 ### 5.3. Tworzenie Harmonogramu (Admin)
 
-1. **Wybór treści** → Lista dostępnych treści
-2. **Wybór wyświetlacza/grupy**:
-   - Pojedynczy wyświetlacz
-   - Grupa wyświetlaczy
-   - Wszystkie wyświetlacze
+1. **WybĂłr treĹ›ci** â†’ Lista dostÄ™pnych treĹ›ci
+2. **WybĂłr wyĹ›wietlacza/grupy**:
+   - Pojedynczy wyĹ›wietlacz
+   - Grupa wyĹ›wietlaczy
+   - Wszystkie wyĹ›wietlacze
 3. **Konfiguracja czasu**:
-   - Czas wyświetlania (start_time, end_time)
+   - Czas wyĹ›wietlania (start_time, end_time)
    - Daty (start_date, end_date) - opcjonalnie
    - Dni tygodnia
-   - Czas wyświetlania treści (display_duration_seconds)
-4. **Priorytet** → Jeśli wiele treści w tym samym czasie
-5. **Zapis** → `schedules` table
-6. **Push do wyświetlaczy** → WebSocket notification
+   - Czas wyĹ›wietlania treĹ›ci (display_duration_seconds)
+4. **Priorytet** â†’ JeĹ›li wiele treĹ›ci w tym samym czasie
+5. **Zapis** â†’ `schedules` table
+6. **Push do wyĹ›wietlaczy** â†’ WebSocket notification
 
-### 5.4. Działanie Wyświetlacza (Klient)
+### 5.4. DziaĹ‚anie WyĹ›wietlacza (Klient)
 
 1. **Start systemu** (systemd):
    - Uruchomienie aplikacji klienta
-   - Połączenie z serwerem (REST API)
-   - Rejestracja wyświetlacza (MAC address)
+   - PoĹ‚Ä…czenie z serwerem (REST API)
+   - Rejestracja wyĹ›wietlacza (MAC address)
 2. **Pobranie konfiguracji**:
    - GET `/api/displays/{id}/config`
-   - Orientacja, rozdzielczość, grupa
+   - Orientacja, rozdzielczoĹ›Ä‡, grupa
 3. **Pobranie harmonogramu**:
    - GET `/api/displays/{id}/schedule`
-   - Lista treści z czasami
-4. **Pobranie treści** (cache):
+   - Lista treĹ›ci z czasami
+4. **Pobranie treĹ›ci** (cache):
    - Sprawdzenie co jest w cache lokalnym
-   - Pobranie brakujących plików (GET `/api/content/{id}/download`)
+   - Pobranie brakujÄ…cych plikĂłw (GET `/api/content/{id}/download`)
    - Zapis do lokalnego cache
-5. **Wyświetlanie**:
+5. **WyĹ›wietlanie**:
    - Sprawdzenie aktualnego czasu
-   - Wybór treści zgodnie z harmonogramem
-   - Wyświetlenie:
-     - **Obraz**: Pillow → PyQt6
-     - **PDF**: pdf2image → Pillow → PyQt6
-     - **Excel**: openpyxl → renderowanie → PyQt6
+   - WybĂłr treĹ›ci zgodnie z harmonogramem
+   - WyĹ›wietlenie:
+     - **Obraz**: Pillow â†’ PyQt6
+     - **PDF**: pdf2image â†’ Pillow â†’ PyQt6
+     - **Excel**: openpyxl â†’ renderowanie â†’ PyQt6
      - **Video**: VLC/mpv player
 6. **Status w czasie rzeczywistym**:
-   - WebSocket → wysyłanie statusu co 30s
-   - Aktualna treść, status cache, błędy
-7. **Obsługa offline**:
-   - Jeśli brak połączenia → wyświetlanie z cache
-   - Retry połączenia co 60s
+   - WebSocket â†’ wysyĹ‚anie statusu co 30s
+   - Aktualna treĹ›Ä‡, status cache, bĹ‚Ä™dy
+7. **ObsĹ‚uga offline**:
+   - JeĹ›li brak poĹ‚Ä…czenia â†’ wyĹ›wietlanie z cache
+   - Retry poĹ‚Ä…czenia co 60s
    - Queue aktualizacji
 
-### 5.5. Integracja Google Drive (ZASTĘPSTWA)
+### 5.5. Integracja Google Drive (ZASTÄPSTWA)
 
 1. **Konfiguracja** (Admin):
    - Autoryzacja OAuth 2.0 (jednorazowa)
-   - Wybór folderu ZASTĘPSTWA
+   - WybĂłr folderu ZASTÄPSTWA
    - Zapis `cloud_sync` record
 2. **Monitorowanie zmian**:
    - **Webhook** (preferowane): Google Drive Push notifications
    - **Polling** (fallback): Sprawdzanie co 5 minut
 3. **Wykrycie zmiany**:
-   - Nowy plik → pobranie → upload do systemu
-   - Zmieniony plik → pobranie → aktualizacja
-   - Usunięty plik → usunięcie z systemu
+   - Nowy plik â†’ pobranie â†’ upload do systemu
+   - Zmieniony plik â†’ pobranie â†’ aktualizacja
+   - UsuniÄ™ty plik â†’ usuniÄ™cie z systemu
 4. **Automatyczna aktualizacja harmonogramu**:
-   - Jeśli `auto_schedule = TRUE`:
-     - Nowy plik → utworzenie harmonogramu (domyślny czas)
-     - Zmieniony plik → aktualizacja harmonogramu
+   - JeĹ›li `auto_schedule = TRUE`:
+     - Nowy plik â†’ utworzenie harmonogramu (domyĹ›lny czas)
+     - Zmieniony plik â†’ aktualizacja harmonogramu
 5. **Synchronizacja**:
    - Pobranie pliku z Google Drive
    - Upload do systemu (jak normalny upload)
    - Przetwarzanie (transkodowanie, etc.)
    - Aktualizacja `cloud_files` record
 
-### 5.6. Dzielenie Długich Plików Excel
+### 5.6. Dzielenie DĹ‚ugich PlikĂłw Excel
 
 **Algorytm dla grup pionowych (3 monitory obok siebie):**
 
 1. **Analiza pliku Excel**:
    - Liczba wierszy danych
    - Liczba kolumn
-   - Rozmiar czcionki (domyślny)
-2. **Obliczenie podziału**:
+   - Rozmiar czcionki (domyĹ›lny)
+2. **Obliczenie podziaĹ‚u**:
    - Wiersze na monitor = `total_rows / number_of_displays`
-   - Dla każdego wyświetlacza: zakres wierszy
+   - Dla kaĹĽdego wyĹ›wietlacza: zakres wierszy
 3. **Renderowanie**:
-   - Dla każdego wyświetlacza:
-     - Wyciągnięcie odpowiedniego zakresu wierszy
-     - Renderowanie do obrazu (1920×1080, obrócony 90°)
-     - Zapis jako osobna "wersja" treści
+   - Dla kaĹĽdego wyĹ›wietlacza:
+     - WyciÄ…gniÄ™cie odpowiedniego zakresu wierszy
+     - Renderowanie do obrazu (1920Ă—1080, obrĂłcony 90Â°)
+     - Zapis jako osobna "wersja" treĹ›ci
 4. **Przypisanie do harmonogramu**:
-   - Ta sama treść, różne "wersje" dla każdego wyświetlacza w grupie
-   - Synchronizacja czasu wyświetlania
+   - Ta sama treĹ›Ä‡, rĂłĹĽne "wersje" dla kaĹĽdego wyĹ›wietlacza w grupie
+   - Synchronizacja czasu wyĹ›wietlania
 
 **Implementacja:**
-- `content.metadata` → `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
-- Klient pobiera odpowiednią wersję dla swojego wyświetlacza
+- `content.metadata` â†’ `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
+- Klient pobiera odpowiedniÄ… wersjÄ™ dla swojego wyĹ›wietlacza
 
-### 5.7. Symulacja Wyświetlania (Publiczna Strona)
+### 5.7. Symulacja WyĹ›wietlania (Publiczna Strona)
 
-1. **Dostęp bez logowania**:
+1. **DostÄ™p bez logowania**:
    - GET `/simulation` (publiczny endpoint)
-   - Wyświetlenie wizualizacji wszystkich wyświetlaczy
+   - WyĹ›wietlenie wizualizacji wszystkich wyĹ›wietlaczy
 2. **Wizualizacja**:
-   - Graficzny układ monitorów (zgodnie z konfiguracją)
-   - Podgląd aktualnie wyświetlanej treści na każdym monitorze
+   - Graficzny ukĹ‚ad monitorĂłw (zgodnie z konfiguracjÄ…)
+   - PodglÄ…d aktualnie wyĹ›wietlanej treĹ›ci na kaĹĽdym monitorze
    - Status (online/offline)
 3. **Aktualizacja w czasie rzeczywistym**:
    - WebSocket (publiczny, read-only)
    - Aktualizacja co 5-10 sekund
 4. **Funkcje**:
-   - Przewijanie między piętrami
+   - Przewijanie miÄ™dzy piÄ™trami
    - Zoom na konkretny monitor
-   - Podgląd harmonogramu
+   - PodglÄ…d harmonogramu
 
 ---
 
-## 6. Obsługa Formatów - Szczegóły
+## 6. ObsĹ‚uga FormatĂłw - SzczegĂłĹ‚y
 
 ### 6.1. PDF
 
 **Przetwarzanie:**
-- `pdf2image` → konwersja każdej strony do PNG
-- Skalowanie do 1920×1080 (z zachowaniem proporcji)
-- Jeśli wiele stron → wybór pierwszej strony lub przewijanie
+- `pdf2image` â†’ konwersja kaĹĽdej strony do PNG
+- Skalowanie do 1920Ă—1080 (z zachowaniem proporcji)
+- JeĹ›li wiele stron â†’ wybĂłr pierwszej strony lub przewijanie
 
-**Wyświetlanie:**
-- Klient: PNG → Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Klient: PNG â†’ Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
 ### 6.2. Excel
 
 **Przetwarzanie:**
-- `openpyxl` → odczyt danych
+- `openpyxl` â†’ odczyt danych
 - Analiza struktury (liczba wierszy, kolumn)
-- Dla długich plików → przygotowanie podziału
+- Dla dĹ‚ugich plikĂłw â†’ przygotowanie podziaĹ‚u
 
 **Renderowanie:**
-- `pandas` + `matplotlib` lub własny renderer
-- Skalowanie do 1920×1080
+- `pandas` + `matplotlib` lub wĹ‚asny renderer
+- Skalowanie do 1920Ă—1080
 - Automatyczne dopasowanie czcionki
-- Dla grup pionowych → podział wierszy
+- Dla grup pionowych â†’ podziaĹ‚ wierszy
 
-**Wyświetlanie:**
-- Obraz PNG → Pillow → PyQt6
+**WyĹ›wietlanie:**
+- Obraz PNG â†’ Pillow â†’ PyQt6
 
 ### 6.3. Obrazy (JPG, PNG, GIF)
 
 **Przetwarzanie:**
-- `Pillow` → optymalizacja, skalowanie
-- Dla GIF → konwersja do animacji lub pierwsza klatka
+- `Pillow` â†’ optymalizacja, skalowanie
+- Dla GIF â†’ konwersja do animacji lub pierwsza klatka
 
-**Wyświetlanie:**
-- Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
-### 6.4. Video (MPG → MP4)
+### 6.4. Video (MPG â†’ MP4)
 
 **Transkodowanie na serwerze (FFmpeg):**
 ```bash
@@ -995,65 +995,65 @@ ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
 
 **Parametry:**
 - Codec: H.264 (libx264)
-- Rozdzielczość: 1920×1080 (FHD)
+- RozdzielczoĹ›Ä‡: 1920Ă—1080 (FHD)
 - Frame rate: 30 fps
 - Audio: AAC 128kbps
-- CRF: 23 (dobra jakość, rozsądny rozmiar)
+- CRF: 23 (dobra jakoĹ›Ä‡, rozsÄ…dny rozmiar)
 
-**Wyświetlanie:**
+**WyĹ›wietlanie:**
 - VLC Python bindings lub mpv
-- Pełnoekranowy tryb
-- Loop (jeśli potrzeba)
+- PeĹ‚noekranowy tryb
+- Loop (jeĹ›li potrzeba)
 
 ---
 
-## 7. Obsługa Rotacji Ekranu (90°)
+## 7. ObsĹ‚uga Rotacji Ekranu (90Â°)
 
 ### 7.1. Poziom Systemu
 
-**Konfiguracja X11 (jeśli X11):**
+**Konfiguracja X11 (jeĹ›li X11):**
 ```bash
-xrandr --output HDMI-1 --rotate left  # 90° w lewo
+xrandr --output HDMI-1 --rotate left  # 90Â° w lewo
 ```
 
 **Konfiguracja w aplikacji:**
 - `displays.orientation = 90`
-- Automatyczna rotacja treści w PyQt6
+- Automatyczna rotacja treĹ›ci w PyQt6
 
 ### 7.2. Poziom Aplikacji
 
 **PyQt6:**
 ```python
-# Rotacja treści
+# Rotacja treĹ›ci
 transform = QTransform().rotate(90)
 pixmap = pixmap.transformed(transform)
 ```
 
 **Dla grup pionowych:**
-- 3 monitory obok siebie, każdy obrócony 90°
-- Treść renderowana z uwzględnieniem rotacji
-- Dzielenie Excel z uwzględnieniem rotacji
+- 3 monitory obok siebie, kaĹĽdy obrĂłcony 90Â°
+- TreĹ›Ä‡ renderowana z uwzglÄ™dnieniem rotacji
+- Dzielenie Excel z uwzglÄ™dnieniem rotacji
 
 ---
 
-## 8. System Autoryzacji i Ról
+## 8. System Autoryzacji i RĂłl
 
 ### 8.1. Role
 
 **Admin:**
 - Wszystkie operacje CRUD
-- Upload treści
-- Konfiguracja wyświetlaczy i grup
-- Tworzenie harmonogramów
+- Upload treĹ›ci
+- Konfiguracja wyĹ›wietlaczy i grup
+- Tworzenie harmonogramĂłw
 - Konfiguracja Google Drive
-- Zarządzanie użytkownikami
+- ZarzÄ…dzanie uĹĽytkownikami
 
 **Operator:**
 - Tylko odczyt (GET)
-- Podgląd statusu wyświetlaczy
-- Podgląd harmonogramów
-- Podgląd treści
-- Logi aktywności
+- PodglÄ…d statusu wyĹ›wietlaczy
+- PodglÄ…d harmonogramĂłw
+- PodglÄ…d treĹ›ci
+- Logi aktywnoĹ›ci
 
 ### 8.2. Endpointy API
 
@@ -1084,44 +1084,44 @@ pixmap = pixmap.transformed(transform)
 
 ---
 
-## 9. Obsługa Błędów i Niezawodność
+## 9. ObsĹ‚uga BĹ‚Ä™dĂłw i NiezawodnoĹ›Ä‡
 
-### 9.1. WiFi - Opóźnienia i Zrywane Połączenia
+### 9.1. WiFi - OpĂłĹşnienia i Zrywane PoĹ‚Ä…czenia
 
 **Strategia:**
 1. **Lokalny cache**:
-   - Wszystkie treści w cache lokalnym
-   - Minimalna zależność od sieci podczas wyświetlania
+   - Wszystkie treĹ›ci w cache lokalnym
+   - Minimalna zaleĹĽnoĹ›Ä‡ od sieci podczas wyĹ›wietlania
 2. **Pobieranie w tle**:
-   - Pobieranie nowych treści przed czasem wyświetlania
+   - Pobieranie nowych treĹ›ci przed czasem wyĹ›wietlania
    - Retry z exponential backoff
 3. **Status offline**:
-   - Wyświetlanie z cache
+   - WyĹ›wietlanie z cache
    - Queue aktualizacji
-   - Automatyczne synchronizowanie po powrocie połączenia
-4. **Weryfikacja integralności**:
-   - Checksum (MD5/SHA256) dla każdego pliku
+   - Automatyczne synchronizowanie po powrocie poĹ‚Ä…czenia
+4. **Weryfikacja integralnoĹ›ci**:
+   - Checksum (MD5/SHA256) dla kaĹĽdego pliku
    - Weryfikacja przy pobieraniu
 
-### 9.2. Przetwarzanie Video - Błędy
+### 9.2. Przetwarzanie Video - BĹ‚Ä™dy
 
-**Obsługa:**
-- Retry (3 próby)
-- Logowanie błędów
+**ObsĹ‚uga:**
+- Retry (3 prĂłby)
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina (email/panel)
-- Fallback: wyświetlanie oryginalnego pliku (jeśli możliwe)
+- Fallback: wyĹ›wietlanie oryginalnego pliku (jeĹ›li moĹĽliwe)
 
-### 9.3. Synchronizacja Google Drive - Błędy
+### 9.3. Synchronizacja Google Drive - BĹ‚Ä™dy
 
-**Obsługa:**
+**ObsĹ‚uga:**
 - Retry z exponential backoff
-- Logowanie błędów
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina
 - Fallback: polling zamiast webhook
 
 ---
 
-## 10. Bezpieczeństwo
+## 10. BezpieczeĹ„stwo
 
 ### 10.1. Serwer
 
@@ -1129,20 +1129,20 @@ pixmap = pixmap.transformed(transform)
 - Firewall (UFW)
 - Regularne aktualizacje
 - Backup bazy danych (codziennie)
-- Backup plików (tygodniowo)
+- Backup plikĂłw (tygodniowo)
 
 ### 10.2. Autentykacja
 
-- Silne hasła (min. 12 znaków)
+- Silne hasĹ‚a (min. 12 znakĂłw)
 - JWT tokens
 - Rate limiting
 - CORS configuration
 
-### 10.3. Wyświetlacze
+### 10.3. WyĹ›wietlacze
 
 - Autoryzacja przez MAC address
 - HTTPS komunikacja
-- Read-only dostęp do API (tylko GET dla swoich danych)
+- Read-only dostÄ™p do API (tylko GET dla swoich danych)
 
 ---
 
@@ -1152,21 +1152,21 @@ pixmap = pixmap.transformed(transform)
 1. Backend API (FastAPI)
 2. Baza danych (PostgreSQL)
 3. Panel webowy (React) - podstawowy
-4. Upload treści (PDF, Excel, obrazy, video)
+4. Upload treĹ›ci (PDF, Excel, obrazy, video)
 5. Transkodowanie video (FFmpeg)
-6. Klient wyświetlacza (Python + PyQt6)
+6. Klient wyĹ›wietlacza (Python + PyQt6)
 7. Podstawowe harmonogramy
-8. Grupowanie wyświetlaczy (proste)
-9. Obsługa rotacji 90°
+8. Grupowanie wyĹ›wietlaczy (proste)
+9. ObsĹ‚uga rotacji 90Â°
 
 **Czas: ~6-8 tygodni**
 
 ### Faza 2: Rozszerzenia
 1. Integracja Google Drive
-2. Dzielenie długich plików Excel
-3. Graficzny edytor układu
-4. Symulacja wyświetlania
-5. Harmonogramy włączania TV (podstawowe)
+2. Dzielenie dĹ‚ugich plikĂłw Excel
+3. Graficzny edytor ukĹ‚adu
+4. Symulacja wyĹ›wietlania
+5. Harmonogramy wĹ‚Ä…czania TV (podstawowe)
 6. WebSocket dla statusu w czasie rzeczywistym
 
 **Czas: ~4-6 tygodni**
@@ -1185,17 +1185,17 @@ pixmap = pixmap.transformed(transform)
 ## 12. Pytania i Uwagi
 
 ### Do doprecyzowania:
-1. **Harmonogramy TV**: Czy potrzebne różne czasy dla różnych dni tygodnia? (np. weekendy)
-2. **Dzielenie Excel**: Czy zawsze dzielić równo, czy możliwość ręcznej konfiguracji zakresów?
-3. **Video**: Czy potrzebne różne wersje jakościowe dla różnych wyświetlaczy?
-4. **Backup**: Jak często i gdzie przechowywać?
-5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy błędach?
+1. **Harmonogramy TV**: Czy potrzebne rĂłĹĽne czasy dla rĂłĹĽnych dni tygodnia? (np. weekendy)
+2. **Dzielenie Excel**: Czy zawsze dzieliÄ‡ rĂłwno, czy moĹĽliwoĹ›Ä‡ rÄ™cznej konfiguracji zakresĂłw?
+3. **Video**: Czy potrzebne rĂłĹĽne wersje jakoĹ›ciowe dla rĂłĹĽnych wyĹ›wietlaczy?
+4. **Backup**: Jak czÄ™sto i gdzie przechowywaÄ‡?
+5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy bĹ‚Ä™dach?
 
 ### Zalecenia:
-- Rozpoczęcie od MVP (Faza 1)
-- Testowanie na 1-2 wyświetlaczach przed pełnym wdrożeniem
-- Dokumentacja dla operatora (jak używać panelu)
-- Backup przed każdą większą zmianą
+- RozpoczÄ™cie od MVP (Faza 1)
+- Testowanie na 1-2 wyĹ›wietlaczach przed peĹ‚nym wdroĹĽeniem
+- Dokumentacja dla operatora (jak uĹĽywaÄ‡ panelu)
+- Backup przed kaĹĽdÄ… wiÄ™kszÄ… zmianÄ…
 
 ---
 
@@ -1213,197 +1213,197 @@ pixmap = pixmap.transformed(transform)
 | Video player | VLC Python / mpv |
 | Google Drive | google-api-python-client |
 | WebSocket | Socket.io / FastAPI WebSocket |
-| Serwer plików | Nginx |
+| Serwer plikĂłw | Nginx |
 | System klienta | Ubuntu/Debian + systemd |
 
 ---
 
-**Gotowe do implementacji!** 🚀
+**Gotowe do implementacji!** đźš€
 
 ```
 
-Przygotowałem analizę systemu digital signage z uwzględnieniem doprecyzowanych wymagań. Dokument zapisany w `ANALIZA_DIGITAL_SIGNAGE.md`.
+PrzygotowaĹ‚em analizÄ™ systemu digital signage z uwzglÄ™dnieniem doprecyzowanych wymagaĹ„. Dokument zapisany w `ANALIZA_STUDIO_SUITE.md`.
 
-## Najważniejsze ustalenia:
+## NajwaĹĽniejsze ustalenia:
 
 ### Stack technologiczny (rekomendowany):
 - Backend: Python + FastAPI (szybki, asynchroniczny, dobra dokumentacja API)
-- Frontend: React + TypeScript (duża społeczność, gotowe komponenty)
+- Frontend: React + TypeScript (duĹĽa spoĹ‚ecznoĹ›Ä‡, gotowe komponenty)
 - Baza danych: PostgreSQL (relacyjna, JSONB dla elastycznych konfiguracji)
 - Przetwarzanie: Celery + Redis (kolejki, transkodowanie video)
-- Klient: Python + PyQt6 (wyświetlanie, rotacja, obsługa formatów)
-- Video: FFmpeg (transkodowanie do MP4 H.264, 1920×1080)
+- Klient: Python + PyQt6 (wyĹ›wietlanie, rotacja, obsĹ‚uga formatĂłw)
+- Video: FFmpeg (transkodowanie do MP4 H.264, 1920Ă—1080)
 - Google Drive: google-api-python-client (OAuth 2.0, webhook/polling)
 
 ### Kluczowe funkcje:
 
 1. Dwie role:
-   - Admin: pełna konfiguracja, upload, zarządzanie
+   - Admin: peĹ‚na konfiguracja, upload, zarzÄ…dzanie
    - Operator: tylko obserwacja (status, harmonogramy, logi)
 
-2. Obsługa formatów:
-   - PDF → konwersja do obrazów (pdf2image)
-   - Excel → renderowanie do obrazów z możliwością dzielenia
-   - Obrazy → optymalizacja i skalowanie
-   - Video → transkodowanie na serwerze (MP4 H.264)
+2. ObsĹ‚uga formatĂłw:
+   - PDF â†’ konwersja do obrazĂłw (pdf2image)
+   - Excel â†’ renderowanie do obrazĂłw z moĹĽliwoĹ›ciÄ… dzielenia
+   - Obrazy â†’ optymalizacja i skalowanie
+   - Video â†’ transkodowanie na serwerze (MP4 H.264)
 
-3. Dzielenie długich Excel:
-   - Automatyczny podział wierszy dla grup pionowych
-   - Każdy monitor w grupie otrzymuje swoją część
+3. Dzielenie dĹ‚ugich Excel:
+   - Automatyczny podziaĹ‚ wierszy dla grup pionowych
+   - KaĹĽdy monitor w grupie otrzymuje swojÄ… czÄ™Ĺ›Ä‡
 
-4. Google Drive (ZASTĘPSTWA):
+4. Google Drive (ZASTÄPSTWA):
    - Automatyczne monitorowanie zmian (webhook + polling)
-   - Auto-aktualizacja harmonogramów
+   - Auto-aktualizacja harmonogramĂłw
 
-5. Niezawodność WiFi:
-   - Lokalny cache na każdym wyświetlaczu
-   - Pobieranie w tle przed czasem wyświetlania
-   - Działanie offline z cache
+5. NiezawodnoĹ›Ä‡ WiFi:
+   - Lokalny cache na kaĹĽdym wyĹ›wietlaczu
+   - Pobieranie w tle przed czasem wyĹ›wietlania
+   - DziaĹ‚anie offline z cache
    - Retry z exponential backoff
 
 ### Plan implementacji (3 fazy):
-- Faza 1 (MVP): 6-8 tygodni — podstawowe funkcje MIN-imum
-- Faza 2: 4-6 tygodni — Google Drive, dzielenie Excel, graficzny edytor
-- Faza 3: 2-3 tygodnie — optymalizacja, monitoring, dokumentacja
+- Faza 1 (MVP): 6-8 tygodni â€” podstawowe funkcje MIN-imum
+- Faza 2: 4-6 tygodni â€” Google Drive, dzielenie Excel, graficzny edytor
+- Faza 3: 2-3 tygodnie â€” optymalizacja, monitoring, dokumentacja
 
 ### Architektura:
 - Serwer centralny (Ubuntu VM) z panelem webowym
-- Do 10 wyświetlaczy (HP T630) komunikujących się przez WiFi
+- Do 10 wyĹ›wietlaczy (HP T630) komunikujÄ…cych siÄ™ przez WiFi
 - WebSocket dla statusu w czasie rzeczywistym
 - REST API dla wszystkich operacji
-- Graficzny edytor układu monitorów z symulacją
+- Graficzny edytor ukĹ‚adu monitorĂłw z symulacjÄ…
 
 Dokument zawiera:
-- Szczegółową strukturę bazy danych (13 tabel)
-- Przepływy działania dla wszystkich scenariuszy
+- SzczegĂłĹ‚owÄ… strukturÄ™ bazy danych (13 tabel)
+- PrzepĹ‚ywy dziaĹ‚ania dla wszystkich scenariuszy
 - Algorytmy (np. dzielenie Excel)
-- Konfigurację bezpieczeństwa
+- KonfiguracjÄ™ bezpieczeĹ„stwa
 - Plan implementacji fazowej
 
-Czy chcesz, żebym rozwinął któryś element lub przygotował szczegółowy plan techniczny dla konkretnej fazy?
+Czy chcesz, ĹĽebym rozwinÄ…Ĺ‚ ktĂłryĹ› element lub przygotowaĹ‚ szczegĂłĹ‚owy plan techniczny dla konkretnej fazy?
 
 ---
 
 **User**
 
-i jeszcze trzeba uwzględnić aby brak komunikacji wyświetlania był odwzorowany na stronie ze statusem oraz raportowany. przy okazji można dodac do serwera system "przyjazdnych dzwonków". bazą jest Hyper-v.
-czy możesz to rozpisać tak abyśmy mogli realizować to etapami możliwymi do weryfkacji i modyfikacji?
+i jeszcze trzeba uwzglÄ™dniÄ‡ aby brak komunikacji wyĹ›wietlania byĹ‚ odwzorowany na stronie ze statusem oraz raportowany. przy okazji moĹĽna dodac do serwera system "przyjazdnych dzwonkĂłw". bazÄ… jest Hyper-v.
+czy moĹĽesz to rozpisaÄ‡ tak abyĹ›my mogli realizowaÄ‡ to etapami moĹĽliwymi do weryfkacji i modyfikacji?
 
 ---
 
 **Cursor**
 
-Aktualizuję analizę: dodaję monitoring statusu wyświetlaczy z alertami, system dzwonków szkolnych oraz plan etapowy z weryfikacją. Uwzględniam Hyper-V jako środowisko.
+AktualizujÄ™ analizÄ™: dodajÄ™ monitoring statusu wyĹ›wietlaczy z alertami, system dzwonkĂłw szkolnych oraz plan etapowy z weryfikacjÄ…. UwzglÄ™dniam Hyper-V jako Ĺ›rodowisko.
 
 
-Aktualizuję dokument: dodaję monitoring statusu z alertami, system dzwonków szkolnych oraz plan etapowy z weryfikacją.
+AktualizujÄ™ dokument: dodajÄ™ monitoring statusu z alertami, system dzwonkĂłw szkolnych oraz plan etapowy z weryfikacjÄ….
 
 
-Aktualizuję dokument: dodaję monitoring statusu z alertami, system dzwonków szkolnych oraz plan etapowy z weryfikacją.
+AktualizujÄ™ dokument: dodajÄ™ monitoring statusu z alertami, system dzwonkĂłw szkolnych oraz plan etapowy z weryfikacjÄ….
 
 
 ```markdown
-# Analiza Systemu Digital Signage - Szczegółowa Specyfikacja
+# Analiza Systemu Digital Signage - SzczegĂłĹ‚owa Specyfikacja
 
 ## 1. Wymagania Funkcjonalne - Aktualizacja
 
 ### MIN-imum
-1. ✅ Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. ✅ Obrót 90° (3 monitory pionowe obok siebie)
-3. ✅ Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. ✅ Harmonogram: czas włączenia TV i czas wyświetlania treści
+1. âś… WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. âś… ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. âś… RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. âś… Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
 
 ### MAX-imum
-- ✅ Wszystko z MIN + integracja z Google Drive (folder ZASTĘPSTWA) - auto-aktualizacja
-- ✅ Dzielenie długich plików Excel na grupy monitorów pionowych
-- ✅ Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- ✅ Symulacja wyświetlania na stronie informacyjnej (bez logowania)
+- âś… Wszystko z MIN + integracja z Google Drive (folder ZASTÄPSTWA) - auto-aktualizacja
+- âś… Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- âś… Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- âś… Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
 
 ### Doprecyzowania
-- **Chmura**: Google Drive (folder ZASTĘPSTWA)
-- **Rozdzielczość**: FHD (1920×1080) telewizory
-- **Zarządzanie TV**: Konfigurowalne później (HDMI CEC lub smart plug)
+- **Chmura**: Google Drive (folder ZASTÄPSTWA)
+- **RozdzielczoĹ›Ä‡**: FHD (1920Ă—1080) telewizory
+- **ZarzÄ…dzanie TV**: Konfigurowalne pĂłĹşniej (HDMI CEC lub smart plug)
 - **Analytics**: NIE (tylko tablice informacyjne)
 - **Role**: 
-  - **Admin**: Konfiguracja wszystkiego, upload treści (za hasłem)
-  - **Operator**: Tylko obserwacja (co się gdzie wyświetla, czy działa)
-- **Video**: Transkodowanie na serwerze po uploadzie, klient obsługuje standardowe formaty
-- **Monitoring**: Brak komunikacji wyświetlacza widoczny na stronie statusu i raportowany
-- **Dzwonki szkolne**: System "przyjaznych dzwonków" z harmonogramem
-- **Środowisko**: Hyper-V (serwer na maszynie wirtualnej)
+  - **Admin**: Konfiguracja wszystkiego, upload treĹ›ci (za hasĹ‚em)
+  - **Operator**: Tylko obserwacja (co siÄ™ gdzie wyĹ›wietla, czy dziaĹ‚a)
+- **Video**: Transkodowanie na serwerze po uploadzie, klient obsĹ‚uguje standardowe formaty
+- **Monitoring**: Brak komunikacji wyĹ›wietlacza widoczny na stronie statusu i raportowany
+- **Dzwonki szkolne**: System "przyjaznych dzwonkĂłw" z harmonogramem
+- **Ĺšrodowisko**: Hyper-V (serwer na maszynie wirtualnej)
 
 ---
 
-## 2. Architektura Systemu - Szczegółowa
+## 2. Architektura Systemu - SzczegĂłĹ‚owa
 
 ### 2.1. Komponenty Systemu
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    SERWER (Ubuntu VM)                        │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Backend API (FastAPI/Django)                  │  │
-│  │  - REST API dla panelu webowego                       │  │
-│  │  - WebSocket dla statusu w czasie rzeczywistym        │  │
-│  │  - Autentykacja (JWT) - Admin/Operator                │  │
-│  │  - Zarządzanie treścią                                │  │
-│  │  - Harmonogramy                                        │  │
-│  │  - Grupowanie wyświetlaczy                            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Panel Webowy (React/Vue.js)                   │  │
-│  │  - Dashboard Admin (upload, konfiguracja)             │  │
-│  │  - Dashboard Operator (obserwacja, status)            │  │
-│  │  - Graficzny edytor układu monitorów                  │  │
-│  │  - Symulacja wyświetlania (publiczna, bez logowania)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Worker (Celery/Bull)                          │  │
-│  │  - Transkodowanie video (FFmpeg)                      │  │
-│  │  - Przetwarzanie PDF/Excel                            │  │
-│  │  - Generowanie miniatur                               │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Google Drive Sync Service                     │  │
-│  │  - Monitorowanie folderu ZASTĘPSTWA                   │  │
-│  │  - Webhook/polling zmian                              │  │
-│  │  - Automatyczne pobieranie i aktualizacja             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Baza Danych (PostgreSQL)                      │  │
-│  │  - Wyświetlacze, grupy, treści, harmonogramy         │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Storage (lokalny system plików)               │  │
-│  │  - /content/original/ - oryginalne pliki             │  │
-│  │  - /content/processed/ - przetworzone video          │  │
-│  │  - /content/thumbnails/ - miniatury                  │  │
-│  │  - /content/cache/ - cache dla wyświetlaczy          │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Nginx (serwowanie plików statycznych)         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                    │              │              │
-                    │ WiFi         │ WiFi         │ WiFi
-                    ▼              ▼              ▼
-         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-         │ Wyświetlacz 1 │  │ Wyświetlacz 2│  │ Wyświetlacz N│
-         │ HP T630       │  │ HP T630      │  │ HP T630      │
-         │ Linux         │  │ Linux        │  │ Linux        │
-         │              │  │              │  │              │
-         │ - Klient API  │  │ - Klient API │  │ - Klient API │
-         │ - Cache lokal │  │ - Cache lokal│  │ - Cache lokal│
-         │ - Player      │  │ - Player     │  │ - Player     │
-         │ - Systemd     │  │ - Systemd    │  │ - Systemd    │
-         └──────────────┘  └──────────────┘  └──────────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    SERWER (Ubuntu VM)                        â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Backend API (FastAPI/Django)                  â”‚  â”‚
+â”‚  â”‚  - REST API dla panelu webowego                       â”‚  â”‚
+â”‚  â”‚  - WebSocket dla statusu w czasie rzeczywistym        â”‚  â”‚
+â”‚  â”‚  - Autentykacja (JWT) - Admin/Operator                â”‚  â”‚
+â”‚  â”‚  - ZarzÄ…dzanie treĹ›ciÄ…                                â”‚  â”‚
+â”‚  â”‚  - Harmonogramy                                        â”‚  â”‚
+â”‚  â”‚  - Grupowanie wyĹ›wietlaczy                            â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Panel Webowy (React/Vue.js)                   â”‚  â”‚
+â”‚  â”‚  - Dashboard Admin (upload, konfiguracja)             â”‚  â”‚
+â”‚  â”‚  - Dashboard Operator (obserwacja, status)            â”‚  â”‚
+â”‚  â”‚  - Graficzny edytor ukĹ‚adu monitorĂłw                  â”‚  â”‚
+â”‚  â”‚  - Symulacja wyĹ›wietlania (publiczna, bez logowania)  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Worker (Celery/Bull)                          â”‚  â”‚
+â”‚  â”‚  - Transkodowanie video (FFmpeg)                      â”‚  â”‚
+â”‚  â”‚  - Przetwarzanie PDF/Excel                            â”‚  â”‚
+â”‚  â”‚  - Generowanie miniatur                               â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Google Drive Sync Service                     â”‚  â”‚
+â”‚  â”‚  - Monitorowanie folderu ZASTÄPSTWA                   â”‚  â”‚
+â”‚  â”‚  - Webhook/polling zmian                              â”‚  â”‚
+â”‚  â”‚  - Automatyczne pobieranie i aktualizacja             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Baza Danych (PostgreSQL)                      â”‚  â”‚
+â”‚  â”‚  - WyĹ›wietlacze, grupy, treĹ›ci, harmonogramy         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Storage (lokalny system plikĂłw)               â”‚  â”‚
+â”‚  â”‚  - /content/original/ - oryginalne pliki             â”‚  â”‚
+â”‚  â”‚  - /content/processed/ - przetworzone video          â”‚  â”‚
+â”‚  â”‚  - /content/thumbnails/ - miniatury                  â”‚  â”‚
+â”‚  â”‚  - /content/cache/ - cache dla wyĹ›wietlaczy          â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Nginx (serwowanie plikĂłw statycznych)         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                    â”‚              â”‚              â”‚
+                    â”‚ WiFi         â”‚ WiFi         â”‚ WiFi
+                    â–Ľ              â–Ľ              â–Ľ
+         â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚ WyĹ›wietlacz 1 â”‚  â”‚ WyĹ›wietlacz 2â”‚  â”‚ WyĹ›wietlacz Nâ”‚
+         â”‚ HP T630       â”‚  â”‚ HP T630      â”‚  â”‚ HP T630      â”‚
+         â”‚ Linux         â”‚  â”‚ Linux        â”‚  â”‚ Linux        â”‚
+         â”‚              â”‚  â”‚              â”‚  â”‚              â”‚
+         â”‚ - Klient API  â”‚  â”‚ - Klient API â”‚  â”‚ - Klient API â”‚
+         â”‚ - Cache lokal â”‚  â”‚ - Cache lokalâ”‚  â”‚ - Cache lokalâ”‚
+         â”‚ - Player      â”‚  â”‚ - Player     â”‚  â”‚ - Player     â”‚
+         â”‚ - Systemd     â”‚  â”‚ - Systemd    â”‚  â”‚ - Systemd    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
 ---
@@ -1412,18 +1412,18 @@ Aktualizuję dokument: dodaję monitoring statusu z alertami, system dzwonków s
 
 ### 3.1. Backend Serwera
 
-**Główny framework:**
+**GĹ‚Ăłwny framework:**
 - **Python + FastAPI** (rekomendowane) lub Django
   - Szybki, asynchroniczny
   - Automatyczna dokumentacja API (Swagger)
-  - Łatwa integracja z Celery
-  - Dobra obsługa WebSocket
+  - Ĺatwa integracja z Celery
+  - Dobra obsĹ‚uga WebSocket
 
 **Baza danych:**
 - **PostgreSQL 14+**
   - Relacyjna struktura
   - JSONB dla elastycznych konfiguracji
-  - Wsparcie dla pełnotekstowego wyszukiwania
+  - Wsparcie dla peĹ‚notekstowego wyszukiwania
 
 **Cache i kolejki:**
 - **Redis**
@@ -1434,38 +1434,38 @@ Aktualizuję dokument: dodaję monitoring statusu z alertami, system dzwonków s
 **Przetwarzanie w tle:**
 - **Celery** + **Redis** (broker)
   - Transkodowanie video
-  - Przetwarzanie plików
+  - Przetwarzanie plikĂłw
   - Synchronizacja z Google Drive
 
 **Przetwarzanie multimedia:**
 - **FFmpeg**
   - Transkodowanie video do MP4 (H.264)
-  - Optymalizacja dla FHD (1920×1080)
-  - Generowanie różnych wersji (jeśli potrzeba)
+  - Optymalizacja dla FHD (1920Ă—1080)
+  - Generowanie rĂłĹĽnych wersji (jeĹ›li potrzeba)
 
 **Biblioteki Python:**
-- `python-multipart` - upload plików
-- `Pillow` - przetwarzanie obrazów
-- `pdf2image` - konwersja PDF do obrazów
+- `python-multipart` - upload plikĂłw
+- `Pillow` - przetwarzanie obrazĂłw
+- `pdf2image` - konwersja PDF do obrazĂłw
 - `openpyxl` / `pandas` - przetwarzanie Excel
 - `google-api-python-client` - integracja Google Drive
 - `python-jose` - JWT tokens
-- `passlib` - hashowanie haseł
+- `passlib` - hashowanie haseĹ‚
 
 ### 3.2. Frontend Panelu
 
 **Framework:**
 - **React 18+** (rekomendowane) lub Vue 3
-  - Duża społeczność
-- **TypeScript** - bezpieczeństwo typów
+  - DuĹĽa spoĹ‚ecznoĹ›Ä‡
+- **TypeScript** - bezpieczeĹ„stwo typĂłw
 
 **Biblioteki UI:**
 - **Material-UI (MUI)** lub **Ant Design**
   - Gotowe komponenty
-  - Responsywność
+  - ResponsywnoĹ›Ä‡
   - Tematyzacja
 
-**Graficzny edytor układu:**
+**Graficzny edytor ukĹ‚adu:**
 - **react-grid-layout** lub **react-dnd**
   - Drag & drop
   - Responsywne siatki
@@ -1476,41 +1476,41 @@ Aktualizuję dokument: dodaję monitoring statusu z alertami, system dzwonków s
 - **Socket.io-client** - WebSocket dla statusu
 
 **Wizualizacja:**
-- **react-player** - podgląd video
-- **react-pdf** - podgląd PDF
-- **Chart.js** - wykresy (jeśli potrzeba)
+- **react-player** - podglÄ…d video
+- **react-pdf** - podglÄ…d PDF
+- **Chart.js** - wykresy (jeĹ›li potrzeba)
 
-### 3.3. Klient (Wyświetlacze - HP T630)
+### 3.3. Klient (WyĹ›wietlacze - HP T630)
 
 **System operacyjny:**
 - **Ubuntu 22.04 LTS** lub **Debian 11+**
-  - Stabilność
-  - Długie wsparcie
-  - Łatwa konfiguracja
+  - StabilnoĹ›Ä‡
+  - DĹ‚ugie wsparcie
+  - Ĺatwa konfiguracja
 
-**Framework wyświetlania:**
+**Framework wyĹ›wietlania:**
 - **Python 3.10+**
   - **PyQt6** lub **Kivy**
-    - Pełnoekranowy tryb
-    - Obsługa rotacji ekranu
-    - Dobra wydajność
+    - PeĹ‚noekranowy tryb
+    - ObsĹ‚uga rotacji ekranu
+    - Dobra wydajnoĹ›Ä‡
 
 **Biblioteki Python dla klienta:**
 - `requests` - komunikacja z API
 - `websocket-client` - WebSocket
-- `Pillow` - wyświetlanie obrazów
+- `Pillow` - wyĹ›wietlanie obrazĂłw
 - `pdf2image` - PDF
 - `openpyxl` / `pandas` - Excel
 - `vlc-python` lub `mpv` - video
 - `pygame` (opcjonalnie) - alternatywa dla prostych animacji
 
-**Zarządzanie procesem:**
+**ZarzÄ…dzanie procesem:**
 - **systemd** - autostart, restart, monitoring
 - **cron** - synchronizacja czasu (NTP)
 
-**Obsługa rotacji ekranu:**
+**ObsĹ‚uga rotacji ekranu:**
 - `xrandr` (X11) lub konfiguracja w systemie
-- Automatyczna rotacja treści w aplikacji
+- Automatyczna rotacja treĹ›ci w aplikacji
 
 ### 3.4. Integracja Google Drive
 
@@ -1525,36 +1525,36 @@ Aktualizuję dokument: dodaję monitoring statusu z alertami, system dzwonków s
 - `google-auth`
 
 **Mechanizm:**
-1. Konfiguracja folderu ZASTĘPSTWA w panelu admin
+1. Konfiguracja folderu ZASTÄPSTWA w panelu admin
 2. Autoryzacja OAuth 2.0 (jednorazowa)
 3. Monitorowanie zmian (webhook + polling)
-4. Automatyczne pobieranie nowych/zmienionych plików
+4. Automatyczne pobieranie nowych/zmienionych plikĂłw
 5. Aktualizacja harmonogramu
 
 ### 3.5. Komunikacja
 
 **REST API:**
 - Endpointy dla CRUD operacji
-- Upload/download plików
-- Status wyświetlaczy
+- Upload/download plikĂłw
+- Status wyĹ›wietlaczy
 
 **WebSocket:**
 - Status w czasie rzeczywistym
-- Push aktualizacji treści
-- Synchronizacja harmonogramów
+- Push aktualizacji treĹ›ci
+- Synchronizacja harmonogramĂłw
 
-**Protokół:**
+**ProtokĂłĹ‚:**
 - HTTPS (TLS 1.3)
 - WSS (WebSocket Secure)
 
 ---
 
-## 4. Szczegółowa Struktura Bazy Danych
+## 4. SzczegĂłĹ‚owa Struktura Bazy Danych
 
 ### 4.1. Tabele
 
 ```sql
--- Użytkownicy (role: admin, operator)
+-- UĹĽytkownicy (role: admin, operator)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -1564,7 +1564,7 @@ CREATE TABLE users (
     last_login TIMESTAMP
 );
 
--- Wyświetlacze
+-- WyĹ›wietlacze
 CREATE TABLE displays (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -1576,7 +1576,7 @@ CREATE TABLE displays (
     resolution_height INTEGER DEFAULT 1080,
     group_id INTEGER REFERENCES groups(id),
     floor VARCHAR(50),
-    position_x INTEGER,  -- Pozycja w graficznym układzie
+    position_x INTEGER,  -- Pozycja w graficznym ukĹ‚adzie
     position_y INTEGER,
     last_seen TIMESTAMP,
     cache_size_mb INTEGER DEFAULT 1000,
@@ -1584,17 +1584,17 @@ CREATE TABLE displays (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Grupy wyświetlaczy
+-- Grupy wyĹ›wietlaczy
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
     floor VARCHAR(50),
-    layout_config JSONB,  -- Konfiguracja graficznego układu
+    layout_config JSONB,  -- Konfiguracja graficznego ukĹ‚adu
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Treści
+-- TreĹ›ci
 CREATE TABLE content (
     id SERIAL PRIMARY KEY,
     filename VARCHAR(255) NOT NULL,
@@ -1625,12 +1625,12 @@ CREATE TABLE schedules (
     end_date DATE,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     priority INTEGER DEFAULT 0,
-    display_duration_seconds INTEGER,  -- Czas wyświetlania treści
+    display_duration_seconds INTEGER,  -- Czas wyĹ›wietlania treĹ›ci
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy włączania TV
+-- Harmonogramy wĹ‚Ä…czania TV
 CREATE TABLE tv_schedules (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -1683,7 +1683,7 @@ CREATE TABLE cloud_files (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logi aktywności (dla operatora)
+-- Logi aktywnoĹ›ci (dla operatora)
 CREATE TABLE activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
@@ -1694,7 +1694,7 @@ CREATE TABLE activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Status wyświetlaczy (cache)
+-- Status wyĹ›wietlaczy (cache)
 CREATE TABLE display_status (
     display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
     current_content_id INTEGER REFERENCES content(id),
@@ -1721,191 +1721,191 @@ CREATE INDEX idx_activity_logs_created ON activity_logs(created_at DESC);
 
 ---
 
-## 5. Szczegółowe Przepływy Działania
+## 5. SzczegĂłĹ‚owe PrzepĹ‚ywy DziaĹ‚ania
 
-### 5.1. Upload Treści (Admin)
+### 5.1. Upload TreĹ›ci (Admin)
 
-1. **Admin loguje się** → JWT token
-2. **Upload pliku** → POST `/api/content/upload`
+1. **Admin loguje siÄ™** â†’ JWT token
+2. **Upload pliku** â†’ POST `/api/content/upload`
    - Walidacja typu pliku
    - Zapis do `/content/original/`
    - Utworzenie rekordu w `content`
-   - Zwrócenie `content_id`
+   - ZwrĂłcenie `content_id`
 3. **Przetwarzanie w tle** (Celery):
-   - **Video**: Transkodowanie do MP4 (H.264, 1920×1080)
+   - **Video**: Transkodowanie do MP4 (H.264, 1920Ă—1080)
    - **PDF**: Generowanie miniatur
    - **Excel**: Analiza struktury (liczba wierszy, kolumn)
    - **Obrazy**: Generowanie miniatur, optymalizacja
-4. **Aktualizacja statusu** → `processing_jobs.status = 'completed'`
-5. **Gotowe do użycia** → Treść dostępna w harmonogramach
+4. **Aktualizacja statusu** â†’ `processing_jobs.status = 'completed'`
+5. **Gotowe do uĹĽycia** â†’ TreĹ›Ä‡ dostÄ™pna w harmonogramach
 
-### 5.2. Konfiguracja Grup i Wyświetlaczy (Admin)
+### 5.2. Konfiguracja Grup i WyĹ›wietlaczy (Admin)
 
-1. **Graficzny edytor układu**:
-   - Drag & drop wyświetlaczy na wizualizacji budynku
-   - Przypisanie do pięter
+1. **Graficzny edytor ukĹ‚adu**:
+   - Drag & drop wyĹ›wietlaczy na wizualizacji budynku
+   - Przypisanie do piÄ™ter
    - Konfiguracja grup (np. "3 monitory pionowe")
 2. **Zapis konfiguracji**:
    - `groups.layout_config` (JSON) - pozycje, rozmiary
    - `displays.group_id`, `displays.floor`, `displays.position_x/y`
 3. **Walidacja**:
-   - Sprawdzenie czy wyświetlacz nie jest w wielu grupach
-   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyświetlacze)
+   - Sprawdzenie czy wyĹ›wietlacz nie jest w wielu grupach
+   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyĹ›wietlacze)
 
 ### 5.3. Tworzenie Harmonogramu (Admin)
 
-1. **Wybór treści** → Lista dostępnych treści
-2. **Wybór wyświetlacza/grupy**:
-   - Pojedynczy wyświetlacz
-   - Grupa wyświetlaczy
-   - Wszystkie wyświetlacze
+1. **WybĂłr treĹ›ci** â†’ Lista dostÄ™pnych treĹ›ci
+2. **WybĂłr wyĹ›wietlacza/grupy**:
+   - Pojedynczy wyĹ›wietlacz
+   - Grupa wyĹ›wietlaczy
+   - Wszystkie wyĹ›wietlacze
 3. **Konfiguracja czasu**:
-   - Czas wyświetlania (start_time, end_time)
+   - Czas wyĹ›wietlania (start_time, end_time)
    - Daty (start_date, end_date) - opcjonalnie
    - Dni tygodnia
-   - Czas wyświetlania treści (display_duration_seconds)
-4. **Priorytet** → Jeśli wiele treści w tym samym czasie
-5. **Zapis** → `schedules` table
-6. **Push do wyświetlaczy** → WebSocket notification
+   - Czas wyĹ›wietlania treĹ›ci (display_duration_seconds)
+4. **Priorytet** â†’ JeĹ›li wiele treĹ›ci w tym samym czasie
+5. **Zapis** â†’ `schedules` table
+6. **Push do wyĹ›wietlaczy** â†’ WebSocket notification
 
-### 5.4. Działanie Wyświetlacza (Klient)
+### 5.4. DziaĹ‚anie WyĹ›wietlacza (Klient)
 
 1. **Start systemu** (systemd):
    - Uruchomienie aplikacji klienta
-   - Połączenie z serwerem (REST API)
-   - Rejestracja wyświetlacza (MAC address)
+   - PoĹ‚Ä…czenie z serwerem (REST API)
+   - Rejestracja wyĹ›wietlacza (MAC address)
 2. **Pobranie konfiguracji**:
    - GET `/api/displays/{id}/config`
-   - Orientacja, rozdzielczość, grupa
+   - Orientacja, rozdzielczoĹ›Ä‡, grupa
 3. **Pobranie harmonogramu**:
    - GET `/api/displays/{id}/schedule`
-   - Lista treści z czasami
-4. **Pobranie treści** (cache):
+   - Lista treĹ›ci z czasami
+4. **Pobranie treĹ›ci** (cache):
    - Sprawdzenie co jest w cache lokalnym
-   - Pobranie brakujących plików (GET `/api/content/{id}/download`)
+   - Pobranie brakujÄ…cych plikĂłw (GET `/api/content/{id}/download`)
    - Zapis do lokalnego cache
-5. **Wyświetlanie**:
+5. **WyĹ›wietlanie**:
    - Sprawdzenie aktualnego czasu
-   - Wybór treści zgodnie z harmonogramem
-   - Wyświetlenie:
-     - **Obraz**: Pillow → PyQt6
-     - **PDF**: pdf2image → Pillow → PyQt6
-     - **Excel**: openpyxl → renderowanie → PyQt6
+   - WybĂłr treĹ›ci zgodnie z harmonogramem
+   - WyĹ›wietlenie:
+     - **Obraz**: Pillow â†’ PyQt6
+     - **PDF**: pdf2image â†’ Pillow â†’ PyQt6
+     - **Excel**: openpyxl â†’ renderowanie â†’ PyQt6
      - **Video**: VLC/mpv player
 6. **Status w czasie rzeczywistym**:
-   - WebSocket → wysyłanie statusu co 30s
-   - Aktualna treść, status cache, błędy
-7. **Obsługa offline**:
-   - Jeśli brak połączenia → wyświetlanie z cache
-   - Retry połączenia co 60s
+   - WebSocket â†’ wysyĹ‚anie statusu co 30s
+   - Aktualna treĹ›Ä‡, status cache, bĹ‚Ä™dy
+7. **ObsĹ‚uga offline**:
+   - JeĹ›li brak poĹ‚Ä…czenia â†’ wyĹ›wietlanie z cache
+   - Retry poĹ‚Ä…czenia co 60s
    - Queue aktualizacji
 
-### 5.5. Integracja Google Drive (ZASTĘPSTWA)
+### 5.5. Integracja Google Drive (ZASTÄPSTWA)
 
 1. **Konfiguracja** (Admin):
    - Autoryzacja OAuth 2.0 (jednorazowa)
-   - Wybór folderu ZASTĘPSTWA
+   - WybĂłr folderu ZASTÄPSTWA
    - Zapis `cloud_sync` record
 2. **Monitorowanie zmian**:
    - **Webhook** (preferowane): Google Drive Push notifications
    - **Polling** (fallback): Sprawdzanie co 5 minut
 3. **Wykrycie zmiany**:
-   - Nowy plik → pobranie → upload do systemu
-   - Zmieniony plik → pobranie → aktualizacja
-   - Usunięty plik → usunięcie z systemu
+   - Nowy plik â†’ pobranie â†’ upload do systemu
+   - Zmieniony plik â†’ pobranie â†’ aktualizacja
+   - UsuniÄ™ty plik â†’ usuniÄ™cie z systemu
 4. **Automatyczna aktualizacja harmonogramu**:
-   - Jeśli `auto_schedule = TRUE`:
-     - Nowy plik → utworzenie harmonogramu (domyślny czas)
-     - Zmieniony plik → aktualizacja harmonogramu
+   - JeĹ›li `auto_schedule = TRUE`:
+     - Nowy plik â†’ utworzenie harmonogramu (domyĹ›lny czas)
+     - Zmieniony plik â†’ aktualizacja harmonogramu
 5. **Synchronizacja**:
    - Pobranie pliku z Google Drive
    - Upload do systemu (jak normalny upload)
    - Przetwarzanie (transkodowanie, etc.)
    - Aktualizacja `cloud_files` record
 
-### 5.6. Dzielenie Długich Plików Excel
+### 5.6. Dzielenie DĹ‚ugich PlikĂłw Excel
 
 **Algorytm dla grup pionowych (3 monitory obok siebie):**
 
 1. **Analiza pliku Excel**:
    - Liczba wierszy danych
    - Liczba kolumn
-   - Rozmiar czcionki (domyślny)
-2. **Obliczenie podziału**:
+   - Rozmiar czcionki (domyĹ›lny)
+2. **Obliczenie podziaĹ‚u**:
    - Wiersze na monitor = `total_rows / number_of_displays`
-   - Dla każdego wyświetlacza: zakres wierszy
+   - Dla kaĹĽdego wyĹ›wietlacza: zakres wierszy
 3. **Renderowanie**:
-   - Dla każdego wyświetlacza:
-     - Wyciągnięcie odpowiedniego zakresu wierszy
-     - Renderowanie do obrazu (1920×1080, obrócony 90°)
-     - Zapis jako osobna "wersja" treści
+   - Dla kaĹĽdego wyĹ›wietlacza:
+     - WyciÄ…gniÄ™cie odpowiedniego zakresu wierszy
+     - Renderowanie do obrazu (1920Ă—1080, obrĂłcony 90Â°)
+     - Zapis jako osobna "wersja" treĹ›ci
 4. **Przypisanie do harmonogramu**:
-   - Ta sama treść, różne "wersje" dla każdego wyświetlacza w grupie
-   - Synchronizacja czasu wyświetlania
+   - Ta sama treĹ›Ä‡, rĂłĹĽne "wersje" dla kaĹĽdego wyĹ›wietlacza w grupie
+   - Synchronizacja czasu wyĹ›wietlania
 
 **Implementacja:**
-- `content.metadata` → `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
-- Klient pobiera odpowiednią wersję dla swojego wyświetlacza
+- `content.metadata` â†’ `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
+- Klient pobiera odpowiedniÄ… wersjÄ™ dla swojego wyĹ›wietlacza
 
-### 5.7. Symulacja Wyświetlania (Publiczna Strona)
+### 5.7. Symulacja WyĹ›wietlania (Publiczna Strona)
 
-1. **Dostęp bez logowania**:
+1. **DostÄ™p bez logowania**:
    - GET `/simulation` (publiczny endpoint)
-   - Wyświetlenie wizualizacji wszystkich wyświetlaczy
+   - WyĹ›wietlenie wizualizacji wszystkich wyĹ›wietlaczy
 2. **Wizualizacja**:
-   - Graficzny układ monitorów (zgodnie z konfiguracją)
-   - Podgląd aktualnie wyświetlanej treści na każdym monitorze
+   - Graficzny ukĹ‚ad monitorĂłw (zgodnie z konfiguracjÄ…)
+   - PodglÄ…d aktualnie wyĹ›wietlanej treĹ›ci na kaĹĽdym monitorze
    - Status (online/offline)
 3. **Aktualizacja w czasie rzeczywistym**:
    - WebSocket (publiczny, read-only)
    - Aktualizacja co 5-10 sekund
 4. **Funkcje**:
-   - Przewijanie między piętrami
+   - Przewijanie miÄ™dzy piÄ™trami
    - Zoom na konkretny monitor
-   - Podgląd harmonogramu
+   - PodglÄ…d harmonogramu
 
 ---
 
-## 6. Obsługa Formatów - Szczegóły
+## 6. ObsĹ‚uga FormatĂłw - SzczegĂłĹ‚y
 
 ### 6.1. PDF
 
 **Przetwarzanie:**
-- `pdf2image` → konwersja każdej strony do PNG
-- Skalowanie do 1920×1080 (z zachowaniem proporcji)
-- Jeśli wiele stron → wybór pierwszej strony lub przewijanie
+- `pdf2image` â†’ konwersja kaĹĽdej strony do PNG
+- Skalowanie do 1920Ă—1080 (z zachowaniem proporcji)
+- JeĹ›li wiele stron â†’ wybĂłr pierwszej strony lub przewijanie
 
-**Wyświetlanie:**
-- Klient: PNG → Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Klient: PNG â†’ Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
 ### 6.2. Excel
 
 **Przetwarzanie:**
-- `openpyxl` → odczyt danych
+- `openpyxl` â†’ odczyt danych
 - Analiza struktury (liczba wierszy, kolumn)
-- Dla długich plików → przygotowanie podziału
+- Dla dĹ‚ugich plikĂłw â†’ przygotowanie podziaĹ‚u
 
 **Renderowanie:**
-- `pandas` + `matplotlib` lub własny renderer
-- Skalowanie do 1920×1080
+- `pandas` + `matplotlib` lub wĹ‚asny renderer
+- Skalowanie do 1920Ă—1080
 - Automatyczne dopasowanie czcionki
-- Dla grup pionowych → podział wierszy
+- Dla grup pionowych â†’ podziaĹ‚ wierszy
 
-**Wyświetlanie:**
-- Obraz PNG → Pillow → PyQt6
+**WyĹ›wietlanie:**
+- Obraz PNG â†’ Pillow â†’ PyQt6
 
 ### 6.3. Obrazy (JPG, PNG, GIF)
 
 **Przetwarzanie:**
-- `Pillow` → optymalizacja, skalowanie
-- Dla GIF → konwersja do animacji lub pierwsza klatka
+- `Pillow` â†’ optymalizacja, skalowanie
+- Dla GIF â†’ konwersja do animacji lub pierwsza klatka
 
-**Wyświetlanie:**
-- Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
-### 6.4. Video (MPG → MP4)
+### 6.4. Video (MPG â†’ MP4)
 
 **Transkodowanie na serwerze (FFmpeg):**
 ```bash
@@ -1915,65 +1915,65 @@ ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
 
 **Parametry:**
 - Codec: H.264 (libx264)
-- Rozdzielczość: 1920×1080 (FHD)
+- RozdzielczoĹ›Ä‡: 1920Ă—1080 (FHD)
 - Frame rate: 30 fps
 - Audio: AAC 128kbps
-- CRF: 23 (dobra jakość, rozsądny rozmiar)
+- CRF: 23 (dobra jakoĹ›Ä‡, rozsÄ…dny rozmiar)
 
-**Wyświetlanie:**
+**WyĹ›wietlanie:**
 - VLC Python bindings lub mpv
-- Pełnoekranowy tryb
-- Loop (jeśli potrzeba)
+- PeĹ‚noekranowy tryb
+- Loop (jeĹ›li potrzeba)
 
 ---
 
-## 7. Obsługa Rotacji Ekranu (90°)
+## 7. ObsĹ‚uga Rotacji Ekranu (90Â°)
 
 ### 7.1. Poziom Systemu
 
-**Konfiguracja X11 (jeśli X11):**
+**Konfiguracja X11 (jeĹ›li X11):**
 ```bash
-xrandr --output HDMI-1 --rotate left  # 90° w lewo
+xrandr --output HDMI-1 --rotate left  # 90Â° w lewo
 ```
 
 **Konfiguracja w aplikacji:**
 - `displays.orientation = 90`
-- Automatyczna rotacja treści w PyQt6
+- Automatyczna rotacja treĹ›ci w PyQt6
 
 ### 7.2. Poziom Aplikacji
 
 **PyQt6:**
 ```python
-# Rotacja treści
+# Rotacja treĹ›ci
 transform = QTransform().rotate(90)
 pixmap = pixmap.transformed(transform)
 ```
 
 **Dla grup pionowych:**
-- 3 monitory obok siebie, każdy obrócony 90°
-- Treść renderowana z uwzględnieniem rotacji
-- Dzielenie Excel z uwzględnieniem rotacji
+- 3 monitory obok siebie, kaĹĽdy obrĂłcony 90Â°
+- TreĹ›Ä‡ renderowana z uwzglÄ™dnieniem rotacji
+- Dzielenie Excel z uwzglÄ™dnieniem rotacji
 
 ---
 
-## 8. System Autoryzacji i Ról
+## 8. System Autoryzacji i RĂłl
 
 ### 8.1. Role
 
 **Admin:**
 - Wszystkie operacje CRUD
-- Upload treści
-- Konfiguracja wyświetlaczy i grup
-- Tworzenie harmonogramów
+- Upload treĹ›ci
+- Konfiguracja wyĹ›wietlaczy i grup
+- Tworzenie harmonogramĂłw
 - Konfiguracja Google Drive
-- Zarządzanie użytkownikami
+- ZarzÄ…dzanie uĹĽytkownikami
 
 **Operator:**
 - Tylko odczyt (GET)
-- Podgląd statusu wyświetlaczy
-- Podgląd harmonogramów
-- Podgląd treści
-- Logi aktywności
+- PodglÄ…d statusu wyĹ›wietlaczy
+- PodglÄ…d harmonogramĂłw
+- PodglÄ…d treĹ›ci
+- Logi aktywnoĹ›ci
 
 ### 8.2. Endpointy API
 
@@ -2004,44 +2004,44 @@ pixmap = pixmap.transformed(transform)
 
 ---
 
-## 9. Obsługa Błędów i Niezawodność
+## 9. ObsĹ‚uga BĹ‚Ä™dĂłw i NiezawodnoĹ›Ä‡
 
-### 9.1. WiFi - Opóźnienia i Zrywane Połączenia
+### 9.1. WiFi - OpĂłĹşnienia i Zrywane PoĹ‚Ä…czenia
 
 **Strategia:**
 1. **Lokalny cache**:
-   - Wszystkie treści w cache lokalnym
-   - Minimalna zależność od sieci podczas wyświetlania
+   - Wszystkie treĹ›ci w cache lokalnym
+   - Minimalna zaleĹĽnoĹ›Ä‡ od sieci podczas wyĹ›wietlania
 2. **Pobieranie w tle**:
-   - Pobieranie nowych treści przed czasem wyświetlania
+   - Pobieranie nowych treĹ›ci przed czasem wyĹ›wietlania
    - Retry z exponential backoff
 3. **Status offline**:
-   - Wyświetlanie z cache
+   - WyĹ›wietlanie z cache
    - Queue aktualizacji
-   - Automatyczne synchronizowanie po powrocie połączenia
-4. **Weryfikacja integralności**:
-   - Checksum (MD5/SHA256) dla każdego pliku
+   - Automatyczne synchronizowanie po powrocie poĹ‚Ä…czenia
+4. **Weryfikacja integralnoĹ›ci**:
+   - Checksum (MD5/SHA256) dla kaĹĽdego pliku
    - Weryfikacja przy pobieraniu
 
-### 9.2. Przetwarzanie Video - Błędy
+### 9.2. Przetwarzanie Video - BĹ‚Ä™dy
 
-**Obsługa:**
-- Retry (3 próby)
-- Logowanie błędów
+**ObsĹ‚uga:**
+- Retry (3 prĂłby)
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina (email/panel)
-- Fallback: wyświetlanie oryginalnego pliku (jeśli możliwe)
+- Fallback: wyĹ›wietlanie oryginalnego pliku (jeĹ›li moĹĽliwe)
 
-### 9.3. Synchronizacja Google Drive - Błędy
+### 9.3. Synchronizacja Google Drive - BĹ‚Ä™dy
 
-**Obsługa:**
+**ObsĹ‚uga:**
 - Retry z exponential backoff
-- Logowanie błędów
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina
 - Fallback: polling zamiast webhook
 
 ---
 
-## 10. Bezpieczeństwo
+## 10. BezpieczeĹ„stwo
 
 ### 10.1. Serwer
 
@@ -2049,20 +2049,20 @@ pixmap = pixmap.transformed(transform)
 - Firewall (UFW)
 - Regularne aktualizacje
 - Backup bazy danych (codziennie)
-- Backup plików (tygodniowo)
+- Backup plikĂłw (tygodniowo)
 
 ### 10.2. Autentykacja
 
-- Silne hasła (min. 12 znaków)
+- Silne hasĹ‚a (min. 12 znakĂłw)
 - JWT tokens
 - Rate limiting
 - CORS configuration
 
-### 10.3. Wyświetlacze
+### 10.3. WyĹ›wietlacze
 
 - Autoryzacja przez MAC address
 - HTTPS komunikacja
-- Read-only dostęp do API (tylko GET dla swoich danych)
+- Read-only dostÄ™p do API (tylko GET dla swoich danych)
 
 ---
 
@@ -2072,21 +2072,21 @@ pixmap = pixmap.transformed(transform)
 1. Backend API (FastAPI)
 2. Baza danych (PostgreSQL)
 3. Panel webowy (React) - podstawowy
-4. Upload treści (PDF, Excel, obrazy, video)
+4. Upload treĹ›ci (PDF, Excel, obrazy, video)
 5. Transkodowanie video (FFmpeg)
-6. Klient wyświetlacza (Python + PyQt6)
+6. Klient wyĹ›wietlacza (Python + PyQt6)
 7. Podstawowe harmonogramy
-8. Grupowanie wyświetlaczy (proste)
-9. Obsługa rotacji 90°
+8. Grupowanie wyĹ›wietlaczy (proste)
+9. ObsĹ‚uga rotacji 90Â°
 
 **Czas: ~6-8 tygodni**
 
 ### Faza 2: Rozszerzenia
 1. Integracja Google Drive
-2. Dzielenie długich plików Excel
-3. Graficzny edytor układu
-4. Symulacja wyświetlania
-5. Harmonogramy włączania TV (podstawowe)
+2. Dzielenie dĹ‚ugich plikĂłw Excel
+3. Graficzny edytor ukĹ‚adu
+4. Symulacja wyĹ›wietlania
+5. Harmonogramy wĹ‚Ä…czania TV (podstawowe)
 6. WebSocket dla statusu w czasie rzeczywistym
 
 **Czas: ~4-6 tygodni**
@@ -2105,17 +2105,17 @@ pixmap = pixmap.transformed(transform)
 ## 12. Pytania i Uwagi
 
 ### Do doprecyzowania:
-1. **Harmonogramy TV**: Czy potrzebne różne czasy dla różnych dni tygodnia? (np. weekendy)
-2. **Dzielenie Excel**: Czy zawsze dzielić równo, czy możliwość ręcznej konfiguracji zakresów?
-3. **Video**: Czy potrzebne różne wersje jakościowe dla różnych wyświetlaczy?
-4. **Backup**: Jak często i gdzie przechowywać?
-5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy błędach?
+1. **Harmonogramy TV**: Czy potrzebne rĂłĹĽne czasy dla rĂłĹĽnych dni tygodnia? (np. weekendy)
+2. **Dzielenie Excel**: Czy zawsze dzieliÄ‡ rĂłwno, czy moĹĽliwoĹ›Ä‡ rÄ™cznej konfiguracji zakresĂłw?
+3. **Video**: Czy potrzebne rĂłĹĽne wersje jakoĹ›ciowe dla rĂłĹĽnych wyĹ›wietlaczy?
+4. **Backup**: Jak czÄ™sto i gdzie przechowywaÄ‡?
+5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy bĹ‚Ä™dach?
 
 ### Zalecenia:
-- Rozpoczęcie od MVP (Faza 1)
-- Testowanie na 1-2 wyświetlaczach przed pełnym wdrożeniem
-- Dokumentacja dla operatora (jak używać panelu)
-- Backup przed każdą większą zmianą
+- RozpoczÄ™cie od MVP (Faza 1)
+- Testowanie na 1-2 wyĹ›wietlaczach przed peĹ‚nym wdroĹĽeniem
+- Dokumentacja dla operatora (jak uĹĽywaÄ‡ panelu)
+- Backup przed kaĹĽdÄ… wiÄ™kszÄ… zmianÄ…
 
 ---
 
@@ -2133,135 +2133,135 @@ pixmap = pixmap.transformed(transform)
 | Video player | VLC Python / mpv |
 | Google Drive | google-api-python-client |
 | WebSocket | Socket.io / FastAPI WebSocket |
-| Serwer plików | Nginx |
+| Serwer plikĂłw | Nginx |
 | System klienta | Ubuntu/Debian + systemd |
 
 ---
 
-**Gotowe do implementacji!** 🚀
+**Gotowe do implementacji!** đźš€
 
 
 ```
 
 ```markdown
-# Analiza Systemu Digital Signage - Szczegółowa Specyfikacja
+# Analiza Systemu Digital Signage - SzczegĂłĹ‚owa Specyfikacja
 
 ## 1. Wymagania Funkcjonalne - Aktualizacja
 
 ### MIN-imum
-1. ✅ Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. ✅ Obrót 90° (3 monitory pionowe obok siebie)
-3. ✅ Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. ✅ Harmonogram: czas włączenia TV i czas wyświetlania treści
+1. âś… WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. âś… ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. âś… RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. âś… Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
 
 ### MAX-imum
-- ✅ Wszystko z MIN + integracja z Google Drive (folder ZASTĘPSTWA) - auto-aktualizacja
-- ✅ Dzielenie długich plików Excel na grupy monitorów pionowych
-- ✅ Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- ✅ Symulacja wyświetlania na stronie informacyjnej (bez logowania)
+- âś… Wszystko z MIN + integracja z Google Drive (folder ZASTÄPSTWA) - auto-aktualizacja
+- âś… Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- âś… Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- âś… Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
 
 ### Doprecyzowania
-- **Chmura**: Google Drive (folder ZASTĘPSTWA)
-- **Rozdzielczość**: FHD (1920×1080) telewizory
-- **Zarządzanie TV**: Konfigurowalne później (HDMI CEC lub smart plug)
+- **Chmura**: Google Drive (folder ZASTÄPSTWA)
+- **RozdzielczoĹ›Ä‡**: FHD (1920Ă—1080) telewizory
+- **ZarzÄ…dzanie TV**: Konfigurowalne pĂłĹşniej (HDMI CEC lub smart plug)
 - **Analytics**: NIE (tylko tablice informacyjne)
 - **Role**: 
-  - **Admin**: Konfiguracja wszystkiego, upload treści (za hasłem)
-  - **Operator**: Tylko obserwacja (co się gdzie wyświetla, czy działa)
-- **Video**: Transkodowanie na serwerze po uploadzie, klient obsługuje standardowe formaty
-- **Monitoring**: Brak komunikacji wyświetlacza widoczny na stronie statusu i raportowany
-- **Dzwonki szkolne**: System "przyjaznych dzwonków" z harmonogramem
-- **Środowisko**: Hyper-V (serwer na maszynie wirtualnej)
+  - **Admin**: Konfiguracja wszystkiego, upload treĹ›ci (za hasĹ‚em)
+  - **Operator**: Tylko obserwacja (co siÄ™ gdzie wyĹ›wietla, czy dziaĹ‚a)
+- **Video**: Transkodowanie na serwerze po uploadzie, klient obsĹ‚uguje standardowe formaty
+- **Monitoring**: Brak komunikacji wyĹ›wietlacza widoczny na stronie statusu i raportowany
+- **Dzwonki szkolne**: System "przyjaznych dzwonkĂłw" z harmonogramem
+- **Ĺšrodowisko**: Hyper-V (serwer na maszynie wirtualnej)
 
 ---
 
-## 2. Architektura Systemu - Szczegółowa
+## 2. Architektura Systemu - SzczegĂłĹ‚owa
 
 ### 2.1. Komponenty Systemu
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    SERWER (Ubuntu VM)                        │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Backend API (FastAPI/Django)                  │  │
-│  │  - REST API dla panelu webowego                       │  │
-│  │  - WebSocket dla statusu w czasie rzeczywistym        │  │
-│  │  - Autentykacja (JWT) - Admin/Operator                │  │
-│  │  - Zarządzanie treścią                                │  │
-│  │  - Harmonogramy                                        │  │
-│  │  - Grupowanie wyświetlaczy                            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Panel Webowy (React/Vue.js)                   │  │
-│  │  - Dashboard Admin (upload, konfiguracja)             │  │
-│  │  - Dashboard Operator (obserwacja, status)            │  │
-│  │  - Graficzny edytor układu monitorów                  │  │
-│  │  - Symulacja wyświetlania (publiczna, bez logowania)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Worker (Celery/Bull)                          │  │
-│  │  - Transkodowanie video (FFmpeg)                      │  │
-│  │  - Przetwarzanie PDF/Excel                            │  │
-│  │  - Generowanie miniatur                               │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Google Drive Sync Service                     │  │
-│  │  - Monitorowanie folderu ZASTĘPSTWA                   │  │
-│  │  - Webhook/polling zmian                              │  │
-│  │  - Automatyczne pobieranie i aktualizacja             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Monitoring Service                            │  │
-│  │  - Monitorowanie statusu wyświetlaczy                 │  │
-│  │  - Wykrywanie braku komunikacji                       │  │
-│  │  - Alerty i raporty                                   │  │
-│  │  - Historia statusów                                  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         System Dzwonków Szkolnych                     │  │
-│  │  - Harmonogram dzwonków                               │  │
-│  │  - Odtwarzanie dźwięków                              │  │
-│  │  - Integracja z wyświetlaczami                       │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Baza Danych (PostgreSQL)                      │  │
-│  │  - Wyświetlacze, grupy, treści, harmonogramy         │  │
-│  │  - Status wyświetlaczy, alerty                       │  │
-│  │  - Harmonogramy dzwonków                             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Storage (lokalny system plików)               │  │
-│  │  - /content/original/ - oryginalne pliki             │  │
-│  │  - /content/processed/ - przetworzone video          │  │
-│  │  - /content/thumbnails/ - miniatury                  │  │
-│  │  - /content/cache/ - cache dla wyświetlaczy          │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Nginx (serwowanie plików statycznych)         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                    │              │              │
-                    │ WiFi         │ WiFi         │ WiFi
-                    ▼              ▼              ▼
-         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-         │ Wyświetlacz 1 │  │ Wyświetlacz 2│  │ Wyświetlacz N│
-         │ HP T630       │  │ HP T630      │  │ HP T630      │
-         │ Linux         │  │ Linux        │  │ Linux        │
-         │              │  │              │  │              │
-         │ - Klient API  │  │ - Klient API │  │ - Klient API │
-         │ - Cache lokal │  │ - Cache lokal│  │ - Cache lokal│
-         │ - Player      │  │ - Player     │  │ - Player     │
-         │ - Systemd     │  │ - Systemd    │  │ - Systemd    │
-         └──────────────┘  └──────────────┘  └──────────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    SERWER (Ubuntu VM)                        â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Backend API (FastAPI/Django)                  â”‚  â”‚
+â”‚  â”‚  - REST API dla panelu webowego                       â”‚  â”‚
+â”‚  â”‚  - WebSocket dla statusu w czasie rzeczywistym        â”‚  â”‚
+â”‚  â”‚  - Autentykacja (JWT) - Admin/Operator                â”‚  â”‚
+â”‚  â”‚  - ZarzÄ…dzanie treĹ›ciÄ…                                â”‚  â”‚
+â”‚  â”‚  - Harmonogramy                                        â”‚  â”‚
+â”‚  â”‚  - Grupowanie wyĹ›wietlaczy                            â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Panel Webowy (React/Vue.js)                   â”‚  â”‚
+â”‚  â”‚  - Dashboard Admin (upload, konfiguracja)             â”‚  â”‚
+â”‚  â”‚  - Dashboard Operator (obserwacja, status)            â”‚  â”‚
+â”‚  â”‚  - Graficzny edytor ukĹ‚adu monitorĂłw                  â”‚  â”‚
+â”‚  â”‚  - Symulacja wyĹ›wietlania (publiczna, bez logowania)  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Worker (Celery/Bull)                          â”‚  â”‚
+â”‚  â”‚  - Transkodowanie video (FFmpeg)                      â”‚  â”‚
+â”‚  â”‚  - Przetwarzanie PDF/Excel                            â”‚  â”‚
+â”‚  â”‚  - Generowanie miniatur                               â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Google Drive Sync Service                     â”‚  â”‚
+â”‚  â”‚  - Monitorowanie folderu ZASTÄPSTWA                   â”‚  â”‚
+â”‚  â”‚  - Webhook/polling zmian                              â”‚  â”‚
+â”‚  â”‚  - Automatyczne pobieranie i aktualizacja             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Monitoring Service                            â”‚  â”‚
+â”‚  â”‚  - Monitorowanie statusu wyĹ›wietlaczy                 â”‚  â”‚
+â”‚  â”‚  - Wykrywanie braku komunikacji                       â”‚  â”‚
+â”‚  â”‚  - Alerty i raporty                                   â”‚  â”‚
+â”‚  â”‚  - Historia statusĂłw                                  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         System DzwonkĂłw Szkolnych                     â”‚  â”‚
+â”‚  â”‚  - Harmonogram dzwonkĂłw                               â”‚  â”‚
+â”‚  â”‚  - Odtwarzanie dĹşwiÄ™kĂłw                              â”‚  â”‚
+â”‚  â”‚  - Integracja z wyĹ›wietlaczami                       â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Baza Danych (PostgreSQL)                      â”‚  â”‚
+â”‚  â”‚  - WyĹ›wietlacze, grupy, treĹ›ci, harmonogramy         â”‚  â”‚
+â”‚  â”‚  - Status wyĹ›wietlaczy, alerty                       â”‚  â”‚
+â”‚  â”‚  - Harmonogramy dzwonkĂłw                             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Storage (lokalny system plikĂłw)               â”‚  â”‚
+â”‚  â”‚  - /content/original/ - oryginalne pliki             â”‚  â”‚
+â”‚  â”‚  - /content/processed/ - przetworzone video          â”‚  â”‚
+â”‚  â”‚  - /content/thumbnails/ - miniatury                  â”‚  â”‚
+â”‚  â”‚  - /content/cache/ - cache dla wyĹ›wietlaczy          â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Nginx (serwowanie plikĂłw statycznych)         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                    â”‚              â”‚              â”‚
+                    â”‚ WiFi         â”‚ WiFi         â”‚ WiFi
+                    â–Ľ              â–Ľ              â–Ľ
+         â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚ WyĹ›wietlacz 1 â”‚  â”‚ WyĹ›wietlacz 2â”‚  â”‚ WyĹ›wietlacz Nâ”‚
+         â”‚ HP T630       â”‚  â”‚ HP T630      â”‚  â”‚ HP T630      â”‚
+         â”‚ Linux         â”‚  â”‚ Linux        â”‚  â”‚ Linux        â”‚
+         â”‚              â”‚  â”‚              â”‚  â”‚              â”‚
+         â”‚ - Klient API  â”‚  â”‚ - Klient API â”‚  â”‚ - Klient API â”‚
+         â”‚ - Cache lokal â”‚  â”‚ - Cache lokalâ”‚  â”‚ - Cache lokalâ”‚
+         â”‚ - Player      â”‚  â”‚ - Player     â”‚  â”‚ - Player     â”‚
+         â”‚ - Systemd     â”‚  â”‚ - Systemd    â”‚  â”‚ - Systemd    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
 ---
@@ -2270,18 +2270,18 @@ pixmap = pixmap.transformed(transform)
 
 ### 3.1. Backend Serwera
 
-**Główny framework:**
+**GĹ‚Ăłwny framework:**
 - **Python + FastAPI** (rekomendowane) lub Django
   - Szybki, asynchroniczny
   - Automatyczna dokumentacja API (Swagger)
-  - Łatwa integracja z Celery
-  - Dobra obsługa WebSocket
+  - Ĺatwa integracja z Celery
+  - Dobra obsĹ‚uga WebSocket
 
 **Baza danych:**
 - **PostgreSQL 14+**
   - Relacyjna struktura
   - JSONB dla elastycznych konfiguracji
-  - Wsparcie dla pełnotekstowego wyszukiwania
+  - Wsparcie dla peĹ‚notekstowego wyszukiwania
 
 **Cache i kolejki:**
 - **Redis**
@@ -2292,38 +2292,38 @@ pixmap = pixmap.transformed(transform)
 **Przetwarzanie w tle:**
 - **Celery** + **Redis** (broker)
   - Transkodowanie video
-  - Przetwarzanie plików
+  - Przetwarzanie plikĂłw
   - Synchronizacja z Google Drive
 
 **Przetwarzanie multimedia:**
 - **FFmpeg**
   - Transkodowanie video do MP4 (H.264)
-  - Optymalizacja dla FHD (1920×1080)
-  - Generowanie różnych wersji (jeśli potrzeba)
+  - Optymalizacja dla FHD (1920Ă—1080)
+  - Generowanie rĂłĹĽnych wersji (jeĹ›li potrzeba)
 
 **Biblioteki Python:**
-- `python-multipart` - upload plików
-- `Pillow` - przetwarzanie obrazów
-- `pdf2image` - konwersja PDF do obrazów
+- `python-multipart` - upload plikĂłw
+- `Pillow` - przetwarzanie obrazĂłw
+- `pdf2image` - konwersja PDF do obrazĂłw
 - `openpyxl` / `pandas` - przetwarzanie Excel
 - `google-api-python-client` - integracja Google Drive
 - `python-jose` - JWT tokens
-- `passlib` - hashowanie haseł
+- `passlib` - hashowanie haseĹ‚
 
 ### 3.2. Frontend Panelu
 
 **Framework:**
 - **React 18+** (rekomendowane) lub Vue 3
-  - Duża społeczność
-- **TypeScript** - bezpieczeństwo typów
+  - DuĹĽa spoĹ‚ecznoĹ›Ä‡
+- **TypeScript** - bezpieczeĹ„stwo typĂłw
 
 **Biblioteki UI:**
 - **Material-UI (MUI)** lub **Ant Design**
   - Gotowe komponenty
-  - Responsywność
+  - ResponsywnoĹ›Ä‡
   - Tematyzacja
 
-**Graficzny edytor układu:**
+**Graficzny edytor ukĹ‚adu:**
 - **react-grid-layout** lub **react-dnd**
   - Drag & drop
   - Responsywne siatki
@@ -2334,41 +2334,41 @@ pixmap = pixmap.transformed(transform)
 - **Socket.io-client** - WebSocket dla statusu
 
 **Wizualizacja:**
-- **react-player** - podgląd video
-- **react-pdf** - podgląd PDF
-- **Chart.js** - wykresy (jeśli potrzeba)
+- **react-player** - podglÄ…d video
+- **react-pdf** - podglÄ…d PDF
+- **Chart.js** - wykresy (jeĹ›li potrzeba)
 
-### 3.3. Klient (Wyświetlacze - HP T630)
+### 3.3. Klient (WyĹ›wietlacze - HP T630)
 
 **System operacyjny:**
 - **Ubuntu 22.04 LTS** lub **Debian 11+**
-  - Stabilność
-  - Długie wsparcie
-  - Łatwa konfiguracja
+  - StabilnoĹ›Ä‡
+  - DĹ‚ugie wsparcie
+  - Ĺatwa konfiguracja
 
-**Framework wyświetlania:**
+**Framework wyĹ›wietlania:**
 - **Python 3.10+**
   - **PyQt6** lub **Kivy**
-    - Pełnoekranowy tryb
-    - Obsługa rotacji ekranu
-    - Dobra wydajność
+    - PeĹ‚noekranowy tryb
+    - ObsĹ‚uga rotacji ekranu
+    - Dobra wydajnoĹ›Ä‡
 
 **Biblioteki Python dla klienta:**
 - `requests` - komunikacja z API
 - `websocket-client` - WebSocket
-- `Pillow` - wyświetlanie obrazów
+- `Pillow` - wyĹ›wietlanie obrazĂłw
 - `pdf2image` - PDF
 - `openpyxl` / `pandas` - Excel
 - `vlc-python` lub `mpv` - video
 - `pygame` (opcjonalnie) - alternatywa dla prostych animacji
 
-**Zarządzanie procesem:**
+**ZarzÄ…dzanie procesem:**
 - **systemd** - autostart, restart, monitoring
 - **cron** - synchronizacja czasu (NTP)
 
-**Obsługa rotacji ekranu:**
+**ObsĹ‚uga rotacji ekranu:**
 - `xrandr` (X11) lub konfiguracja w systemie
-- Automatyczna rotacja treści w aplikacji
+- Automatyczna rotacja treĹ›ci w aplikacji
 
 ### 3.4. Integracja Google Drive
 
@@ -2383,36 +2383,36 @@ pixmap = pixmap.transformed(transform)
 - `google-auth`
 
 **Mechanizm:**
-1. Konfiguracja folderu ZASTĘPSTWA w panelu admin
+1. Konfiguracja folderu ZASTÄPSTWA w panelu admin
 2. Autoryzacja OAuth 2.0 (jednorazowa)
 3. Monitorowanie zmian (webhook + polling)
-4. Automatyczne pobieranie nowych/zmienionych plików
+4. Automatyczne pobieranie nowych/zmienionych plikĂłw
 5. Aktualizacja harmonogramu
 
 ### 3.5. Komunikacja
 
 **REST API:**
 - Endpointy dla CRUD operacji
-- Upload/download plików
-- Status wyświetlaczy
+- Upload/download plikĂłw
+- Status wyĹ›wietlaczy
 
 **WebSocket:**
 - Status w czasie rzeczywistym
-- Push aktualizacji treści
-- Synchronizacja harmonogramów
+- Push aktualizacji treĹ›ci
+- Synchronizacja harmonogramĂłw
 
-**Protokół:**
+**ProtokĂłĹ‚:**
 - HTTPS (TLS 1.3)
 - WSS (WebSocket Secure)
 
 ---
 
-## 4. Szczegółowa Struktura Bazy Danych
+## 4. SzczegĂłĹ‚owa Struktura Bazy Danych
 
 ### 4.1. Tabele
 
 ```sql
--- Użytkownicy (role: admin, operator)
+-- UĹĽytkownicy (role: admin, operator)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -2422,7 +2422,7 @@ CREATE TABLE users (
     last_login TIMESTAMP
 );
 
--- Wyświetlacze
+-- WyĹ›wietlacze
 CREATE TABLE displays (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -2434,7 +2434,7 @@ CREATE TABLE displays (
     resolution_height INTEGER DEFAULT 1080,
     group_id INTEGER REFERENCES groups(id),
     floor VARCHAR(50),
-    position_x INTEGER,  -- Pozycja w graficznym układzie
+    position_x INTEGER,  -- Pozycja w graficznym ukĹ‚adzie
     position_y INTEGER,
     last_seen TIMESTAMP,
     cache_size_mb INTEGER DEFAULT 1000,
@@ -2442,17 +2442,17 @@ CREATE TABLE displays (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Grupy wyświetlaczy
+-- Grupy wyĹ›wietlaczy
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
     floor VARCHAR(50),
-    layout_config JSONB,  -- Konfiguracja graficznego układu
+    layout_config JSONB,  -- Konfiguracja graficznego ukĹ‚adu
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Treści
+-- TreĹ›ci
 CREATE TABLE content (
     id SERIAL PRIMARY KEY,
     filename VARCHAR(255) NOT NULL,
@@ -2483,12 +2483,12 @@ CREATE TABLE schedules (
     end_date DATE,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     priority INTEGER DEFAULT 0,
-    display_duration_seconds INTEGER,  -- Czas wyświetlania treści
+    display_duration_seconds INTEGER,  -- Czas wyĹ›wietlania treĹ›ci
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy włączania TV
+-- Harmonogramy wĹ‚Ä…czania TV
 CREATE TABLE tv_schedules (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -2541,7 +2541,7 @@ CREATE TABLE cloud_files (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logi aktywności (dla operatora)
+-- Logi aktywnoĹ›ci (dla operatora)
 CREATE TABLE activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
@@ -2552,7 +2552,7 @@ CREATE TABLE activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Status wyświetlaczy (cache)
+-- Status wyĹ›wietlaczy (cache)
 CREATE TABLE display_status (
     display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
     current_content_id INTEGER REFERENCES content(id),
@@ -2579,191 +2579,191 @@ CREATE INDEX idx_activity_logs_created ON activity_logs(created_at DESC);
 
 ---
 
-## 5. Szczegółowe Przepływy Działania
+## 5. SzczegĂłĹ‚owe PrzepĹ‚ywy DziaĹ‚ania
 
-### 5.1. Upload Treści (Admin)
+### 5.1. Upload TreĹ›ci (Admin)
 
-1. **Admin loguje się** → JWT token
-2. **Upload pliku** → POST `/api/content/upload`
+1. **Admin loguje siÄ™** â†’ JWT token
+2. **Upload pliku** â†’ POST `/api/content/upload`
    - Walidacja typu pliku
    - Zapis do `/content/original/`
    - Utworzenie rekordu w `content`
-   - Zwrócenie `content_id`
+   - ZwrĂłcenie `content_id`
 3. **Przetwarzanie w tle** (Celery):
-   - **Video**: Transkodowanie do MP4 (H.264, 1920×1080)
+   - **Video**: Transkodowanie do MP4 (H.264, 1920Ă—1080)
    - **PDF**: Generowanie miniatur
    - **Excel**: Analiza struktury (liczba wierszy, kolumn)
    - **Obrazy**: Generowanie miniatur, optymalizacja
-4. **Aktualizacja statusu** → `processing_jobs.status = 'completed'`
-5. **Gotowe do użycia** → Treść dostępna w harmonogramach
+4. **Aktualizacja statusu** â†’ `processing_jobs.status = 'completed'`
+5. **Gotowe do uĹĽycia** â†’ TreĹ›Ä‡ dostÄ™pna w harmonogramach
 
-### 5.2. Konfiguracja Grup i Wyświetlaczy (Admin)
+### 5.2. Konfiguracja Grup i WyĹ›wietlaczy (Admin)
 
-1. **Graficzny edytor układu**:
-   - Drag & drop wyświetlaczy na wizualizacji budynku
-   - Przypisanie do pięter
+1. **Graficzny edytor ukĹ‚adu**:
+   - Drag & drop wyĹ›wietlaczy na wizualizacji budynku
+   - Przypisanie do piÄ™ter
    - Konfiguracja grup (np. "3 monitory pionowe")
 2. **Zapis konfiguracji**:
    - `groups.layout_config` (JSON) - pozycje, rozmiary
    - `displays.group_id`, `displays.floor`, `displays.position_x/y`
 3. **Walidacja**:
-   - Sprawdzenie czy wyświetlacz nie jest w wielu grupach
-   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyświetlacze)
+   - Sprawdzenie czy wyĹ›wietlacz nie jest w wielu grupach
+   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyĹ›wietlacze)
 
 ### 5.3. Tworzenie Harmonogramu (Admin)
 
-1. **Wybór treści** → Lista dostępnych treści
-2. **Wybór wyświetlacza/grupy**:
-   - Pojedynczy wyświetlacz
-   - Grupa wyświetlaczy
-   - Wszystkie wyświetlacze
+1. **WybĂłr treĹ›ci** â†’ Lista dostÄ™pnych treĹ›ci
+2. **WybĂłr wyĹ›wietlacza/grupy**:
+   - Pojedynczy wyĹ›wietlacz
+   - Grupa wyĹ›wietlaczy
+   - Wszystkie wyĹ›wietlacze
 3. **Konfiguracja czasu**:
-   - Czas wyświetlania (start_time, end_time)
+   - Czas wyĹ›wietlania (start_time, end_time)
    - Daty (start_date, end_date) - opcjonalnie
    - Dni tygodnia
-   - Czas wyświetlania treści (display_duration_seconds)
-4. **Priorytet** → Jeśli wiele treści w tym samym czasie
-5. **Zapis** → `schedules` table
-6. **Push do wyświetlaczy** → WebSocket notification
+   - Czas wyĹ›wietlania treĹ›ci (display_duration_seconds)
+4. **Priorytet** â†’ JeĹ›li wiele treĹ›ci w tym samym czasie
+5. **Zapis** â†’ `schedules` table
+6. **Push do wyĹ›wietlaczy** â†’ WebSocket notification
 
-### 5.4. Działanie Wyświetlacza (Klient)
+### 5.4. DziaĹ‚anie WyĹ›wietlacza (Klient)
 
 1. **Start systemu** (systemd):
    - Uruchomienie aplikacji klienta
-   - Połączenie z serwerem (REST API)
-   - Rejestracja wyświetlacza (MAC address)
+   - PoĹ‚Ä…czenie z serwerem (REST API)
+   - Rejestracja wyĹ›wietlacza (MAC address)
 2. **Pobranie konfiguracji**:
    - GET `/api/displays/{id}/config`
-   - Orientacja, rozdzielczość, grupa
+   - Orientacja, rozdzielczoĹ›Ä‡, grupa
 3. **Pobranie harmonogramu**:
    - GET `/api/displays/{id}/schedule`
-   - Lista treści z czasami
-4. **Pobranie treści** (cache):
+   - Lista treĹ›ci z czasami
+4. **Pobranie treĹ›ci** (cache):
    - Sprawdzenie co jest w cache lokalnym
-   - Pobranie brakujących plików (GET `/api/content/{id}/download`)
+   - Pobranie brakujÄ…cych plikĂłw (GET `/api/content/{id}/download`)
    - Zapis do lokalnego cache
-5. **Wyświetlanie**:
+5. **WyĹ›wietlanie**:
    - Sprawdzenie aktualnego czasu
-   - Wybór treści zgodnie z harmonogramem
-   - Wyświetlenie:
-     - **Obraz**: Pillow → PyQt6
-     - **PDF**: pdf2image → Pillow → PyQt6
-     - **Excel**: openpyxl → renderowanie → PyQt6
+   - WybĂłr treĹ›ci zgodnie z harmonogramem
+   - WyĹ›wietlenie:
+     - **Obraz**: Pillow â†’ PyQt6
+     - **PDF**: pdf2image â†’ Pillow â†’ PyQt6
+     - **Excel**: openpyxl â†’ renderowanie â†’ PyQt6
      - **Video**: VLC/mpv player
 6. **Status w czasie rzeczywistym**:
-   - WebSocket → wysyłanie statusu co 30s
-   - Aktualna treść, status cache, błędy
-7. **Obsługa offline**:
-   - Jeśli brak połączenia → wyświetlanie z cache
-   - Retry połączenia co 60s
+   - WebSocket â†’ wysyĹ‚anie statusu co 30s
+   - Aktualna treĹ›Ä‡, status cache, bĹ‚Ä™dy
+7. **ObsĹ‚uga offline**:
+   - JeĹ›li brak poĹ‚Ä…czenia â†’ wyĹ›wietlanie z cache
+   - Retry poĹ‚Ä…czenia co 60s
    - Queue aktualizacji
 
-### 5.5. Integracja Google Drive (ZASTĘPSTWA)
+### 5.5. Integracja Google Drive (ZASTÄPSTWA)
 
 1. **Konfiguracja** (Admin):
    - Autoryzacja OAuth 2.0 (jednorazowa)
-   - Wybór folderu ZASTĘPSTWA
+   - WybĂłr folderu ZASTÄPSTWA
    - Zapis `cloud_sync` record
 2. **Monitorowanie zmian**:
    - **Webhook** (preferowane): Google Drive Push notifications
    - **Polling** (fallback): Sprawdzanie co 5 minut
 3. **Wykrycie zmiany**:
-   - Nowy plik → pobranie → upload do systemu
-   - Zmieniony plik → pobranie → aktualizacja
-   - Usunięty plik → usunięcie z systemu
+   - Nowy plik â†’ pobranie â†’ upload do systemu
+   - Zmieniony plik â†’ pobranie â†’ aktualizacja
+   - UsuniÄ™ty plik â†’ usuniÄ™cie z systemu
 4. **Automatyczna aktualizacja harmonogramu**:
-   - Jeśli `auto_schedule = TRUE`:
-     - Nowy plik → utworzenie harmonogramu (domyślny czas)
-     - Zmieniony plik → aktualizacja harmonogramu
+   - JeĹ›li `auto_schedule = TRUE`:
+     - Nowy plik â†’ utworzenie harmonogramu (domyĹ›lny czas)
+     - Zmieniony plik â†’ aktualizacja harmonogramu
 5. **Synchronizacja**:
    - Pobranie pliku z Google Drive
    - Upload do systemu (jak normalny upload)
    - Przetwarzanie (transkodowanie, etc.)
    - Aktualizacja `cloud_files` record
 
-### 5.6. Dzielenie Długich Plików Excel
+### 5.6. Dzielenie DĹ‚ugich PlikĂłw Excel
 
 **Algorytm dla grup pionowych (3 monitory obok siebie):**
 
 1. **Analiza pliku Excel**:
    - Liczba wierszy danych
    - Liczba kolumn
-   - Rozmiar czcionki (domyślny)
-2. **Obliczenie podziału**:
+   - Rozmiar czcionki (domyĹ›lny)
+2. **Obliczenie podziaĹ‚u**:
    - Wiersze na monitor = `total_rows / number_of_displays`
-   - Dla każdego wyświetlacza: zakres wierszy
+   - Dla kaĹĽdego wyĹ›wietlacza: zakres wierszy
 3. **Renderowanie**:
-   - Dla każdego wyświetlacza:
-     - Wyciągnięcie odpowiedniego zakresu wierszy
-     - Renderowanie do obrazu (1920×1080, obrócony 90°)
-     - Zapis jako osobna "wersja" treści
+   - Dla kaĹĽdego wyĹ›wietlacza:
+     - WyciÄ…gniÄ™cie odpowiedniego zakresu wierszy
+     - Renderowanie do obrazu (1920Ă—1080, obrĂłcony 90Â°)
+     - Zapis jako osobna "wersja" treĹ›ci
 4. **Przypisanie do harmonogramu**:
-   - Ta sama treść, różne "wersje" dla każdego wyświetlacza w grupie
-   - Synchronizacja czasu wyświetlania
+   - Ta sama treĹ›Ä‡, rĂłĹĽne "wersje" dla kaĹĽdego wyĹ›wietlacza w grupie
+   - Synchronizacja czasu wyĹ›wietlania
 
 **Implementacja:**
-- `content.metadata` → `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
-- Klient pobiera odpowiednią wersję dla swojego wyświetlacza
+- `content.metadata` â†’ `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
+- Klient pobiera odpowiedniÄ… wersjÄ™ dla swojego wyĹ›wietlacza
 
-### 5.7. Symulacja Wyświetlania (Publiczna Strona)
+### 5.7. Symulacja WyĹ›wietlania (Publiczna Strona)
 
-1. **Dostęp bez logowania**:
+1. **DostÄ™p bez logowania**:
    - GET `/simulation` (publiczny endpoint)
-   - Wyświetlenie wizualizacji wszystkich wyświetlaczy
+   - WyĹ›wietlenie wizualizacji wszystkich wyĹ›wietlaczy
 2. **Wizualizacja**:
-   - Graficzny układ monitorów (zgodnie z konfiguracją)
-   - Podgląd aktualnie wyświetlanej treści na każdym monitorze
+   - Graficzny ukĹ‚ad monitorĂłw (zgodnie z konfiguracjÄ…)
+   - PodglÄ…d aktualnie wyĹ›wietlanej treĹ›ci na kaĹĽdym monitorze
    - Status (online/offline)
 3. **Aktualizacja w czasie rzeczywistym**:
    - WebSocket (publiczny, read-only)
    - Aktualizacja co 5-10 sekund
 4. **Funkcje**:
-   - Przewijanie między piętrami
+   - Przewijanie miÄ™dzy piÄ™trami
    - Zoom na konkretny monitor
-   - Podgląd harmonogramu
+   - PodglÄ…d harmonogramu
 
 ---
 
-## 6. Obsługa Formatów - Szczegóły
+## 6. ObsĹ‚uga FormatĂłw - SzczegĂłĹ‚y
 
 ### 6.1. PDF
 
 **Przetwarzanie:**
-- `pdf2image` → konwersja każdej strony do PNG
-- Skalowanie do 1920×1080 (z zachowaniem proporcji)
-- Jeśli wiele stron → wybór pierwszej strony lub przewijanie
+- `pdf2image` â†’ konwersja kaĹĽdej strony do PNG
+- Skalowanie do 1920Ă—1080 (z zachowaniem proporcji)
+- JeĹ›li wiele stron â†’ wybĂłr pierwszej strony lub przewijanie
 
-**Wyświetlanie:**
-- Klient: PNG → Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Klient: PNG â†’ Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
 ### 6.2. Excel
 
 **Przetwarzanie:**
-- `openpyxl` → odczyt danych
+- `openpyxl` â†’ odczyt danych
 - Analiza struktury (liczba wierszy, kolumn)
-- Dla długich plików → przygotowanie podziału
+- Dla dĹ‚ugich plikĂłw â†’ przygotowanie podziaĹ‚u
 
 **Renderowanie:**
-- `pandas` + `matplotlib` lub własny renderer
-- Skalowanie do 1920×1080
+- `pandas` + `matplotlib` lub wĹ‚asny renderer
+- Skalowanie do 1920Ă—1080
 - Automatyczne dopasowanie czcionki
-- Dla grup pionowych → podział wierszy
+- Dla grup pionowych â†’ podziaĹ‚ wierszy
 
-**Wyświetlanie:**
-- Obraz PNG → Pillow → PyQt6
+**WyĹ›wietlanie:**
+- Obraz PNG â†’ Pillow â†’ PyQt6
 
 ### 6.3. Obrazy (JPG, PNG, GIF)
 
 **Przetwarzanie:**
-- `Pillow` → optymalizacja, skalowanie
-- Dla GIF → konwersja do animacji lub pierwsza klatka
+- `Pillow` â†’ optymalizacja, skalowanie
+- Dla GIF â†’ konwersja do animacji lub pierwsza klatka
 
-**Wyświetlanie:**
-- Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
-### 6.4. Video (MPG → MP4)
+### 6.4. Video (MPG â†’ MP4)
 
 **Transkodowanie na serwerze (FFmpeg):**
 ```bash
@@ -2773,65 +2773,65 @@ ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
 
 **Parametry:**
 - Codec: H.264 (libx264)
-- Rozdzielczość: 1920×1080 (FHD)
+- RozdzielczoĹ›Ä‡: 1920Ă—1080 (FHD)
 - Frame rate: 30 fps
 - Audio: AAC 128kbps
-- CRF: 23 (dobra jakość, rozsądny rozmiar)
+- CRF: 23 (dobra jakoĹ›Ä‡, rozsÄ…dny rozmiar)
 
-**Wyświetlanie:**
+**WyĹ›wietlanie:**
 - VLC Python bindings lub mpv
-- Pełnoekranowy tryb
-- Loop (jeśli potrzeba)
+- PeĹ‚noekranowy tryb
+- Loop (jeĹ›li potrzeba)
 
 ---
 
-## 7. Obsługa Rotacji Ekranu (90°)
+## 7. ObsĹ‚uga Rotacji Ekranu (90Â°)
 
 ### 7.1. Poziom Systemu
 
-**Konfiguracja X11 (jeśli X11):**
+**Konfiguracja X11 (jeĹ›li X11):**
 ```bash
-xrandr --output HDMI-1 --rotate left  # 90° w lewo
+xrandr --output HDMI-1 --rotate left  # 90Â° w lewo
 ```
 
 **Konfiguracja w aplikacji:**
 - `displays.orientation = 90`
-- Automatyczna rotacja treści w PyQt6
+- Automatyczna rotacja treĹ›ci w PyQt6
 
 ### 7.2. Poziom Aplikacji
 
 **PyQt6:**
 ```python
-# Rotacja treści
+# Rotacja treĹ›ci
 transform = QTransform().rotate(90)
 pixmap = pixmap.transformed(transform)
 ```
 
 **Dla grup pionowych:**
-- 3 monitory obok siebie, każdy obrócony 90°
-- Treść renderowana z uwzględnieniem rotacji
-- Dzielenie Excel z uwzględnieniem rotacji
+- 3 monitory obok siebie, kaĹĽdy obrĂłcony 90Â°
+- TreĹ›Ä‡ renderowana z uwzglÄ™dnieniem rotacji
+- Dzielenie Excel z uwzglÄ™dnieniem rotacji
 
 ---
 
-## 8. System Autoryzacji i Ról
+## 8. System Autoryzacji i RĂłl
 
 ### 8.1. Role
 
 **Admin:**
 - Wszystkie operacje CRUD
-- Upload treści
-- Konfiguracja wyświetlaczy i grup
-- Tworzenie harmonogramów
+- Upload treĹ›ci
+- Konfiguracja wyĹ›wietlaczy i grup
+- Tworzenie harmonogramĂłw
 - Konfiguracja Google Drive
-- Zarządzanie użytkownikami
+- ZarzÄ…dzanie uĹĽytkownikami
 
 **Operator:**
 - Tylko odczyt (GET)
-- Podgląd statusu wyświetlaczy
-- Podgląd harmonogramów
-- Podgląd treści
-- Logi aktywności
+- PodglÄ…d statusu wyĹ›wietlaczy
+- PodglÄ…d harmonogramĂłw
+- PodglÄ…d treĹ›ci
+- Logi aktywnoĹ›ci
 
 ### 8.2. Endpointy API
 
@@ -2862,44 +2862,44 @@ pixmap = pixmap.transformed(transform)
 
 ---
 
-## 9. Obsługa Błędów i Niezawodność
+## 9. ObsĹ‚uga BĹ‚Ä™dĂłw i NiezawodnoĹ›Ä‡
 
-### 9.1. WiFi - Opóźnienia i Zrywane Połączenia
+### 9.1. WiFi - OpĂłĹşnienia i Zrywane PoĹ‚Ä…czenia
 
 **Strategia:**
 1. **Lokalny cache**:
-   - Wszystkie treści w cache lokalnym
-   - Minimalna zależność od sieci podczas wyświetlania
+   - Wszystkie treĹ›ci w cache lokalnym
+   - Minimalna zaleĹĽnoĹ›Ä‡ od sieci podczas wyĹ›wietlania
 2. **Pobieranie w tle**:
-   - Pobieranie nowych treści przed czasem wyświetlania
+   - Pobieranie nowych treĹ›ci przed czasem wyĹ›wietlania
    - Retry z exponential backoff
 3. **Status offline**:
-   - Wyświetlanie z cache
+   - WyĹ›wietlanie z cache
    - Queue aktualizacji
-   - Automatyczne synchronizowanie po powrocie połączenia
-4. **Weryfikacja integralności**:
-   - Checksum (MD5/SHA256) dla każdego pliku
+   - Automatyczne synchronizowanie po powrocie poĹ‚Ä…czenia
+4. **Weryfikacja integralnoĹ›ci**:
+   - Checksum (MD5/SHA256) dla kaĹĽdego pliku
    - Weryfikacja przy pobieraniu
 
-### 9.2. Przetwarzanie Video - Błędy
+### 9.2. Przetwarzanie Video - BĹ‚Ä™dy
 
-**Obsługa:**
-- Retry (3 próby)
-- Logowanie błędów
+**ObsĹ‚uga:**
+- Retry (3 prĂłby)
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina (email/panel)
-- Fallback: wyświetlanie oryginalnego pliku (jeśli możliwe)
+- Fallback: wyĹ›wietlanie oryginalnego pliku (jeĹ›li moĹĽliwe)
 
-### 9.3. Synchronizacja Google Drive - Błędy
+### 9.3. Synchronizacja Google Drive - BĹ‚Ä™dy
 
-**Obsługa:**
+**ObsĹ‚uga:**
 - Retry z exponential backoff
-- Logowanie błędów
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina
 - Fallback: polling zamiast webhook
 
 ---
 
-## 10. Bezpieczeństwo
+## 10. BezpieczeĹ„stwo
 
 ### 10.1. Serwer
 
@@ -2907,20 +2907,20 @@ pixmap = pixmap.transformed(transform)
 - Firewall (UFW)
 - Regularne aktualizacje
 - Backup bazy danych (codziennie)
-- Backup plików (tygodniowo)
+- Backup plikĂłw (tygodniowo)
 
 ### 10.2. Autentykacja
 
-- Silne hasła (min. 12 znaków)
+- Silne hasĹ‚a (min. 12 znakĂłw)
 - JWT tokens
 - Rate limiting
 - CORS configuration
 
-### 10.3. Wyświetlacze
+### 10.3. WyĹ›wietlacze
 
 - Autoryzacja przez MAC address
 - HTTPS komunikacja
-- Read-only dostęp do API (tylko GET dla swoich danych)
+- Read-only dostÄ™p do API (tylko GET dla swoich danych)
 
 ---
 
@@ -2930,21 +2930,21 @@ pixmap = pixmap.transformed(transform)
 1. Backend API (FastAPI)
 2. Baza danych (PostgreSQL)
 3. Panel webowy (React) - podstawowy
-4. Upload treści (PDF, Excel, obrazy, video)
+4. Upload treĹ›ci (PDF, Excel, obrazy, video)
 5. Transkodowanie video (FFmpeg)
-6. Klient wyświetlacza (Python + PyQt6)
+6. Klient wyĹ›wietlacza (Python + PyQt6)
 7. Podstawowe harmonogramy
-8. Grupowanie wyświetlaczy (proste)
-9. Obsługa rotacji 90°
+8. Grupowanie wyĹ›wietlaczy (proste)
+9. ObsĹ‚uga rotacji 90Â°
 
 **Czas: ~6-8 tygodni**
 
 ### Faza 2: Rozszerzenia
 1. Integracja Google Drive
-2. Dzielenie długich plików Excel
-3. Graficzny edytor układu
-4. Symulacja wyświetlania
-5. Harmonogramy włączania TV (podstawowe)
+2. Dzielenie dĹ‚ugich plikĂłw Excel
+3. Graficzny edytor ukĹ‚adu
+4. Symulacja wyĹ›wietlania
+5. Harmonogramy wĹ‚Ä…czania TV (podstawowe)
 6. WebSocket dla statusu w czasie rzeczywistym
 
 **Czas: ~4-6 tygodni**
@@ -2963,17 +2963,17 @@ pixmap = pixmap.transformed(transform)
 ## 12. Pytania i Uwagi
 
 ### Do doprecyzowania:
-1. **Harmonogramy TV**: Czy potrzebne różne czasy dla różnych dni tygodnia? (np. weekendy)
-2. **Dzielenie Excel**: Czy zawsze dzielić równo, czy możliwość ręcznej konfiguracji zakresów?
-3. **Video**: Czy potrzebne różne wersje jakościowe dla różnych wyświetlaczy?
-4. **Backup**: Jak często i gdzie przechowywać?
-5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy błędach?
+1. **Harmonogramy TV**: Czy potrzebne rĂłĹĽne czasy dla rĂłĹĽnych dni tygodnia? (np. weekendy)
+2. **Dzielenie Excel**: Czy zawsze dzieliÄ‡ rĂłwno, czy moĹĽliwoĹ›Ä‡ rÄ™cznej konfiguracji zakresĂłw?
+3. **Video**: Czy potrzebne rĂłĹĽne wersje jakoĹ›ciowe dla rĂłĹĽnych wyĹ›wietlaczy?
+4. **Backup**: Jak czÄ™sto i gdzie przechowywaÄ‡?
+5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy bĹ‚Ä™dach?
 
 ### Zalecenia:
-- Rozpoczęcie od MVP (Faza 1)
-- Testowanie na 1-2 wyświetlaczach przed pełnym wdrożeniem
-- Dokumentacja dla operatora (jak używać panelu)
-- Backup przed każdą większą zmianą
+- RozpoczÄ™cie od MVP (Faza 1)
+- Testowanie na 1-2 wyĹ›wietlaczach przed peĹ‚nym wdroĹĽeniem
+- Dokumentacja dla operatora (jak uĹĽywaÄ‡ panelu)
+- Backup przed kaĹĽdÄ… wiÄ™kszÄ… zmianÄ…
 
 ---
 
@@ -2991,135 +2991,135 @@ pixmap = pixmap.transformed(transform)
 | Video player | VLC Python / mpv |
 | Google Drive | google-api-python-client |
 | WebSocket | Socket.io / FastAPI WebSocket |
-| Serwer plików | Nginx |
+| Serwer plikĂłw | Nginx |
 | System klienta | Ubuntu/Debian + systemd |
 
 ---
 
-**Gotowe do implementacji!** 🚀
+**Gotowe do implementacji!** đźš€
 
 
 ```
 
 ```markdown
-# Analiza Systemu Digital Signage - Szczegółowa Specyfikacja
+# Analiza Systemu Digital Signage - SzczegĂłĹ‚owa Specyfikacja
 
 ## 1. Wymagania Funkcjonalne - Aktualizacja
 
 ### MIN-imum
-1. ✅ Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. ✅ Obrót 90° (3 monitory pionowe obok siebie)
-3. ✅ Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. ✅ Harmonogram: czas włączenia TV i czas wyświetlania treści
+1. âś… WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. âś… ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. âś… RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. âś… Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
 
 ### MAX-imum
-- ✅ Wszystko z MIN + integracja z Google Drive (folder ZASTĘPSTWA) - auto-aktualizacja
-- ✅ Dzielenie długich plików Excel na grupy monitorów pionowych
-- ✅ Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- ✅ Symulacja wyświetlania na stronie informacyjnej (bez logowania)
+- âś… Wszystko z MIN + integracja z Google Drive (folder ZASTÄPSTWA) - auto-aktualizacja
+- âś… Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- âś… Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- âś… Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
 
 ### Doprecyzowania
-- **Chmura**: Google Drive (folder ZASTĘPSTWA)
-- **Rozdzielczość**: FHD (1920×1080) telewizory
-- **Zarządzanie TV**: Konfigurowalne później (HDMI CEC lub smart plug)
+- **Chmura**: Google Drive (folder ZASTÄPSTWA)
+- **RozdzielczoĹ›Ä‡**: FHD (1920Ă—1080) telewizory
+- **ZarzÄ…dzanie TV**: Konfigurowalne pĂłĹşniej (HDMI CEC lub smart plug)
 - **Analytics**: NIE (tylko tablice informacyjne)
 - **Role**: 
-  - **Admin**: Konfiguracja wszystkiego, upload treści (za hasłem)
-  - **Operator**: Tylko obserwacja (co się gdzie wyświetla, czy działa)
-- **Video**: Transkodowanie na serwerze po uploadzie, klient obsługuje standardowe formaty
-- **Monitoring**: Brak komunikacji wyświetlacza widoczny na stronie statusu i raportowany
-- **Dzwonki szkolne**: System "przyjaznych dzwonków" z harmonogramem
-- **Środowisko**: Hyper-V (serwer na maszynie wirtualnej)
+  - **Admin**: Konfiguracja wszystkiego, upload treĹ›ci (za hasĹ‚em)
+  - **Operator**: Tylko obserwacja (co siÄ™ gdzie wyĹ›wietla, czy dziaĹ‚a)
+- **Video**: Transkodowanie na serwerze po uploadzie, klient obsĹ‚uguje standardowe formaty
+- **Monitoring**: Brak komunikacji wyĹ›wietlacza widoczny na stronie statusu i raportowany
+- **Dzwonki szkolne**: System "przyjaznych dzwonkĂłw" z harmonogramem
+- **Ĺšrodowisko**: Hyper-V (serwer na maszynie wirtualnej)
 
 ---
 
-## 2. Architektura Systemu - Szczegółowa
+## 2. Architektura Systemu - SzczegĂłĹ‚owa
 
 ### 2.1. Komponenty Systemu
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    SERWER (Ubuntu VM)                        │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Backend API (FastAPI/Django)                  │  │
-│  │  - REST API dla panelu webowego                       │  │
-│  │  - WebSocket dla statusu w czasie rzeczywistym        │  │
-│  │  - Autentykacja (JWT) - Admin/Operator                │  │
-│  │  - Zarządzanie treścią                                │  │
-│  │  - Harmonogramy                                        │  │
-│  │  - Grupowanie wyświetlaczy                            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Panel Webowy (React/Vue.js)                   │  │
-│  │  - Dashboard Admin (upload, konfiguracja)             │  │
-│  │  - Dashboard Operator (obserwacja, status)            │  │
-│  │  - Graficzny edytor układu monitorów                  │  │
-│  │  - Symulacja wyświetlania (publiczna, bez logowania)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Worker (Celery/Bull)                          │  │
-│  │  - Transkodowanie video (FFmpeg)                      │  │
-│  │  - Przetwarzanie PDF/Excel                            │  │
-│  │  - Generowanie miniatur                               │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Google Drive Sync Service                     │  │
-│  │  - Monitorowanie folderu ZASTĘPSTWA                   │  │
-│  │  - Webhook/polling zmian                              │  │
-│  │  - Automatyczne pobieranie i aktualizacja             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Monitoring Service                            │  │
-│  │  - Monitorowanie statusu wyświetlaczy                 │  │
-│  │  - Wykrywanie braku komunikacji                       │  │
-│  │  - Alerty i raporty                                   │  │
-│  │  - Historia statusów                                  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         System Dzwonków Szkolnych                     │  │
-│  │  - Harmonogram dzwonków                               │  │
-│  │  - Odtwarzanie dźwięków                              │  │
-│  │  - Integracja z wyświetlaczami                       │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Baza Danych (PostgreSQL)                      │  │
-│  │  - Wyświetlacze, grupy, treści, harmonogramy         │  │
-│  │  - Status wyświetlaczy, alerty                       │  │
-│  │  - Harmonogramy dzwonków                             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Storage (lokalny system plików)               │  │
-│  │  - /content/original/ - oryginalne pliki             │  │
-│  │  - /content/processed/ - przetworzone video          │  │
-│  │  - /content/thumbnails/ - miniatury                  │  │
-│  │  - /content/cache/ - cache dla wyświetlaczy          │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Nginx (serwowanie plików statycznych)         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                    │              │              │
-                    │ WiFi         │ WiFi         │ WiFi
-                    ▼              ▼              ▼
-         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-         │ Wyświetlacz 1 │  │ Wyświetlacz 2│  │ Wyświetlacz N│
-         │ HP T630       │  │ HP T630      │  │ HP T630      │
-         │ Linux         │  │ Linux        │  │ Linux        │
-         │              │  │              │  │              │
-         │ - Klient API  │  │ - Klient API │  │ - Klient API │
-         │ - Cache lokal │  │ - Cache lokal│  │ - Cache lokal│
-         │ - Player      │  │ - Player     │  │ - Player     │
-         │ - Systemd     │  │ - Systemd    │  │ - Systemd    │
-         └──────────────┘  └──────────────┘  └──────────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    SERWER (Ubuntu VM)                        â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Backend API (FastAPI/Django)                  â”‚  â”‚
+â”‚  â”‚  - REST API dla panelu webowego                       â”‚  â”‚
+â”‚  â”‚  - WebSocket dla statusu w czasie rzeczywistym        â”‚  â”‚
+â”‚  â”‚  - Autentykacja (JWT) - Admin/Operator                â”‚  â”‚
+â”‚  â”‚  - ZarzÄ…dzanie treĹ›ciÄ…                                â”‚  â”‚
+â”‚  â”‚  - Harmonogramy                                        â”‚  â”‚
+â”‚  â”‚  - Grupowanie wyĹ›wietlaczy                            â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Panel Webowy (React/Vue.js)                   â”‚  â”‚
+â”‚  â”‚  - Dashboard Admin (upload, konfiguracja)             â”‚  â”‚
+â”‚  â”‚  - Dashboard Operator (obserwacja, status)            â”‚  â”‚
+â”‚  â”‚  - Graficzny edytor ukĹ‚adu monitorĂłw                  â”‚  â”‚
+â”‚  â”‚  - Symulacja wyĹ›wietlania (publiczna, bez logowania)  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Worker (Celery/Bull)                          â”‚  â”‚
+â”‚  â”‚  - Transkodowanie video (FFmpeg)                      â”‚  â”‚
+â”‚  â”‚  - Przetwarzanie PDF/Excel                            â”‚  â”‚
+â”‚  â”‚  - Generowanie miniatur                               â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Google Drive Sync Service                     â”‚  â”‚
+â”‚  â”‚  - Monitorowanie folderu ZASTÄPSTWA                   â”‚  â”‚
+â”‚  â”‚  - Webhook/polling zmian                              â”‚  â”‚
+â”‚  â”‚  - Automatyczne pobieranie i aktualizacja             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Monitoring Service                            â”‚  â”‚
+â”‚  â”‚  - Monitorowanie statusu wyĹ›wietlaczy                 â”‚  â”‚
+â”‚  â”‚  - Wykrywanie braku komunikacji                       â”‚  â”‚
+â”‚  â”‚  - Alerty i raporty                                   â”‚  â”‚
+â”‚  â”‚  - Historia statusĂłw                                  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         System DzwonkĂłw Szkolnych                     â”‚  â”‚
+â”‚  â”‚  - Harmonogram dzwonkĂłw                               â”‚  â”‚
+â”‚  â”‚  - Odtwarzanie dĹşwiÄ™kĂłw                              â”‚  â”‚
+â”‚  â”‚  - Integracja z wyĹ›wietlaczami                       â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Baza Danych (PostgreSQL)                      â”‚  â”‚
+â”‚  â”‚  - WyĹ›wietlacze, grupy, treĹ›ci, harmonogramy         â”‚  â”‚
+â”‚  â”‚  - Status wyĹ›wietlaczy, alerty                       â”‚  â”‚
+â”‚  â”‚  - Harmonogramy dzwonkĂłw                             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Storage (lokalny system plikĂłw)               â”‚  â”‚
+â”‚  â”‚  - /content/original/ - oryginalne pliki             â”‚  â”‚
+â”‚  â”‚  - /content/processed/ - przetworzone video          â”‚  â”‚
+â”‚  â”‚  - /content/thumbnails/ - miniatury                  â”‚  â”‚
+â”‚  â”‚  - /content/cache/ - cache dla wyĹ›wietlaczy          â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Nginx (serwowanie plikĂłw statycznych)         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                    â”‚              â”‚              â”‚
+                    â”‚ WiFi         â”‚ WiFi         â”‚ WiFi
+                    â–Ľ              â–Ľ              â–Ľ
+         â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚ WyĹ›wietlacz 1 â”‚  â”‚ WyĹ›wietlacz 2â”‚  â”‚ WyĹ›wietlacz Nâ”‚
+         â”‚ HP T630       â”‚  â”‚ HP T630      â”‚  â”‚ HP T630      â”‚
+         â”‚ Linux         â”‚  â”‚ Linux        â”‚  â”‚ Linux        â”‚
+         â”‚              â”‚  â”‚              â”‚  â”‚              â”‚
+         â”‚ - Klient API  â”‚  â”‚ - Klient API â”‚  â”‚ - Klient API â”‚
+         â”‚ - Cache lokal â”‚  â”‚ - Cache lokalâ”‚  â”‚ - Cache lokalâ”‚
+         â”‚ - Player      â”‚  â”‚ - Player     â”‚  â”‚ - Player     â”‚
+         â”‚ - Systemd     â”‚  â”‚ - Systemd    â”‚  â”‚ - Systemd    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
 ---
@@ -3128,18 +3128,18 @@ pixmap = pixmap.transformed(transform)
 
 ### 3.1. Backend Serwera
 
-**Główny framework:**
+**GĹ‚Ăłwny framework:**
 - **Python + FastAPI** (rekomendowane) lub Django
   - Szybki, asynchroniczny
   - Automatyczna dokumentacja API (Swagger)
-  - Łatwa integracja z Celery
-  - Dobra obsługa WebSocket
+  - Ĺatwa integracja z Celery
+  - Dobra obsĹ‚uga WebSocket
 
 **Baza danych:**
 - **PostgreSQL 14+**
   - Relacyjna struktura
   - JSONB dla elastycznych konfiguracji
-  - Wsparcie dla pełnotekstowego wyszukiwania
+  - Wsparcie dla peĹ‚notekstowego wyszukiwania
 
 **Cache i kolejki:**
 - **Redis**
@@ -3150,38 +3150,38 @@ pixmap = pixmap.transformed(transform)
 **Przetwarzanie w tle:**
 - **Celery** + **Redis** (broker)
   - Transkodowanie video
-  - Przetwarzanie plików
+  - Przetwarzanie plikĂłw
   - Synchronizacja z Google Drive
 
 **Przetwarzanie multimedia:**
 - **FFmpeg**
   - Transkodowanie video do MP4 (H.264)
-  - Optymalizacja dla FHD (1920×1080)
-  - Generowanie różnych wersji (jeśli potrzeba)
+  - Optymalizacja dla FHD (1920Ă—1080)
+  - Generowanie rĂłĹĽnych wersji (jeĹ›li potrzeba)
 
 **Biblioteki Python:**
-- `python-multipart` - upload plików
-- `Pillow` - przetwarzanie obrazów
-- `pdf2image` - konwersja PDF do obrazów
+- `python-multipart` - upload plikĂłw
+- `Pillow` - przetwarzanie obrazĂłw
+- `pdf2image` - konwersja PDF do obrazĂłw
 - `openpyxl` / `pandas` - przetwarzanie Excel
 - `google-api-python-client` - integracja Google Drive
 - `python-jose` - JWT tokens
-- `passlib` - hashowanie haseł
+- `passlib` - hashowanie haseĹ‚
 
 ### 3.2. Frontend Panelu
 
 **Framework:**
 - **React 18+** (rekomendowane) lub Vue 3
-  - Duża społeczność
-- **TypeScript** - bezpieczeństwo typów
+  - DuĹĽa spoĹ‚ecznoĹ›Ä‡
+- **TypeScript** - bezpieczeĹ„stwo typĂłw
 
 **Biblioteki UI:**
 - **Material-UI (MUI)** lub **Ant Design**
   - Gotowe komponenty
-  - Responsywność
+  - ResponsywnoĹ›Ä‡
   - Tematyzacja
 
-**Graficzny edytor układu:**
+**Graficzny edytor ukĹ‚adu:**
 - **react-grid-layout** lub **react-dnd**
   - Drag & drop
   - Responsywne siatki
@@ -3192,41 +3192,41 @@ pixmap = pixmap.transformed(transform)
 - **Socket.io-client** - WebSocket dla statusu
 
 **Wizualizacja:**
-- **react-player** - podgląd video
-- **react-pdf** - podgląd PDF
-- **Chart.js** - wykresy (jeśli potrzeba)
+- **react-player** - podglÄ…d video
+- **react-pdf** - podglÄ…d PDF
+- **Chart.js** - wykresy (jeĹ›li potrzeba)
 
-### 3.3. Klient (Wyświetlacze - HP T630)
+### 3.3. Klient (WyĹ›wietlacze - HP T630)
 
 **System operacyjny:**
 - **Ubuntu 22.04 LTS** lub **Debian 11+**
-  - Stabilność
-  - Długie wsparcie
-  - Łatwa konfiguracja
+  - StabilnoĹ›Ä‡
+  - DĹ‚ugie wsparcie
+  - Ĺatwa konfiguracja
 
-**Framework wyświetlania:**
+**Framework wyĹ›wietlania:**
 - **Python 3.10+**
   - **PyQt6** lub **Kivy**
-    - Pełnoekranowy tryb
-    - Obsługa rotacji ekranu
-    - Dobra wydajność
+    - PeĹ‚noekranowy tryb
+    - ObsĹ‚uga rotacji ekranu
+    - Dobra wydajnoĹ›Ä‡
 
 **Biblioteki Python dla klienta:**
 - `requests` - komunikacja z API
 - `websocket-client` - WebSocket
-- `Pillow` - wyświetlanie obrazów
+- `Pillow` - wyĹ›wietlanie obrazĂłw
 - `pdf2image` - PDF
 - `openpyxl` / `pandas` - Excel
 - `vlc-python` lub `mpv` - video
 - `pygame` (opcjonalnie) - alternatywa dla prostych animacji
 
-**Zarządzanie procesem:**
+**ZarzÄ…dzanie procesem:**
 - **systemd** - autostart, restart, monitoring
 - **cron** - synchronizacja czasu (NTP)
 
-**Obsługa rotacji ekranu:**
+**ObsĹ‚uga rotacji ekranu:**
 - `xrandr` (X11) lub konfiguracja w systemie
-- Automatyczna rotacja treści w aplikacji
+- Automatyczna rotacja treĹ›ci w aplikacji
 
 ### 3.4. Integracja Google Drive
 
@@ -3241,36 +3241,36 @@ pixmap = pixmap.transformed(transform)
 - `google-auth`
 
 **Mechanizm:**
-1. Konfiguracja folderu ZASTĘPSTWA w panelu admin
+1. Konfiguracja folderu ZASTÄPSTWA w panelu admin
 2. Autoryzacja OAuth 2.0 (jednorazowa)
 3. Monitorowanie zmian (webhook + polling)
-4. Automatyczne pobieranie nowych/zmienionych plików
+4. Automatyczne pobieranie nowych/zmienionych plikĂłw
 5. Aktualizacja harmonogramu
 
 ### 3.5. Komunikacja
 
 **REST API:**
 - Endpointy dla CRUD operacji
-- Upload/download plików
-- Status wyświetlaczy
+- Upload/download plikĂłw
+- Status wyĹ›wietlaczy
 
 **WebSocket:**
 - Status w czasie rzeczywistym
-- Push aktualizacji treści
-- Synchronizacja harmonogramów
+- Push aktualizacji treĹ›ci
+- Synchronizacja harmonogramĂłw
 
-**Protokół:**
+**ProtokĂłĹ‚:**
 - HTTPS (TLS 1.3)
 - WSS (WebSocket Secure)
 
 ---
 
-## 4. Szczegółowa Struktura Bazy Danych
+## 4. SzczegĂłĹ‚owa Struktura Bazy Danych
 
 ### 4.1. Tabele
 
 ```sql
--- Użytkownicy (role: admin, operator)
+-- UĹĽytkownicy (role: admin, operator)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -3280,7 +3280,7 @@ CREATE TABLE users (
     last_login TIMESTAMP
 );
 
--- Wyświetlacze
+-- WyĹ›wietlacze
 CREATE TABLE displays (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -3292,7 +3292,7 @@ CREATE TABLE displays (
     resolution_height INTEGER DEFAULT 1080,
     group_id INTEGER REFERENCES groups(id),
     floor VARCHAR(50),
-    position_x INTEGER,  -- Pozycja w graficznym układzie
+    position_x INTEGER,  -- Pozycja w graficznym ukĹ‚adzie
     position_y INTEGER,
     last_seen TIMESTAMP,
     cache_size_mb INTEGER DEFAULT 1000,
@@ -3300,17 +3300,17 @@ CREATE TABLE displays (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Grupy wyświetlaczy
+-- Grupy wyĹ›wietlaczy
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
     floor VARCHAR(50),
-    layout_config JSONB,  -- Konfiguracja graficznego układu
+    layout_config JSONB,  -- Konfiguracja graficznego ukĹ‚adu
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Treści
+-- TreĹ›ci
 CREATE TABLE content (
     id SERIAL PRIMARY KEY,
     filename VARCHAR(255) NOT NULL,
@@ -3341,12 +3341,12 @@ CREATE TABLE schedules (
     end_date DATE,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     priority INTEGER DEFAULT 0,
-    display_duration_seconds INTEGER,  -- Czas wyświetlania treści
+    display_duration_seconds INTEGER,  -- Czas wyĹ›wietlania treĹ›ci
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy włączania TV
+-- Harmonogramy wĹ‚Ä…czania TV
 CREATE TABLE tv_schedules (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -3399,7 +3399,7 @@ CREATE TABLE cloud_files (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logi aktywności (dla operatora)
+-- Logi aktywnoĹ›ci (dla operatora)
 CREATE TABLE activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
@@ -3410,7 +3410,7 @@ CREATE TABLE activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Status wyświetlaczy (cache)
+-- Status wyĹ›wietlaczy (cache)
 CREATE TABLE display_status (
     display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
     current_content_id INTEGER REFERENCES content(id),
@@ -3419,20 +3419,20 @@ CREATE TABLE display_status (
     last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Historia statusów wyświetlaczy (dla raportów)
+-- Historia statusĂłw wyĹ›wietlaczy (dla raportĂłw)
 CREATE TABLE display_status_history (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
     status VARCHAR(20) NOT NULL CHECK (status IN ('online', 'offline', 'error')),
     last_seen TIMESTAMP,
-    connection_lost_at TIMESTAMP,  -- Kiedy stracono połączenie
-    connection_restored_at TIMESTAMP,  -- Kiedy przywrócono połączenie
+    connection_lost_at TIMESTAMP,  -- Kiedy stracono poĹ‚Ä…czenie
+    connection_restored_at TIMESTAMP,  -- Kiedy przywrĂłcono poĹ‚Ä…czenie
     duration_offline_seconds INTEGER,  -- Czas offline w sekundach
     error_message TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Alerty (brak komunikacji, błędy)
+-- Alerty (brak komunikacji, bĹ‚Ä™dy)
 CREATE TABLE alerts (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -3445,24 +3445,24 @@ CREATE TABLE alerts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy dzwonków szkolnych
+-- Harmonogramy dzwonkĂłw szkolnych
 CREATE TABLE bell_schedules (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,  -- np. "Dzwonek na lekcję", "Dzwonek na przerwę"
+    name VARCHAR(100) NOT NULL,  -- np. "Dzwonek na lekcjÄ™", "Dzwonek na przerwÄ™"
     bell_time TIME NOT NULL,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     start_date DATE,
     end_date DATE,
-    sound_file_path VARCHAR(500),  -- Ścieżka do pliku dźwiękowego
+    sound_file_path VARCHAR(500),  -- ĹšcieĹĽka do pliku dĹşwiÄ™kowego
     volume INTEGER DEFAULT 50 CHECK (volume >= 0 AND volume <= 100),
-    play_on_displays BOOLEAN DEFAULT TRUE,  -- Czy odtwarzać na wyświetlaczach
-    display_ids INTEGER[],  -- Lista ID wyświetlaczy (puste = wszystkie)
+    play_on_displays BOOLEAN DEFAULT TRUE,  -- Czy odtwarzaÄ‡ na wyĹ›wietlaczach
+    display_ids INTEGER[],  -- Lista ID wyĹ›wietlaczy (puste = wszystkie)
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Historia odtworzeń dzwonków
+-- Historia odtworzeĹ„ dzwonkĂłw
 CREATE TABLE bell_history (
     id SERIAL PRIMARY KEY,
     bell_schedule_id INTEGER REFERENCES bell_schedules(id) ON DELETE CASCADE,
@@ -3490,191 +3490,191 @@ CREATE INDEX idx_activity_logs_created ON activity_logs(created_at DESC);
 
 ---
 
-## 5. Szczegółowe Przepływy Działania
+## 5. SzczegĂłĹ‚owe PrzepĹ‚ywy DziaĹ‚ania
 
-### 5.1. Upload Treści (Admin)
+### 5.1. Upload TreĹ›ci (Admin)
 
-1. **Admin loguje się** → JWT token
-2. **Upload pliku** → POST `/api/content/upload`
+1. **Admin loguje siÄ™** â†’ JWT token
+2. **Upload pliku** â†’ POST `/api/content/upload`
    - Walidacja typu pliku
    - Zapis do `/content/original/`
    - Utworzenie rekordu w `content`
-   - Zwrócenie `content_id`
+   - ZwrĂłcenie `content_id`
 3. **Przetwarzanie w tle** (Celery):
-   - **Video**: Transkodowanie do MP4 (H.264, 1920×1080)
+   - **Video**: Transkodowanie do MP4 (H.264, 1920Ă—1080)
    - **PDF**: Generowanie miniatur
    - **Excel**: Analiza struktury (liczba wierszy, kolumn)
    - **Obrazy**: Generowanie miniatur, optymalizacja
-4. **Aktualizacja statusu** → `processing_jobs.status = 'completed'`
-5. **Gotowe do użycia** → Treść dostępna w harmonogramach
+4. **Aktualizacja statusu** â†’ `processing_jobs.status = 'completed'`
+5. **Gotowe do uĹĽycia** â†’ TreĹ›Ä‡ dostÄ™pna w harmonogramach
 
-### 5.2. Konfiguracja Grup i Wyświetlaczy (Admin)
+### 5.2. Konfiguracja Grup i WyĹ›wietlaczy (Admin)
 
-1. **Graficzny edytor układu**:
-   - Drag & drop wyświetlaczy na wizualizacji budynku
-   - Przypisanie do pięter
+1. **Graficzny edytor ukĹ‚adu**:
+   - Drag & drop wyĹ›wietlaczy na wizualizacji budynku
+   - Przypisanie do piÄ™ter
    - Konfiguracja grup (np. "3 monitory pionowe")
 2. **Zapis konfiguracji**:
    - `groups.layout_config` (JSON) - pozycje, rozmiary
    - `displays.group_id`, `displays.floor`, `displays.position_x/y`
 3. **Walidacja**:
-   - Sprawdzenie czy wyświetlacz nie jest w wielu grupach
-   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyświetlacze)
+   - Sprawdzenie czy wyĹ›wietlacz nie jest w wielu grupach
+   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyĹ›wietlacze)
 
 ### 5.3. Tworzenie Harmonogramu (Admin)
 
-1. **Wybór treści** → Lista dostępnych treści
-2. **Wybór wyświetlacza/grupy**:
-   - Pojedynczy wyświetlacz
-   - Grupa wyświetlaczy
-   - Wszystkie wyświetlacze
+1. **WybĂłr treĹ›ci** â†’ Lista dostÄ™pnych treĹ›ci
+2. **WybĂłr wyĹ›wietlacza/grupy**:
+   - Pojedynczy wyĹ›wietlacz
+   - Grupa wyĹ›wietlaczy
+   - Wszystkie wyĹ›wietlacze
 3. **Konfiguracja czasu**:
-   - Czas wyświetlania (start_time, end_time)
+   - Czas wyĹ›wietlania (start_time, end_time)
    - Daty (start_date, end_date) - opcjonalnie
    - Dni tygodnia
-   - Czas wyświetlania treści (display_duration_seconds)
-4. **Priorytet** → Jeśli wiele treści w tym samym czasie
-5. **Zapis** → `schedules` table
-6. **Push do wyświetlaczy** → WebSocket notification
+   - Czas wyĹ›wietlania treĹ›ci (display_duration_seconds)
+4. **Priorytet** â†’ JeĹ›li wiele treĹ›ci w tym samym czasie
+5. **Zapis** â†’ `schedules` table
+6. **Push do wyĹ›wietlaczy** â†’ WebSocket notification
 
-### 5.4. Działanie Wyświetlacza (Klient)
+### 5.4. DziaĹ‚anie WyĹ›wietlacza (Klient)
 
 1. **Start systemu** (systemd):
    - Uruchomienie aplikacji klienta
-   - Połączenie z serwerem (REST API)
-   - Rejestracja wyświetlacza (MAC address)
+   - PoĹ‚Ä…czenie z serwerem (REST API)
+   - Rejestracja wyĹ›wietlacza (MAC address)
 2. **Pobranie konfiguracji**:
    - GET `/api/displays/{id}/config`
-   - Orientacja, rozdzielczość, grupa
+   - Orientacja, rozdzielczoĹ›Ä‡, grupa
 3. **Pobranie harmonogramu**:
    - GET `/api/displays/{id}/schedule`
-   - Lista treści z czasami
-4. **Pobranie treści** (cache):
+   - Lista treĹ›ci z czasami
+4. **Pobranie treĹ›ci** (cache):
    - Sprawdzenie co jest w cache lokalnym
-   - Pobranie brakujących plików (GET `/api/content/{id}/download`)
+   - Pobranie brakujÄ…cych plikĂłw (GET `/api/content/{id}/download`)
    - Zapis do lokalnego cache
-5. **Wyświetlanie**:
+5. **WyĹ›wietlanie**:
    - Sprawdzenie aktualnego czasu
-   - Wybór treści zgodnie z harmonogramem
-   - Wyświetlenie:
-     - **Obraz**: Pillow → PyQt6
-     - **PDF**: pdf2image → Pillow → PyQt6
-     - **Excel**: openpyxl → renderowanie → PyQt6
+   - WybĂłr treĹ›ci zgodnie z harmonogramem
+   - WyĹ›wietlenie:
+     - **Obraz**: Pillow â†’ PyQt6
+     - **PDF**: pdf2image â†’ Pillow â†’ PyQt6
+     - **Excel**: openpyxl â†’ renderowanie â†’ PyQt6
      - **Video**: VLC/mpv player
 6. **Status w czasie rzeczywistym**:
-   - WebSocket → wysyłanie statusu co 30s
-   - Aktualna treść, status cache, błędy
-7. **Obsługa offline**:
-   - Jeśli brak połączenia → wyświetlanie z cache
-   - Retry połączenia co 60s
+   - WebSocket â†’ wysyĹ‚anie statusu co 30s
+   - Aktualna treĹ›Ä‡, status cache, bĹ‚Ä™dy
+7. **ObsĹ‚uga offline**:
+   - JeĹ›li brak poĹ‚Ä…czenia â†’ wyĹ›wietlanie z cache
+   - Retry poĹ‚Ä…czenia co 60s
    - Queue aktualizacji
 
-### 5.5. Integracja Google Drive (ZASTĘPSTWA)
+### 5.5. Integracja Google Drive (ZASTÄPSTWA)
 
 1. **Konfiguracja** (Admin):
    - Autoryzacja OAuth 2.0 (jednorazowa)
-   - Wybór folderu ZASTĘPSTWA
+   - WybĂłr folderu ZASTÄPSTWA
    - Zapis `cloud_sync` record
 2. **Monitorowanie zmian**:
    - **Webhook** (preferowane): Google Drive Push notifications
    - **Polling** (fallback): Sprawdzanie co 5 minut
 3. **Wykrycie zmiany**:
-   - Nowy plik → pobranie → upload do systemu
-   - Zmieniony plik → pobranie → aktualizacja
-   - Usunięty plik → usunięcie z systemu
+   - Nowy plik â†’ pobranie â†’ upload do systemu
+   - Zmieniony plik â†’ pobranie â†’ aktualizacja
+   - UsuniÄ™ty plik â†’ usuniÄ™cie z systemu
 4. **Automatyczna aktualizacja harmonogramu**:
-   - Jeśli `auto_schedule = TRUE`:
-     - Nowy plik → utworzenie harmonogramu (domyślny czas)
-     - Zmieniony plik → aktualizacja harmonogramu
+   - JeĹ›li `auto_schedule = TRUE`:
+     - Nowy plik â†’ utworzenie harmonogramu (domyĹ›lny czas)
+     - Zmieniony plik â†’ aktualizacja harmonogramu
 5. **Synchronizacja**:
    - Pobranie pliku z Google Drive
    - Upload do systemu (jak normalny upload)
    - Przetwarzanie (transkodowanie, etc.)
    - Aktualizacja `cloud_files` record
 
-### 5.6. Dzielenie Długich Plików Excel
+### 5.6. Dzielenie DĹ‚ugich PlikĂłw Excel
 
 **Algorytm dla grup pionowych (3 monitory obok siebie):**
 
 1. **Analiza pliku Excel**:
    - Liczba wierszy danych
    - Liczba kolumn
-   - Rozmiar czcionki (domyślny)
-2. **Obliczenie podziału**:
+   - Rozmiar czcionki (domyĹ›lny)
+2. **Obliczenie podziaĹ‚u**:
    - Wiersze na monitor = `total_rows / number_of_displays`
-   - Dla każdego wyświetlacza: zakres wierszy
+   - Dla kaĹĽdego wyĹ›wietlacza: zakres wierszy
 3. **Renderowanie**:
-   - Dla każdego wyświetlacza:
-     - Wyciągnięcie odpowiedniego zakresu wierszy
-     - Renderowanie do obrazu (1920×1080, obrócony 90°)
-     - Zapis jako osobna "wersja" treści
+   - Dla kaĹĽdego wyĹ›wietlacza:
+     - WyciÄ…gniÄ™cie odpowiedniego zakresu wierszy
+     - Renderowanie do obrazu (1920Ă—1080, obrĂłcony 90Â°)
+     - Zapis jako osobna "wersja" treĹ›ci
 4. **Przypisanie do harmonogramu**:
-   - Ta sama treść, różne "wersje" dla każdego wyświetlacza w grupie
-   - Synchronizacja czasu wyświetlania
+   - Ta sama treĹ›Ä‡, rĂłĹĽne "wersje" dla kaĹĽdego wyĹ›wietlacza w grupie
+   - Synchronizacja czasu wyĹ›wietlania
 
 **Implementacja:**
-- `content.metadata` → `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
-- Klient pobiera odpowiednią wersję dla swojego wyświetlacza
+- `content.metadata` â†’ `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
+- Klient pobiera odpowiedniÄ… wersjÄ™ dla swojego wyĹ›wietlacza
 
-### 5.7. Symulacja Wyświetlania (Publiczna Strona)
+### 5.7. Symulacja WyĹ›wietlania (Publiczna Strona)
 
-1. **Dostęp bez logowania**:
+1. **DostÄ™p bez logowania**:
    - GET `/simulation` (publiczny endpoint)
-   - Wyświetlenie wizualizacji wszystkich wyświetlaczy
+   - WyĹ›wietlenie wizualizacji wszystkich wyĹ›wietlaczy
 2. **Wizualizacja**:
-   - Graficzny układ monitorów (zgodnie z konfiguracją)
-   - Podgląd aktualnie wyświetlanej treści na każdym monitorze
+   - Graficzny ukĹ‚ad monitorĂłw (zgodnie z konfiguracjÄ…)
+   - PodglÄ…d aktualnie wyĹ›wietlanej treĹ›ci na kaĹĽdym monitorze
    - Status (online/offline)
 3. **Aktualizacja w czasie rzeczywistym**:
    - WebSocket (publiczny, read-only)
    - Aktualizacja co 5-10 sekund
 4. **Funkcje**:
-   - Przewijanie między piętrami
+   - Przewijanie miÄ™dzy piÄ™trami
    - Zoom na konkretny monitor
-   - Podgląd harmonogramu
+   - PodglÄ…d harmonogramu
 
 ---
 
-## 6. Obsługa Formatów - Szczegóły
+## 6. ObsĹ‚uga FormatĂłw - SzczegĂłĹ‚y
 
 ### 6.1. PDF
 
 **Przetwarzanie:**
-- `pdf2image` → konwersja każdej strony do PNG
-- Skalowanie do 1920×1080 (z zachowaniem proporcji)
-- Jeśli wiele stron → wybór pierwszej strony lub przewijanie
+- `pdf2image` â†’ konwersja kaĹĽdej strony do PNG
+- Skalowanie do 1920Ă—1080 (z zachowaniem proporcji)
+- JeĹ›li wiele stron â†’ wybĂłr pierwszej strony lub przewijanie
 
-**Wyświetlanie:**
-- Klient: PNG → Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Klient: PNG â†’ Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
 ### 6.2. Excel
 
 **Przetwarzanie:**
-- `openpyxl` → odczyt danych
+- `openpyxl` â†’ odczyt danych
 - Analiza struktury (liczba wierszy, kolumn)
-- Dla długich plików → przygotowanie podziału
+- Dla dĹ‚ugich plikĂłw â†’ przygotowanie podziaĹ‚u
 
 **Renderowanie:**
-- `pandas` + `matplotlib` lub własny renderer
-- Skalowanie do 1920×1080
+- `pandas` + `matplotlib` lub wĹ‚asny renderer
+- Skalowanie do 1920Ă—1080
 - Automatyczne dopasowanie czcionki
-- Dla grup pionowych → podział wierszy
+- Dla grup pionowych â†’ podziaĹ‚ wierszy
 
-**Wyświetlanie:**
-- Obraz PNG → Pillow → PyQt6
+**WyĹ›wietlanie:**
+- Obraz PNG â†’ Pillow â†’ PyQt6
 
 ### 6.3. Obrazy (JPG, PNG, GIF)
 
 **Przetwarzanie:**
-- `Pillow` → optymalizacja, skalowanie
-- Dla GIF → konwersja do animacji lub pierwsza klatka
+- `Pillow` â†’ optymalizacja, skalowanie
+- Dla GIF â†’ konwersja do animacji lub pierwsza klatka
 
-**Wyświetlanie:**
-- Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
-### 6.4. Video (MPG → MP4)
+### 6.4. Video (MPG â†’ MP4)
 
 **Transkodowanie na serwerze (FFmpeg):**
 ```bash
@@ -3684,65 +3684,65 @@ ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
 
 **Parametry:**
 - Codec: H.264 (libx264)
-- Rozdzielczość: 1920×1080 (FHD)
+- RozdzielczoĹ›Ä‡: 1920Ă—1080 (FHD)
 - Frame rate: 30 fps
 - Audio: AAC 128kbps
-- CRF: 23 (dobra jakość, rozsądny rozmiar)
+- CRF: 23 (dobra jakoĹ›Ä‡, rozsÄ…dny rozmiar)
 
-**Wyświetlanie:**
+**WyĹ›wietlanie:**
 - VLC Python bindings lub mpv
-- Pełnoekranowy tryb
-- Loop (jeśli potrzeba)
+- PeĹ‚noekranowy tryb
+- Loop (jeĹ›li potrzeba)
 
 ---
 
-## 7. Obsługa Rotacji Ekranu (90°)
+## 7. ObsĹ‚uga Rotacji Ekranu (90Â°)
 
 ### 7.1. Poziom Systemu
 
-**Konfiguracja X11 (jeśli X11):**
+**Konfiguracja X11 (jeĹ›li X11):**
 ```bash
-xrandr --output HDMI-1 --rotate left  # 90° w lewo
+xrandr --output HDMI-1 --rotate left  # 90Â° w lewo
 ```
 
 **Konfiguracja w aplikacji:**
 - `displays.orientation = 90`
-- Automatyczna rotacja treści w PyQt6
+- Automatyczna rotacja treĹ›ci w PyQt6
 
 ### 7.2. Poziom Aplikacji
 
 **PyQt6:**
 ```python
-# Rotacja treści
+# Rotacja treĹ›ci
 transform = QTransform().rotate(90)
 pixmap = pixmap.transformed(transform)
 ```
 
 **Dla grup pionowych:**
-- 3 monitory obok siebie, każdy obrócony 90°
-- Treść renderowana z uwzględnieniem rotacji
-- Dzielenie Excel z uwzględnieniem rotacji
+- 3 monitory obok siebie, kaĹĽdy obrĂłcony 90Â°
+- TreĹ›Ä‡ renderowana z uwzglÄ™dnieniem rotacji
+- Dzielenie Excel z uwzglÄ™dnieniem rotacji
 
 ---
 
-## 8. System Autoryzacji i Ról
+## 8. System Autoryzacji i RĂłl
 
 ### 8.1. Role
 
 **Admin:**
 - Wszystkie operacje CRUD
-- Upload treści
-- Konfiguracja wyświetlaczy i grup
-- Tworzenie harmonogramów
+- Upload treĹ›ci
+- Konfiguracja wyĹ›wietlaczy i grup
+- Tworzenie harmonogramĂłw
 - Konfiguracja Google Drive
-- Zarządzanie użytkownikami
+- ZarzÄ…dzanie uĹĽytkownikami
 
 **Operator:**
 - Tylko odczyt (GET)
-- Podgląd statusu wyświetlaczy
-- Podgląd harmonogramów
-- Podgląd treści
-- Logi aktywności
+- PodglÄ…d statusu wyĹ›wietlaczy
+- PodglÄ…d harmonogramĂłw
+- PodglÄ…d treĹ›ci
+- Logi aktywnoĹ›ci
 
 ### 8.2. Endpointy API
 
@@ -3773,44 +3773,44 @@ pixmap = pixmap.transformed(transform)
 
 ---
 
-## 9. Obsługa Błędów i Niezawodność
+## 9. ObsĹ‚uga BĹ‚Ä™dĂłw i NiezawodnoĹ›Ä‡
 
-### 9.1. WiFi - Opóźnienia i Zrywane Połączenia
+### 9.1. WiFi - OpĂłĹşnienia i Zrywane PoĹ‚Ä…czenia
 
 **Strategia:**
 1. **Lokalny cache**:
-   - Wszystkie treści w cache lokalnym
-   - Minimalna zależność od sieci podczas wyświetlania
+   - Wszystkie treĹ›ci w cache lokalnym
+   - Minimalna zaleĹĽnoĹ›Ä‡ od sieci podczas wyĹ›wietlania
 2. **Pobieranie w tle**:
-   - Pobieranie nowych treści przed czasem wyświetlania
+   - Pobieranie nowych treĹ›ci przed czasem wyĹ›wietlania
    - Retry z exponential backoff
 3. **Status offline**:
-   - Wyświetlanie z cache
+   - WyĹ›wietlanie z cache
    - Queue aktualizacji
-   - Automatyczne synchronizowanie po powrocie połączenia
-4. **Weryfikacja integralności**:
-   - Checksum (MD5/SHA256) dla każdego pliku
+   - Automatyczne synchronizowanie po powrocie poĹ‚Ä…czenia
+4. **Weryfikacja integralnoĹ›ci**:
+   - Checksum (MD5/SHA256) dla kaĹĽdego pliku
    - Weryfikacja przy pobieraniu
 
-### 9.2. Przetwarzanie Video - Błędy
+### 9.2. Przetwarzanie Video - BĹ‚Ä™dy
 
-**Obsługa:**
-- Retry (3 próby)
-- Logowanie błędów
+**ObsĹ‚uga:**
+- Retry (3 prĂłby)
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina (email/panel)
-- Fallback: wyświetlanie oryginalnego pliku (jeśli możliwe)
+- Fallback: wyĹ›wietlanie oryginalnego pliku (jeĹ›li moĹĽliwe)
 
-### 9.3. Synchronizacja Google Drive - Błędy
+### 9.3. Synchronizacja Google Drive - BĹ‚Ä™dy
 
-**Obsługa:**
+**ObsĹ‚uga:**
 - Retry z exponential backoff
-- Logowanie błędów
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina
 - Fallback: polling zamiast webhook
 
 ---
 
-## 10. Bezpieczeństwo
+## 10. BezpieczeĹ„stwo
 
 ### 10.1. Serwer
 
@@ -3818,20 +3818,20 @@ pixmap = pixmap.transformed(transform)
 - Firewall (UFW)
 - Regularne aktualizacje
 - Backup bazy danych (codziennie)
-- Backup plików (tygodniowo)
+- Backup plikĂłw (tygodniowo)
 
 ### 10.2. Autentykacja
 
-- Silne hasła (min. 12 znaków)
+- Silne hasĹ‚a (min. 12 znakĂłw)
 - JWT tokens
 - Rate limiting
 - CORS configuration
 
-### 10.3. Wyświetlacze
+### 10.3. WyĹ›wietlacze
 
 - Autoryzacja przez MAC address
 - HTTPS komunikacja
-- Read-only dostęp do API (tylko GET dla swoich danych)
+- Read-only dostÄ™p do API (tylko GET dla swoich danych)
 
 ---
 
@@ -3841,21 +3841,21 @@ pixmap = pixmap.transformed(transform)
 1. Backend API (FastAPI)
 2. Baza danych (PostgreSQL)
 3. Panel webowy (React) - podstawowy
-4. Upload treści (PDF, Excel, obrazy, video)
+4. Upload treĹ›ci (PDF, Excel, obrazy, video)
 5. Transkodowanie video (FFmpeg)
-6. Klient wyświetlacza (Python + PyQt6)
+6. Klient wyĹ›wietlacza (Python + PyQt6)
 7. Podstawowe harmonogramy
-8. Grupowanie wyświetlaczy (proste)
-9. Obsługa rotacji 90°
+8. Grupowanie wyĹ›wietlaczy (proste)
+9. ObsĹ‚uga rotacji 90Â°
 
 **Czas: ~6-8 tygodni**
 
 ### Faza 2: Rozszerzenia
 1. Integracja Google Drive
-2. Dzielenie długich plików Excel
-3. Graficzny edytor układu
-4. Symulacja wyświetlania
-5. Harmonogramy włączania TV (podstawowe)
+2. Dzielenie dĹ‚ugich plikĂłw Excel
+3. Graficzny edytor ukĹ‚adu
+4. Symulacja wyĹ›wietlania
+5. Harmonogramy wĹ‚Ä…czania TV (podstawowe)
 6. WebSocket dla statusu w czasie rzeczywistym
 
 **Czas: ~4-6 tygodni**
@@ -3874,17 +3874,17 @@ pixmap = pixmap.transformed(transform)
 ## 12. Pytania i Uwagi
 
 ### Do doprecyzowania:
-1. **Harmonogramy TV**: Czy potrzebne różne czasy dla różnych dni tygodnia? (np. weekendy)
-2. **Dzielenie Excel**: Czy zawsze dzielić równo, czy możliwość ręcznej konfiguracji zakresów?
-3. **Video**: Czy potrzebne różne wersje jakościowe dla różnych wyświetlaczy?
-4. **Backup**: Jak często i gdzie przechowywać?
-5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy błędach?
+1. **Harmonogramy TV**: Czy potrzebne rĂłĹĽne czasy dla rĂłĹĽnych dni tygodnia? (np. weekendy)
+2. **Dzielenie Excel**: Czy zawsze dzieliÄ‡ rĂłwno, czy moĹĽliwoĹ›Ä‡ rÄ™cznej konfiguracji zakresĂłw?
+3. **Video**: Czy potrzebne rĂłĹĽne wersje jakoĹ›ciowe dla rĂłĹĽnych wyĹ›wietlaczy?
+4. **Backup**: Jak czÄ™sto i gdzie przechowywaÄ‡?
+5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy bĹ‚Ä™dach?
 
 ### Zalecenia:
-- Rozpoczęcie od MVP (Faza 1)
-- Testowanie na 1-2 wyświetlaczach przed pełnym wdrożeniem
-- Dokumentacja dla operatora (jak używać panelu)
-- Backup przed każdą większą zmianą
+- RozpoczÄ™cie od MVP (Faza 1)
+- Testowanie na 1-2 wyĹ›wietlaczach przed peĹ‚nym wdroĹĽeniem
+- Dokumentacja dla operatora (jak uĹĽywaÄ‡ panelu)
+- Backup przed kaĹĽdÄ… wiÄ™kszÄ… zmianÄ…
 
 ---
 
@@ -3902,135 +3902,135 @@ pixmap = pixmap.transformed(transform)
 | Video player | VLC Python / mpv |
 | Google Drive | google-api-python-client |
 | WebSocket | Socket.io / FastAPI WebSocket |
-| Serwer plików | Nginx |
+| Serwer plikĂłw | Nginx |
 | System klienta | Ubuntu/Debian + systemd |
 
 ---
 
-**Gotowe do implementacji!** 🚀
+**Gotowe do implementacji!** đźš€
 
 
 ```
 
 ```markdown
-# Analiza Systemu Digital Signage - Szczegółowa Specyfikacja
+# Analiza Systemu Digital Signage - SzczegĂłĹ‚owa Specyfikacja
 
 ## 1. Wymagania Funkcjonalne - Aktualizacja
 
 ### MIN-imum
-1. ✅ Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. ✅ Obrót 90° (3 monitory pionowe obok siebie)
-3. ✅ Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. ✅ Harmonogram: czas włączenia TV i czas wyświetlania treści
+1. âś… WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. âś… ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. âś… RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. âś… Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
 
 ### MAX-imum
-- ✅ Wszystko z MIN + integracja z Google Drive (folder ZASTĘPSTWA) - auto-aktualizacja
-- ✅ Dzielenie długich plików Excel na grupy monitorów pionowych
-- ✅ Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- ✅ Symulacja wyświetlania na stronie informacyjnej (bez logowania)
+- âś… Wszystko z MIN + integracja z Google Drive (folder ZASTÄPSTWA) - auto-aktualizacja
+- âś… Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- âś… Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- âś… Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
 
 ### Doprecyzowania
-- **Chmura**: Google Drive (folder ZASTĘPSTWA)
-- **Rozdzielczość**: FHD (1920×1080) telewizory
-- **Zarządzanie TV**: Konfigurowalne później (HDMI CEC lub smart plug)
+- **Chmura**: Google Drive (folder ZASTÄPSTWA)
+- **RozdzielczoĹ›Ä‡**: FHD (1920Ă—1080) telewizory
+- **ZarzÄ…dzanie TV**: Konfigurowalne pĂłĹşniej (HDMI CEC lub smart plug)
 - **Analytics**: NIE (tylko tablice informacyjne)
 - **Role**: 
-  - **Admin**: Konfiguracja wszystkiego, upload treści (za hasłem)
-  - **Operator**: Tylko obserwacja (co się gdzie wyświetla, czy działa)
-- **Video**: Transkodowanie na serwerze po uploadzie, klient obsługuje standardowe formaty
-- **Monitoring**: Brak komunikacji wyświetlacza widoczny na stronie statusu i raportowany
-- **Dzwonki szkolne**: System "przyjaznych dzwonków" z harmonogramem
-- **Środowisko**: Hyper-V (serwer na maszynie wirtualnej)
+  - **Admin**: Konfiguracja wszystkiego, upload treĹ›ci (za hasĹ‚em)
+  - **Operator**: Tylko obserwacja (co siÄ™ gdzie wyĹ›wietla, czy dziaĹ‚a)
+- **Video**: Transkodowanie na serwerze po uploadzie, klient obsĹ‚uguje standardowe formaty
+- **Monitoring**: Brak komunikacji wyĹ›wietlacza widoczny na stronie statusu i raportowany
+- **Dzwonki szkolne**: System "przyjaznych dzwonkĂłw" z harmonogramem
+- **Ĺšrodowisko**: Hyper-V (serwer na maszynie wirtualnej)
 
 ---
 
-## 2. Architektura Systemu - Szczegółowa
+## 2. Architektura Systemu - SzczegĂłĹ‚owa
 
 ### 2.1. Komponenty Systemu
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    SERWER (Ubuntu VM)                        │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Backend API (FastAPI/Django)                  │  │
-│  │  - REST API dla panelu webowego                       │  │
-│  │  - WebSocket dla statusu w czasie rzeczywistym        │  │
-│  │  - Autentykacja (JWT) - Admin/Operator                │  │
-│  │  - Zarządzanie treścią                                │  │
-│  │  - Harmonogramy                                        │  │
-│  │  - Grupowanie wyświetlaczy                            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Panel Webowy (React/Vue.js)                   │  │
-│  │  - Dashboard Admin (upload, konfiguracja)             │  │
-│  │  - Dashboard Operator (obserwacja, status)            │  │
-│  │  - Graficzny edytor układu monitorów                  │  │
-│  │  - Symulacja wyświetlania (publiczna, bez logowania)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Worker (Celery/Bull)                          │  │
-│  │  - Transkodowanie video (FFmpeg)                      │  │
-│  │  - Przetwarzanie PDF/Excel                            │  │
-│  │  - Generowanie miniatur                               │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Google Drive Sync Service                     │  │
-│  │  - Monitorowanie folderu ZASTĘPSTWA                   │  │
-│  │  - Webhook/polling zmian                              │  │
-│  │  - Automatyczne pobieranie i aktualizacja             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Monitoring Service                            │  │
-│  │  - Monitorowanie statusu wyświetlaczy                 │  │
-│  │  - Wykrywanie braku komunikacji                       │  │
-│  │  - Alerty i raporty                                   │  │
-│  │  - Historia statusów                                  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         System Dzwonków Szkolnych                     │  │
-│  │  - Harmonogram dzwonków                               │  │
-│  │  - Odtwarzanie dźwięków                              │  │
-│  │  - Integracja z wyświetlaczami                       │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Baza Danych (PostgreSQL)                      │  │
-│  │  - Wyświetlacze, grupy, treści, harmonogramy         │  │
-│  │  - Status wyświetlaczy, alerty                       │  │
-│  │  - Harmonogramy dzwonków                             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Storage (lokalny system plików)               │  │
-│  │  - /content/original/ - oryginalne pliki             │  │
-│  │  - /content/processed/ - przetworzone video          │  │
-│  │  - /content/thumbnails/ - miniatury                  │  │
-│  │  - /content/cache/ - cache dla wyświetlaczy          │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Nginx (serwowanie plików statycznych)         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                    │              │              │
-                    │ WiFi         │ WiFi         │ WiFi
-                    ▼              ▼              ▼
-         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-         │ Wyświetlacz 1 │  │ Wyświetlacz 2│  │ Wyświetlacz N│
-         │ HP T630       │  │ HP T630      │  │ HP T630      │
-         │ Linux         │  │ Linux        │  │ Linux        │
-         │              │  │              │  │              │
-         │ - Klient API  │  │ - Klient API │  │ - Klient API │
-         │ - Cache lokal │  │ - Cache lokal│  │ - Cache lokal│
-         │ - Player      │  │ - Player     │  │ - Player     │
-         │ - Systemd     │  │ - Systemd    │  │ - Systemd    │
-         └──────────────┘  └──────────────┘  └──────────────┘
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    SERWER (Ubuntu VM)                        â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Backend API (FastAPI/Django)                  â”‚  â”‚
+â”‚  â”‚  - REST API dla panelu webowego                       â”‚  â”‚
+â”‚  â”‚  - WebSocket dla statusu w czasie rzeczywistym        â”‚  â”‚
+â”‚  â”‚  - Autentykacja (JWT) - Admin/Operator                â”‚  â”‚
+â”‚  â”‚  - ZarzÄ…dzanie treĹ›ciÄ…                                â”‚  â”‚
+â”‚  â”‚  - Harmonogramy                                        â”‚  â”‚
+â”‚  â”‚  - Grupowanie wyĹ›wietlaczy                            â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Panel Webowy (React/Vue.js)                   â”‚  â”‚
+â”‚  â”‚  - Dashboard Admin (upload, konfiguracja)             â”‚  â”‚
+â”‚  â”‚  - Dashboard Operator (obserwacja, status)            â”‚  â”‚
+â”‚  â”‚  - Graficzny edytor ukĹ‚adu monitorĂłw                  â”‚  â”‚
+â”‚  â”‚  - Symulacja wyĹ›wietlania (publiczna, bez logowania)  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Worker (Celery/Bull)                          â”‚  â”‚
+â”‚  â”‚  - Transkodowanie video (FFmpeg)                      â”‚  â”‚
+â”‚  â”‚  - Przetwarzanie PDF/Excel                            â”‚  â”‚
+â”‚  â”‚  - Generowanie miniatur                               â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Google Drive Sync Service                     â”‚  â”‚
+â”‚  â”‚  - Monitorowanie folderu ZASTÄPSTWA                   â”‚  â”‚
+â”‚  â”‚  - Webhook/polling zmian                              â”‚  â”‚
+â”‚  â”‚  - Automatyczne pobieranie i aktualizacja             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Monitoring Service                            â”‚  â”‚
+â”‚  â”‚  - Monitorowanie statusu wyĹ›wietlaczy                 â”‚  â”‚
+â”‚  â”‚  - Wykrywanie braku komunikacji                       â”‚  â”‚
+â”‚  â”‚  - Alerty i raporty                                   â”‚  â”‚
+â”‚  â”‚  - Historia statusĂłw                                  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         System DzwonkĂłw Szkolnych                     â”‚  â”‚
+â”‚  â”‚  - Harmonogram dzwonkĂłw                               â”‚  â”‚
+â”‚  â”‚  - Odtwarzanie dĹşwiÄ™kĂłw                              â”‚  â”‚
+â”‚  â”‚  - Integracja z wyĹ›wietlaczami                       â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Baza Danych (PostgreSQL)                      â”‚  â”‚
+â”‚  â”‚  - WyĹ›wietlacze, grupy, treĹ›ci, harmonogramy         â”‚  â”‚
+â”‚  â”‚  - Status wyĹ›wietlaczy, alerty                       â”‚  â”‚
+â”‚  â”‚  - Harmonogramy dzwonkĂłw                             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Storage (lokalny system plikĂłw)               â”‚  â”‚
+â”‚  â”‚  - /content/original/ - oryginalne pliki             â”‚  â”‚
+â”‚  â”‚  - /content/processed/ - przetworzone video          â”‚  â”‚
+â”‚  â”‚  - /content/thumbnails/ - miniatury                  â”‚  â”‚
+â”‚  â”‚  - /content/cache/ - cache dla wyĹ›wietlaczy          â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Nginx (serwowanie plikĂłw statycznych)         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                    â”‚              â”‚              â”‚
+                    â”‚ WiFi         â”‚ WiFi         â”‚ WiFi
+                    â–Ľ              â–Ľ              â–Ľ
+         â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚ WyĹ›wietlacz 1 â”‚  â”‚ WyĹ›wietlacz 2â”‚  â”‚ WyĹ›wietlacz Nâ”‚
+         â”‚ HP T630       â”‚  â”‚ HP T630      â”‚  â”‚ HP T630      â”‚
+         â”‚ Linux         â”‚  â”‚ Linux        â”‚  â”‚ Linux        â”‚
+         â”‚              â”‚  â”‚              â”‚  â”‚              â”‚
+         â”‚ - Klient API  â”‚  â”‚ - Klient API â”‚  â”‚ - Klient API â”‚
+         â”‚ - Cache lokal â”‚  â”‚ - Cache lokalâ”‚  â”‚ - Cache lokalâ”‚
+         â”‚ - Player      â”‚  â”‚ - Player     â”‚  â”‚ - Player     â”‚
+         â”‚ - Systemd     â”‚  â”‚ - Systemd    â”‚  â”‚ - Systemd    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 ```
 
 ---
@@ -4039,18 +4039,18 @@ pixmap = pixmap.transformed(transform)
 
 ### 3.1. Backend Serwera
 
-**Główny framework:**
+**GĹ‚Ăłwny framework:**
 - **Python + FastAPI** (rekomendowane) lub Django
   - Szybki, asynchroniczny
   - Automatyczna dokumentacja API (Swagger)
-  - Łatwa integracja z Celery
-  - Dobra obsługa WebSocket
+  - Ĺatwa integracja z Celery
+  - Dobra obsĹ‚uga WebSocket
 
 **Baza danych:**
 - **PostgreSQL 14+**
   - Relacyjna struktura
   - JSONB dla elastycznych konfiguracji
-  - Wsparcie dla pełnotekstowego wyszukiwania
+  - Wsparcie dla peĹ‚notekstowego wyszukiwania
 
 **Cache i kolejki:**
 - **Redis**
@@ -4061,38 +4061,38 @@ pixmap = pixmap.transformed(transform)
 **Przetwarzanie w tle:**
 - **Celery** + **Redis** (broker)
   - Transkodowanie video
-  - Przetwarzanie plików
+  - Przetwarzanie plikĂłw
   - Synchronizacja z Google Drive
 
 **Przetwarzanie multimedia:**
 - **FFmpeg**
   - Transkodowanie video do MP4 (H.264)
-  - Optymalizacja dla FHD (1920×1080)
-  - Generowanie różnych wersji (jeśli potrzeba)
+  - Optymalizacja dla FHD (1920Ă—1080)
+  - Generowanie rĂłĹĽnych wersji (jeĹ›li potrzeba)
 
 **Biblioteki Python:**
-- `python-multipart` - upload plików
-- `Pillow` - przetwarzanie obrazów
-- `pdf2image` - konwersja PDF do obrazów
+- `python-multipart` - upload plikĂłw
+- `Pillow` - przetwarzanie obrazĂłw
+- `pdf2image` - konwersja PDF do obrazĂłw
 - `openpyxl` / `pandas` - przetwarzanie Excel
 - `google-api-python-client` - integracja Google Drive
 - `python-jose` - JWT tokens
-- `passlib` - hashowanie haseł
+- `passlib` - hashowanie haseĹ‚
 
 ### 3.2. Frontend Panelu
 
 **Framework:**
 - **React 18+** (rekomendowane) lub Vue 3
-  - Duża społeczność
-- **TypeScript** - bezpieczeństwo typów
+  - DuĹĽa spoĹ‚ecznoĹ›Ä‡
+- **TypeScript** - bezpieczeĹ„stwo typĂłw
 
 **Biblioteki UI:**
 - **Material-UI (MUI)** lub **Ant Design**
   - Gotowe komponenty
-  - Responsywność
+  - ResponsywnoĹ›Ä‡
   - Tematyzacja
 
-**Graficzny edytor układu:**
+**Graficzny edytor ukĹ‚adu:**
 - **react-grid-layout** lub **react-dnd**
   - Drag & drop
   - Responsywne siatki
@@ -4103,41 +4103,41 @@ pixmap = pixmap.transformed(transform)
 - **Socket.io-client** - WebSocket dla statusu
 
 **Wizualizacja:**
-- **react-player** - podgląd video
-- **react-pdf** - podgląd PDF
-- **Chart.js** - wykresy (jeśli potrzeba)
+- **react-player** - podglÄ…d video
+- **react-pdf** - podglÄ…d PDF
+- **Chart.js** - wykresy (jeĹ›li potrzeba)
 
-### 3.3. Klient (Wyświetlacze - HP T630)
+### 3.3. Klient (WyĹ›wietlacze - HP T630)
 
 **System operacyjny:**
 - **Ubuntu 22.04 LTS** lub **Debian 11+**
-  - Stabilność
-  - Długie wsparcie
-  - Łatwa konfiguracja
+  - StabilnoĹ›Ä‡
+  - DĹ‚ugie wsparcie
+  - Ĺatwa konfiguracja
 
-**Framework wyświetlania:**
+**Framework wyĹ›wietlania:**
 - **Python 3.10+**
   - **PyQt6** lub **Kivy**
-    - Pełnoekranowy tryb
-    - Obsługa rotacji ekranu
-    - Dobra wydajność
+    - PeĹ‚noekranowy tryb
+    - ObsĹ‚uga rotacji ekranu
+    - Dobra wydajnoĹ›Ä‡
 
 **Biblioteki Python dla klienta:**
 - `requests` - komunikacja z API
 - `websocket-client` - WebSocket
-- `Pillow` - wyświetlanie obrazów
+- `Pillow` - wyĹ›wietlanie obrazĂłw
 - `pdf2image` - PDF
 - `openpyxl` / `pandas` - Excel
 - `vlc-python` lub `mpv` - video
 - `pygame` (opcjonalnie) - alternatywa dla prostych animacji
 
-**Zarządzanie procesem:**
+**ZarzÄ…dzanie procesem:**
 - **systemd** - autostart, restart, monitoring
 - **cron** - synchronizacja czasu (NTP)
 
-**Obsługa rotacji ekranu:**
+**ObsĹ‚uga rotacji ekranu:**
 - `xrandr` (X11) lub konfiguracja w systemie
-- Automatyczna rotacja treści w aplikacji
+- Automatyczna rotacja treĹ›ci w aplikacji
 
 ### 3.4. Integracja Google Drive
 
@@ -4152,36 +4152,36 @@ pixmap = pixmap.transformed(transform)
 - `google-auth`
 
 **Mechanizm:**
-1. Konfiguracja folderu ZASTĘPSTWA w panelu admin
+1. Konfiguracja folderu ZASTÄPSTWA w panelu admin
 2. Autoryzacja OAuth 2.0 (jednorazowa)
 3. Monitorowanie zmian (webhook + polling)
-4. Automatyczne pobieranie nowych/zmienionych plików
+4. Automatyczne pobieranie nowych/zmienionych plikĂłw
 5. Aktualizacja harmonogramu
 
 ### 3.5. Komunikacja
 
 **REST API:**
 - Endpointy dla CRUD operacji
-- Upload/download plików
-- Status wyświetlaczy
+- Upload/download plikĂłw
+- Status wyĹ›wietlaczy
 
 **WebSocket:**
 - Status w czasie rzeczywistym
-- Push aktualizacji treści
-- Synchronizacja harmonogramów
+- Push aktualizacji treĹ›ci
+- Synchronizacja harmonogramĂłw
 
-**Protokół:**
+**ProtokĂłĹ‚:**
 - HTTPS (TLS 1.3)
 - WSS (WebSocket Secure)
 
 ---
 
-## 4. Szczegółowa Struktura Bazy Danych
+## 4. SzczegĂłĹ‚owa Struktura Bazy Danych
 
 ### 4.1. Tabele
 
 ```sql
--- Użytkownicy (role: admin, operator)
+-- UĹĽytkownicy (role: admin, operator)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -4191,7 +4191,7 @@ CREATE TABLE users (
     last_login TIMESTAMP
 );
 
--- Wyświetlacze
+-- WyĹ›wietlacze
 CREATE TABLE displays (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -4203,7 +4203,7 @@ CREATE TABLE displays (
     resolution_height INTEGER DEFAULT 1080,
     group_id INTEGER REFERENCES groups(id),
     floor VARCHAR(50),
-    position_x INTEGER,  -- Pozycja w graficznym układzie
+    position_x INTEGER,  -- Pozycja w graficznym ukĹ‚adzie
     position_y INTEGER,
     last_seen TIMESTAMP,
     cache_size_mb INTEGER DEFAULT 1000,
@@ -4211,17 +4211,17 @@ CREATE TABLE displays (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Grupy wyświetlaczy
+-- Grupy wyĹ›wietlaczy
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
     floor VARCHAR(50),
-    layout_config JSONB,  -- Konfiguracja graficznego układu
+    layout_config JSONB,  -- Konfiguracja graficznego ukĹ‚adu
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Treści
+-- TreĹ›ci
 CREATE TABLE content (
     id SERIAL PRIMARY KEY,
     filename VARCHAR(255) NOT NULL,
@@ -4252,12 +4252,12 @@ CREATE TABLE schedules (
     end_date DATE,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     priority INTEGER DEFAULT 0,
-    display_duration_seconds INTEGER,  -- Czas wyświetlania treści
+    display_duration_seconds INTEGER,  -- Czas wyĹ›wietlania treĹ›ci
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy włączania TV
+-- Harmonogramy wĹ‚Ä…czania TV
 CREATE TABLE tv_schedules (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -4310,7 +4310,7 @@ CREATE TABLE cloud_files (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logi aktywności (dla operatora)
+-- Logi aktywnoĹ›ci (dla operatora)
 CREATE TABLE activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
@@ -4321,7 +4321,7 @@ CREATE TABLE activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Status wyświetlaczy (cache)
+-- Status wyĹ›wietlaczy (cache)
 CREATE TABLE display_status (
     display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
     current_content_id INTEGER REFERENCES content(id),
@@ -4330,20 +4330,20 @@ CREATE TABLE display_status (
     last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Historia statusów wyświetlaczy (dla raportów)
+-- Historia statusĂłw wyĹ›wietlaczy (dla raportĂłw)
 CREATE TABLE display_status_history (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
     status VARCHAR(20) NOT NULL CHECK (status IN ('online', 'offline', 'error')),
     last_seen TIMESTAMP,
-    connection_lost_at TIMESTAMP,  -- Kiedy stracono połączenie
-    connection_restored_at TIMESTAMP,  -- Kiedy przywrócono połączenie
+    connection_lost_at TIMESTAMP,  -- Kiedy stracono poĹ‚Ä…czenie
+    connection_restored_at TIMESTAMP,  -- Kiedy przywrĂłcono poĹ‚Ä…czenie
     duration_offline_seconds INTEGER,  -- Czas offline w sekundach
     error_message TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Alerty (brak komunikacji, błędy)
+-- Alerty (brak komunikacji, bĹ‚Ä™dy)
 CREATE TABLE alerts (
     id SERIAL PRIMARY KEY,
     display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
@@ -4356,944 +4356,24 @@ CREATE TABLE alerts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Harmonogramy dzwonków szkolnych
+-- Harmonogramy dzwonkĂłw szkolnych
 CREATE TABLE bell_schedules (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,  -- np. "Dzwonek na lekcję", "Dzwonek na przerwę"
+    name VARCHAR(100) NOT NULL,  -- np. "Dzwonek na lekcjÄ™", "Dzwonek na przerwÄ™"
     bell_time TIME NOT NULL,
     days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
     start_date DATE,
     end_date DATE,
-    sound_file_path VARCHAR(500),  -- Ścieżka do pliku dźwiękowego
+    sound_file_path VARCHAR(500),  -- ĹšcieĹĽka do pliku dĹşwiÄ™kowego
     volume INTEGER DEFAULT 50 CHECK (volume >= 0 AND volume <= 100),
-    play_on_displays BOOLEAN DEFAULT TRUE,  -- Czy odtwarzać na wyświetlaczach
-    display_ids INTEGER[],  -- Lista ID wyświetlaczy (puste = wszystkie)
+    play_on_displays BOOLEAN DEFAULT TRUE,  -- Czy odtwarzaÄ‡ na wyĹ›wietlaczach
+    display_ids INTEGER[],  -- Lista ID wyĹ›wietlaczy (puste = wszystkie)
     active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Historia odtworzeń dzwonków
-CREATE TABLE bell_history (
-    id SERIAL PRIMARY KEY,
-    bell_schedule_id INTEGER REFERENCES bell_schedules(id) ON DELETE CASCADE,
-    played_at TIMESTAMP NOT NULL,
-    status VARCHAR(20) DEFAULT 'success' CHECK (status IN ('success', 'failed', 'skipped')),
-    error_message TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-### 4.2. Indeksy
-
-```sql
-CREATE INDEX idx_displays_group ON displays(group_id);
-CREATE INDEX idx_displays_status ON displays(status);
-CREATE INDEX idx_schedules_active ON schedules(active) WHERE active = TRUE;
-CREATE INDEX idx_schedules_display ON schedules(display_id);
-CREATE INDEX idx_schedules_group ON schedules(group_id);
-CREATE INDEX idx_schedules_time ON schedules(start_time, end_time);
-CREATE INDEX idx_content_type ON content(type);
-CREATE INDEX idx_cloud_files_sync ON cloud_files(sync_id);
-CREATE INDEX idx_activity_logs_user ON activity_logs(user_id);
-CREATE INDEX idx_activity_logs_created ON activity_logs(created_at DESC);
-CREATE INDEX idx_display_status_history_display ON display_status_history(display_id);
-CREATE INDEX idx_display_status_history_created ON display_status_history(created_at DESC);
-CREATE INDEX idx_alerts_display ON alerts(display_id);
-CREATE INDEX idx_alerts_resolved ON alerts(resolved) WHERE resolved = FALSE;
-CREATE INDEX idx_alerts_created ON alerts(created_at DESC);
-CREATE INDEX idx_bell_schedules_active ON bell_schedules(active) WHERE active = TRUE;
-CREATE INDEX idx_bell_schedules_time ON bell_schedules(bell_time);
-CREATE INDEX idx_bell_history_schedule ON bell_history(bell_schedule_id);
-CREATE INDEX idx_bell_history_played ON bell_history(played_at DESC);
-```
-
----
-
-## 5. Szczegółowe Przepływy Działania
-
-### 5.1. Upload Treści (Admin)
-
-1. **Admin loguje się** → JWT token
-2. **Upload pliku** → POST `/api/content/upload`
-   - Walidacja typu pliku
-   - Zapis do `/content/original/`
-   - Utworzenie rekordu w `content`
-   - Zwrócenie `content_id`
-3. **Przetwarzanie w tle** (Celery):
-   - **Video**: Transkodowanie do MP4 (H.264, 1920×1080)
-   - **PDF**: Generowanie miniatur
-   - **Excel**: Analiza struktury (liczba wierszy, kolumn)
-   - **Obrazy**: Generowanie miniatur, optymalizacja
-4. **Aktualizacja statusu** → `processing_jobs.status = 'completed'`
-5. **Gotowe do użycia** → Treść dostępna w harmonogramach
-
-### 5.2. Konfiguracja Grup i Wyświetlaczy (Admin)
-
-1. **Graficzny edytor układu**:
-   - Drag & drop wyświetlaczy na wizualizacji budynku
-   - Przypisanie do pięter
-   - Konfiguracja grup (np. "3 monitory pionowe")
-2. **Zapis konfiguracji**:
-   - `groups.layout_config` (JSON) - pozycje, rozmiary
-   - `displays.group_id`, `displays.floor`, `displays.position_x/y`
-3. **Walidacja**:
-   - Sprawdzenie czy wyświetlacz nie jest w wielu grupach
-   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyświetlacze)
-
-### 5.3. Tworzenie Harmonogramu (Admin)
-
-1. **Wybór treści** → Lista dostępnych treści
-2. **Wybór wyświetlacza/grupy**:
-   - Pojedynczy wyświetlacz
-   - Grupa wyświetlaczy
-   - Wszystkie wyświetlacze
-3. **Konfiguracja czasu**:
-   - Czas wyświetlania (start_time, end_time)
-   - Daty (start_date, end_date) - opcjonalnie
-   - Dni tygodnia
-   - Czas wyświetlania treści (display_duration_seconds)
-4. **Priorytet** → Jeśli wiele treści w tym samym czasie
-5. **Zapis** → `schedules` table
-6. **Push do wyświetlaczy** → WebSocket notification
-
-### 5.4. Działanie Wyświetlacza (Klient)
-
-1. **Start systemu** (systemd):
-   - Uruchomienie aplikacji klienta
-   - Połączenie z serwerem (REST API)
-   - Rejestracja wyświetlacza (MAC address)
-2. **Pobranie konfiguracji**:
-   - GET `/api/displays/{id}/config`
-   - Orientacja, rozdzielczość, grupa
-3. **Pobranie harmonogramu**:
-   - GET `/api/displays/{id}/schedule`
-   - Lista treści z czasami
-4. **Pobranie treści** (cache):
-   - Sprawdzenie co jest w cache lokalnym
-   - Pobranie brakujących plików (GET `/api/content/{id}/download`)
-   - Zapis do lokalnego cache
-5. **Wyświetlanie**:
-   - Sprawdzenie aktualnego czasu
-   - Wybór treści zgodnie z harmonogramem
-   - Wyświetlenie:
-     - **Obraz**: Pillow → PyQt6
-     - **PDF**: pdf2image → Pillow → PyQt6
-     - **Excel**: openpyxl → renderowanie → PyQt6
-     - **Video**: VLC/mpv player
-6. **Status w czasie rzeczywistym**:
-   - WebSocket → wysyłanie statusu co 30s
-   - Aktualna treść, status cache, błędy
-7. **Obsługa offline**:
-   - Jeśli brak połączenia → wyświetlanie z cache
-   - Retry połączenia co 60s
-   - Queue aktualizacji
-
-### 5.5. Integracja Google Drive (ZASTĘPSTWA)
-
-1. **Konfiguracja** (Admin):
-   - Autoryzacja OAuth 2.0 (jednorazowa)
-   - Wybór folderu ZASTĘPSTWA
-   - Zapis `cloud_sync` record
-2. **Monitorowanie zmian**:
-   - **Webhook** (preferowane): Google Drive Push notifications
-   - **Polling** (fallback): Sprawdzanie co 5 minut
-3. **Wykrycie zmiany**:
-   - Nowy plik → pobranie → upload do systemu
-   - Zmieniony plik → pobranie → aktualizacja
-   - Usunięty plik → usunięcie z systemu
-4. **Automatyczna aktualizacja harmonogramu**:
-   - Jeśli `auto_schedule = TRUE`:
-     - Nowy plik → utworzenie harmonogramu (domyślny czas)
-     - Zmieniony plik → aktualizacja harmonogramu
-5. **Synchronizacja**:
-   - Pobranie pliku z Google Drive
-   - Upload do systemu (jak normalny upload)
-   - Przetwarzanie (transkodowanie, etc.)
-   - Aktualizacja `cloud_files` record
-
-### 5.6. Dzielenie Długich Plików Excel
-
-**Algorytm dla grup pionowych (3 monitory obok siebie):**
-
-1. **Analiza pliku Excel**:
-   - Liczba wierszy danych
-   - Liczba kolumn
-   - Rozmiar czcionki (domyślny)
-2. **Obliczenie podziału**:
-   - Wiersze na monitor = `total_rows / number_of_displays`
-   - Dla każdego wyświetlacza: zakres wierszy
-3. **Renderowanie**:
-   - Dla każdego wyświetlacza:
-     - Wyciągnięcie odpowiedniego zakresu wierszy
-     - Renderowanie do obrazu (1920×1080, obrócony 90°)
-     - Zapis jako osobna "wersja" treści
-4. **Przypisanie do harmonogramu**:
-   - Ta sama treść, różne "wersje" dla każdego wyświetlacza w grupie
-   - Synchronizacja czasu wyświetlania
-
-**Implementacja:**
-- `content.metadata` → `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
-- Klient pobiera odpowiednią wersję dla swojego wyświetlacza
-
-### 5.7. Symulacja Wyświetlania (Publiczna Strona)
-
-1. **Dostęp bez logowania**:
-   - GET `/simulation` (publiczny endpoint)
-   - Wyświetlenie wizualizacji wszystkich wyświetlaczy
-2. **Wizualizacja**:
-   - Graficzny układ monitorów (zgodnie z konfiguracją)
-   - Podgląd aktualnie wyświetlanej treści na każdym monitorze
-   - Status (online/offline)
-3. **Aktualizacja w czasie rzeczywistym**:
-   - WebSocket (publiczny, read-only)
-   - Aktualizacja co 5-10 sekund
-4. **Funkcje**:
-   - Przewijanie między piętrami
-   - Zoom na konkretny monitor
-   - Podgląd harmonogramu
-
----
-
-## 6. Obsługa Formatów - Szczegóły
-
-### 6.1. PDF
-
-**Przetwarzanie:**
-- `pdf2image` → konwersja każdej strony do PNG
-- Skalowanie do 1920×1080 (z zachowaniem proporcji)
-- Jeśli wiele stron → wybór pierwszej strony lub przewijanie
-
-**Wyświetlanie:**
-- Klient: PNG → Pillow → PyQt6
-- Pełnoekranowy tryb
-
-### 6.2. Excel
-
-**Przetwarzanie:**
-- `openpyxl` → odczyt danych
-- Analiza struktury (liczba wierszy, kolumn)
-- Dla długich plików → przygotowanie podziału
-
-**Renderowanie:**
-- `pandas` + `matplotlib` lub własny renderer
-- Skalowanie do 1920×1080
-- Automatyczne dopasowanie czcionki
-- Dla grup pionowych → podział wierszy
-
-**Wyświetlanie:**
-- Obraz PNG → Pillow → PyQt6
-
-### 6.3. Obrazy (JPG, PNG, GIF)
-
-**Przetwarzanie:**
-- `Pillow` → optymalizacja, skalowanie
-- Dla GIF → konwersja do animacji lub pierwsza klatka
-
-**Wyświetlanie:**
-- Pillow → PyQt6
-- Pełnoekranowy tryb
-
-### 6.4. Video (MPG → MP4)
-
-**Transkodowanie na serwerze (FFmpeg):**
-```bash
-ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
-  -c:a aac -b:a 128k -s 1920x1080 -r 30 output.mp4
-```
-
-**Parametry:**
-- Codec: H.264 (libx264)
-- Rozdzielczość: 1920×1080 (FHD)
-- Frame rate: 30 fps
-- Audio: AAC 128kbps
-- CRF: 23 (dobra jakość, rozsądny rozmiar)
-
-**Wyświetlanie:**
-- VLC Python bindings lub mpv
-- Pełnoekranowy tryb
-- Loop (jeśli potrzeba)
-
----
-
-## 7. Obsługa Rotacji Ekranu (90°)
-
-### 7.1. Poziom Systemu
-
-**Konfiguracja X11 (jeśli X11):**
-```bash
-xrandr --output HDMI-1 --rotate left  # 90° w lewo
-```
-
-**Konfiguracja w aplikacji:**
-- `displays.orientation = 90`
-- Automatyczna rotacja treści w PyQt6
-
-### 7.2. Poziom Aplikacji
-
-**PyQt6:**
-```python
-# Rotacja treści
-transform = QTransform().rotate(90)
-pixmap = pixmap.transformed(transform)
-```
-
-**Dla grup pionowych:**
-- 3 monitory obok siebie, każdy obrócony 90°
-- Treść renderowana z uwzględnieniem rotacji
-- Dzielenie Excel z uwzględnieniem rotacji
-
----
-
-## 8. System Autoryzacji i Ról
-
-### 8.1. Role
-
-**Admin:**
-- Wszystkie operacje CRUD
-- Upload treści
-- Konfiguracja wyświetlaczy i grup
-- Tworzenie harmonogramów
-- Konfiguracja Google Drive
-- Zarządzanie użytkownikami
-
-**Operator:**
-- Tylko odczyt (GET)
-- Podgląd statusu wyświetlaczy
-- Podgląd harmonogramów
-- Podgląd treści
-- Logi aktywności
-
-### 8.2. Endpointy API
-
-**Admin tylko:**
-- POST `/api/content/upload`
-- PUT/DELETE `/api/content/{id}`
-- POST/PUT/DELETE `/api/displays`
-- POST/PUT/DELETE `/api/groups`
-- POST/PUT/DELETE `/api/schedules`
-- POST `/api/cloud-sync/configure`
-
-**Admin + Operator:**
-- GET `/api/content`
-- GET `/api/displays`
-- GET `/api/groups`
-- GET `/api/schedules`
-- GET `/api/display-status`
-- GET `/api/activity-logs`
-
-**Publiczne:**
-- GET `/simulation` (symulacja)
-
-### 8.3. JWT Tokens
-
-- Access token (15 min)
-- Refresh token (7 dni)
-- Role w payload tokena
-
----
-
-## 9. Obsługa Błędów i Niezawodność
-
-### 9.1. WiFi - Opóźnienia i Zrywane Połączenia
-
-**Strategia:**
-1. **Lokalny cache**:
-   - Wszystkie treści w cache lokalnym
-   - Minimalna zależność od sieci podczas wyświetlania
-2. **Pobieranie w tle**:
-   - Pobieranie nowych treści przed czasem wyświetlania
-   - Retry z exponential backoff
-3. **Status offline**:
-   - Wyświetlanie z cache
-   - Queue aktualizacji
-   - Automatyczne synchronizowanie po powrocie połączenia
-4. **Weryfikacja integralności**:
-   - Checksum (MD5/SHA256) dla każdego pliku
-   - Weryfikacja przy pobieraniu
-
-### 9.2. Przetwarzanie Video - Błędy
-
-**Obsługa:**
-- Retry (3 próby)
-- Logowanie błędów
-- Powiadomienie admina (email/panel)
-- Fallback: wyświetlanie oryginalnego pliku (jeśli możliwe)
-
-### 9.3. Synchronizacja Google Drive - Błędy
-
-**Obsługa:**
-- Retry z exponential backoff
-- Logowanie błędów
-- Powiadomienie admina
-- Fallback: polling zamiast webhook
-
----
-
-## 10. Bezpieczeństwo
-
-### 10.1. Serwer
-
-- HTTPS (Let's Encrypt)
-- Firewall (UFW)
-- Regularne aktualizacje
-- Backup bazy danych (codziennie)
-- Backup plików (tygodniowo)
-
-### 10.2. Autentykacja
-
-- Silne hasła (min. 12 znaków)
-- JWT tokens
-- Rate limiting
-- CORS configuration
-
-### 10.3. Wyświetlacze
-
-- Autoryzacja przez MAC address
-- HTTPS komunikacja
-- Read-only dostęp do API (tylko GET dla swoich danych)
-
----
-
-## 11. Plan Implementacji - Fazy
-
-### Faza 1: MVP (MIN-imum)
-1. Backend API (FastAPI)
-2. Baza danych (PostgreSQL)
-3. Panel webowy (React) - podstawowy
-4. Upload treści (PDF, Excel, obrazy, video)
-5. Transkodowanie video (FFmpeg)
-6. Klient wyświetlacza (Python + PyQt6)
-7. Podstawowe harmonogramy
-8. Grupowanie wyświetlaczy (proste)
-9. Obsługa rotacji 90°
-
-**Czas: ~6-8 tygodni**
-
-### Faza 2: Rozszerzenia
-1. Integracja Google Drive
-2. Dzielenie długich plików Excel
-3. Graficzny edytor układu
-4. Symulacja wyświetlania
-5. Harmonogramy włączania TV (podstawowe)
-6. WebSocket dla statusu w czasie rzeczywistym
-
-**Czas: ~4-6 tygodni**
-
-### Faza 3: Optymalizacja i Polishing
-1. Zaawansowane harmonogramy TV
-2. Optymalizacja cache
-3. Monitoring i alerty
-4. Dokumentacja
-5. Testy
-
-**Czas: ~2-3 tygodnie**
-
----
-
-## 12. Pytania i Uwagi
-
-### Do doprecyzowania:
-1. **Harmonogramy TV**: Czy potrzebne różne czasy dla różnych dni tygodnia? (np. weekendy)
-2. **Dzielenie Excel**: Czy zawsze dzielić równo, czy możliwość ręcznej konfiguracji zakresów?
-3. **Video**: Czy potrzebne różne wersje jakościowe dla różnych wyświetlaczy?
-4. **Backup**: Jak często i gdzie przechowywać?
-5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy błędach?
-
-### Zalecenia:
-- Rozpoczęcie od MVP (Faza 1)
-- Testowanie na 1-2 wyświetlaczach przed pełnym wdrożeniem
-- Dokumentacja dla operatora (jak używać panelu)
-- Backup przed każdą większą zmianą
-
----
-
-## 13. Podsumowanie Technologii
-
-| Komponent | Technologia |
-|-----------|-------------|
-| Backend | Python + FastAPI |
-| Frontend | React + TypeScript |
-| Baza danych | PostgreSQL |
-| Cache/Kolejki | Redis |
-| Worker | Celery |
-| Multimedia | FFmpeg, Pillow, pdf2image, openpyxl |
-| Klient | Python + PyQt6 |
-| Video player | VLC Python / mpv |
-| Google Drive | google-api-python-client |
-| WebSocket | Socket.io / FastAPI WebSocket |
-| Serwer plików | Nginx |
-| System klienta | Ubuntu/Debian + systemd |
-
----
-
-**Gotowe do implementacji!** 🚀
-
-
-```
-
-```markdown
-# Analiza Systemu Digital Signage - Szczegółowa Specyfikacja
-
-## 1. Wymagania Funkcjonalne - Aktualizacja
-
-### MIN-imum
-1. ✅ Wyświetlanie: Excel, PDF (skalowanie na jedną stronę), MPG, JPG
-2. ✅ Obrót 90° (3 monitory pionowe obok siebie)
-3. ✅ Równoległe/osobne wyświetlanie na 4 TV (2× 1 piętro, 1× parter, 1× 2 piętro) przez internet
-4. ✅ Harmonogram: czas włączenia TV i czas wyświetlania treści
-
-### MAX-imum
-- ✅ Wszystko z MIN + integracja z Google Drive (folder ZASTĘPSTWA) - auto-aktualizacja
-- ✅ Dzielenie długich plików Excel na grupy monitorów pionowych
-- ✅ Graficzna konfiguracja przypisania pięter i rozkładu monitorów
-- ✅ Symulacja wyświetlania na stronie informacyjnej (bez logowania)
-
-### Doprecyzowania
-- **Chmura**: Google Drive (folder ZASTĘPSTWA)
-- **Rozdzielczość**: FHD (1920×1080) telewizory
-- **Zarządzanie TV**: Konfigurowalne później (HDMI CEC lub smart plug)
-- **Analytics**: NIE (tylko tablice informacyjne)
-- **Role**: 
-  - **Admin**: Konfiguracja wszystkiego, upload treści (za hasłem)
-  - **Operator**: Tylko obserwacja (co się gdzie wyświetla, czy działa)
-- **Video**: Transkodowanie na serwerze po uploadzie, klient obsługuje standardowe formaty
-- **Monitoring**: Brak komunikacji wyświetlacza widoczny na stronie statusu i raportowany
-- **Dzwonki szkolne**: System "przyjaznych dzwonków" z harmonogramem
-- **Środowisko**: Hyper-V (serwer na maszynie wirtualnej)
-
----
-
-## 2. Architektura Systemu - Szczegółowa
-
-### 2.1. Komponenty Systemu
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    SERWER (Ubuntu VM)                        │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Backend API (FastAPI/Django)                  │  │
-│  │  - REST API dla panelu webowego                       │  │
-│  │  - WebSocket dla statusu w czasie rzeczywistym        │  │
-│  │  - Autentykacja (JWT) - Admin/Operator                │  │
-│  │  - Zarządzanie treścią                                │  │
-│  │  - Harmonogramy                                        │  │
-│  │  - Grupowanie wyświetlaczy                            │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Panel Webowy (React/Vue.js)                   │  │
-│  │  - Dashboard Admin (upload, konfiguracja)             │  │
-│  │  - Dashboard Operator (obserwacja, status)            │  │
-│  │  - Graficzny edytor układu monitorów                  │  │
-│  │  - Symulacja wyświetlania (publiczna, bez logowania)  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Worker (Celery/Bull)                          │  │
-│  │  - Transkodowanie video (FFmpeg)                      │  │
-│  │  - Przetwarzanie PDF/Excel                            │  │
-│  │  - Generowanie miniatur                               │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Google Drive Sync Service                     │  │
-│  │  - Monitorowanie folderu ZASTĘPSTWA                   │  │
-│  │  - Webhook/polling zmian                              │  │
-│  │  - Automatyczne pobieranie i aktualizacja             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Monitoring Service                            │  │
-│  │  - Monitorowanie statusu wyświetlaczy                 │  │
-│  │  - Wykrywanie braku komunikacji                       │  │
-│  │  - Alerty i raporty                                   │  │
-│  │  - Historia statusów                                  │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         System Dzwonków Szkolnych                     │  │
-│  │  - Harmonogram dzwonków                               │  │
-│  │  - Odtwarzanie dźwięków                              │  │
-│  │  - Integracja z wyświetlaczami                       │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Baza Danych (PostgreSQL)                      │  │
-│  │  - Wyświetlacze, grupy, treści, harmonogramy         │  │
-│  │  - Status wyświetlaczy, alerty                       │  │
-│  │  - Harmonogramy dzwonków                             │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Storage (lokalny system plików)               │  │
-│  │  - /content/original/ - oryginalne pliki             │  │
-│  │  - /content/processed/ - przetworzone video          │  │
-│  │  - /content/thumbnails/ - miniatury                  │  │
-│  │  - /content/cache/ - cache dla wyświetlaczy          │  │
-│  └──────────────────────────────────────────────────────┘  │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Nginx (serwowanie plików statycznych)         │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                    │              │              │
-                    │ WiFi         │ WiFi         │ WiFi
-                    ▼              ▼              ▼
-         ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-         │ Wyświetlacz 1 │  │ Wyświetlacz 2│  │ Wyświetlacz N│
-         │ HP T630       │  │ HP T630      │  │ HP T630      │
-         │ Linux         │  │ Linux        │  │ Linux        │
-         │              │  │              │  │              │
-         │ - Klient API  │  │ - Klient API │  │ - Klient API │
-         │ - Cache lokal │  │ - Cache lokal│  │ - Cache lokal│
-         │ - Player      │  │ - Player     │  │ - Player     │
-         │ - Systemd     │  │ - Systemd    │  │ - Systemd    │
-         └──────────────┘  └──────────────┘  └──────────────┘
-```
-
----
-
-## 3. Stack Technologiczny - Finalna Propozycja
-
-### 3.1. Backend Serwera
-
-**Główny framework:**
-- **Python + FastAPI** (rekomendowane) lub Django
-  - Szybki, asynchroniczny
-  - Automatyczna dokumentacja API (Swagger)
-  - Łatwa integracja z Celery
-  - Dobra obsługa WebSocket
-
-**Baza danych:**
-- **PostgreSQL 14+**
-  - Relacyjna struktura
-  - JSONB dla elastycznych konfiguracji
-  - Wsparcie dla pełnotekstowego wyszukiwania
-
-**Cache i kolejki:**
-- **Redis**
-  - Cache sesji
-  - Kolejki dla Celery
-  - Pub/Sub dla WebSocket
-
-**Przetwarzanie w tle:**
-- **Celery** + **Redis** (broker)
-  - Transkodowanie video
-  - Przetwarzanie plików
-  - Synchronizacja z Google Drive
-
-**Przetwarzanie multimedia:**
-- **FFmpeg**
-  - Transkodowanie video do MP4 (H.264)
-  - Optymalizacja dla FHD (1920×1080)
-  - Generowanie różnych wersji (jeśli potrzeba)
-
-**Biblioteki Python:**
-- `python-multipart` - upload plików
-- `Pillow` - przetwarzanie obrazów
-- `pdf2image` - konwersja PDF do obrazów
-- `openpyxl` / `pandas` - przetwarzanie Excel
-- `google-api-python-client` - integracja Google Drive
-- `python-jose` - JWT tokens
-- `passlib` - hashowanie haseł
-
-### 3.2. Frontend Panelu
-
-**Framework:**
-- **React 18+** (rekomendowane) lub Vue 3
-  - Duża społeczność
-- **TypeScript** - bezpieczeństwo typów
-
-**Biblioteki UI:**
-- **Material-UI (MUI)** lub **Ant Design**
-  - Gotowe komponenty
-  - Responsywność
-  - Tematyzacja
-
-**Graficzny edytor układu:**
-- **react-grid-layout** lub **react-dnd**
-  - Drag & drop
-  - Responsywne siatki
-  - Zapisywanie konfiguracji
-
-**Komunikacja:**
-- **Axios** - HTTP requests
-- **Socket.io-client** - WebSocket dla statusu
-
-**Wizualizacja:**
-- **react-player** - podgląd video
-- **react-pdf** - podgląd PDF
-- **Chart.js** - wykresy (jeśli potrzeba)
-
-### 3.3. Klient (Wyświetlacze - HP T630)
-
-**System operacyjny:**
-- **Ubuntu 22.04 LTS** lub **Debian 11+**
-  - Stabilność
-  - Długie wsparcie
-  - Łatwa konfiguracja
-
-**Framework wyświetlania:**
-- **Python 3.10+**
-  - **PyQt6** lub **Kivy**
-    - Pełnoekranowy tryb
-    - Obsługa rotacji ekranu
-    - Dobra wydajność
-
-**Biblioteki Python dla klienta:**
-- `requests` - komunikacja z API
-- `websocket-client` - WebSocket
-- `Pillow` - wyświetlanie obrazów
-- `pdf2image` - PDF
-- `openpyxl` / `pandas` - Excel
-- `vlc-python` lub `mpv` - video
-- `pygame` (opcjonalnie) - alternatywa dla prostych animacji
-
-**Zarządzanie procesem:**
-- **systemd** - autostart, restart, monitoring
-- **cron** - synchronizacja czasu (NTP)
-
-**Obsługa rotacji ekranu:**
-- `xrandr` (X11) lub konfiguracja w systemie
-- Automatyczna rotacja treści w aplikacji
-
-### 3.4. Integracja Google Drive
-
-**API:**
-- **Google Drive API v3**
-  - OAuth 2.0 dla autoryzacji
-  - Webhook dla zmian (Push notifications)
-  - Polling jako fallback
-
-**Biblioteka:**
-- `google-api-python-client`
-- `google-auth`
-
-**Mechanizm:**
-1. Konfiguracja folderu ZASTĘPSTWA w panelu admin
-2. Autoryzacja OAuth 2.0 (jednorazowa)
-3. Monitorowanie zmian (webhook + polling)
-4. Automatyczne pobieranie nowych/zmienionych plików
-5. Aktualizacja harmonogramu
-
-### 3.5. Komunikacja
-
-**REST API:**
-- Endpointy dla CRUD operacji
-- Upload/download plików
-- Status wyświetlaczy
-
-**WebSocket:**
-- Status w czasie rzeczywistym
-- Push aktualizacji treści
-- Synchronizacja harmonogramów
-
-**Protokół:**
-- HTTPS (TLS 1.3)
-- WSS (WebSocket Secure)
-
----
-
-## 4. Szczegółowa Struktura Bazy Danych
-
-### 4.1. Tabele
-
-```sql
--- Użytkownicy (role: admin, operator)
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'operator')),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP
-);
-
--- Wyświetlacze
-CREATE TABLE displays (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    mac_address VARCHAR(17) UNIQUE NOT NULL,
-    ip_address VARCHAR(15),
-    status VARCHAR(20) DEFAULT 'offline' CHECK (status IN ('online', 'offline', 'error')),
-    orientation INTEGER DEFAULT 0 CHECK (orientation IN (0, 90, 180, 270)),
-    resolution_width INTEGER DEFAULT 1920,
-    resolution_height INTEGER DEFAULT 1080,
-    group_id INTEGER REFERENCES groups(id),
-    floor VARCHAR(50),
-    position_x INTEGER,  -- Pozycja w graficznym układzie
-    position_y INTEGER,
-    last_seen TIMESTAMP,
-    cache_size_mb INTEGER DEFAULT 1000,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Grupy wyświetlaczy
-CREATE TABLE groups (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
-    floor VARCHAR(50),
-    layout_config JSONB,  -- Konfiguracja graficznego układu
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Treści
-CREATE TABLE content (
-    id SERIAL PRIMARY KEY,
-    filename VARCHAR(255) NOT NULL,
-    original_filename VARCHAR(255) NOT NULL,
-    type VARCHAR(20) NOT NULL CHECK (type IN ('image', 'pdf', 'excel', 'video')),
-    file_path VARCHAR(500) NOT NULL,
-    thumbnail_path VARCHAR(500),
-    video_processed BOOLEAN DEFAULT FALSE,
-    video_format VARCHAR(10),  -- mp4, webm, etc.
-    file_size_mb DECIMAL(10, 2),
-    duration_seconds INTEGER,  -- Dla video
-    metadata JSONB,  -- Dodatkowe informacje (rozmiar, kolumny Excel, etc.)
-    uploaded_by INTEGER REFERENCES users(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Harmonogramy
-CREATE TABLE schedules (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    content_id INTEGER REFERENCES content(id) ON DELETE CASCADE,
-    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
-    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
-    start_date DATE,
-    end_date DATE,
-    days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
-    priority INTEGER DEFAULT 0,
-    display_duration_seconds INTEGER,  -- Czas wyświetlania treści
-    active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Harmonogramy włączania TV
-CREATE TABLE tv_schedules (
-    id SERIAL PRIMARY KEY,
-    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
-    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
-    power_on_time TIME NOT NULL,
-    power_off_time TIME NOT NULL,
-    days_of_week INTEGER[],
-    active BOOLEAN DEFAULT TRUE,
-    control_method VARCHAR(20) CHECK (control_method IN ('hdmi_cec', 'smart_plug', 'manual')),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Zadania przetwarzania
-CREATE TABLE processing_jobs (
-    id SERIAL PRIMARY KEY,
-    content_id INTEGER REFERENCES content(id) ON DELETE CASCADE,
-    job_type VARCHAR(50) NOT NULL,  -- 'video_transcode', 'pdf_convert', etc.
-    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
-    progress INTEGER DEFAULT 0,  -- 0-100
-    error_message TEXT,
-    started_at TIMESTAMP,
-    completed_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Synchronizacja Google Drive
-CREATE TABLE cloud_sync (
-    id SERIAL PRIMARY KEY,
-    folder_id VARCHAR(255) NOT NULL,  -- Google Drive folder ID
-    folder_name VARCHAR(255) NOT NULL,
-    last_sync_token VARCHAR(255),
-    last_sync_at TIMESTAMP,
-    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'paused', 'error')),
-    auto_schedule BOOLEAN DEFAULT TRUE,  -- Automatyczne dodawanie do harmonogramu
-    config JSONB,  -- Dodatkowa konfiguracja
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Pliki z Google Drive
-CREATE TABLE cloud_files (
-    id SERIAL PRIMARY KEY,
-    drive_file_id VARCHAR(255) UNIQUE NOT NULL,
-    filename VARCHAR(255) NOT NULL,
-    content_id INTEGER REFERENCES content(id) ON DELETE SET NULL,
-    sync_id INTEGER REFERENCES cloud_sync(id) ON DELETE CASCADE,
-    last_modified_drive TIMESTAMP,
-    last_synced_at TIMESTAMP,
-    status VARCHAR(20) DEFAULT 'synced' CHECK (status IN ('synced', 'pending', 'error')),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Logi aktywności (dla operatora)
-CREATE TABLE activity_logs (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    action VARCHAR(100) NOT NULL,
-    entity_type VARCHAR(50),  -- 'content', 'display', 'schedule', etc.
-    entity_id INTEGER,
-    details JSONB,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Status wyświetlaczy (cache)
-CREATE TABLE display_status (
-    display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
-    current_content_id INTEGER REFERENCES content(id),
-    current_schedule_id INTEGER REFERENCES schedules(id),
-    cache_status JSONB,  -- Status cache (co jest pobrane, co brakuje)
-    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Historia statusów wyświetlaczy (dla raportów)
-CREATE TABLE display_status_history (
-    id SERIAL PRIMARY KEY,
-    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
-    status VARCHAR(20) NOT NULL CHECK (status IN ('online', 'offline', 'error')),
-    last_seen TIMESTAMP,
-    connection_lost_at TIMESTAMP,  -- Kiedy stracono połączenie
-    connection_restored_at TIMESTAMP,  -- Kiedy przywrócono połączenie
-    duration_offline_seconds INTEGER,  -- Czas offline w sekundach
-    error_message TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Alerty (brak komunikacji, błędy)
-CREATE TABLE alerts (
-    id SERIAL PRIMARY KEY,
-    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
-    alert_type VARCHAR(50) NOT NULL CHECK (alert_type IN ('connection_lost', 'connection_restored', 'error', 'cache_missing')),
-    severity VARCHAR(20) NOT NULL CHECK (severity IN ('info', 'warning', 'error', 'critical')),
-    message TEXT NOT NULL,
-    resolved BOOLEAN DEFAULT FALSE,
-    resolved_at TIMESTAMP,
-    resolved_by INTEGER REFERENCES users(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Harmonogramy dzwonków szkolnych
-CREATE TABLE bell_schedules (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,  -- np. "Dzwonek na lekcję", "Dzwonek na przerwę"
-    bell_time TIME NOT NULL,
-    days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
-    start_date DATE,
-    end_date DATE,
-    sound_file_path VARCHAR(500),  -- Ścieżka do pliku dźwiękowego
-    volume INTEGER DEFAULT 50 CHECK (volume >= 0 AND volume <= 100),
-    play_on_displays BOOLEAN DEFAULT TRUE,  -- Czy odtwarzać na wyświetlaczach
-    display_ids INTEGER[],  -- Lista ID wyświetlaczy (puste = wszystkie)
-    active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Historia odtworzeń dzwonków
+-- Historia odtworzeĹ„ dzwonkĂłw
 CREATE TABLE bell_history (
     id SERIAL PRIMARY KEY,
     bell_schedule_id INTEGER REFERENCES bell_schedules(id) ON DELETE CASCADE,
@@ -5330,191 +4410,191 @@ CREATE INDEX idx_bell_history_played ON bell_history(played_at DESC);
 
 ---
 
-## 5. Szczegółowe Przepływy Działania
+## 5. SzczegĂłĹ‚owe PrzepĹ‚ywy DziaĹ‚ania
 
-### 5.1. Upload Treści (Admin)
+### 5.1. Upload TreĹ›ci (Admin)
 
-1. **Admin loguje się** → JWT token
-2. **Upload pliku** → POST `/api/content/upload`
+1. **Admin loguje siÄ™** â†’ JWT token
+2. **Upload pliku** â†’ POST `/api/content/upload`
    - Walidacja typu pliku
    - Zapis do `/content/original/`
    - Utworzenie rekordu w `content`
-   - Zwrócenie `content_id`
+   - ZwrĂłcenie `content_id`
 3. **Przetwarzanie w tle** (Celery):
-   - **Video**: Transkodowanie do MP4 (H.264, 1920×1080)
+   - **Video**: Transkodowanie do MP4 (H.264, 1920Ă—1080)
    - **PDF**: Generowanie miniatur
    - **Excel**: Analiza struktury (liczba wierszy, kolumn)
    - **Obrazy**: Generowanie miniatur, optymalizacja
-4. **Aktualizacja statusu** → `processing_jobs.status = 'completed'`
-5. **Gotowe do użycia** → Treść dostępna w harmonogramach
+4. **Aktualizacja statusu** â†’ `processing_jobs.status = 'completed'`
+5. **Gotowe do uĹĽycia** â†’ TreĹ›Ä‡ dostÄ™pna w harmonogramach
 
-### 5.2. Konfiguracja Grup i Wyświetlaczy (Admin)
+### 5.2. Konfiguracja Grup i WyĹ›wietlaczy (Admin)
 
-1. **Graficzny edytor układu**:
-   - Drag & drop wyświetlaczy na wizualizacji budynku
-   - Przypisanie do pięter
+1. **Graficzny edytor ukĹ‚adu**:
+   - Drag & drop wyĹ›wietlaczy na wizualizacji budynku
+   - Przypisanie do piÄ™ter
    - Konfiguracja grup (np. "3 monitory pionowe")
 2. **Zapis konfiguracji**:
    - `groups.layout_config` (JSON) - pozycje, rozmiary
    - `displays.group_id`, `displays.floor`, `displays.position_x/y`
 3. **Walidacja**:
-   - Sprawdzenie czy wyświetlacz nie jest w wielu grupach
-   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyświetlacze)
+   - Sprawdzenie czy wyĹ›wietlacz nie jest w wielu grupach
+   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyĹ›wietlacze)
 
 ### 5.3. Tworzenie Harmonogramu (Admin)
 
-1. **Wybór treści** → Lista dostępnych treści
-2. **Wybór wyświetlacza/grupy**:
-   - Pojedynczy wyświetlacz
-   - Grupa wyświetlaczy
-   - Wszystkie wyświetlacze
+1. **WybĂłr treĹ›ci** â†’ Lista dostÄ™pnych treĹ›ci
+2. **WybĂłr wyĹ›wietlacza/grupy**:
+   - Pojedynczy wyĹ›wietlacz
+   - Grupa wyĹ›wietlaczy
+   - Wszystkie wyĹ›wietlacze
 3. **Konfiguracja czasu**:
-   - Czas wyświetlania (start_time, end_time)
+   - Czas wyĹ›wietlania (start_time, end_time)
    - Daty (start_date, end_date) - opcjonalnie
    - Dni tygodnia
-   - Czas wyświetlania treści (display_duration_seconds)
-4. **Priorytet** → Jeśli wiele treści w tym samym czasie
-5. **Zapis** → `schedules` table
-6. **Push do wyświetlaczy** → WebSocket notification
+   - Czas wyĹ›wietlania treĹ›ci (display_duration_seconds)
+4. **Priorytet** â†’ JeĹ›li wiele treĹ›ci w tym samym czasie
+5. **Zapis** â†’ `schedules` table
+6. **Push do wyĹ›wietlaczy** â†’ WebSocket notification
 
-### 5.4. Działanie Wyświetlacza (Klient)
+### 5.4. DziaĹ‚anie WyĹ›wietlacza (Klient)
 
 1. **Start systemu** (systemd):
    - Uruchomienie aplikacji klienta
-   - Połączenie z serwerem (REST API)
-   - Rejestracja wyświetlacza (MAC address)
+   - PoĹ‚Ä…czenie z serwerem (REST API)
+   - Rejestracja wyĹ›wietlacza (MAC address)
 2. **Pobranie konfiguracji**:
    - GET `/api/displays/{id}/config`
-   - Orientacja, rozdzielczość, grupa
+   - Orientacja, rozdzielczoĹ›Ä‡, grupa
 3. **Pobranie harmonogramu**:
    - GET `/api/displays/{id}/schedule`
-   - Lista treści z czasami
-4. **Pobranie treści** (cache):
+   - Lista treĹ›ci z czasami
+4. **Pobranie treĹ›ci** (cache):
    - Sprawdzenie co jest w cache lokalnym
-   - Pobranie brakujących plików (GET `/api/content/{id}/download`)
+   - Pobranie brakujÄ…cych plikĂłw (GET `/api/content/{id}/download`)
    - Zapis do lokalnego cache
-5. **Wyświetlanie**:
+5. **WyĹ›wietlanie**:
    - Sprawdzenie aktualnego czasu
-   - Wybór treści zgodnie z harmonogramem
-   - Wyświetlenie:
-     - **Obraz**: Pillow → PyQt6
-     - **PDF**: pdf2image → Pillow → PyQt6
-     - **Excel**: openpyxl → renderowanie → PyQt6
+   - WybĂłr treĹ›ci zgodnie z harmonogramem
+   - WyĹ›wietlenie:
+     - **Obraz**: Pillow â†’ PyQt6
+     - **PDF**: pdf2image â†’ Pillow â†’ PyQt6
+     - **Excel**: openpyxl â†’ renderowanie â†’ PyQt6
      - **Video**: VLC/mpv player
 6. **Status w czasie rzeczywistym**:
-   - WebSocket → wysyłanie statusu co 30s
-   - Aktualna treść, status cache, błędy
-7. **Obsługa offline**:
-   - Jeśli brak połączenia → wyświetlanie z cache
-   - Retry połączenia co 60s
+   - WebSocket â†’ wysyĹ‚anie statusu co 30s
+   - Aktualna treĹ›Ä‡, status cache, bĹ‚Ä™dy
+7. **ObsĹ‚uga offline**:
+   - JeĹ›li brak poĹ‚Ä…czenia â†’ wyĹ›wietlanie z cache
+   - Retry poĹ‚Ä…czenia co 60s
    - Queue aktualizacji
 
-### 5.5. Integracja Google Drive (ZASTĘPSTWA)
+### 5.5. Integracja Google Drive (ZASTÄPSTWA)
 
 1. **Konfiguracja** (Admin):
    - Autoryzacja OAuth 2.0 (jednorazowa)
-   - Wybór folderu ZASTĘPSTWA
+   - WybĂłr folderu ZASTÄPSTWA
    - Zapis `cloud_sync` record
 2. **Monitorowanie zmian**:
    - **Webhook** (preferowane): Google Drive Push notifications
    - **Polling** (fallback): Sprawdzanie co 5 minut
 3. **Wykrycie zmiany**:
-   - Nowy plik → pobranie → upload do systemu
-   - Zmieniony plik → pobranie → aktualizacja
-   - Usunięty plik → usunięcie z systemu
+   - Nowy plik â†’ pobranie â†’ upload do systemu
+   - Zmieniony plik â†’ pobranie â†’ aktualizacja
+   - UsuniÄ™ty plik â†’ usuniÄ™cie z systemu
 4. **Automatyczna aktualizacja harmonogramu**:
-   - Jeśli `auto_schedule = TRUE`:
-     - Nowy plik → utworzenie harmonogramu (domyślny czas)
-     - Zmieniony plik → aktualizacja harmonogramu
+   - JeĹ›li `auto_schedule = TRUE`:
+     - Nowy plik â†’ utworzenie harmonogramu (domyĹ›lny czas)
+     - Zmieniony plik â†’ aktualizacja harmonogramu
 5. **Synchronizacja**:
    - Pobranie pliku z Google Drive
    - Upload do systemu (jak normalny upload)
    - Przetwarzanie (transkodowanie, etc.)
    - Aktualizacja `cloud_files` record
 
-### 5.6. Dzielenie Długich Plików Excel
+### 5.6. Dzielenie DĹ‚ugich PlikĂłw Excel
 
 **Algorytm dla grup pionowych (3 monitory obok siebie):**
 
 1. **Analiza pliku Excel**:
    - Liczba wierszy danych
    - Liczba kolumn
-   - Rozmiar czcionki (domyślny)
-2. **Obliczenie podziału**:
+   - Rozmiar czcionki (domyĹ›lny)
+2. **Obliczenie podziaĹ‚u**:
    - Wiersze na monitor = `total_rows / number_of_displays`
-   - Dla każdego wyświetlacza: zakres wierszy
+   - Dla kaĹĽdego wyĹ›wietlacza: zakres wierszy
 3. **Renderowanie**:
-   - Dla każdego wyświetlacza:
-     - Wyciągnięcie odpowiedniego zakresu wierszy
-     - Renderowanie do obrazu (1920×1080, obrócony 90°)
-     - Zapis jako osobna "wersja" treści
+   - Dla kaĹĽdego wyĹ›wietlacza:
+     - WyciÄ…gniÄ™cie odpowiedniego zakresu wierszy
+     - Renderowanie do obrazu (1920Ă—1080, obrĂłcony 90Â°)
+     - Zapis jako osobna "wersja" treĹ›ci
 4. **Przypisanie do harmonogramu**:
-   - Ta sama treść, różne "wersje" dla każdego wyświetlacza w grupie
-   - Synchronizacja czasu wyświetlania
+   - Ta sama treĹ›Ä‡, rĂłĹĽne "wersje" dla kaĹĽdego wyĹ›wietlacza w grupie
+   - Synchronizacja czasu wyĹ›wietlania
 
 **Implementacja:**
-- `content.metadata` → `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
-- Klient pobiera odpowiednią wersję dla swojego wyświetlacza
+- `content.metadata` â†’ `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
+- Klient pobiera odpowiedniÄ… wersjÄ™ dla swojego wyĹ›wietlacza
 
-### 5.7. Symulacja Wyświetlania (Publiczna Strona)
+### 5.7. Symulacja WyĹ›wietlania (Publiczna Strona)
 
-1. **Dostęp bez logowania**:
+1. **DostÄ™p bez logowania**:
    - GET `/simulation` (publiczny endpoint)
-   - Wyświetlenie wizualizacji wszystkich wyświetlaczy
+   - WyĹ›wietlenie wizualizacji wszystkich wyĹ›wietlaczy
 2. **Wizualizacja**:
-   - Graficzny układ monitorów (zgodnie z konfiguracją)
-   - Podgląd aktualnie wyświetlanej treści na każdym monitorze
+   - Graficzny ukĹ‚ad monitorĂłw (zgodnie z konfiguracjÄ…)
+   - PodglÄ…d aktualnie wyĹ›wietlanej treĹ›ci na kaĹĽdym monitorze
    - Status (online/offline)
 3. **Aktualizacja w czasie rzeczywistym**:
    - WebSocket (publiczny, read-only)
    - Aktualizacja co 5-10 sekund
 4. **Funkcje**:
-   - Przewijanie między piętrami
+   - Przewijanie miÄ™dzy piÄ™trami
    - Zoom na konkretny monitor
-   - Podgląd harmonogramu
+   - PodglÄ…d harmonogramu
 
 ---
 
-## 6. Obsługa Formatów - Szczegóły
+## 6. ObsĹ‚uga FormatĂłw - SzczegĂłĹ‚y
 
 ### 6.1. PDF
 
 **Przetwarzanie:**
-- `pdf2image` → konwersja każdej strony do PNG
-- Skalowanie do 1920×1080 (z zachowaniem proporcji)
-- Jeśli wiele stron → wybór pierwszej strony lub przewijanie
+- `pdf2image` â†’ konwersja kaĹĽdej strony do PNG
+- Skalowanie do 1920Ă—1080 (z zachowaniem proporcji)
+- JeĹ›li wiele stron â†’ wybĂłr pierwszej strony lub przewijanie
 
-**Wyświetlanie:**
-- Klient: PNG → Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Klient: PNG â†’ Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
 ### 6.2. Excel
 
 **Przetwarzanie:**
-- `openpyxl` → odczyt danych
+- `openpyxl` â†’ odczyt danych
 - Analiza struktury (liczba wierszy, kolumn)
-- Dla długich plików → przygotowanie podziału
+- Dla dĹ‚ugich plikĂłw â†’ przygotowanie podziaĹ‚u
 
 **Renderowanie:**
-- `pandas` + `matplotlib` lub własny renderer
-- Skalowanie do 1920×1080
+- `pandas` + `matplotlib` lub wĹ‚asny renderer
+- Skalowanie do 1920Ă—1080
 - Automatyczne dopasowanie czcionki
-- Dla grup pionowych → podział wierszy
+- Dla grup pionowych â†’ podziaĹ‚ wierszy
 
-**Wyświetlanie:**
-- Obraz PNG → Pillow → PyQt6
+**WyĹ›wietlanie:**
+- Obraz PNG â†’ Pillow â†’ PyQt6
 
 ### 6.3. Obrazy (JPG, PNG, GIF)
 
 **Przetwarzanie:**
-- `Pillow` → optymalizacja, skalowanie
-- Dla GIF → konwersja do animacji lub pierwsza klatka
+- `Pillow` â†’ optymalizacja, skalowanie
+- Dla GIF â†’ konwersja do animacji lub pierwsza klatka
 
-**Wyświetlanie:**
-- Pillow → PyQt6
-- Pełnoekranowy tryb
+**WyĹ›wietlanie:**
+- Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
 
-### 6.4. Video (MPG → MP4)
+### 6.4. Video (MPG â†’ MP4)
 
 **Transkodowanie na serwerze (FFmpeg):**
 ```bash
@@ -5524,65 +4604,65 @@ ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
 
 **Parametry:**
 - Codec: H.264 (libx264)
-- Rozdzielczość: 1920×1080 (FHD)
+- RozdzielczoĹ›Ä‡: 1920Ă—1080 (FHD)
 - Frame rate: 30 fps
 - Audio: AAC 128kbps
-- CRF: 23 (dobra jakość, rozsądny rozmiar)
+- CRF: 23 (dobra jakoĹ›Ä‡, rozsÄ…dny rozmiar)
 
-**Wyświetlanie:**
+**WyĹ›wietlanie:**
 - VLC Python bindings lub mpv
-- Pełnoekranowy tryb
-- Loop (jeśli potrzeba)
+- PeĹ‚noekranowy tryb
+- Loop (jeĹ›li potrzeba)
 
 ---
 
-## 7. Obsługa Rotacji Ekranu (90°)
+## 7. ObsĹ‚uga Rotacji Ekranu (90Â°)
 
 ### 7.1. Poziom Systemu
 
-**Konfiguracja X11 (jeśli X11):**
+**Konfiguracja X11 (jeĹ›li X11):**
 ```bash
-xrandr --output HDMI-1 --rotate left  # 90° w lewo
+xrandr --output HDMI-1 --rotate left  # 90Â° w lewo
 ```
 
 **Konfiguracja w aplikacji:**
 - `displays.orientation = 90`
-- Automatyczna rotacja treści w PyQt6
+- Automatyczna rotacja treĹ›ci w PyQt6
 
 ### 7.2. Poziom Aplikacji
 
 **PyQt6:**
 ```python
-# Rotacja treści
+# Rotacja treĹ›ci
 transform = QTransform().rotate(90)
 pixmap = pixmap.transformed(transform)
 ```
 
 **Dla grup pionowych:**
-- 3 monitory obok siebie, każdy obrócony 90°
-- Treść renderowana z uwzględnieniem rotacji
-- Dzielenie Excel z uwzględnieniem rotacji
+- 3 monitory obok siebie, kaĹĽdy obrĂłcony 90Â°
+- TreĹ›Ä‡ renderowana z uwzglÄ™dnieniem rotacji
+- Dzielenie Excel z uwzglÄ™dnieniem rotacji
 
 ---
 
-## 8. System Autoryzacji i Ról
+## 8. System Autoryzacji i RĂłl
 
 ### 8.1. Role
 
 **Admin:**
 - Wszystkie operacje CRUD
-- Upload treści
-- Konfiguracja wyświetlaczy i grup
-- Tworzenie harmonogramów
+- Upload treĹ›ci
+- Konfiguracja wyĹ›wietlaczy i grup
+- Tworzenie harmonogramĂłw
 - Konfiguracja Google Drive
-- Zarządzanie użytkownikami
+- ZarzÄ…dzanie uĹĽytkownikami
 
 **Operator:**
 - Tylko odczyt (GET)
-- Podgląd statusu wyświetlaczy
-- Podgląd harmonogramów
-- Podgląd treści
-- Logi aktywności
+- PodglÄ…d statusu wyĹ›wietlaczy
+- PodglÄ…d harmonogramĂłw
+- PodglÄ…d treĹ›ci
+- Logi aktywnoĹ›ci
 
 ### 8.2. Endpointy API
 
@@ -5613,44 +4693,44 @@ pixmap = pixmap.transformed(transform)
 
 ---
 
-## 9. Obsługa Błędów i Niezawodność
+## 9. ObsĹ‚uga BĹ‚Ä™dĂłw i NiezawodnoĹ›Ä‡
 
-### 9.1. WiFi - Opóźnienia i Zrywane Połączenia
+### 9.1. WiFi - OpĂłĹşnienia i Zrywane PoĹ‚Ä…czenia
 
 **Strategia:**
 1. **Lokalny cache**:
-   - Wszystkie treści w cache lokalnym
-   - Minimalna zależność od sieci podczas wyświetlania
+   - Wszystkie treĹ›ci w cache lokalnym
+   - Minimalna zaleĹĽnoĹ›Ä‡ od sieci podczas wyĹ›wietlania
 2. **Pobieranie w tle**:
-   - Pobieranie nowych treści przed czasem wyświetlania
+   - Pobieranie nowych treĹ›ci przed czasem wyĹ›wietlania
    - Retry z exponential backoff
 3. **Status offline**:
-   - Wyświetlanie z cache
+   - WyĹ›wietlanie z cache
    - Queue aktualizacji
-   - Automatyczne synchronizowanie po powrocie połączenia
-4. **Weryfikacja integralności**:
-   - Checksum (MD5/SHA256) dla każdego pliku
+   - Automatyczne synchronizowanie po powrocie poĹ‚Ä…czenia
+4. **Weryfikacja integralnoĹ›ci**:
+   - Checksum (MD5/SHA256) dla kaĹĽdego pliku
    - Weryfikacja przy pobieraniu
 
-### 9.2. Przetwarzanie Video - Błędy
+### 9.2. Przetwarzanie Video - BĹ‚Ä™dy
 
-**Obsługa:**
-- Retry (3 próby)
-- Logowanie błędów
+**ObsĹ‚uga:**
+- Retry (3 prĂłby)
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina (email/panel)
-- Fallback: wyświetlanie oryginalnego pliku (jeśli możliwe)
+- Fallback: wyĹ›wietlanie oryginalnego pliku (jeĹ›li moĹĽliwe)
 
-### 9.3. Synchronizacja Google Drive - Błędy
+### 9.3. Synchronizacja Google Drive - BĹ‚Ä™dy
 
-**Obsługa:**
+**ObsĹ‚uga:**
 - Retry z exponential backoff
-- Logowanie błędów
+- Logowanie bĹ‚Ä™dĂłw
 - Powiadomienie admina
 - Fallback: polling zamiast webhook
 
 ---
 
-## 10. Bezpieczeństwo
+## 10. BezpieczeĹ„stwo
 
 ### 10.1. Serwer
 
@@ -5658,37 +4738,957 @@ pixmap = pixmap.transformed(transform)
 - Firewall (UFW)
 - Regularne aktualizacje
 - Backup bazy danych (codziennie)
-- Backup plików (tygodniowo)
+- Backup plikĂłw (tygodniowo)
 
 ### 10.2. Autentykacja
 
-- Silne hasła (min. 12 znaków)
+- Silne hasĹ‚a (min. 12 znakĂłw)
 - JWT tokens
 - Rate limiting
 - CORS configuration
 
-### 10.3. Wyświetlacze
+### 10.3. WyĹ›wietlacze
 
 - Autoryzacja przez MAC address
 - HTTPS komunikacja
-- Read-only dostęp do API (tylko GET dla swoich danych)
+- Read-only dostÄ™p do API (tylko GET dla swoich danych)
 
 ---
 
-## 10A. System Monitorowania Statusu Wyświetlaczy
+## 11. Plan Implementacji - Fazy
+
+### Faza 1: MVP (MIN-imum)
+1. Backend API (FastAPI)
+2. Baza danych (PostgreSQL)
+3. Panel webowy (React) - podstawowy
+4. Upload treĹ›ci (PDF, Excel, obrazy, video)
+5. Transkodowanie video (FFmpeg)
+6. Klient wyĹ›wietlacza (Python + PyQt6)
+7. Podstawowe harmonogramy
+8. Grupowanie wyĹ›wietlaczy (proste)
+9. ObsĹ‚uga rotacji 90Â°
+
+**Czas: ~6-8 tygodni**
+
+### Faza 2: Rozszerzenia
+1. Integracja Google Drive
+2. Dzielenie dĹ‚ugich plikĂłw Excel
+3. Graficzny edytor ukĹ‚adu
+4. Symulacja wyĹ›wietlania
+5. Harmonogramy wĹ‚Ä…czania TV (podstawowe)
+6. WebSocket dla statusu w czasie rzeczywistym
+
+**Czas: ~4-6 tygodni**
+
+### Faza 3: Optymalizacja i Polishing
+1. Zaawansowane harmonogramy TV
+2. Optymalizacja cache
+3. Monitoring i alerty
+4. Dokumentacja
+5. Testy
+
+**Czas: ~2-3 tygodnie**
+
+---
+
+## 12. Pytania i Uwagi
+
+### Do doprecyzowania:
+1. **Harmonogramy TV**: Czy potrzebne rĂłĹĽne czasy dla rĂłĹĽnych dni tygodnia? (np. weekendy)
+2. **Dzielenie Excel**: Czy zawsze dzieliÄ‡ rĂłwno, czy moĹĽliwoĹ›Ä‡ rÄ™cznej konfiguracji zakresĂłw?
+3. **Video**: Czy potrzebne rĂłĹĽne wersje jakoĹ›ciowe dla rĂłĹĽnych wyĹ›wietlaczy?
+4. **Backup**: Jak czÄ™sto i gdzie przechowywaÄ‡?
+5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy bĹ‚Ä™dach?
+
+### Zalecenia:
+- RozpoczÄ™cie od MVP (Faza 1)
+- Testowanie na 1-2 wyĹ›wietlaczach przed peĹ‚nym wdroĹĽeniem
+- Dokumentacja dla operatora (jak uĹĽywaÄ‡ panelu)
+- Backup przed kaĹĽdÄ… wiÄ™kszÄ… zmianÄ…
+
+---
+
+## 13. Podsumowanie Technologii
+
+| Komponent | Technologia |
+|-----------|-------------|
+| Backend | Python + FastAPI |
+| Frontend | React + TypeScript |
+| Baza danych | PostgreSQL |
+| Cache/Kolejki | Redis |
+| Worker | Celery |
+| Multimedia | FFmpeg, Pillow, pdf2image, openpyxl |
+| Klient | Python + PyQt6 |
+| Video player | VLC Python / mpv |
+| Google Drive | google-api-python-client |
+| WebSocket | Socket.io / FastAPI WebSocket |
+| Serwer plikĂłw | Nginx |
+| System klienta | Ubuntu/Debian + systemd |
+
+---
+
+**Gotowe do implementacji!** đźš€
+
+
+```
+
+```markdown
+# Analiza Systemu Digital Signage - SzczegĂłĹ‚owa Specyfikacja
+
+## 1. Wymagania Funkcjonalne - Aktualizacja
+
+### MIN-imum
+1. âś… WyĹ›wietlanie: Excel, PDF (skalowanie na jednÄ… stronÄ™), MPG, JPG
+2. âś… ObrĂłt 90Â° (3 monitory pionowe obok siebie)
+3. âś… RĂłwnolegĹ‚e/osobne wyĹ›wietlanie na 4 TV (2Ă— 1 piÄ™tro, 1Ă— parter, 1Ă— 2 piÄ™tro) przez internet
+4. âś… Harmonogram: czas wĹ‚Ä…czenia TV i czas wyĹ›wietlania treĹ›ci
+
+### MAX-imum
+- âś… Wszystko z MIN + integracja z Google Drive (folder ZASTÄPSTWA) - auto-aktualizacja
+- âś… Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
+- âś… Graficzna konfiguracja przypisania piÄ™ter i rozkĹ‚adu monitorĂłw
+- âś… Symulacja wyĹ›wietlania na stronie informacyjnej (bez logowania)
+
+### Doprecyzowania
+- **Chmura**: Google Drive (folder ZASTÄPSTWA)
+- **RozdzielczoĹ›Ä‡**: FHD (1920Ă—1080) telewizory
+- **ZarzÄ…dzanie TV**: Konfigurowalne pĂłĹşniej (HDMI CEC lub smart plug)
+- **Analytics**: NIE (tylko tablice informacyjne)
+- **Role**: 
+  - **Admin**: Konfiguracja wszystkiego, upload treĹ›ci (za hasĹ‚em)
+  - **Operator**: Tylko obserwacja (co siÄ™ gdzie wyĹ›wietla, czy dziaĹ‚a)
+- **Video**: Transkodowanie na serwerze po uploadzie, klient obsĹ‚uguje standardowe formaty
+- **Monitoring**: Brak komunikacji wyĹ›wietlacza widoczny na stronie statusu i raportowany
+- **Dzwonki szkolne**: System "przyjaznych dzwonkĂłw" z harmonogramem
+- **Ĺšrodowisko**: Hyper-V (serwer na maszynie wirtualnej)
+
+---
+
+## 2. Architektura Systemu - SzczegĂłĹ‚owa
+
+### 2.1. Komponenty Systemu
+
+```
+â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    SERWER (Ubuntu VM)                        â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Backend API (FastAPI/Django)                  â”‚  â”‚
+â”‚  â”‚  - REST API dla panelu webowego                       â”‚  â”‚
+â”‚  â”‚  - WebSocket dla statusu w czasie rzeczywistym        â”‚  â”‚
+â”‚  â”‚  - Autentykacja (JWT) - Admin/Operator                â”‚  â”‚
+â”‚  â”‚  - ZarzÄ…dzanie treĹ›ciÄ…                                â”‚  â”‚
+â”‚  â”‚  - Harmonogramy                                        â”‚  â”‚
+â”‚  â”‚  - Grupowanie wyĹ›wietlaczy                            â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Panel Webowy (React/Vue.js)                   â”‚  â”‚
+â”‚  â”‚  - Dashboard Admin (upload, konfiguracja)             â”‚  â”‚
+â”‚  â”‚  - Dashboard Operator (obserwacja, status)            â”‚  â”‚
+â”‚  â”‚  - Graficzny edytor ukĹ‚adu monitorĂłw                  â”‚  â”‚
+â”‚  â”‚  - Symulacja wyĹ›wietlania (publiczna, bez logowania)  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Worker (Celery/Bull)                          â”‚  â”‚
+â”‚  â”‚  - Transkodowanie video (FFmpeg)                      â”‚  â”‚
+â”‚  â”‚  - Przetwarzanie PDF/Excel                            â”‚  â”‚
+â”‚  â”‚  - Generowanie miniatur                               â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Google Drive Sync Service                     â”‚  â”‚
+â”‚  â”‚  - Monitorowanie folderu ZASTÄPSTWA                   â”‚  â”‚
+â”‚  â”‚  - Webhook/polling zmian                              â”‚  â”‚
+â”‚  â”‚  - Automatyczne pobieranie i aktualizacja             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Monitoring Service                            â”‚  â”‚
+â”‚  â”‚  - Monitorowanie statusu wyĹ›wietlaczy                 â”‚  â”‚
+â”‚  â”‚  - Wykrywanie braku komunikacji                       â”‚  â”‚
+â”‚  â”‚  - Alerty i raporty                                   â”‚  â”‚
+â”‚  â”‚  - Historia statusĂłw                                  â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         System DzwonkĂłw Szkolnych                     â”‚  â”‚
+â”‚  â”‚  - Harmonogram dzwonkĂłw                               â”‚  â”‚
+â”‚  â”‚  - Odtwarzanie dĹşwiÄ™kĂłw                              â”‚  â”‚
+â”‚  â”‚  - Integracja z wyĹ›wietlaczami                       â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Baza Danych (PostgreSQL)                      â”‚  â”‚
+â”‚  â”‚  - WyĹ›wietlacze, grupy, treĹ›ci, harmonogramy         â”‚  â”‚
+â”‚  â”‚  - Status wyĹ›wietlaczy, alerty                       â”‚  â”‚
+â”‚  â”‚  - Harmonogramy dzwonkĂłw                             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Storage (lokalny system plikĂłw)               â”‚  â”‚
+â”‚  â”‚  - /content/original/ - oryginalne pliki             â”‚  â”‚
+â”‚  â”‚  - /content/processed/ - przetworzone video          â”‚  â”‚
+â”‚  â”‚  - /content/thumbnails/ - miniatury                  â”‚  â”‚
+â”‚  â”‚  - /content/cache/ - cache dla wyĹ›wietlaczy          â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚                                                              â”‚
+â”‚  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         Nginx (serwowanie plikĂłw statycznych)         â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                    â”‚              â”‚              â”‚
+                    â”‚ WiFi         â”‚ WiFi         â”‚ WiFi
+                    â–Ľ              â–Ľ              â–Ľ
+         â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Śâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚ WyĹ›wietlacz 1 â”‚  â”‚ WyĹ›wietlacz 2â”‚  â”‚ WyĹ›wietlacz Nâ”‚
+         â”‚ HP T630       â”‚  â”‚ HP T630      â”‚  â”‚ HP T630      â”‚
+         â”‚ Linux         â”‚  â”‚ Linux        â”‚  â”‚ Linux        â”‚
+         â”‚              â”‚  â”‚              â”‚  â”‚              â”‚
+         â”‚ - Klient API  â”‚  â”‚ - Klient API â”‚  â”‚ - Klient API â”‚
+         â”‚ - Cache lokal â”‚  â”‚ - Cache lokalâ”‚  â”‚ - Cache lokalâ”‚
+         â”‚ - Player      â”‚  â”‚ - Player     â”‚  â”‚ - Player     â”‚
+         â”‚ - Systemd     â”‚  â”‚ - Systemd    â”‚  â”‚ - Systemd    â”‚
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+```
+
+---
+
+## 3. Stack Technologiczny - Finalna Propozycja
+
+### 3.1. Backend Serwera
+
+**GĹ‚Ăłwny framework:**
+- **Python + FastAPI** (rekomendowane) lub Django
+  - Szybki, asynchroniczny
+  - Automatyczna dokumentacja API (Swagger)
+  - Ĺatwa integracja z Celery
+  - Dobra obsĹ‚uga WebSocket
+
+**Baza danych:**
+- **PostgreSQL 14+**
+  - Relacyjna struktura
+  - JSONB dla elastycznych konfiguracji
+  - Wsparcie dla peĹ‚notekstowego wyszukiwania
+
+**Cache i kolejki:**
+- **Redis**
+  - Cache sesji
+  - Kolejki dla Celery
+  - Pub/Sub dla WebSocket
+
+**Przetwarzanie w tle:**
+- **Celery** + **Redis** (broker)
+  - Transkodowanie video
+  - Przetwarzanie plikĂłw
+  - Synchronizacja z Google Drive
+
+**Przetwarzanie multimedia:**
+- **FFmpeg**
+  - Transkodowanie video do MP4 (H.264)
+  - Optymalizacja dla FHD (1920Ă—1080)
+  - Generowanie rĂłĹĽnych wersji (jeĹ›li potrzeba)
+
+**Biblioteki Python:**
+- `python-multipart` - upload plikĂłw
+- `Pillow` - przetwarzanie obrazĂłw
+- `pdf2image` - konwersja PDF do obrazĂłw
+- `openpyxl` / `pandas` - przetwarzanie Excel
+- `google-api-python-client` - integracja Google Drive
+- `python-jose` - JWT tokens
+- `passlib` - hashowanie haseĹ‚
+
+### 3.2. Frontend Panelu
+
+**Framework:**
+- **React 18+** (rekomendowane) lub Vue 3
+  - DuĹĽa spoĹ‚ecznoĹ›Ä‡
+- **TypeScript** - bezpieczeĹ„stwo typĂłw
+
+**Biblioteki UI:**
+- **Material-UI (MUI)** lub **Ant Design**
+  - Gotowe komponenty
+  - ResponsywnoĹ›Ä‡
+  - Tematyzacja
+
+**Graficzny edytor ukĹ‚adu:**
+- **react-grid-layout** lub **react-dnd**
+  - Drag & drop
+  - Responsywne siatki
+  - Zapisywanie konfiguracji
+
+**Komunikacja:**
+- **Axios** - HTTP requests
+- **Socket.io-client** - WebSocket dla statusu
+
+**Wizualizacja:**
+- **react-player** - podglÄ…d video
+- **react-pdf** - podglÄ…d PDF
+- **Chart.js** - wykresy (jeĹ›li potrzeba)
+
+### 3.3. Klient (WyĹ›wietlacze - HP T630)
+
+**System operacyjny:**
+- **Ubuntu 22.04 LTS** lub **Debian 11+**
+  - StabilnoĹ›Ä‡
+  - DĹ‚ugie wsparcie
+  - Ĺatwa konfiguracja
+
+**Framework wyĹ›wietlania:**
+- **Python 3.10+**
+  - **PyQt6** lub **Kivy**
+    - PeĹ‚noekranowy tryb
+    - ObsĹ‚uga rotacji ekranu
+    - Dobra wydajnoĹ›Ä‡
+
+**Biblioteki Python dla klienta:**
+- `requests` - komunikacja z API
+- `websocket-client` - WebSocket
+- `Pillow` - wyĹ›wietlanie obrazĂłw
+- `pdf2image` - PDF
+- `openpyxl` / `pandas` - Excel
+- `vlc-python` lub `mpv` - video
+- `pygame` (opcjonalnie) - alternatywa dla prostych animacji
+
+**ZarzÄ…dzanie procesem:**
+- **systemd** - autostart, restart, monitoring
+- **cron** - synchronizacja czasu (NTP)
+
+**ObsĹ‚uga rotacji ekranu:**
+- `xrandr` (X11) lub konfiguracja w systemie
+- Automatyczna rotacja treĹ›ci w aplikacji
+
+### 3.4. Integracja Google Drive
+
+**API:**
+- **Google Drive API v3**
+  - OAuth 2.0 dla autoryzacji
+  - Webhook dla zmian (Push notifications)
+  - Polling jako fallback
+
+**Biblioteka:**
+- `google-api-python-client`
+- `google-auth`
+
+**Mechanizm:**
+1. Konfiguracja folderu ZASTÄPSTWA w panelu admin
+2. Autoryzacja OAuth 2.0 (jednorazowa)
+3. Monitorowanie zmian (webhook + polling)
+4. Automatyczne pobieranie nowych/zmienionych plikĂłw
+5. Aktualizacja harmonogramu
+
+### 3.5. Komunikacja
+
+**REST API:**
+- Endpointy dla CRUD operacji
+- Upload/download plikĂłw
+- Status wyĹ›wietlaczy
+
+**WebSocket:**
+- Status w czasie rzeczywistym
+- Push aktualizacji treĹ›ci
+- Synchronizacja harmonogramĂłw
+
+**ProtokĂłĹ‚:**
+- HTTPS (TLS 1.3)
+- WSS (WebSocket Secure)
+
+---
+
+## 4. SzczegĂłĹ‚owa Struktura Bazy Danych
+
+### 4.1. Tabele
+
+```sql
+-- UĹĽytkownicy (role: admin, operator)
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'operator')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP
+);
+
+-- WyĹ›wietlacze
+CREATE TABLE displays (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    mac_address VARCHAR(17) UNIQUE NOT NULL,
+    ip_address VARCHAR(15),
+    status VARCHAR(20) DEFAULT 'offline' CHECK (status IN ('online', 'offline', 'error')),
+    orientation INTEGER DEFAULT 0 CHECK (orientation IN (0, 90, 180, 270)),
+    resolution_width INTEGER DEFAULT 1920,
+    resolution_height INTEGER DEFAULT 1080,
+    group_id INTEGER REFERENCES groups(id),
+    floor VARCHAR(50),
+    position_x INTEGER,  -- Pozycja w graficznym ukĹ‚adzie
+    position_y INTEGER,
+    last_seen TIMESTAMP,
+    cache_size_mb INTEGER DEFAULT 1000,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Grupy wyĹ›wietlaczy
+CREATE TABLE groups (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(20) NOT NULL CHECK (type IN ('horizontal', 'vertical', 'mixed', 'single')),
+    floor VARCHAR(50),
+    layout_config JSONB,  -- Konfiguracja graficznego ukĹ‚adu
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TreĹ›ci
+CREATE TABLE content (
+    id SERIAL PRIMARY KEY,
+    filename VARCHAR(255) NOT NULL,
+    original_filename VARCHAR(255) NOT NULL,
+    type VARCHAR(20) NOT NULL CHECK (type IN ('image', 'pdf', 'excel', 'video')),
+    file_path VARCHAR(500) NOT NULL,
+    thumbnail_path VARCHAR(500),
+    video_processed BOOLEAN DEFAULT FALSE,
+    video_format VARCHAR(10),  -- mp4, webm, etc.
+    file_size_mb DECIMAL(10, 2),
+    duration_seconds INTEGER,  -- Dla video
+    metadata JSONB,  -- Dodatkowe informacje (rozmiar, kolumny Excel, etc.)
+    uploaded_by INTEGER REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Harmonogramy
+CREATE TABLE schedules (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    content_id INTEGER REFERENCES content(id) ON DELETE CASCADE,
+    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    start_date DATE,
+    end_date DATE,
+    days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
+    priority INTEGER DEFAULT 0,
+    display_duration_seconds INTEGER,  -- Czas wyĹ›wietlania treĹ›ci
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Harmonogramy wĹ‚Ä…czania TV
+CREATE TABLE tv_schedules (
+    id SERIAL PRIMARY KEY,
+    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+    power_on_time TIME NOT NULL,
+    power_off_time TIME NOT NULL,
+    days_of_week INTEGER[],
+    active BOOLEAN DEFAULT TRUE,
+    control_method VARCHAR(20) CHECK (control_method IN ('hdmi_cec', 'smart_plug', 'manual')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Zadania przetwarzania
+CREATE TABLE processing_jobs (
+    id SERIAL PRIMARY KEY,
+    content_id INTEGER REFERENCES content(id) ON DELETE CASCADE,
+    job_type VARCHAR(50) NOT NULL,  -- 'video_transcode', 'pdf_convert', etc.
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
+    progress INTEGER DEFAULT 0,  -- 0-100
+    error_message TEXT,
+    started_at TIMESTAMP,
+    completed_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Synchronizacja Google Drive
+CREATE TABLE cloud_sync (
+    id SERIAL PRIMARY KEY,
+    folder_id VARCHAR(255) NOT NULL,  -- Google Drive folder ID
+    folder_name VARCHAR(255) NOT NULL,
+    last_sync_token VARCHAR(255),
+    last_sync_at TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'paused', 'error')),
+    auto_schedule BOOLEAN DEFAULT TRUE,  -- Automatyczne dodawanie do harmonogramu
+    config JSONB,  -- Dodatkowa konfiguracja
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Pliki z Google Drive
+CREATE TABLE cloud_files (
+    id SERIAL PRIMARY KEY,
+    drive_file_id VARCHAR(255) UNIQUE NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    content_id INTEGER REFERENCES content(id) ON DELETE SET NULL,
+    sync_id INTEGER REFERENCES cloud_sync(id) ON DELETE CASCADE,
+    last_modified_drive TIMESTAMP,
+    last_synced_at TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'synced' CHECK (status IN ('synced', 'pending', 'error')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Logi aktywnoĹ›ci (dla operatora)
+CREATE TABLE activity_logs (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(50),  -- 'content', 'display', 'schedule', etc.
+    entity_id INTEGER,
+    details JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Status wyĹ›wietlaczy (cache)
+CREATE TABLE display_status (
+    display_id INTEGER PRIMARY KEY REFERENCES displays(id) ON DELETE CASCADE,
+    current_content_id INTEGER REFERENCES content(id),
+    current_schedule_id INTEGER REFERENCES schedules(id),
+    cache_status JSONB,  -- Status cache (co jest pobrane, co brakuje)
+    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Historia statusĂłw wyĹ›wietlaczy (dla raportĂłw)
+CREATE TABLE display_status_history (
+    id SERIAL PRIMARY KEY,
+    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('online', 'offline', 'error')),
+    last_seen TIMESTAMP,
+    connection_lost_at TIMESTAMP,  -- Kiedy stracono poĹ‚Ä…czenie
+    connection_restored_at TIMESTAMP,  -- Kiedy przywrĂłcono poĹ‚Ä…czenie
+    duration_offline_seconds INTEGER,  -- Czas offline w sekundach
+    error_message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Alerty (brak komunikacji, bĹ‚Ä™dy)
+CREATE TABLE alerts (
+    id SERIAL PRIMARY KEY,
+    display_id INTEGER REFERENCES displays(id) ON DELETE CASCADE,
+    alert_type VARCHAR(50) NOT NULL CHECK (alert_type IN ('connection_lost', 'connection_restored', 'error', 'cache_missing')),
+    severity VARCHAR(20) NOT NULL CHECK (severity IN ('info', 'warning', 'error', 'critical')),
+    message TEXT NOT NULL,
+    resolved BOOLEAN DEFAULT FALSE,
+    resolved_at TIMESTAMP,
+    resolved_by INTEGER REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Harmonogramy dzwonkĂłw szkolnych
+CREATE TABLE bell_schedules (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,  -- np. "Dzwonek na lekcjÄ™", "Dzwonek na przerwÄ™"
+    bell_time TIME NOT NULL,
+    days_of_week INTEGER[],  -- [1,2,3,4,5] = pon-pt
+    start_date DATE,
+    end_date DATE,
+    sound_file_path VARCHAR(500),  -- ĹšcieĹĽka do pliku dĹşwiÄ™kowego
+    volume INTEGER DEFAULT 50 CHECK (volume >= 0 AND volume <= 100),
+    play_on_displays BOOLEAN DEFAULT TRUE,  -- Czy odtwarzaÄ‡ na wyĹ›wietlaczach
+    display_ids INTEGER[],  -- Lista ID wyĹ›wietlaczy (puste = wszystkie)
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Historia odtworzeĹ„ dzwonkĂłw
+CREATE TABLE bell_history (
+    id SERIAL PRIMARY KEY,
+    bell_schedule_id INTEGER REFERENCES bell_schedules(id) ON DELETE CASCADE,
+    played_at TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'success' CHECK (status IN ('success', 'failed', 'skipped')),
+    error_message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 4.2. Indeksy
+
+```sql
+CREATE INDEX idx_displays_group ON displays(group_id);
+CREATE INDEX idx_displays_status ON displays(status);
+CREATE INDEX idx_schedules_active ON schedules(active) WHERE active = TRUE;
+CREATE INDEX idx_schedules_display ON schedules(display_id);
+CREATE INDEX idx_schedules_group ON schedules(group_id);
+CREATE INDEX idx_schedules_time ON schedules(start_time, end_time);
+CREATE INDEX idx_content_type ON content(type);
+CREATE INDEX idx_cloud_files_sync ON cloud_files(sync_id);
+CREATE INDEX idx_activity_logs_user ON activity_logs(user_id);
+CREATE INDEX idx_activity_logs_created ON activity_logs(created_at DESC);
+CREATE INDEX idx_display_status_history_display ON display_status_history(display_id);
+CREATE INDEX idx_display_status_history_created ON display_status_history(created_at DESC);
+CREATE INDEX idx_alerts_display ON alerts(display_id);
+CREATE INDEX idx_alerts_resolved ON alerts(resolved) WHERE resolved = FALSE;
+CREATE INDEX idx_alerts_created ON alerts(created_at DESC);
+CREATE INDEX idx_bell_schedules_active ON bell_schedules(active) WHERE active = TRUE;
+CREATE INDEX idx_bell_schedules_time ON bell_schedules(bell_time);
+CREATE INDEX idx_bell_history_schedule ON bell_history(bell_schedule_id);
+CREATE INDEX idx_bell_history_played ON bell_history(played_at DESC);
+```
+
+---
+
+## 5. SzczegĂłĹ‚owe PrzepĹ‚ywy DziaĹ‚ania
+
+### 5.1. Upload TreĹ›ci (Admin)
+
+1. **Admin loguje siÄ™** â†’ JWT token
+2. **Upload pliku** â†’ POST `/api/content/upload`
+   - Walidacja typu pliku
+   - Zapis do `/content/original/`
+   - Utworzenie rekordu w `content`
+   - ZwrĂłcenie `content_id`
+3. **Przetwarzanie w tle** (Celery):
+   - **Video**: Transkodowanie do MP4 (H.264, 1920Ă—1080)
+   - **PDF**: Generowanie miniatur
+   - **Excel**: Analiza struktury (liczba wierszy, kolumn)
+   - **Obrazy**: Generowanie miniatur, optymalizacja
+4. **Aktualizacja statusu** â†’ `processing_jobs.status = 'completed'`
+5. **Gotowe do uĹĽycia** â†’ TreĹ›Ä‡ dostÄ™pna w harmonogramach
+
+### 5.2. Konfiguracja Grup i WyĹ›wietlaczy (Admin)
+
+1. **Graficzny edytor ukĹ‚adu**:
+   - Drag & drop wyĹ›wietlaczy na wizualizacji budynku
+   - Przypisanie do piÄ™ter
+   - Konfiguracja grup (np. "3 monitory pionowe")
+2. **Zapis konfiguracji**:
+   - `groups.layout_config` (JSON) - pozycje, rozmiary
+   - `displays.group_id`, `displays.floor`, `displays.position_x/y`
+3. **Walidacja**:
+   - Sprawdzenie czy wyĹ›wietlacz nie jest w wielu grupach
+   - Sprawdzenie czy grupa ma sens (np. 3 monitory pionowe = 3 wyĹ›wietlacze)
+
+### 5.3. Tworzenie Harmonogramu (Admin)
+
+1. **WybĂłr treĹ›ci** â†’ Lista dostÄ™pnych treĹ›ci
+2. **WybĂłr wyĹ›wietlacza/grupy**:
+   - Pojedynczy wyĹ›wietlacz
+   - Grupa wyĹ›wietlaczy
+   - Wszystkie wyĹ›wietlacze
+3. **Konfiguracja czasu**:
+   - Czas wyĹ›wietlania (start_time, end_time)
+   - Daty (start_date, end_date) - opcjonalnie
+   - Dni tygodnia
+   - Czas wyĹ›wietlania treĹ›ci (display_duration_seconds)
+4. **Priorytet** â†’ JeĹ›li wiele treĹ›ci w tym samym czasie
+5. **Zapis** â†’ `schedules` table
+6. **Push do wyĹ›wietlaczy** â†’ WebSocket notification
+
+### 5.4. DziaĹ‚anie WyĹ›wietlacza (Klient)
+
+1. **Start systemu** (systemd):
+   - Uruchomienie aplikacji klienta
+   - PoĹ‚Ä…czenie z serwerem (REST API)
+   - Rejestracja wyĹ›wietlacza (MAC address)
+2. **Pobranie konfiguracji**:
+   - GET `/api/displays/{id}/config`
+   - Orientacja, rozdzielczoĹ›Ä‡, grupa
+3. **Pobranie harmonogramu**:
+   - GET `/api/displays/{id}/schedule`
+   - Lista treĹ›ci z czasami
+4. **Pobranie treĹ›ci** (cache):
+   - Sprawdzenie co jest w cache lokalnym
+   - Pobranie brakujÄ…cych plikĂłw (GET `/api/content/{id}/download`)
+   - Zapis do lokalnego cache
+5. **WyĹ›wietlanie**:
+   - Sprawdzenie aktualnego czasu
+   - WybĂłr treĹ›ci zgodnie z harmonogramem
+   - WyĹ›wietlenie:
+     - **Obraz**: Pillow â†’ PyQt6
+     - **PDF**: pdf2image â†’ Pillow â†’ PyQt6
+     - **Excel**: openpyxl â†’ renderowanie â†’ PyQt6
+     - **Video**: VLC/mpv player
+6. **Status w czasie rzeczywistym**:
+   - WebSocket â†’ wysyĹ‚anie statusu co 30s
+   - Aktualna treĹ›Ä‡, status cache, bĹ‚Ä™dy
+7. **ObsĹ‚uga offline**:
+   - JeĹ›li brak poĹ‚Ä…czenia â†’ wyĹ›wietlanie z cache
+   - Retry poĹ‚Ä…czenia co 60s
+   - Queue aktualizacji
+
+### 5.5. Integracja Google Drive (ZASTÄPSTWA)
+
+1. **Konfiguracja** (Admin):
+   - Autoryzacja OAuth 2.0 (jednorazowa)
+   - WybĂłr folderu ZASTÄPSTWA
+   - Zapis `cloud_sync` record
+2. **Monitorowanie zmian**:
+   - **Webhook** (preferowane): Google Drive Push notifications
+   - **Polling** (fallback): Sprawdzanie co 5 minut
+3. **Wykrycie zmiany**:
+   - Nowy plik â†’ pobranie â†’ upload do systemu
+   - Zmieniony plik â†’ pobranie â†’ aktualizacja
+   - UsuniÄ™ty plik â†’ usuniÄ™cie z systemu
+4. **Automatyczna aktualizacja harmonogramu**:
+   - JeĹ›li `auto_schedule = TRUE`:
+     - Nowy plik â†’ utworzenie harmonogramu (domyĹ›lny czas)
+     - Zmieniony plik â†’ aktualizacja harmonogramu
+5. **Synchronizacja**:
+   - Pobranie pliku z Google Drive
+   - Upload do systemu (jak normalny upload)
+   - Przetwarzanie (transkodowanie, etc.)
+   - Aktualizacja `cloud_files` record
+
+### 5.6. Dzielenie DĹ‚ugich PlikĂłw Excel
+
+**Algorytm dla grup pionowych (3 monitory obok siebie):**
+
+1. **Analiza pliku Excel**:
+   - Liczba wierszy danych
+   - Liczba kolumn
+   - Rozmiar czcionki (domyĹ›lny)
+2. **Obliczenie podziaĹ‚u**:
+   - Wiersze na monitor = `total_rows / number_of_displays`
+   - Dla kaĹĽdego wyĹ›wietlacza: zakres wierszy
+3. **Renderowanie**:
+   - Dla kaĹĽdego wyĹ›wietlacza:
+     - WyciÄ…gniÄ™cie odpowiedniego zakresu wierszy
+     - Renderowanie do obrazu (1920Ă—1080, obrĂłcony 90Â°)
+     - Zapis jako osobna "wersja" treĹ›ci
+4. **Przypisanie do harmonogramu**:
+   - Ta sama treĹ›Ä‡, rĂłĹĽne "wersje" dla kaĹĽdego wyĹ›wietlacza w grupie
+   - Synchronizacja czasu wyĹ›wietlania
+
+**Implementacja:**
+- `content.metadata` â†’ `{"split_config": {"group_id": 1, "display_index": 0, "row_range": [0, 50]}}`
+- Klient pobiera odpowiedniÄ… wersjÄ™ dla swojego wyĹ›wietlacza
+
+### 5.7. Symulacja WyĹ›wietlania (Publiczna Strona)
+
+1. **DostÄ™p bez logowania**:
+   - GET `/simulation` (publiczny endpoint)
+   - WyĹ›wietlenie wizualizacji wszystkich wyĹ›wietlaczy
+2. **Wizualizacja**:
+   - Graficzny ukĹ‚ad monitorĂłw (zgodnie z konfiguracjÄ…)
+   - PodglÄ…d aktualnie wyĹ›wietlanej treĹ›ci na kaĹĽdym monitorze
+   - Status (online/offline)
+3. **Aktualizacja w czasie rzeczywistym**:
+   - WebSocket (publiczny, read-only)
+   - Aktualizacja co 5-10 sekund
+4. **Funkcje**:
+   - Przewijanie miÄ™dzy piÄ™trami
+   - Zoom na konkretny monitor
+   - PodglÄ…d harmonogramu
+
+---
+
+## 6. ObsĹ‚uga FormatĂłw - SzczegĂłĹ‚y
+
+### 6.1. PDF
+
+**Przetwarzanie:**
+- `pdf2image` â†’ konwersja kaĹĽdej strony do PNG
+- Skalowanie do 1920Ă—1080 (z zachowaniem proporcji)
+- JeĹ›li wiele stron â†’ wybĂłr pierwszej strony lub przewijanie
+
+**WyĹ›wietlanie:**
+- Klient: PNG â†’ Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
+
+### 6.2. Excel
+
+**Przetwarzanie:**
+- `openpyxl` â†’ odczyt danych
+- Analiza struktury (liczba wierszy, kolumn)
+- Dla dĹ‚ugich plikĂłw â†’ przygotowanie podziaĹ‚u
+
+**Renderowanie:**
+- `pandas` + `matplotlib` lub wĹ‚asny renderer
+- Skalowanie do 1920Ă—1080
+- Automatyczne dopasowanie czcionki
+- Dla grup pionowych â†’ podziaĹ‚ wierszy
+
+**WyĹ›wietlanie:**
+- Obraz PNG â†’ Pillow â†’ PyQt6
+
+### 6.3. Obrazy (JPG, PNG, GIF)
+
+**Przetwarzanie:**
+- `Pillow` â†’ optymalizacja, skalowanie
+- Dla GIF â†’ konwersja do animacji lub pierwsza klatka
+
+**WyĹ›wietlanie:**
+- Pillow â†’ PyQt6
+- PeĹ‚noekranowy tryb
+
+### 6.4. Video (MPG â†’ MP4)
+
+**Transkodowanie na serwerze (FFmpeg):**
+```bash
+ffmpeg -i input.mpg -c:v libx264 -preset medium -crf 23 \
+  -c:a aac -b:a 128k -s 1920x1080 -r 30 output.mp4
+```
+
+**Parametry:**
+- Codec: H.264 (libx264)
+- RozdzielczoĹ›Ä‡: 1920Ă—1080 (FHD)
+- Frame rate: 30 fps
+- Audio: AAC 128kbps
+- CRF: 23 (dobra jakoĹ›Ä‡, rozsÄ…dny rozmiar)
+
+**WyĹ›wietlanie:**
+- VLC Python bindings lub mpv
+- PeĹ‚noekranowy tryb
+- Loop (jeĹ›li potrzeba)
+
+---
+
+## 7. ObsĹ‚uga Rotacji Ekranu (90Â°)
+
+### 7.1. Poziom Systemu
+
+**Konfiguracja X11 (jeĹ›li X11):**
+```bash
+xrandr --output HDMI-1 --rotate left  # 90Â° w lewo
+```
+
+**Konfiguracja w aplikacji:**
+- `displays.orientation = 90`
+- Automatyczna rotacja treĹ›ci w PyQt6
+
+### 7.2. Poziom Aplikacji
+
+**PyQt6:**
+```python
+# Rotacja treĹ›ci
+transform = QTransform().rotate(90)
+pixmap = pixmap.transformed(transform)
+```
+
+**Dla grup pionowych:**
+- 3 monitory obok siebie, kaĹĽdy obrĂłcony 90Â°
+- TreĹ›Ä‡ renderowana z uwzglÄ™dnieniem rotacji
+- Dzielenie Excel z uwzglÄ™dnieniem rotacji
+
+---
+
+## 8. System Autoryzacji i RĂłl
+
+### 8.1. Role
+
+**Admin:**
+- Wszystkie operacje CRUD
+- Upload treĹ›ci
+- Konfiguracja wyĹ›wietlaczy i grup
+- Tworzenie harmonogramĂłw
+- Konfiguracja Google Drive
+- ZarzÄ…dzanie uĹĽytkownikami
+
+**Operator:**
+- Tylko odczyt (GET)
+- PodglÄ…d statusu wyĹ›wietlaczy
+- PodglÄ…d harmonogramĂłw
+- PodglÄ…d treĹ›ci
+- Logi aktywnoĹ›ci
+
+### 8.2. Endpointy API
+
+**Admin tylko:**
+- POST `/api/content/upload`
+- PUT/DELETE `/api/content/{id}`
+- POST/PUT/DELETE `/api/displays`
+- POST/PUT/DELETE `/api/groups`
+- POST/PUT/DELETE `/api/schedules`
+- POST `/api/cloud-sync/configure`
+
+**Admin + Operator:**
+- GET `/api/content`
+- GET `/api/displays`
+- GET `/api/groups`
+- GET `/api/schedules`
+- GET `/api/display-status`
+- GET `/api/activity-logs`
+
+**Publiczne:**
+- GET `/simulation` (symulacja)
+
+### 8.3. JWT Tokens
+
+- Access token (15 min)
+- Refresh token (7 dni)
+- Role w payload tokena
+
+---
+
+## 9. ObsĹ‚uga BĹ‚Ä™dĂłw i NiezawodnoĹ›Ä‡
+
+### 9.1. WiFi - OpĂłĹşnienia i Zrywane PoĹ‚Ä…czenia
+
+**Strategia:**
+1. **Lokalny cache**:
+   - Wszystkie treĹ›ci w cache lokalnym
+   - Minimalna zaleĹĽnoĹ›Ä‡ od sieci podczas wyĹ›wietlania
+2. **Pobieranie w tle**:
+   - Pobieranie nowych treĹ›ci przed czasem wyĹ›wietlania
+   - Retry z exponential backoff
+3. **Status offline**:
+   - WyĹ›wietlanie z cache
+   - Queue aktualizacji
+   - Automatyczne synchronizowanie po powrocie poĹ‚Ä…czenia
+4. **Weryfikacja integralnoĹ›ci**:
+   - Checksum (MD5/SHA256) dla kaĹĽdego pliku
+   - Weryfikacja przy pobieraniu
+
+### 9.2. Przetwarzanie Video - BĹ‚Ä™dy
+
+**ObsĹ‚uga:**
+- Retry (3 prĂłby)
+- Logowanie bĹ‚Ä™dĂłw
+- Powiadomienie admina (email/panel)
+- Fallback: wyĹ›wietlanie oryginalnego pliku (jeĹ›li moĹĽliwe)
+
+### 9.3. Synchronizacja Google Drive - BĹ‚Ä™dy
+
+**ObsĹ‚uga:**
+- Retry z exponential backoff
+- Logowanie bĹ‚Ä™dĂłw
+- Powiadomienie admina
+- Fallback: polling zamiast webhook
+
+---
+
+## 10. BezpieczeĹ„stwo
+
+### 10.1. Serwer
+
+- HTTPS (Let's Encrypt)
+- Firewall (UFW)
+- Regularne aktualizacje
+- Backup bazy danych (codziennie)
+- Backup plikĂłw (tygodniowo)
+
+### 10.2. Autentykacja
+
+- Silne hasĹ‚a (min. 12 znakĂłw)
+- JWT tokens
+- Rate limiting
+- CORS configuration
+
+### 10.3. WyĹ›wietlacze
+
+- Autoryzacja przez MAC address
+- HTTPS komunikacja
+- Read-only dostÄ™p do API (tylko GET dla swoich danych)
+
+---
+
+## 10A. System Monitorowania Statusu WyĹ›wietlaczy
 
 ### 10A.1. Mechanizm Wykrywania Braku Komunikacji
 
 **Heartbeat System:**
-- Wyświetlacz wysyła status co 30 sekund (WebSocket lub REST API)
+- WyĹ›wietlacz wysyĹ‚a status co 30 sekund (WebSocket lub REST API)
 - Serwer oczekuje heartbeat w oknie 60 sekund
-- Jeśli brak heartbeat przez 60s → status = 'offline'
-- Jeśli brak heartbeat przez 5 minut → alert 'connection_lost'
+- JeĹ›li brak heartbeat przez 60s â†’ status = 'offline'
+- JeĹ›li brak heartbeat przez 5 minut â†’ alert 'connection_lost'
 
 **Endpointy:**
-- POST `/api/displays/{id}/heartbeat` - wyświetlacz wysyła status
+- POST `/api/displays/{id}/heartbeat` - wyĹ›wietlacz wysyĹ‚a status
 - GET `/api/displays/{id}/status` - aktualny status
-- GET `/api/displays/status/all` - status wszystkich wyświetlaczy
+- GET `/api/displays/status/all` - status wszystkich wyĹ›wietlaczy
 
 **Dane w heartbeat:**
 ```json
@@ -5708,51 +5708,51 @@ pixmap = pixmap.transformed(transform)
 ### 10A.2. Strona Statusu (Dashboard)
 
 **Dla Admin i Operator:**
-- Lista wszystkich wyświetlaczy z aktualnym statusem
+- Lista wszystkich wyĹ›wietlaczy z aktualnym statusem
 - Wizualizacja:
-  - 🟢 Online (zielony)
-  - 🔴 Offline (czerwony)
-  - 🟡 Error (żółty)
-- Czas ostatniego połączenia
-- Czas offline (jeśli offline)
+  - đźź˘ Online (zielony)
+  - đź”´ Offline (czerwony)
+  - đźźˇ Error (ĹĽĂłĹ‚ty)
+- Czas ostatniego poĹ‚Ä…czenia
+- Czas offline (jeĹ›li offline)
 - Aktualizacja w czasie rzeczywistym (WebSocket)
 
 **Filtry:**
 - Status (online/offline/error)
-- Piętro
+- PiÄ™tro
 - Grupa
 
-**Szczegóły wyświetlacza:**
-- Historia statusów (ostatnie 24h)
-- Aktualna treść
+**SzczegĂłĹ‚y wyĹ›wietlacza:**
+- Historia statusĂłw (ostatnie 24h)
+- Aktualna treĹ›Ä‡
 - Status cache
-- Błędy
+- BĹ‚Ä™dy
 
-### 10A.3. System Alertów
+### 10A.3. System AlertĂłw
 
-**Typy alertów:**
+**Typy alertĂłw:**
 1. **connection_lost** - Brak komunikacji > 5 minut
-2. **connection_restored** - Przywrócono komunikację
-3. **error** - Błąd w działaniu wyświetlacza
-4. **cache_missing** - Brakuje plików w cache
+2. **connection_restored** - PrzywrĂłcono komunikacjÄ™
+3. **error** - BĹ‚Ä…d w dziaĹ‚aniu wyĹ›wietlacza
+4. **cache_missing** - Brakuje plikĂłw w cache
 
 **Severity:**
 - **critical**: Brak komunikacji > 30 minut
-- **error**: Brak komunikacji 5-30 minut, błędy
+- **error**: Brak komunikacji 5-30 minut, bĹ‚Ä™dy
 - **warning**: Brak komunikacji < 5 minut
-- **info**: Przywrócono komunikację
+- **info**: PrzywrĂłcono komunikacjÄ™
 
-**Wyświetlanie alertów:**
-- Lista aktywnych alertów na stronie statusu
-- Licznik nieprzeczytanych alertów
-- Oznaczanie jako przeczytane/rozwiązane
+**WyĹ›wietlanie alertĂłw:**
+- Lista aktywnych alertĂłw na stronie statusu
+- Licznik nieprzeczytanych alertĂłw
+- Oznaczanie jako przeczytane/rozwiÄ…zane
 
 ### 10A.4. Raportowanie
 
-**Raporty dostępne dla Admin i Operator:**
-1. **Raport dzienny** - Status wyświetlaczy w ciągu dnia
-2. **Raport tygodniowy** - Statystyki dostępności
-3. **Raport offline** - Czas offline dla każdego wyświetlacza
+**Raporty dostÄ™pne dla Admin i Operator:**
+1. **Raport dzienny** - Status wyĹ›wietlaczy w ciÄ…gu dnia
+2. **Raport tygodniowy** - Statystyki dostÄ™pnoĹ›ci
+3. **Raport offline** - Czas offline dla kaĹĽdego wyĹ›wietlacza
 
 **Endpointy:**
 - GET `/api/reports/daily?date=2024-01-15`
@@ -5762,9 +5762,9 @@ pixmap = pixmap.transformed(transform)
 **Dane w raporcie:**
 - Czas online/offline
 - Liczba przerw w komunikacji
-- Średni czas offline
-- Najdłuższy okres offline
-- Wykresy dostępności
+- Ĺšredni czas offline
+- NajdĹ‚uĹĽszy okres offline
+- Wykresy dostÄ™pnoĹ›ci
 
 **Eksport:**
 - PDF (dla operatora)
@@ -5772,90 +5772,90 @@ pixmap = pixmap.transformed(transform)
 
 ---
 
-## 10B. System "Przyjaznych Dzwonków" Szkolnych
+## 10B. System "Przyjaznych DzwonkĂłw" Szkolnych
 
 ### 10B.1. Koncepcja
 
-System odtwarzania dzwonków szkolnych zgodnie z harmonogramem:
-- Dzwonek na lekcję
-- Dzwonek na przerwę
+System odtwarzania dzwonkĂłw szkolnych zgodnie z harmonogramem:
+- Dzwonek na lekcjÄ™
+- Dzwonek na przerwÄ™
 - Dzwonek na obiad
-- Dzwonek na koniec zajęć
+- Dzwonek na koniec zajÄ™Ä‡
 
 **Funkcje:**
-- Harmonogramy dla różnych dni tygodnia
-- Różne dźwięki dla różnych typów dzwonków
-- Odtwarzanie na wyświetlaczach (głośniki wbudowane lub zewnętrzne)
-- Możliwość wyłączenia na wybranych wyświetlaczach
+- Harmonogramy dla rĂłĹĽnych dni tygodnia
+- RĂłĹĽne dĹşwiÄ™ki dla rĂłĹĽnych typĂłw dzwonkĂłw
+- Odtwarzanie na wyĹ›wietlaczach (gĹ‚oĹ›niki wbudowane lub zewnÄ™trzne)
+- MoĹĽliwoĹ›Ä‡ wyĹ‚Ä…czenia na wybranych wyĹ›wietlaczach
 
-### 10B.2. Zarządzanie Dzwonkami (Admin)
+### 10B.2. ZarzÄ…dzanie Dzwonkami (Admin)
 
 **Panel konfiguracji:**
-1. **Lista harmonogramów dzwonków**
-   - Nazwa (np. "Dzwonek na lekcję - 1")
+1. **Lista harmonogramĂłw dzwonkĂłw**
+   - Nazwa (np. "Dzwonek na lekcjÄ™ - 1")
    - Czas (np. 08:00)
    - Dni tygodnia
-   - Plik dźwiękowy
-   - Głośność
-   - Wyświetlacze (wszystkie lub wybrane)
+   - Plik dĹşwiÄ™kowy
+   - GĹ‚oĹ›noĹ›Ä‡
+   - WyĹ›wietlacze (wszystkie lub wybrane)
 
-2. **Upload plików dźwiękowych**
+2. **Upload plikĂłw dĹşwiÄ™kowych**
    - Format: MP3, WAV, OGG
-   - Walidacja długości (max 30 sekund)
-   - Podgląd odtwarzania
+   - Walidacja dĹ‚ugoĹ›ci (max 30 sekund)
+   - PodglÄ…d odtwarzania
 
 3. **Harmonogram tygodniowy**
    - Widok kalendarza z dzwonkami
-   - Możliwość kopiowania między dniami
+   - MoĹĽliwoĹ›Ä‡ kopiowania miÄ™dzy dniami
    - Import/export harmonogramu
 
-### 10B.3. Odtwarzanie Dzwonków
+### 10B.3. Odtwarzanie DzwonkĂłw
 
 **Mechanizm:**
 1. **Serwer:**
    - Cron job lub scheduler (Celery Beat)
-   - Sprawdzenie harmonogramu co minutę
-   - Jeśli czas dzwonka → wysłanie komendy do wyświetlaczy
+   - Sprawdzenie harmonogramu co minutÄ™
+   - JeĹ›li czas dzwonka â†’ wysĹ‚anie komendy do wyĹ›wietlaczy
 
-2. **Wyświetlacze:**
+2. **WyĹ›wietlacze:**
    - Odbieranie komendy przez WebSocket lub REST API
-   - Pobranie pliku dźwiękowego (jeśli nie ma w cache)
-   - Odtworzenie dźwięku (pygame, vlc-python, lub systemowy player)
+   - Pobranie pliku dĹşwiÄ™kowego (jeĹ›li nie ma w cache)
+   - Odtworzenie dĹşwiÄ™ku (pygame, vlc-python, lub systemowy player)
    - Logowanie odtworzenia
 
-**Obsługa:**
-- Jeśli wyświetlacz offline → pominięcie (logowanie)
-- Jeśli brak pliku → próba pobrania, fallback do domyślnego dźwięku
-- Jeśli wyświetlacz wyciszony → pominięcie
+**ObsĹ‚uga:**
+- JeĹ›li wyĹ›wietlacz offline â†’ pominiÄ™cie (logowanie)
+- JeĹ›li brak pliku â†’ prĂłba pobrania, fallback do domyĹ›lnego dĹşwiÄ™ku
+- JeĹ›li wyĹ›wietlacz wyciszony â†’ pominiÄ™cie
 
-### 10B.4. Integracja z Wyświetlaczami
+### 10B.4. Integracja z WyĹ›wietlaczami
 
 **Opcje odtwarzania:**
-1. **Na wyświetlaczu** (HP T630):
-   - Głośniki wbudowane (jeśli dostępne)
-   - Głośniki USB
-   - Wyjście audio (3.5mm)
+1. **Na wyĹ›wietlaczu** (HP T630):
+   - GĹ‚oĹ›niki wbudowane (jeĹ›li dostÄ™pne)
+   - GĹ‚oĹ›niki USB
+   - WyjĹ›cie audio (3.5mm)
 
-2. **Przez system audio szkoły** (opcjonalnie):
-   - Integracja z systemem nagłośnienia
+2. **Przez system audio szkoĹ‚y** (opcjonalnie):
+   - Integracja z systemem nagĹ‚oĹ›nienia
    - API do sterowania
 
 ### 10B.5. Historia i Logi
 
 **Tabela `bell_history`:**
 - Kiedy odtworzono dzwonek
-- Status (sukces/błąd)
-- Które wyświetlacze odtworzyły
-- Błędy (jeśli wystąpiły)
+- Status (sukces/bĹ‚Ä…d)
+- KtĂłre wyĹ›wietlacze odtworzyĹ‚y
+- BĹ‚Ä™dy (jeĹ›li wystÄ…piĹ‚y)
 
 **Raporty:**
-- Statystyki odtworzeń
-- Wyświetlacze, które nie odtworzyły
-- Częstotliwość błędów
+- Statystyki odtworzeĹ„
+- WyĹ›wietlacze, ktĂłre nie odtworzyĹ‚y
+- CzÄ™stotliwoĹ›Ä‡ bĹ‚Ä™dĂłw
 
 ---
 
-## 10C. Środowisko Hyper-V
+## 10C. Ĺšrodowisko Hyper-V
 
 ### 10C.1. Konfiguracja Maszyny Wirtualnej
 
@@ -5863,7 +5863,7 @@ System odtwarzania dzwonków szkolnych zgodnie z harmonogramem:
 - **CPU**: 4 vCPU (minimum 2)
 - **RAM**: 8 GB (minimum 4 GB)
 - **Dysk**: 100 GB (SSD preferowane)
-- **Sieć**: Bridge mode (dostęp z sieci lokalnej)
+- **SieÄ‡**: Bridge mode (dostÄ™p z sieci lokalnej)
 
 **System operacyjny:**
 - Ubuntu Server 22.04 LTS
@@ -5872,9 +5872,9 @@ System odtwarzania dzwonków szkolnych zgodnie z harmonogramem:
 ### 10C.2. Konfiguracja Sieci
 
 **Network Adapter:**
-- External Virtual Switch (dostęp do sieci WiFi)
-- Statyczny IP lub DHCP z rezerwacją
-- Port forwarding (jeśli potrzebny dostęp z zewnątrz)
+- External Virtual Switch (dostÄ™p do sieci WiFi)
+- Statyczny IP lub DHCP z rezerwacjÄ…
+- Port forwarding (jeĹ›li potrzebny dostÄ™p z zewnÄ…trz)
 
 **Firewall:**
 - UFW (Uncomplicated Firewall)
@@ -5890,19 +5890,19 @@ System odtwarzania dzwonków szkolnych zgodnie z harmonogramem:
 1. **Baza danych** (PostgreSQL):
    - `pg_dump` codziennie (cron)
    - Przechowywanie 30 dni
-   - Backup do innej lokalizacji (sieć lokalna)
+   - Backup do innej lokalizacji (sieÄ‡ lokalna)
 
-2. **Pliki treści:**
+2. **Pliki treĹ›ci:**
    - `rsync` tygodniowo
    - Backup do innej lokalizacji
 
 3. **Snapshot Hyper-V:**
-   - Przed większymi aktualizacjami
+   - Przed wiÄ™kszymi aktualizacjami
    - Automatyczne snapshoty (opcjonalnie)
 
 **Odzyskiwanie:**
 - Procedura przywracania z backupu
-- Testowanie backupów (co miesiąc)
+- Testowanie backupĂłw (co miesiÄ…c)
 
 ### 10C.4. Monitoring Maszyny Wirtualnej
 
@@ -5914,67 +5914,67 @@ System odtwarzania dzwonków szkolnych zgodnie z harmonogramem:
 - Uptime
 
 **Alerty:**
-- Wysokie użycie zasobów (> 80%)
+- Wysokie uĹĽycie zasobĂłw (> 80%)
 - Brak miejsca na dysku (< 10%)
 - Brak odpowiedzi serwera
 
 ---
 
-## 11. Plan Implementacji - Szczegółowy Etapowy
+## 11. Plan Implementacji - SzczegĂłĹ‚owy Etapowy
 
-### Etap 0: Przygotowanie Środowiska (1 tydzień)
+### Etap 0: Przygotowanie Ĺšrodowiska (1 tydzieĹ„)
 
-**Cel:** Przygotowanie infrastruktury i środowiska deweloperskiego
+**Cel:** Przygotowanie infrastruktury i Ĺ›rodowiska deweloperskiego
 
 **Zadania:**
-1. ✅ Utworzenie maszyny wirtualnej Hyper-V (Ubuntu 22.04)
-2. ✅ Konfiguracja sieci (bridge, statyczny IP)
-3. ✅ Instalacja podstawowych narzędzi (git, curl, wget)
-4. ✅ Instalacja PostgreSQL 14+
-5. ✅ Instalacja Redis
-6. ✅ Instalacja Python 3.10+ i pip
-7. ✅ Instalacja Node.js 18+ (dla frontendu)
-8. ✅ Konfiguracja firewall (UFW)
-9. ✅ Konfiguracja SSH
-10. ✅ Utworzenie użytkownika aplikacji
+1. âś… Utworzenie maszyny wirtualnej Hyper-V (Ubuntu 22.04)
+2. âś… Konfiguracja sieci (bridge, statyczny IP)
+3. âś… Instalacja podstawowych narzÄ™dzi (git, curl, wget)
+4. âś… Instalacja PostgreSQL 14+
+5. âś… Instalacja Redis
+6. âś… Instalacja Python 3.10+ i pip
+7. âś… Instalacja Node.js 18+ (dla frontendu)
+8. âś… Konfiguracja firewall (UFW)
+9. âś… Konfiguracja SSH
+10. âś… Utworzenie uĹĽytkownika aplikacji
 
 **Weryfikacja:**
-- [ ] VM uruchomiona i dostępna przez SSH
-- [ ] PostgreSQL działa (psql --version)
-- [ ] Redis działa (redis-cli ping)
-- [ ] Python działa (python3 --version)
-- [ ] Node.js działa (node --version)
+- [ ] VM uruchomiona i dostÄ™pna przez SSH
+- [ ] PostgreSQL dziaĹ‚a (psql --version)
+- [ ] Redis dziaĹ‚a (redis-cli ping)
+- [ ] Python dziaĹ‚a (python3 --version)
+- [ ] Node.js dziaĹ‚a (node --version)
 - [ ] Firewall skonfigurowany
 
-**Deliverable:** Działające środowisko deweloperskie
+**Deliverable:** DziaĹ‚ajÄ…ce Ĺ›rodowisko deweloperskie
 
 ---
 
-### Etap 1: Backend API - Podstawy (1 tydzień)
+### Etap 1: Backend API - Podstawy (1 tydzieĹ„)
 
-**Cel:** Utworzenie podstawowej struktury backendu z autentykacją
+**Cel:** Utworzenie podstawowej struktury backendu z autentykacjÄ…
 
 **Zadania:**
-1. ✅ Utworzenie projektu FastAPI
-2. ✅ Konfiguracja struktury katalogów
-3. ✅ Połączenie z PostgreSQL
-4. ✅ Połączenie z Redis
-5. ✅ Utworzenie modeli bazy danych (SQLAlchemy)
-6. ✅ Migracje bazy danych (Alembic)
-7. ✅ System autentykacji (JWT)
-8. ✅ Endpointy logowania/logout
-9. ✅ Middleware dla autoryzacji (role: admin/operator)
-10. ✅ Podstawowe endpointy użytkowników (CRUD)
+1. âś… Utworzenie projektu FastAPI
+2. âś… Konfiguracja struktury katalogĂłw
+3. âś… PoĹ‚Ä…czenie z PostgreSQL
+4. âś… PoĹ‚Ä…czenie z Redis
+5. âś… Utworzenie modeli bazy danych (SQLAlchemy)
+6. âś… Migracje bazy danych (Alembic)
+7. âś… System autentykacji (JWT)
+8. âś… Endpointy logowania/logout
+9. âś… Middleware dla autoryzacji (role: admin/operator)
+10. âś… Podstawowe endpointy uĹĽytkownikĂłw (CRUD)
 
 **Weryfikacja:**
-- [ ] API uruchamia się (uvicorn)
-- [ ] Połączenie z bazą działa
-- [ ] Można się zalogować jako admin
-- [ ] Można się zalogować jako operator
-- [ ] Role działają poprawnie (admin ma więcej uprawnień)
-- [ ] Swagger UI dostępny (/docs)
+- [ ] API uruchamia siÄ™ (uvicorn)
+- [ ] PoĹ‚Ä…czenie z bazÄ… dziaĹ‚a
+- [ ] MoĹĽna siÄ™ zalogowaÄ‡ jako admin
+- [ ] MoĹĽna siÄ™ zalogowaÄ‡ jako operator
+- [ ] Role dziaĹ‚ajÄ… poprawnie (admin ma wiÄ™cej uprawnieĹ„)
+- [ ] Swagger UI dostÄ™pny (/docs)
 
-**Deliverable:** Działające API z autentykacją
+**Deliverable:** DziaĹ‚ajÄ…ce API z autentykacjÄ…
 
 **Testy:**
 ```bash
@@ -5990,58 +5990,58 @@ curl -X GET http://localhost:8000/api/users \
 
 ---
 
-### Etap 2: Backend - Zarządzanie Wyświetlaczami (3 dni)
+### Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami (3 dni)
 
-**Cel:** CRUD dla wyświetlaczy i podstawowy status
+**Cel:** CRUD dla wyĹ›wietlaczy i podstawowy status
 
 **Zadania:**
-1. ✅ Model Display w bazie danych
-2. ✅ Endpointy CRUD dla wyświetlaczy (tylko admin)
-3. ✅ Endpoint rejestracji wyświetlacza (przez MAC address)
-4. ✅ Endpoint heartbeat (POST /api/displays/{id}/heartbeat)
-5. ✅ Endpoint statusu (GET /api/displays/{id}/status)
-6. ✅ Automatyczne wykrywanie offline (brak heartbeat > 60s)
-7. ✅ Tabela display_status_history
-8. ✅ Logika aktualizacji statusu
+1. âś… Model Display w bazie danych
+2. âś… Endpointy CRUD dla wyĹ›wietlaczy (tylko admin)
+3. âś… Endpoint rejestracji wyĹ›wietlacza (przez MAC address)
+4. âś… Endpoint heartbeat (POST /api/displays/{id}/heartbeat)
+5. âś… Endpoint statusu (GET /api/displays/{id}/status)
+6. âś… Automatyczne wykrywanie offline (brak heartbeat > 60s)
+7. âś… Tabela display_status_history
+8. âś… Logika aktualizacji statusu
 
 **Weryfikacja:**
-- [ ] Można utworzyć wyświetlacz (admin)
-- [ ] Można zobaczyć listę wyświetlaczy (admin/operator)
-- [ ] Wyświetlacz może się zarejestrować (MAC address)
-- [ ] Wyświetlacz może wysyłać heartbeat
-- [ ] Status zmienia się na offline po braku heartbeat
-- [ ] Historia statusów jest zapisywana
+- [ ] MoĹĽna utworzyÄ‡ wyĹ›wietlacz (admin)
+- [ ] MoĹĽna zobaczyÄ‡ listÄ™ wyĹ›wietlaczy (admin/operator)
+- [ ] WyĹ›wietlacz moĹĽe siÄ™ zarejestrowaÄ‡ (MAC address)
+- [ ] WyĹ›wietlacz moĹĽe wysyĹ‚aÄ‡ heartbeat
+- [ ] Status zmienia siÄ™ na offline po braku heartbeat
+- [ ] Historia statusĂłw jest zapisywana
 
-**Deliverable:** System zarządzania wyświetlaczami z podstawowym monitoringiem
+**Deliverable:** System zarzÄ…dzania wyĹ›wietlaczami z podstawowym monitoringiem
 
 ---
 
-### Etap 3: Backend - Upload i Przetwarzanie Treści (1 tydzień)
+### Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci (1 tydzieĹ„)
 
-**Cel:** Upload plików i podstawowe przetwarzanie
+**Cel:** Upload plikĂłw i podstawowe przetwarzanie
 
 **Zadania:**
-1. ✅ Endpoint upload plików (POST /api/content/upload)
-2. ✅ Walidacja typów plików (PDF, Excel, obrazy, video)
-3. ✅ Zapis plików do /content/original/
-4. ✅ Model Content w bazie danych
-5. ✅ Konfiguracja Celery
-6. ✅ Worker do przetwarzania obrazów (Pillow)
-7. ✅ Worker do przetwarzania PDF (pdf2image)
-8. ✅ Worker do przetwarzania Excel (openpyxl)
-9. ✅ Generowanie miniatur
-10. ✅ Tabela processing_jobs
+1. âś… Endpoint upload plikĂłw (POST /api/content/upload)
+2. âś… Walidacja typĂłw plikĂłw (PDF, Excel, obrazy, video)
+3. âś… Zapis plikĂłw do /content/original/
+4. âś… Model Content w bazie danych
+5. âś… Konfiguracja Celery
+6. âś… Worker do przetwarzania obrazĂłw (Pillow)
+7. âś… Worker do przetwarzania PDF (pdf2image)
+8. âś… Worker do przetwarzania Excel (openpyxl)
+9. âś… Generowanie miniatur
+10. âś… Tabela processing_jobs
 
 **Weryfikacja:**
-- [ ] Można wgrać obraz (JPG, PNG)
-- [ ] Można wgrać PDF
-- [ ] Można wgrać Excel
-- [ ] Można wgrać video (MPG)
-- [ ] Pliki są zapisywane w odpowiednich folderach
-- [ ] Miniatury są generowane
+- [ ] MoĹĽna wgraÄ‡ obraz (JPG, PNG)
+- [ ] MoĹĽna wgraÄ‡ PDF
+- [ ] MoĹĽna wgraÄ‡ Excel
+- [ ] MoĹĽna wgraÄ‡ video (MPG)
+- [ ] Pliki sÄ… zapisywane w odpowiednich folderach
+- [ ] Miniatury sÄ… generowane
 - [ ] Status przetwarzania jest widoczny
 
-**Deliverable:** System uploadu i przetwarzania treści
+**Deliverable:** System uploadu i przetwarzania treĹ›ci
 
 ---
 
@@ -6050,630 +6050,630 @@ curl -X GET http://localhost:8000/api/users \
 **Cel:** Transkodowanie video do MP4 (H.264)
 
 **Zadania:**
-1. ✅ Instalacja FFmpeg
-2. ✅ Worker do transkodowania video
-3. ✅ Konfiguracja parametrów (1920×1080, H.264)
-4. ✅ Progress tracking (0-100%)
-5. ✅ Obsługa błędów transkodowania
-6. ✅ Zapis przetworzonego video do /content/processed/
+1. âś… Instalacja FFmpeg
+2. âś… Worker do transkodowania video
+3. âś… Konfiguracja parametrĂłw (1920Ă—1080, H.264)
+4. âś… Progress tracking (0-100%)
+5. âś… ObsĹ‚uga bĹ‚Ä™dĂłw transkodowania
+6. âś… Zapis przetworzonego video do /content/processed/
 
 **Weryfikacja:**
 - [ ] Video MPG jest transkodowane do MP4
-- [ ] Rozdzielczość to 1920×1080
+- [ ] RozdzielczoĹ›Ä‡ to 1920Ă—1080
 - [ ] Codec to H.264
 - [ ] Progress jest widoczny w API
-- [ ] Błędy są logowane
+- [ ] BĹ‚Ä™dy sÄ… logowane
 
 **Deliverable:** System transkodowania video
 
 ---
 
-### Etap 5: Backend - Harmonogramy Treści (1 tydzień)
+### Etap 5: Backend - Harmonogramy TreĹ›ci (1 tydzieĹ„)
 
-**Cel:** System harmonogramów wyświetlania treści
+**Cel:** System harmonogramĂłw wyĹ›wietlania treĹ›ci
 
 **Zadania:**
-1. ✅ Model Schedule w bazie danych
-2. ✅ Endpointy CRUD dla harmonogramów (admin)
-3. ✅ Endpoint pobierania harmonogramu dla wyświetlacza
-4. ✅ Logika wyboru treści na podstawie czasu
-5. ✅ Obsługa dni tygodnia
-6. ✅ Obsługa dat (start_date, end_date)
-7. ✅ Priorytety harmonogramów
-8. ✅ Endpoint GET /api/displays/{id}/schedule
+1. âś… Model Schedule w bazie danych
+2. âś… Endpointy CRUD dla harmonogramĂłw (admin)
+3. âś… Endpoint pobierania harmonogramu dla wyĹ›wietlacza
+4. âś… Logika wyboru treĹ›ci na podstawie czasu
+5. âś… ObsĹ‚uga dni tygodnia
+6. âś… ObsĹ‚uga dat (start_date, end_date)
+7. âś… Priorytety harmonogramĂłw
+8. âś… Endpoint GET /api/displays/{id}/schedule
 
 **Weryfikacja:**
-- [ ] Można utworzyć harmonogram (admin)
+- [ ] MoĹĽna utworzyÄ‡ harmonogram (admin)
 - [ ] Harmonogram ma czas start/end
 - [ ] Harmonogram ma dni tygodnia
-- [ ] Wyświetlacz może pobrać swój harmonogram
-- [ ] Wybór treści działa poprawnie (na podstawie czasu)
-- [ ] Priorytety działają
+- [ ] WyĹ›wietlacz moĹĽe pobraÄ‡ swĂłj harmonogram
+- [ ] WybĂłr treĹ›ci dziaĹ‚a poprawnie (na podstawie czasu)
+- [ ] Priorytety dziaĹ‚ajÄ…
 
-**Deliverable:** System harmonogramów treści
-
----
-
-### Etap 6: Backend - Grupowanie Wyświetlaczy (3 dni)
-
-**Cel:** System grup wyświetlaczy
-
-**Zadania:**
-1. ✅ Model Group w bazie danych
-2. ✅ Endpointy CRUD dla grup (admin)
-3. ✅ Przypisywanie wyświetlaczy do grup
-4. ✅ Typy grup (horizontal, vertical, mixed, single)
-5. ✅ Harmonogramy dla grup (zamiast pojedynczych wyświetlaczy)
-6. ✅ Endpoint GET /api/groups/{id}/displays
-
-**Weryfikacja:**
-- [ ] Można utworzyć grupę (admin)
-- [ ] Można przypisać wyświetlacz do grupy
-- [ ] Harmonogram może być przypisany do grupy
-- [ ] Wszystkie wyświetlacze w grupie otrzymują ten sam harmonogram
-
-**Deliverable:** System grupowania wyświetlaczy
+**Deliverable:** System harmonogramĂłw treĹ›ci
 
 ---
 
-### Etap 7: Backend - Monitoring i Alerty (1 tydzień)
+### Etap 6: Backend - Grupowanie WyĹ›wietlaczy (3 dni)
 
-**Cel:** System monitorowania statusu i alertów
+**Cel:** System grup wyĹ›wietlaczy
 
 **Zadania:**
-1. ✅ Tabela alerts w bazie danych
-2. ✅ Automatyczne tworzenie alertów (connection_lost)
-3. ✅ Automatyczne rozwiązywanie alertów (connection_restored)
-4. ✅ Endpoint GET /api/alerts (lista alertów)
-5. ✅ Endpoint PUT /api/alerts/{id}/resolve (oznaczenie jako rozwiązane)
-6. ✅ Endpoint GET /api/displays/status/all (status wszystkich)
-7. ✅ Tabela display_status_history
-8. ✅ Endpoint GET /api/displays/{id}/status-history
+1. âś… Model Group w bazie danych
+2. âś… Endpointy CRUD dla grup (admin)
+3. âś… Przypisywanie wyĹ›wietlaczy do grup
+4. âś… Typy grup (horizontal, vertical, mixed, single)
+5. âś… Harmonogramy dla grup (zamiast pojedynczych wyĹ›wietlaczy)
+6. âś… Endpoint GET /api/groups/{id}/displays
 
 **Weryfikacja:**
-- [ ] Alert jest tworzony gdy wyświetlacz traci połączenie > 5 min
-- [ ] Alert jest automatycznie rozwiązany gdy połączenie wraca
-- [ ] Można zobaczyć listę aktywnych alertów
-- [ ] Można oznaczyć alert jako rozwiązany
-- [ ] Historia statusów jest zapisywana
-- [ ] Można zobaczyć historię statusów wyświetlacza
+- [ ] MoĹĽna utworzyÄ‡ grupÄ™ (admin)
+- [ ] MoĹĽna przypisaÄ‡ wyĹ›wietlacz do grupy
+- [ ] Harmonogram moĹĽe byÄ‡ przypisany do grupy
+- [ ] Wszystkie wyĹ›wietlacze w grupie otrzymujÄ… ten sam harmonogram
 
-**Deliverable:** System monitorowania i alertów
+**Deliverable:** System grupowania wyĹ›wietlaczy
+
+---
+
+### Etap 7: Backend - Monitoring i Alerty (1 tydzieĹ„)
+
+**Cel:** System monitorowania statusu i alertĂłw
+
+**Zadania:**
+1. âś… Tabela alerts w bazie danych
+2. âś… Automatyczne tworzenie alertĂłw (connection_lost)
+3. âś… Automatyczne rozwiÄ…zywanie alertĂłw (connection_restored)
+4. âś… Endpoint GET /api/alerts (lista alertĂłw)
+5. âś… Endpoint PUT /api/alerts/{id}/resolve (oznaczenie jako rozwiÄ…zane)
+6. âś… Endpoint GET /api/displays/status/all (status wszystkich)
+7. âś… Tabela display_status_history
+8. âś… Endpoint GET /api/displays/{id}/status-history
+
+**Weryfikacja:**
+- [ ] Alert jest tworzony gdy wyĹ›wietlacz traci poĹ‚Ä…czenie > 5 min
+- [ ] Alert jest automatycznie rozwiÄ…zany gdy poĹ‚Ä…czenie wraca
+- [ ] MoĹĽna zobaczyÄ‡ listÄ™ aktywnych alertĂłw
+- [ ] MoĹĽna oznaczyÄ‡ alert jako rozwiÄ…zany
+- [ ] Historia statusĂłw jest zapisywana
+- [ ] MoĹĽna zobaczyÄ‡ historiÄ™ statusĂłw wyĹ›wietlacza
+
+**Deliverable:** System monitorowania i alertĂłw
 
 ---
 
 ### Etap 8: Backend - Raportowanie (3 dni)
 
-**Cel:** System raportów statusu wyświetlaczy
+**Cel:** System raportĂłw statusu wyĹ›wietlaczy
 
 **Zadania:**
-1. ✅ Endpoint GET /api/reports/daily (raport dzienny)
-2. ✅ Endpoint GET /api/reports/weekly (raport tygodniowy)
-3. ✅ Endpoint GET /api/reports/offline (raport offline)
-4. ✅ Obliczanie statystyk (czas online/offline)
-5. ✅ Eksport do CSV (dla admina)
-6. ✅ Eksport do PDF (dla operatora) - opcjonalnie
+1. âś… Endpoint GET /api/reports/daily (raport dzienny)
+2. âś… Endpoint GET /api/reports/weekly (raport tygodniowy)
+3. âś… Endpoint GET /api/reports/offline (raport offline)
+4. âś… Obliczanie statystyk (czas online/offline)
+5. âś… Eksport do CSV (dla admina)
+6. âś… Eksport do PDF (dla operatora) - opcjonalnie
 
 **Weryfikacja:**
 - [ ] Raport dzienny pokazuje statystyki dla dnia
 - [ ] Raport tygodniowy pokazuje statystyki dla tygodnia
-- [ ] Raport offline pokazuje czas offline dla wyświetlacza
-- [ ] Eksport CSV działa
-- [ ] Dane w raportach są poprawne
+- [ ] Raport offline pokazuje czas offline dla wyĹ›wietlacza
+- [ ] Eksport CSV dziaĹ‚a
+- [ ] Dane w raportach sÄ… poprawne
 
 **Deliverable:** System raportowania
 
 ---
 
-### Etap 9: Backend - System Dzwonków (1 tydzień)
+### Etap 9: Backend - System DzwonkĂłw (1 tydzieĹ„)
 
-**Cel:** System harmonogramów i odtwarzania dzwonków szkolnych
+**Cel:** System harmonogramĂłw i odtwarzania dzwonkĂłw szkolnych
 
 **Zadania:**
-1. ✅ Tabela bell_schedules w bazie danych
-2. ✅ Endpointy CRUD dla harmonogramów dzwonków (admin)
-3. ✅ Upload plików dźwiękowych
-4. ✅ Konfiguracja Celery Beat (scheduler)
-5. ✅ Task do sprawdzania harmonogramu dzwonków (co minutę)
-6. ✅ Endpoint POST /api/displays/{id}/play-bell (odtwarzanie dzwonka)
-7. ✅ Tabela bell_history
-8. ✅ Logowanie odtworzeń dzwonków
+1. âś… Tabela bell_schedules w bazie danych
+2. âś… Endpointy CRUD dla harmonogramĂłw dzwonkĂłw (admin)
+3. âś… Upload plikĂłw dĹşwiÄ™kowych
+4. âś… Konfiguracja Celery Beat (scheduler)
+5. âś… Task do sprawdzania harmonogramu dzwonkĂłw (co minutÄ™)
+6. âś… Endpoint POST /api/displays/{id}/play-bell (odtwarzanie dzwonka)
+7. âś… Tabela bell_history
+8. âś… Logowanie odtworzeĹ„ dzwonkĂłw
 
 **Weryfikacja:**
-- [ ] Można utworzyć harmonogram dzwonka (admin)
-- [ ] Można wgrać plik dźwiękowy
-- [ ] Scheduler sprawdza harmonogram co minutę
-- [ ] Komenda odtwarzania jest wysyłana do wyświetlaczy
-- [ ] Historia odtworzeń jest zapisywana
+- [ ] MoĹĽna utworzyÄ‡ harmonogram dzwonka (admin)
+- [ ] MoĹĽna wgraÄ‡ plik dĹşwiÄ™kowy
+- [ ] Scheduler sprawdza harmonogram co minutÄ™
+- [ ] Komenda odtwarzania jest wysyĹ‚ana do wyĹ›wietlaczy
+- [ ] Historia odtworzeĹ„ jest zapisywana
 
-**Deliverable:** System dzwonków szkolnych (backend)
+**Deliverable:** System dzwonkĂłw szkolnych (backend)
 
 ---
 
-### Etap 10: Frontend - Podstawowa Struktura (1 tydzień)
+### Etap 10: Frontend - Podstawowa Struktura (1 tydzieĹ„)
 
 **Cel:** Utworzenie podstawowej struktury frontendu
 
 **Zadania:**
-1. ✅ Utworzenie projektu React + TypeScript
-2. ✅ Konfiguracja routing (React Router)
-3. ✅ Konfiguracja Axios (HTTP client)
-4. ✅ Konfiguracja WebSocket (Socket.io-client)
-5. ✅ Strona logowania
-6. ✅ Layout główny (sidebar, header)
-7. ✅ Dashboard (podstawowy)
-8. ✅ Integracja z backendem (logowanie)
+1. âś… Utworzenie projektu React + TypeScript
+2. âś… Konfiguracja routing (React Router)
+3. âś… Konfiguracja Axios (HTTP client)
+4. âś… Konfiguracja WebSocket (Socket.io-client)
+5. âś… Strona logowania
+6. âś… Layout gĹ‚Ăłwny (sidebar, header)
+7. âś… Dashboard (podstawowy)
+8. âś… Integracja z backendem (logowanie)
 
 **Weryfikacja:**
-- [ ] Aplikacja się uruchamia (npm start)
-- [ ] Można się zalogować
-- [ ] Routing działa
-- [ ] Połączenie z API działa
+- [ ] Aplikacja siÄ™ uruchamia (npm start)
+- [ ] MoĹĽna siÄ™ zalogowaÄ‡
+- [ ] Routing dziaĹ‚a
+- [ ] PoĹ‚Ä…czenie z API dziaĹ‚a
 - [ ] Layout jest responsywny
 
-**Deliverable:** Działający frontend z logowaniem
+**Deliverable:** DziaĹ‚ajÄ…cy frontend z logowaniem
 
 ---
 
-### Etap 11: Frontend - Zarządzanie Wyświetlaczami (1 tydzień)
+### Etap 11: Frontend - ZarzÄ…dzanie WyĹ›wietlaczami (1 tydzieĹ„)
 
-**Cel:** Panel do zarządzania wyświetlaczami
+**Cel:** Panel do zarzÄ…dzania wyĹ›wietlaczami
 
 **Zadania:**
-1. ✅ Lista wyświetlaczy (tabela)
-2. ✅ Formularz dodawania/edycji wyświetlacza (admin)
-3. ✅ Usuwanie wyświetlacza (admin)
-4. ✅ Szczegóły wyświetlacza
-5. ✅ Status wyświetlacza (online/offline) z kolorem
-6. ✅ Historia statusów (wykres)
-7. ✅ Filtry (status, piętro, grupa)
+1. âś… Lista wyĹ›wietlaczy (tabela)
+2. âś… Formularz dodawania/edycji wyĹ›wietlacza (admin)
+3. âś… Usuwanie wyĹ›wietlacza (admin)
+4. âś… SzczegĂłĹ‚y wyĹ›wietlacza
+5. âś… Status wyĹ›wietlacza (online/offline) z kolorem
+6. âś… Historia statusĂłw (wykres)
+7. âś… Filtry (status, piÄ™tro, grupa)
 
 **Weryfikacja:**
-- [ ] Lista wyświetlaczy się wyświetla
-- [ ] Można dodać wyświetlacz (admin)
-- [ ] Można edytować wyświetlacz (admin)
-- [ ] Można usunąć wyświetlacz (admin)
+- [ ] Lista wyĹ›wietlaczy siÄ™ wyĹ›wietla
+- [ ] MoĹĽna dodaÄ‡ wyĹ›wietlacz (admin)
+- [ ] MoĹĽna edytowaÄ‡ wyĹ›wietlacz (admin)
+- [ ] MoĹĽna usunÄ…Ä‡ wyĹ›wietlacz (admin)
 - [ ] Status jest widoczny z kolorem
-- [ ] Historia statusów jest widoczna
+- [ ] Historia statusĂłw jest widoczna
 
-**Deliverable:** Panel zarządzania wyświetlaczami
+**Deliverable:** Panel zarzÄ…dzania wyĹ›wietlaczami
 
 ---
 
-### Etap 12: Frontend - Strona Statusu (1 tydzień)
+### Etap 12: Frontend - Strona Statusu (1 tydzieĹ„)
 
 **Cel:** Strona statusu z monitoringiem w czasie rzeczywistym
 
 **Zadania:**
-1. ✅ Strona statusu wszystkich wyświetlaczy
-2. ✅ Wizualizacja statusu (kolorowe ikony)
-3. ✅ WebSocket dla aktualizacji w czasie rzeczywistym
-4. ✅ Lista aktywnych alertów
-5. ✅ Szczegóły wyświetlacza (modal)
-6. ✅ Filtry i sortowanie
-7. ✅ Odświeżanie automatyczne
+1. âś… Strona statusu wszystkich wyĹ›wietlaczy
+2. âś… Wizualizacja statusu (kolorowe ikony)
+3. âś… WebSocket dla aktualizacji w czasie rzeczywistym
+4. âś… Lista aktywnych alertĂłw
+5. âś… SzczegĂłĹ‚y wyĹ›wietlacza (modal)
+6. âś… Filtry i sortowanie
+7. âś… OdĹ›wieĹĽanie automatyczne
 
 **Weryfikacja:**
-- [ ] Strona statusu wyświetla wszystkie wyświetlacze
+- [ ] Strona statusu wyĹ›wietla wszystkie wyĹ›wietlacze
 - [ ] Status jest aktualizowany w czasie rzeczywistym
-- [ ] Alerty są widoczne
-- [ ] Można zobaczyć szczegóły wyświetlacza
-- [ ] Filtry działają
+- [ ] Alerty sÄ… widoczne
+- [ ] MoĹĽna zobaczyÄ‡ szczegĂłĹ‚y wyĹ›wietlacza
+- [ ] Filtry dziaĹ‚ajÄ…
 
 **Deliverable:** Strona statusu z monitoringiem
 
 ---
 
-### Etap 13: Frontend - Upload Treści (1 tydzień)
+### Etap 13: Frontend - Upload TreĹ›ci (1 tydzieĹ„)
 
-**Cel:** Panel do uploadu i zarządzania treścią
+**Cel:** Panel do uploadu i zarzÄ…dzania treĹ›ciÄ…
 
 **Zadania:**
-1. ✅ Lista treści (tabela z miniaturami)
-2. ✅ Formularz upload (drag & drop)
-3. ✅ Progress bar podczas uploadu
-4. ✅ Status przetwarzania (pending/processing/completed)
-5. ✅ Podgląd treści (obrazy, PDF, video)
-6. ✅ Usuwanie treści (admin)
-7. ✅ Filtry (typ, status)
+1. âś… Lista treĹ›ci (tabela z miniaturami)
+2. âś… Formularz upload (drag & drop)
+3. âś… Progress bar podczas uploadu
+4. âś… Status przetwarzania (pending/processing/completed)
+5. âś… PodglÄ…d treĹ›ci (obrazy, PDF, video)
+6. âś… Usuwanie treĹ›ci (admin)
+7. âś… Filtry (typ, status)
 
 **Weryfikacja:**
-- [ ] Można wgrać plik (drag & drop)
-- [ ] Progress bar działa
+- [ ] MoĹĽna wgraÄ‡ plik (drag & drop)
+- [ ] Progress bar dziaĹ‚a
 - [ ] Status przetwarzania jest widoczny
-- [ ] Można zobaczyć podgląd treści
-- [ ] Można usunąć treść (admin)
+- [ ] MoĹĽna zobaczyÄ‡ podglÄ…d treĹ›ci
+- [ ] MoĹĽna usunÄ…Ä‡ treĹ›Ä‡ (admin)
 
-**Deliverable:** Panel uploadu i zarządzania treścią
+**Deliverable:** Panel uploadu i zarzÄ…dzania treĹ›ciÄ…
 
 ---
 
-### Etap 14: Frontend - Harmonogramy (1 tydzień)
+### Etap 14: Frontend - Harmonogramy (1 tydzieĹ„)
 
-**Cel:** Panel do zarządzania harmonogramami
+**Cel:** Panel do zarzÄ…dzania harmonogramami
 
 **Zadania:**
-1. ✅ Lista harmonogramów
-2. ✅ Formularz tworzenia/edycji harmonogramu
-3. ✅ Wybór treści (dropdown)
-4. ✅ Wybór wyświetlacza/grupy
-5. ✅ Konfiguracja czasu (start/end)
-6. ✅ Konfiguracja dni tygodnia
-7. ✅ Konfiguracja dat (start/end)
-8. ✅ Priorytety
-9. ✅ Kalendarz harmonogramów
+1. âś… Lista harmonogramĂłw
+2. âś… Formularz tworzenia/edycji harmonogramu
+3. âś… WybĂłr treĹ›ci (dropdown)
+4. âś… WybĂłr wyĹ›wietlacza/grupy
+5. âś… Konfiguracja czasu (start/end)
+6. âś… Konfiguracja dni tygodnia
+7. âś… Konfiguracja dat (start/end)
+8. âś… Priorytety
+9. âś… Kalendarz harmonogramĂłw
 
 **Weryfikacja:**
-- [ ] Można utworzyć harmonogram (admin)
-- [ ] Można edytować harmonogram (admin)
-- [ ] Można usunąć harmonogram (admin)
+- [ ] MoĹĽna utworzyÄ‡ harmonogram (admin)
+- [ ] MoĹĽna edytowaÄ‡ harmonogram (admin)
+- [ ] MoĹĽna usunÄ…Ä‡ harmonogram (admin)
 - [ ] Kalendarz pokazuje harmonogramy
-- [ ] Wszystkie opcje konfiguracji działają
+- [ ] Wszystkie opcje konfiguracji dziaĹ‚ajÄ…
 
-**Deliverable:** Panel zarządzania harmonogramami
+**Deliverable:** Panel zarzÄ…dzania harmonogramami
 
 ---
 
 ### Etap 15: Frontend - Raporty (3 dni)
 
-**Cel:** Panel raportów
+**Cel:** Panel raportĂłw
 
 **Zadania:**
-1. ✅ Strona raportów
-2. ✅ Formularz wyboru zakresu dat
-3. ✅ Raport dzienny (tabela + wykres)
-4. ✅ Raport tygodniowy (tabela + wykres)
-5. ✅ Raport offline (tabela)
-6. ✅ Eksport do CSV
-7. ✅ Eksport do PDF (opcjonalnie)
+1. âś… Strona raportĂłw
+2. âś… Formularz wyboru zakresu dat
+3. âś… Raport dzienny (tabela + wykres)
+4. âś… Raport tygodniowy (tabela + wykres)
+5. âś… Raport offline (tabela)
+6. âś… Eksport do CSV
+7. âś… Eksport do PDF (opcjonalnie)
 
 **Weryfikacja:**
-- [ ] Raporty się generują
-- [ ] Wykresy są czytelne
-- [ ] Eksport CSV działa
-- [ ] Dane w raportach są poprawne
+- [ ] Raporty siÄ™ generujÄ…
+- [ ] Wykresy sÄ… czytelne
+- [ ] Eksport CSV dziaĹ‚a
+- [ ] Dane w raportach sÄ… poprawne
 
-**Deliverable:** Panel raportów
+**Deliverable:** Panel raportĂłw
 
 ---
 
-### Etap 16: Frontend - System Dzwonków (1 tydzień)
+### Etap 16: Frontend - System DzwonkĂłw (1 tydzieĹ„)
 
-**Cel:** Panel zarządzania dzwonkami szkolnymi
+**Cel:** Panel zarzÄ…dzania dzwonkami szkolnymi
 
 **Zadania:**
-1. ✅ Lista harmonogramów dzwonków
-2. ✅ Formularz tworzenia/edycji harmonogramu dzwonka
-3. ✅ Upload plików dźwiękowych
-4. ✅ Podgląd odtwarzania dźwięku
-5. ✅ Konfiguracja głośności
-6. ✅ Wybór wyświetlaczy
-7. ✅ Kalendarz dzwonków
-8. ✅ Historia odtworzeń
+1. âś… Lista harmonogramĂłw dzwonkĂłw
+2. âś… Formularz tworzenia/edycji harmonogramu dzwonka
+3. âś… Upload plikĂłw dĹşwiÄ™kowych
+4. âś… PodglÄ…d odtwarzania dĹşwiÄ™ku
+5. âś… Konfiguracja gĹ‚oĹ›noĹ›ci
+6. âś… WybĂłr wyĹ›wietlaczy
+7. âś… Kalendarz dzwonkĂłw
+8. âś… Historia odtworzeĹ„
 
 **Weryfikacja:**
-- [ ] Można utworzyć harmonogram dzwonka (admin)
-- [ ] Można wgrać plik dźwiękowy
-- [ ] Można odsłuchać dźwięk
+- [ ] MoĹĽna utworzyÄ‡ harmonogram dzwonka (admin)
+- [ ] MoĹĽna wgraÄ‡ plik dĹşwiÄ™kowy
+- [ ] MoĹĽna odsĹ‚uchaÄ‡ dĹşwiÄ™k
 - [ ] Kalendarz pokazuje dzwonki
-- [ ] Historia odtworzeń jest widoczna
+- [ ] Historia odtworzeĹ„ jest widoczna
 
-**Deliverable:** Panel zarządzania dzwonkami
+**Deliverable:** Panel zarzÄ…dzania dzwonkami
 
 ---
 
-### Etap 17: Klient - Podstawowa Aplikacja (1 tydzień)
+### Etap 17: Klient - Podstawowa Aplikacja (1 tydzieĹ„)
 
-**Cel:** Podstawowa aplikacja klienta na wyświetlaczu
+**Cel:** Podstawowa aplikacja klienta na wyĹ›wietlaczu
 
 **Zadania:**
-1. ✅ Utworzenie aplikacji Python + PyQt6
-2. ✅ Pełnoekranowy tryb
-3. ✅ Połączenie z API (REST)
-4. ✅ Rejestracja wyświetlacza (MAC address)
-5. ✅ Pobieranie konfiguracji
-6. ✅ Pobieranie harmonogramu
-7. ✅ Podstawowe wyświetlanie obrazu
-8. ✅ Systemd service (autostart)
+1. âś… Utworzenie aplikacji Python + PyQt6
+2. âś… PeĹ‚noekranowy tryb
+3. âś… PoĹ‚Ä…czenie z API (REST)
+4. âś… Rejestracja wyĹ›wietlacza (MAC address)
+5. âś… Pobieranie konfiguracji
+6. âś… Pobieranie harmonogramu
+7. âś… Podstawowe wyĹ›wietlanie obrazu
+8. âś… Systemd service (autostart)
 
 **Weryfikacja:**
-- [ ] Aplikacja uruchamia się
-- [ ] Aplikacja łączy się z serwerem
-- [ ] Wyświetlacz rejestruje się
+- [ ] Aplikacja uruchamia siÄ™
+- [ ] Aplikacja Ĺ‚Ä…czy siÄ™ z serwerem
+- [ ] WyĹ›wietlacz rejestruje siÄ™
 - [ ] Aplikacja pobiera harmonogram
-- [ ] Obraz jest wyświetlany pełnoekranowo
+- [ ] Obraz jest wyĹ›wietlany peĹ‚noekranowo
 - [ ] Aplikacja startuje automatycznie (systemd)
 
 **Deliverable:** Podstawowa aplikacja klienta
 
 ---
 
-### Etap 18: Klient - Wyświetlanie Formatów (1 tydzień)
+### Etap 18: Klient - WyĹ›wietlanie FormatĂłw (1 tydzieĹ„)
 
-**Cel:** Obsługa wszystkich formatów treści
+**Cel:** ObsĹ‚uga wszystkich formatĂłw treĹ›ci
 
 **Zadania:**
-1. ✅ Wyświetlanie obrazów (JPG, PNG)
-2. ✅ Wyświetlanie PDF (pdf2image)
-3. ✅ Wyświetlanie Excel (openpyxl + renderowanie)
-4. ✅ Wyświetlanie video (VLC/mpv)
-5. ✅ Skalowanie do 1920×1080
-6. ✅ Obsługa rotacji 90°
-7. ✅ Przełączanie treści zgodnie z harmonogramem
+1. âś… WyĹ›wietlanie obrazĂłw (JPG, PNG)
+2. âś… WyĹ›wietlanie PDF (pdf2image)
+3. âś… WyĹ›wietlanie Excel (openpyxl + renderowanie)
+4. âś… WyĹ›wietlanie video (VLC/mpv)
+5. âś… Skalowanie do 1920Ă—1080
+6. âś… ObsĹ‚uga rotacji 90Â°
+7. âś… PrzeĹ‚Ä…czanie treĹ›ci zgodnie z harmonogramem
 
 **Weryfikacja:**
-- [ ] Obrazy są wyświetlane poprawnie
-- [ ] PDF jest wyświetlany (pierwsza strona)
-- [ ] Excel jest wyświetlany (renderowany)
+- [ ] Obrazy sÄ… wyĹ›wietlane poprawnie
+- [ ] PDF jest wyĹ›wietlany (pierwsza strona)
+- [ ] Excel jest wyĹ›wietlany (renderowany)
 - [ ] Video jest odtwarzane
-- [ ] Rotacja 90° działa
-- [ ] Przełączanie treści działa zgodnie z harmonogramem
+- [ ] Rotacja 90Â° dziaĹ‚a
+- [ ] PrzeĹ‚Ä…czanie treĹ›ci dziaĹ‚a zgodnie z harmonogramem
 
-**Deliverable:** Klient z pełną obsługą formatów
+**Deliverable:** Klient z peĹ‚nÄ… obsĹ‚ugÄ… formatĂłw
 
 ---
 
-### Etap 19: Klient - Cache i Offline (1 tydzień)
+### Etap 19: Klient - Cache i Offline (1 tydzieĹ„)
 
-**Cel:** System cache i obsługa offline
+**Cel:** System cache i obsĹ‚uga offline
 
 **Zadania:**
-1. ✅ Lokalny cache plików (/cache/)
-2. ✅ Pobieranie treści w tle
-3. ✅ Weryfikacja checksum (integralność)
-4. ✅ Obsługa offline (wyświetlanie z cache)
-5. ✅ Retry połączenia (exponential backoff)
-6. ✅ Queue aktualizacji
-7. ✅ Status cache (co jest, czego brakuje)
-8. ✅ Heartbeat (co 30s)
+1. âś… Lokalny cache plikĂłw (/cache/)
+2. âś… Pobieranie treĹ›ci w tle
+3. âś… Weryfikacja checksum (integralnoĹ›Ä‡)
+4. âś… ObsĹ‚uga offline (wyĹ›wietlanie z cache)
+5. âś… Retry poĹ‚Ä…czenia (exponential backoff)
+6. âś… Queue aktualizacji
+7. âś… Status cache (co jest, czego brakuje)
+8. âś… Heartbeat (co 30s)
 
 **Weryfikacja:**
-- [ ] Pliki są cache'owane lokalnie
-- [ ] Pobieranie w tle działa
-- [ ] Wyświetlanie z cache działa (offline)
-- [ ] Retry działa po powrocie połączenia
-- [ ] Heartbeat jest wysyłany
+- [ ] Pliki sÄ… cache'owane lokalnie
+- [ ] Pobieranie w tle dziaĹ‚a
+- [ ] WyĹ›wietlanie z cache dziaĹ‚a (offline)
+- [ ] Retry dziaĹ‚a po powrocie poĹ‚Ä…czenia
+- [ ] Heartbeat jest wysyĹ‚any
 - [ ] Status cache jest raportowany
 
-**Deliverable:** Klient z cache i obsługą offline
+**Deliverable:** Klient z cache i obsĹ‚ugÄ… offline
 
 ---
 
 ### Etap 20: Klient - Dzwonki (3 dni)
 
-**Cel:** Odtwarzanie dzwonków na wyświetlaczu
+**Cel:** Odtwarzanie dzwonkĂłw na wyĹ›wietlaczu
 
 **Zadania:**
-1. ✅ Odbieranie komendy odtwarzania dzwonka (WebSocket/REST)
-2. ✅ Pobieranie pliku dźwiękowego (jeśli brakuje)
-3. ✅ Odtwarzanie dźwięku (pygame/vlc)
-4. ✅ Konfiguracja głośności
-5. ✅ Logowanie odtworzenia
-6. ✅ Obsługa błędów (brak pliku, brak audio)
+1. âś… Odbieranie komendy odtwarzania dzwonka (WebSocket/REST)
+2. âś… Pobieranie pliku dĹşwiÄ™kowego (jeĹ›li brakuje)
+3. âś… Odtwarzanie dĹşwiÄ™ku (pygame/vlc)
+4. âś… Konfiguracja gĹ‚oĹ›noĹ›ci
+5. âś… Logowanie odtworzenia
+6. âś… ObsĹ‚uga bĹ‚Ä™dĂłw (brak pliku, brak audio)
 
 **Weryfikacja:**
-- [ ] Dzwonek jest odtwarzany o właściwym czasie
-- [ ] Głośność jest poprawna
-- [ ] Błędy są obsługiwane
-- [ ] Logowanie działa
+- [ ] Dzwonek jest odtwarzany o wĹ‚aĹ›ciwym czasie
+- [ ] GĹ‚oĹ›noĹ›Ä‡ jest poprawna
+- [ ] BĹ‚Ä™dy sÄ… obsĹ‚ugiwane
+- [ ] Logowanie dziaĹ‚a
 
-**Deliverable:** Klient z obsługą dzwonków
+**Deliverable:** Klient z obsĹ‚ugÄ… dzwonkĂłw
 
 ---
 
-### Etap 21: Integracja Google Drive (1 tydzień)
+### Etap 21: Integracja Google Drive (1 tydzieĹ„)
 
-**Cel:** Integracja z Google Drive (folder ZASTĘPSTWA)
+**Cel:** Integracja z Google Drive (folder ZASTÄPSTWA)
 
 **Zadania:**
-1. ✅ Konfiguracja OAuth 2.0 (Google)
-2. ✅ Endpoint autoryzacji
-3. ✅ Wybór folderu ZASTĘPSTWA
-4. ✅ Monitorowanie zmian (webhook + polling)
-5. ✅ Automatyczne pobieranie plików
-6. ✅ Upload do systemu
-7. ✅ Automatyczne tworzenie harmonogramów (opcjonalnie)
-8. ✅ Tabela cloud_sync i cloud_files
+1. âś… Konfiguracja OAuth 2.0 (Google)
+2. âś… Endpoint autoryzacji
+3. âś… WybĂłr folderu ZASTÄPSTWA
+4. âś… Monitorowanie zmian (webhook + polling)
+5. âś… Automatyczne pobieranie plikĂłw
+6. âś… Upload do systemu
+7. âś… Automatyczne tworzenie harmonogramĂłw (opcjonalnie)
+8. âś… Tabela cloud_sync i cloud_files
 
 **Weryfikacja:**
-- [ ] Można autoryzować Google Drive (admin)
-- [ ] Można wybrać folder ZASTĘPSTWA
-- [ ] Zmiany są wykrywane
-- [ ] Pliki są automatycznie pobierane
-- [ ] Pliki są uploadowane do systemu
+- [ ] MoĹĽna autoryzowaÄ‡ Google Drive (admin)
+- [ ] MoĹĽna wybraÄ‡ folder ZASTÄPSTWA
+- [ ] Zmiany sÄ… wykrywane
+- [ ] Pliki sÄ… automatycznie pobierane
+- [ ] Pliki sÄ… uploadowane do systemu
 
 **Deliverable:** Integracja Google Drive
 
 ---
 
-### Etap 22: Dzielenie Długich Excel (1 tydzień)
+### Etap 22: Dzielenie DĹ‚ugich Excel (1 tydzieĹ„)
 
-**Cel:** Dzielenie długich plików Excel na grupy monitorów pionowych
+**Cel:** Dzielenie dĹ‚ugich plikĂłw Excel na grupy monitorĂłw pionowych
 
 **Zadania:**
-1. ✅ Analiza pliku Excel (liczba wierszy)
-2. ✅ Algorytm podziału wierszy
-3. ✅ Renderowanie części dla każdego wyświetlacza
-4. ✅ Zapis jako osobne "wersje" treści
-5. ✅ Metadata z konfiguracją podziału
-6. ✅ Klient pobiera odpowiednią wersję
+1. âś… Analiza pliku Excel (liczba wierszy)
+2. âś… Algorytm podziaĹ‚u wierszy
+3. âś… Renderowanie czÄ™Ĺ›ci dla kaĹĽdego wyĹ›wietlacza
+4. âś… Zapis jako osobne "wersje" treĹ›ci
+5. âś… Metadata z konfiguracjÄ… podziaĹ‚u
+6. âś… Klient pobiera odpowiedniÄ… wersjÄ™
 
 **Weryfikacja:**
-- [ ] Długi Excel jest analizowany
-- [ ] Podział na części działa
-- [ ] Każdy wyświetlacz w grupie otrzymuje swoją część
-- [ ] Renderowanie działa poprawnie
-- [ ] Klient wyświetla właściwą część
+- [ ] DĹ‚ugi Excel jest analizowany
+- [ ] PodziaĹ‚ na czÄ™Ĺ›ci dziaĹ‚a
+- [ ] KaĹĽdy wyĹ›wietlacz w grupie otrzymuje swojÄ… czÄ™Ĺ›Ä‡
+- [ ] Renderowanie dziaĹ‚a poprawnie
+- [ ] Klient wyĹ›wietla wĹ‚aĹ›ciwÄ… czÄ™Ĺ›Ä‡
 
-**Deliverable:** System dzielenia długich Excel
+**Deliverable:** System dzielenia dĹ‚ugich Excel
 
 ---
 
-### Etap 23: Graficzny Edytor Układu (1 tydzień)
+### Etap 23: Graficzny Edytor UkĹ‚adu (1 tydzieĹ„)
 
-**Cel:** Graficzny edytor układu monitorów
+**Cel:** Graficzny edytor ukĹ‚adu monitorĂłw
 
 **Zadania:**
-1. ✅ Wizualizacja budynku (piętra)
-2. ✅ Drag & drop wyświetlaczy
-3. ✅ Konfiguracja pozycji (x, y)
-4. ✅ Konfiguracja grup (pionowe 3x)
-5. ✅ Zapis konfiguracji (JSON)
-6. ✅ Walidacja układu
+1. âś… Wizualizacja budynku (piÄ™tra)
+2. âś… Drag & drop wyĹ›wietlaczy
+3. âś… Konfiguracja pozycji (x, y)
+4. âś… Konfiguracja grup (pionowe 3x)
+5. âś… Zapis konfiguracji (JSON)
+6. âś… Walidacja ukĹ‚adu
 
 **Weryfikacja:**
-- [ ] Można przeciągnąć wyświetlacz na wizualizację
+- [ ] MoĹĽna przeciÄ…gnÄ…Ä‡ wyĹ›wietlacz na wizualizacjÄ™
 - [ ] Pozycja jest zapisywana
-- [ ] Grupy są konfigurowane
+- [ ] Grupy sÄ… konfigurowane
 - [ ] Konfiguracja jest zapisywana
 
-**Deliverable:** Graficzny edytor układu
+**Deliverable:** Graficzny edytor ukĹ‚adu
 
 ---
 
-### Etap 24: Symulacja Wyświetlania (1 tydzień)
+### Etap 24: Symulacja WyĹ›wietlania (1 tydzieĹ„)
 
-**Cel:** Publiczna strona symulacji wyświetlania
+**Cel:** Publiczna strona symulacji wyĹ›wietlania
 
 **Zadania:**
-1. ✅ Publiczna strona /simulation (bez logowania)
-2. ✅ Wizualizacja wszystkich wyświetlaczy
-3. ✅ Podgląd aktualnej treści na każdym monitorze
-4. ✅ Status online/offline
-5. ✅ WebSocket dla aktualizacji (publiczny, read-only)
-6. ✅ Przewijanie między piętrami
-7. ✅ Zoom na monitor
+1. âś… Publiczna strona /simulation (bez logowania)
+2. âś… Wizualizacja wszystkich wyĹ›wietlaczy
+3. âś… PodglÄ…d aktualnej treĹ›ci na kaĹĽdym monitorze
+4. âś… Status online/offline
+5. âś… WebSocket dla aktualizacji (publiczny, read-only)
+6. âś… Przewijanie miÄ™dzy piÄ™trami
+7. âś… Zoom na monitor
 
 **Weryfikacja:**
-- [ ] Strona jest dostępna bez logowania
-- [ ] Wizualizacja pokazuje wszystkie wyświetlacze
-- [ ] Podgląd treści działa
+- [ ] Strona jest dostÄ™pna bez logowania
+- [ ] Wizualizacja pokazuje wszystkie wyĹ›wietlacze
+- [ ] PodglÄ…d treĹ›ci dziaĹ‚a
 - [ ] Status jest aktualizowany w czasie rzeczywistym
-- [ ] Przewijanie i zoom działają
+- [ ] Przewijanie i zoom dziaĹ‚ajÄ…
 
 **Deliverable:** Publiczna strona symulacji
 
 ---
 
-### Etap 25: Testy i Optymalizacja (1 tydzień)
+### Etap 25: Testy i Optymalizacja (1 tydzieĹ„)
 
-**Cel:** Testy całego systemu i optymalizacja
+**Cel:** Testy caĹ‚ego systemu i optymalizacja
 
 **Zadania:**
-1. ✅ Testy integracyjne
-2. ✅ Testy wydajnościowe
-3. ✅ Testy obciążeniowe (10 wyświetlaczy)
-4. ✅ Optymalizacja zapytań do bazy
-5. ✅ Optymalizacja cache
-6. ✅ Naprawa błędów
-7. ✅ Dokumentacja użytkownika
+1. âś… Testy integracyjne
+2. âś… Testy wydajnoĹ›ciowe
+3. âś… Testy obciÄ…ĹĽeniowe (10 wyĹ›wietlaczy)
+4. âś… Optymalizacja zapytaĹ„ do bazy
+5. âś… Optymalizacja cache
+6. âś… Naprawa bĹ‚Ä™dĂłw
+7. âś… Dokumentacja uĹĽytkownika
 
 **Weryfikacja:**
-- [ ] Wszystkie funkcje działają
-- [ ] System obsługuje 10 wyświetlaczy
-- [ ] Wydajność jest akceptowalna
-- [ ] Błędy są naprawione
+- [ ] Wszystkie funkcje dziaĹ‚ajÄ…
+- [ ] System obsĹ‚uguje 10 wyĹ›wietlaczy
+- [ ] WydajnoĹ›Ä‡ jest akceptowalna
+- [ ] BĹ‚Ä™dy sÄ… naprawione
 - [ ] Dokumentacja jest kompletna
 
-**Deliverable:** Gotowy system do wdrożenia
+**Deliverable:** Gotowy system do wdroĹĽenia
 
 ---
 
 ## 12. Harmonogram Implementacji (Szacunkowy)
 
-| Etap | Nazwa | Czas | Zależności |
+| Etap | Nazwa | Czas | ZaleĹĽnoĹ›ci |
 |------|-------|------|------------|
-| 0 | Przygotowanie środowiska | 1 tydzień | - |
-| 1 | Backend API - Podstawy | 1 tydzień | 0 |
-| 2 | Backend - Wyświetlacze | 3 dni | 1 |
-| 3 | Backend - Upload treści | 1 tydzień | 1 |
+| 0 | Przygotowanie Ĺ›rodowiska | 1 tydzieĹ„ | - |
+| 1 | Backend API - Podstawy | 1 tydzieĹ„ | 0 |
+| 2 | Backend - WyĹ›wietlacze | 3 dni | 1 |
+| 3 | Backend - Upload treĹ›ci | 1 tydzieĹ„ | 1 |
 | 4 | Backend - Transkodowanie video | 3 dni | 3 |
-| 5 | Backend - Harmonogramy | 1 tydzień | 3 |
+| 5 | Backend - Harmonogramy | 1 tydzieĹ„ | 3 |
 | 6 | Backend - Grupowanie | 3 dni | 2, 5 |
-| 7 | Backend - Monitoring | 1 tydzień | 2 |
+| 7 | Backend - Monitoring | 1 tydzieĹ„ | 2 |
 | 8 | Backend - Raportowanie | 3 dni | 7 |
-| 9 | Backend - Dzwonki | 1 tydzień | 1 |
-| 10 | Frontend - Podstawy | 1 tydzień | 1 |
-| 11 | Frontend - Wyświetlacze | 1 tydzień | 10, 2 |
-| 12 | Frontend - Status | 1 tydzień | 10, 7 |
-| 13 | Frontend - Upload | 1 tydzień | 10, 3 |
-| 14 | Frontend - Harmonogramy | 1 tydzień | 10, 5 |
+| 9 | Backend - Dzwonki | 1 tydzieĹ„ | 1 |
+| 10 | Frontend - Podstawy | 1 tydzieĹ„ | 1 |
+| 11 | Frontend - WyĹ›wietlacze | 1 tydzieĹ„ | 10, 2 |
+| 12 | Frontend - Status | 1 tydzieĹ„ | 10, 7 |
+| 13 | Frontend - Upload | 1 tydzieĹ„ | 10, 3 |
+| 14 | Frontend - Harmonogramy | 1 tydzieĹ„ | 10, 5 |
 | 15 | Frontend - Raporty | 3 dni | 10, 8 |
-| 16 | Frontend - Dzwonki | 1 tydzień | 10, 9 |
-| 17 | Klient - Podstawy | 1 tydzień | 1, 2 |
-| 18 | Klient - Formaty | 1 tydzień | 17, 3 |
-| 19 | Klient - Cache | 1 tydzień | 17, 5 |
+| 16 | Frontend - Dzwonki | 1 tydzieĹ„ | 10, 9 |
+| 17 | Klient - Podstawy | 1 tydzieĹ„ | 1, 2 |
+| 18 | Klient - Formaty | 1 tydzieĹ„ | 17, 3 |
+| 19 | Klient - Cache | 1 tydzieĹ„ | 17, 5 |
 | 20 | Klient - Dzwonki | 3 dni | 17, 9 |
-| 21 | Google Drive | 1 tydzień | 3 |
-| 22 | Dzielenie Excel | 1 tydzień | 3, 6 |
-| 23 | Edytor układu | 1 tydzień | 10, 6 |
-| 24 | Symulacja | 1 tydzień | 10, 12 |
-| 25 | Testy i optymalizacja | 1 tydzień | Wszystkie |
+| 21 | Google Drive | 1 tydzieĹ„ | 3 |
+| 22 | Dzielenie Excel | 1 tydzieĹ„ | 3, 6 |
+| 23 | Edytor ukĹ‚adu | 1 tydzieĹ„ | 10, 6 |
+| 24 | Symulacja | 1 tydzieĹ„ | 10, 12 |
+| 25 | Testy i optymalizacja | 1 tydzieĹ„ | Wszystkie |
 
-**Całkowity czas:** ~20-22 tygodni (5-6 miesięcy)
+**CaĹ‚kowity czas:** ~20-22 tygodni (5-6 miesiÄ™cy)
 
-**Możliwość równoległej pracy:**
-- Etapy 10-16 (Frontend) mogą być równoległe z 17-20 (Klient)
-- Etapy 21-24 mogą być równoległe
+**MoĹĽliwoĹ›Ä‡ rĂłwnolegĹ‚ej pracy:**
+- Etapy 10-16 (Frontend) mogÄ… byÄ‡ rĂłwnolegĹ‚e z 17-20 (Klient)
+- Etapy 21-24 mogÄ… byÄ‡ rĂłwnolegĹ‚e
 
 ---
 
-## 13. Metodyka Weryfikacji Etapów
+## 13. Metodyka Weryfikacji EtapĂłw
 
-### Dla każdego etapu:
+### Dla kaĹĽdego etapu:
 
-1. **Checklist weryfikacji** - lista punktów do sprawdzenia
+1. **Checklist weryfikacji** - lista punktĂłw do sprawdzenia
 2. **Testy manualne** - scenariusze testowe
 3. **Testy API** - curl/Postman
-4. **Testy integracyjne** - połączenie komponentów
-5. **Code review** - przegląd kodu
+4. **Testy integracyjne** - poĹ‚Ä…czenie komponentĂłw
+5. **Code review** - przeglÄ…d kodu
 
-### Przykładowy proces weryfikacji:
+### PrzykĹ‚adowy proces weryfikacji:
 
 1. **Przygotowanie:**
-   - Sprawdzenie czy wszystkie zależności są spełnione
-   - Przygotowanie środowiska testowego
+   - Sprawdzenie czy wszystkie zaleĹĽnoĹ›ci sÄ… speĹ‚nione
+   - Przygotowanie Ĺ›rodowiska testowego
 
 2. **Testy funkcjonalne:**
    - Wykonanie wszystkich scenariuszy z checklist
-   - Sprawdzenie czy wszystkie funkcje działają
+   - Sprawdzenie czy wszystkie funkcje dziaĹ‚ajÄ…
 
 3. **Testy niefunkcjonalne:**
-   - Wydajność
-   - Bezpieczeństwo
-   - Obsługa błędów
+   - WydajnoĹ›Ä‡
+   - BezpieczeĹ„stwo
+   - ObsĹ‚uga bĹ‚Ä™dĂłw
 
 4. **Dokumentacja:**
    - Aktualizacja dokumentacji
-   - Notatki z testów
+   - Notatki z testĂłw
 
 5. **Zatwierdzenie:**
-   - Zatwierdzenie przez zespół
-   - Przejście do następnego etapu
+   - Zatwierdzenie przez zespĂłĹ‚
+   - PrzejĹ›cie do nastÄ™pnego etapu
 
 ---
 
-**Gotowe do implementacji etapowej!** 🚀
+**Gotowe do implementacji etapowej!** đźš€
 
 ### Faza 1: MVP (MIN-imum)
 1. Backend API (FastAPI)
 2. Baza danych (PostgreSQL)
 3. Panel webowy (React) - podstawowy
-4. Upload treści (PDF, Excel, obrazy, video)
+4. Upload treĹ›ci (PDF, Excel, obrazy, video)
 5. Transkodowanie video (FFmpeg)
-6. Klient wyświetlacza (Python + PyQt6)
+6. Klient wyĹ›wietlacza (Python + PyQt6)
 7. Podstawowe harmonogramy
-8. Grupowanie wyświetlaczy (proste)
-9. Obsługa rotacji 90°
+8. Grupowanie wyĹ›wietlaczy (proste)
+9. ObsĹ‚uga rotacji 90Â°
 
 **Czas: ~6-8 tygodni**
 
 ### Faza 2: Rozszerzenia
 1. Integracja Google Drive
-2. Dzielenie długich plików Excel
-3. Graficzny edytor układu
-4. Symulacja wyświetlania
-5. Harmonogramy włączania TV (podstawowe)
+2. Dzielenie dĹ‚ugich plikĂłw Excel
+3. Graficzny edytor ukĹ‚adu
+4. Symulacja wyĹ›wietlania
+5. Harmonogramy wĹ‚Ä…czania TV (podstawowe)
 6. WebSocket dla statusu w czasie rzeczywistym
 
 **Czas: ~4-6 tygodni**
@@ -6692,17 +6692,17 @@ curl -X GET http://localhost:8000/api/users \
 ## 12. Pytania i Uwagi
 
 ### Do doprecyzowania:
-1. **Harmonogramy TV**: Czy potrzebne różne czasy dla różnych dni tygodnia? (np. weekendy)
-2. **Dzielenie Excel**: Czy zawsze dzielić równo, czy możliwość ręcznej konfiguracji zakresów?
-3. **Video**: Czy potrzebne różne wersje jakościowe dla różnych wyświetlaczy?
-4. **Backup**: Jak często i gdzie przechowywać?
-5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy błędach?
+1. **Harmonogramy TV**: Czy potrzebne rĂłĹĽne czasy dla rĂłĹĽnych dni tygodnia? (np. weekendy)
+2. **Dzielenie Excel**: Czy zawsze dzieliÄ‡ rĂłwno, czy moĹĽliwoĹ›Ä‡ rÄ™cznej konfiguracji zakresĂłw?
+3. **Video**: Czy potrzebne rĂłĹĽne wersje jakoĹ›ciowe dla rĂłĹĽnych wyĹ›wietlaczy?
+4. **Backup**: Jak czÄ™sto i gdzie przechowywaÄ‡?
+5. **Monitoring**: Czy potrzebne powiadomienia email/SMS przy bĹ‚Ä™dach?
 
 ### Zalecenia:
-- Rozpoczęcie od MVP (Faza 1)
-- Testowanie na 1-2 wyświetlaczach przed pełnym wdrożeniem
-- Dokumentacja dla operatora (jak używać panelu)
-- Backup przed każdą większą zmianą
+- RozpoczÄ™cie od MVP (Faza 1)
+- Testowanie na 1-2 wyĹ›wietlaczach przed peĹ‚nym wdroĹĽeniem
+- Dokumentacja dla operatora (jak uĹĽywaÄ‡ panelu)
+- Backup przed kaĹĽdÄ… wiÄ™kszÄ… zmianÄ…
 
 ---
 
@@ -6720,104 +6720,104 @@ curl -X GET http://localhost:8000/api/users \
 | Video player | VLC Python / mpv |
 | Google Drive | google-api-python-client |
 | WebSocket | Socket.io / FastAPI WebSocket |
-| Serwer plików | Nginx |
+| Serwer plikĂłw | Nginx |
 | System klienta | Ubuntu/Debian + systemd |
 
 ---
 
-**Gotowe do implementacji!** 🚀
+**Gotowe do implementacji!** đźš€
 
 
 ```
 
-Zaktualizowałem dokument. Dodane elementy:
+ZaktualizowaĹ‚em dokument. Dodane elementy:
 
 ## Nowe sekcje:
 
-### 1. **System Monitorowania Statusu Wyświetlaczy (10A)**
+### 1. **System Monitorowania Statusu WyĹ›wietlaczy (10A)**
 - Heartbeat co 30 sekund
 - Wykrywanie braku komunikacji (>60s = offline, >5min = alert)
-- Strona statusu z wizualizacją (🟢🔴🟡)
-- System alertów (connection_lost, connection_restored, error, cache_missing)
+- Strona statusu z wizualizacjÄ… (đźź˘đź”´đźźˇ)
+- System alertĂłw (connection_lost, connection_restored, error, cache_missing)
 - Raportowanie (dzienny, tygodniowy, offline)
 - Eksport do CSV/PDF
 
-### 2. **System "Przyjaznych Dzwonków" Szkolnych (10B)**
-- Harmonogramy dzwonków (lekcja, przerwa, obiad, koniec)
-- Upload plików dźwiękowych (MP3, WAV, OGG)
-- Odtwarzanie na wyświetlaczach
-- Konfiguracja głośności i wyboru wyświetlaczy
-- Historia odtworzeń i logi
+### 2. **System "Przyjaznych DzwonkĂłw" Szkolnych (10B)**
+- Harmonogramy dzwonkĂłw (lekcja, przerwa, obiad, koniec)
+- Upload plikĂłw dĹşwiÄ™kowych (MP3, WAV, OGG)
+- Odtwarzanie na wyĹ›wietlaczach
+- Konfiguracja gĹ‚oĹ›noĹ›ci i wyboru wyĹ›wietlaczy
+- Historia odtworzeĹ„ i logi
 
-### 3. **Środowisko Hyper-V (10C)**
+### 3. **Ĺšrodowisko Hyper-V (10C)**
 - Konfiguracja maszyny wirtualnej (specyfikacje)
 - Konfiguracja sieci (bridge mode)
 - Backup i odzyskiwanie
 - Monitoring maszyny wirtualnej
 
-### 4. **Szczegółowy Plan Etapowy (11)**
-25 etapów z:
-- Cel każdego etapu
-- Lista zadań (checklist)
-- Weryfikacja (co sprawdzić)
-- Deliverable (co dostarczyć)
-- Testy (jak testować)
+### 4. **SzczegĂłĹ‚owy Plan Etapowy (11)**
+25 etapĂłw z:
+- Cel kaĹĽdego etapu
+- Lista zadaĹ„ (checklist)
+- Weryfikacja (co sprawdziÄ‡)
+- Deliverable (co dostarczyÄ‡)
+- Testy (jak testowaÄ‡)
 
-Każdy etap jest:
-- Niezależny i weryfikowalny
-- Modyfikowalny (można zmieniać kolejność)
+KaĹĽdy etap jest:
+- NiezaleĹĽny i weryfikowalny
+- Modyfikowalny (moĹĽna zmieniaÄ‡ kolejnoĹ›Ä‡)
 - Testowalny (jasne kryteria weryfikacji)
 
-## Struktura etapów:
+## Struktura etapĂłw:
 
 - Etapy 0-9: Backend (serwer)
 - Etapy 10-16: Frontend (panel webowy)
-- Etapy 17-20: Klient (wyświetlacze)
+- Etapy 17-20: Klient (wyĹ›wietlacze)
 - Etapy 21-24: Rozszerzenia (Google Drive, dzielenie Excel, etc.)
 - Etap 25: Testy i optymalizacja
 
-Szacunkowy czas: 20-22 tygodnie (5-6 miesięcy), z możliwością pracy równoległej.
+Szacunkowy czas: 20-22 tygodnie (5-6 miesiÄ™cy), z moĹĽliwoĹ›ciÄ… pracy rĂłwnolegĹ‚ej.
 
-Dokument zawiera teraz pełną specyfikację gotową do implementacji etapowej. Każdy etap można weryfikować i modyfikować niezależnie.
+Dokument zawiera teraz peĹ‚nÄ… specyfikacjÄ™ gotowÄ… do implementacji etapowej. KaĹĽdy etap moĹĽna weryfikowaÄ‡ i modyfikowaÄ‡ niezaleĹĽnie.
 
 ---
 
 **User**
 
-przystąp do realizacji. staraj się aby pliki były stosunkowo krótkie. stosuj technikę podziału  pracy tak aby przy wyczerpaniu limitu agenta można było powrócić do pracy. 
+przystÄ…p do realizacji. staraj siÄ™ aby pliki byĹ‚y stosunkowo krĂłtkie. stosuj technikÄ™ podziaĹ‚u  pracy tak aby przy wyczerpaniu limitu agenta moĹĽna byĹ‚o powrĂłciÄ‡ do pracy. 
 
 ---
 
 **Cursor**
 
-Tworzenie struktury projektu i rozpoczęcie od Etapu 0. Dzielę pracę na małe, modułowe pliki, aby łatwo kontynuować.
+Tworzenie struktury projektu i rozpoczÄ™cie od Etapu 0. DzielÄ™ pracÄ™ na maĹ‚e, moduĹ‚owe pliki, aby Ĺ‚atwo kontynuowaÄ‡.
 
 
-Tworzenie struktury projektu i podstawowych plików konfiguracyjnych.
+Tworzenie struktury projektu i podstawowych plikĂłw konfiguracyjnych.
 
 
 ```markdown
 # System Digital Signage
 
-System zarządzania treścią dla wyświetlaczy informacyjnych w szkole.
+System zarzÄ…dzania treĹ›ciÄ… dla wyĹ›wietlaczy informacyjnych w szkole.
 
 ## Struktura Projektu
 
 ```
-digital_signage/
-├── backend/          # Backend API (FastAPI)
-├── frontend/         # Panel webowy (React)
-├── client/           # Klient wyświetlacza (Python)
-├── docs/             # Dokumentacja
-└── scripts/          # Skrypty pomocnicze
+studio_suite/
+â”śâ”€â”€ backend/          # Backend API (FastAPI)
+â”śâ”€â”€ frontend/         # Panel webowy (React)
+â”śâ”€â”€ client/           # Klient wyĹ›wietlacza (Python)
+â”śâ”€â”€ docs/             # Dokumentacja
+â””â”€â”€ scripts/          # Skrypty pomocnicze
 ```
 
 ## Status Implementacji
 
-- [x] Etap 0: Przygotowanie środowiska
+- [x] Etap 0: Przygotowanie Ĺ›rodowiska
 - [ ] Etap 1: Backend API - Podstawy
-- [ ] Etap 2: Backend - Wyświetlacze
-- [ ] Etap 3: Backend - Upload treści
+- [ ] Etap 2: Backend - WyĹ›wietlacze
+- [ ] Etap 3: Backend - Upload treĹ›ci
 - [ ] Etap 4: Backend - Transkodowanie video
 - [ ] Etap 5: Backend - Harmonogramy
 - [ ] Etap 6: Backend - Grupowanie
@@ -6835,7 +6835,7 @@ digital_signage/
 
 ## Instalacja
 
-Zobacz dokumentację w poszczególnych katalogach.
+Zobacz dokumentacjÄ™ w poszczegĂłlnych katalogach.
 
 ```
 
@@ -6894,9 +6894,9 @@ Thumbs.db
 ```
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
 **Status:** W trakcie
 
@@ -6911,11 +6911,11 @@ Thumbs.db
 
 **Notatki:**
 - Projekt utworzony: {{ data }}
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 
 ---
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 1. Utworzenie struktury backend
 2. Utworzenie struktury frontend
@@ -6933,19 +6933,19 @@ Backend systemu digital signage oparty na FastAPI.
 
 ```
 backend/
-├── app/
-│   ├── __init__.py
-│   ├── main.py           # Główny plik aplikacji
-│   ├── config.py         # Konfiguracja
-│   ├── database.py       # Połączenie z bazą danych
-│   ├── models/           # Modele SQLAlchemy
-│   ├── schemas/          # Schematy Pydantic
-│   ├── api/              # Endpointy API
-│   ├── services/         # Logika biznesowa
-│   └── utils/            # Narzędzia pomocnicze
-├── alembic/              # Migracje bazy danych
-├── requirements.txt
-└── .env.example
+â”śâ”€â”€ app/
+â”‚   â”śâ”€â”€ __init__.py
+â”‚   â”śâ”€â”€ main.py           # GĹ‚Ăłwny plik aplikacji
+â”‚   â”śâ”€â”€ config.py         # Konfiguracja
+â”‚   â”śâ”€â”€ database.py       # PoĹ‚Ä…czenie z bazÄ… danych
+â”‚   â”śâ”€â”€ models/           # Modele SQLAlchemy
+â”‚   â”śâ”€â”€ schemas/          # Schematy Pydantic
+â”‚   â”śâ”€â”€ api/              # Endpointy API
+â”‚   â”śâ”€â”€ services/         # Logika biznesowa
+â”‚   â””â”€â”€ utils/            # NarzÄ™dzia pomocnicze
+â”śâ”€â”€ alembic/              # Migracje bazy danych
+â”śâ”€â”€ requirements.txt
+â””â”€â”€ .env.example
 ```
 
 ## Instalacja
@@ -6963,7 +6963,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-API dostępne pod: http://localhost:8000
+API dostÄ™pne pod: http://localhost:8000
 Dokumentacja: http://localhost:8000/docs
 
 ```
@@ -6988,7 +6988,7 @@ python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-multipart==0.0.6
 
-# Przetwarzanie plików
+# Przetwarzanie plikĂłw
 Pillow==10.1.0
 pdf2image==1.16.3
 openpyxl==3.1.2
@@ -7004,7 +7004,7 @@ google-auth==2.25.2
 google-auth-httplib2==0.1.1
 google-auth-oauthlib==1.1.0
 
-# Narzędzia
+# NarzÄ™dzia
 python-dotenv==1.0.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
@@ -7035,7 +7035,7 @@ class Settings(BaseSettings):
     """Ustawienia aplikacji"""
     
     # Database
-    DATABASE_URL: str = "postgresql://user:password@localhost:5432/digital_signage"
+    DATABASE_URL: str = "postgresql://user:password@localhost:5432/studio_suite"
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
@@ -7110,7 +7110,7 @@ def get_db():
 
 ```python
 """
-Główny plik aplikacji FastAPI
+GĹ‚Ăłwny plik aplikacji FastAPI
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -7120,7 +7120,7 @@ from app.config import settings
 # Utworzenie aplikacji
 app = FastAPI(
     title="Digital Signage API",
-    description="API dla systemu zarządzania treścią wyświetlaczy",
+    description="API dla systemu zarzÄ…dzania treĹ›ciÄ… wyĹ›wietlaczy",
     version="0.1.0",
     debug=settings.DEBUG
 )
@@ -7128,7 +7128,7 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # W produkcji ustawić konkretne domeny
+    allow_origins=["*"],  # W produkcji ustawiÄ‡ konkretne domeny
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -7137,7 +7137,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    """Endpoint główny"""
+    """Endpoint gĹ‚Ăłwny"""
     return {
         "message": "Digital Signage API",
         "version": "0.1.0",
@@ -7213,7 +7213,7 @@ version_path_separator = os  # Use os.pathsep. Default configuration used for ne
 # are written from script.py.mako
 # output_encoding = utf-8
 
-sqlalchemy.url = postgresql://user:password@localhost:5432/digital_signage
+sqlalchemy.url = postgresql://user:password@localhost:5432/studio_suite
 
 
 [post_write_hooks]
@@ -7371,30 +7371,30 @@ def downgrade() -> None:
 
 echo "Instalacja backendu Digital Signage..."
 
-# Tworzenie wirtualnego środowiska
+# Tworzenie wirtualnego Ĺ›rodowiska
 cd backend
 python3 -m venv venv
 source venv/bin/activate
 
-# Instalacja zależności
+# Instalacja zaleĹĽnoĹ›ci
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Tworzenie katalogów dla treści
+# Tworzenie katalogĂłw dla treĹ›ci
 mkdir -p content/original
 mkdir -p content/processed
 mkdir -p content/thumbnails
 
-# Kopiowanie .env.example do .env (jeśli nie istnieje)
+# Kopiowanie .env.example do .env (jeĹ›li nie istnieje)
 if [ ! -f .env ]; then
     cp .env.example .env
-    echo "Utworzono plik .env - uzupełnij konfigurację!"
+    echo "Utworzono plik .env - uzupeĹ‚nij konfiguracjÄ™!"
 fi
 
 echo "Backend zainstalowany!"
-echo "Następne kroki:"
+echo "NastÄ™pne kroki:"
 echo "1. Skonfiguruj .env (DATABASE_URL, REDIS_URL, SECRET_KEY)"
-echo "2. Utwórz bazę danych PostgreSQL"
+echo "2. UtwĂłrz bazÄ™ danych PostgreSQL"
 echo "3. Uruchom migracje: alembic upgrade head"
 echo "4. Uruchom serwer: uvicorn app.main:app --reload"
 
@@ -7427,7 +7427,7 @@ sudo apt update
 sudo apt upgrade -y
 ```
 
-### 2. Instalacja podstawowych narzędzi
+### 2. Instalacja podstawowych narzÄ™dzi
 ```bash
 sudo apt install -y git curl wget build-essential
 ```
@@ -7440,9 +7440,9 @@ sudo systemctl enable postgresql
 
 # Utworzenie bazy danych
 sudo -u postgres psql
-CREATE DATABASE digital_signage;
+CREATE DATABASE studio_suite;
 CREATE USER signage_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE digital_signage TO signage_user;
+GRANT ALL PRIVILEGES ON DATABASE studio_suite TO signage_user;
 \q
 ```
 
@@ -7481,25 +7481,25 @@ sudo ufw enable
 
 ### Backend
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Edytuj .env i uzupełnij konfigurację
+# Edytuj .env i uzupeĹ‚nij konfiguracjÄ™
 ```
 
 ### Frontend
 ```bash
-cd digital_signage/frontend
+cd studio_suite/frontend
 npm install
 cp .env.example .env
-# Edytuj .env i uzupełnij konfigurację
+# Edytuj .env i uzupeĹ‚nij konfiguracjÄ™
 ```
 
 ### Klient
 ```bash
-cd digital_signage/client
+cd studio_suite/client
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -7507,7 +7507,7 @@ pip install -r requirements.txt
 
 ## Konfiguracja
 
-Zobacz szczegóły w plikach `.env.example` w każdym katalogu.
+Zobacz szczegĂłĹ‚y w plikach `.env.example` w kaĹĽdym katalogu.
 
 ## Uruchomienie
 
@@ -7525,30 +7525,30 @@ cd frontend
 npm start
 ```
 
-### Klient (na wyświetlaczu)
+### Klient (na wyĹ›wietlaczu)
 ```bash
 cd client
 source venv/bin/activate
 python main.py
 ```
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
-1. Utworzenie pierwszego użytkownika admin
-2. Konfiguracja wyświetlaczy
-3. Upload pierwszej treści
-4. Konfiguracja harmonogramów
+1. Utworzenie pierwszego uĹĽytkownika admin
+2. Konfiguracja wyĹ›wietlaczy
+3. Upload pierwszej treĹ›ci
+4. Konfiguracja harmonogramĂłw
 
 ```
 
-Tworzenie pliku konfiguracyjnego i przejście do Etapu 1: modele bazy danych i autentykacja.
+Tworzenie pliku konfiguracyjnego i przejĹ›cie do Etapu 1: modele bazy danych i autentykacja.
 
 
 ```plaintext
-# Skopiuj ten plik jako .env i uzupełnij wartości
+# Skopiuj ten plik jako .env i uzupeĹ‚nij wartoĹ›ci
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/digital_signage
+DATABASE_URL=postgresql://user:password@localhost:5432/studio_suite
 
 # Redis
 REDIS_URL=redis://localhost:6379/0
@@ -7601,7 +7601,7 @@ __all__ = [
 
 ```python
 """
-Model użytkownika
+Model uĹĽytkownika
 """
 from sqlalchemy import Column, Integer, String, DateTime, Enum
 from sqlalchemy.sql import func
@@ -7611,13 +7611,13 @@ from app.database import Base
 
 
 class UserRole(str, enum.Enum):
-    """Role użytkowników"""
+    """Role uĹĽytkownikĂłw"""
     ADMIN = "admin"
     OPERATOR = "operator"
 
 
 class User(Base):
-    """Model użytkownika"""
+    """Model uĹĽytkownika"""
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -7634,7 +7634,7 @@ class User(Base):
 
 ```python
 """
-Model wyświetlacza
+Model wyĹ›wietlacza
 """
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, CheckConstraint
 from sqlalchemy.sql import func
@@ -7644,7 +7644,7 @@ from app.database import Base
 
 
 class Display(Base):
-    """Model wyświetlacza"""
+    """Model wyĹ›wietlacza"""
     __tablename__ = "displays"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -7684,7 +7684,7 @@ class Display(Base):
 
 ```python
 """
-Model grupy wyświetlaczy
+Model grupy wyĹ›wietlaczy
 """
 from sqlalchemy import Column, Integer, String, DateTime, JSON
 from sqlalchemy.sql import func
@@ -7694,7 +7694,7 @@ from app.database import Base
 
 
 class Group(Base):
-    """Model grupy wyświetlaczy"""
+    """Model grupy wyĹ›wietlaczy"""
     __tablename__ = "groups"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -7714,7 +7714,7 @@ class Group(Base):
 
 ```python
 """
-Model treści
+Model treĹ›ci
 """
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Numeric, ForeignKey, JSON
 from sqlalchemy.sql import func
@@ -7724,7 +7724,7 @@ from app.database import Base
 
 
 class Content(Base):
-    """Model treści"""
+    """Model treĹ›ci"""
     __tablename__ = "content"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -7758,7 +7758,7 @@ from app.database import Base
 
 
 class Schedule(Base):
-    """Model harmonogramu wyświetlania treści"""
+    """Model harmonogramu wyĹ›wietlania treĹ›ci"""
     __tablename__ = "schedules"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -7799,7 +7799,7 @@ __all__ = [
 
 ```python
 """
-Schematy użytkownika
+Schematy uĹĽytkownika
 """
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
@@ -7809,13 +7809,13 @@ from app.models.user import UserRole
 
 
 class UserBase(BaseModel):
-    """Podstawowy schemat użytkownika"""
+    """Podstawowy schemat uĹĽytkownika"""
     username: str
     role: UserRole
 
 
 class UserCreate(UserBase):
-    """Schemat tworzenia użytkownika"""
+    """Schemat tworzenia uĹĽytkownika"""
     password: str
 
 
@@ -7826,7 +7826,7 @@ class UserLogin(BaseModel):
 
 
 class UserResponse(UserBase):
-    """Schemat odpowiedzi użytkownika"""
+    """Schemat odpowiedzi uĹĽytkownika"""
     id: int
     created_at: datetime
     last_login: Optional[datetime] = None
@@ -7844,7 +7844,7 @@ from pydantic import BaseModel
 
 
 class Token(BaseModel):
-    """Schemat tokena dostępu"""
+    """Schemat tokena dostÄ™pu"""
     access_token: str
     token_type: str = "bearer"
 
@@ -7858,7 +7858,7 @@ class TokenData(BaseModel):
 
 ```python
 """
-Narzędzia bezpieczeństwa - hashowanie haseł i JWT
+NarzÄ™dzia bezpieczeĹ„stwa - hashowanie haseĹ‚ i JWT
 """
 from datetime import datetime, timedelta
 from typing import Optional
@@ -7867,17 +7867,17 @@ from passlib.context import CryptContext
 
 from app.config import settings
 
-# Context do hashowania haseł
+# Context do hashowania haseĹ‚
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Weryfikacja hasła"""
+    """Weryfikacja hasĹ‚a"""
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
-    """Hashowanie hasła"""
+    """Hashowanie hasĹ‚a"""
     return pwd_context.hash(password)
 
 
@@ -7913,7 +7913,7 @@ Endpointy API
 
 ```python
 """
-Dependencies dla endpointów API
+Dependencies dla endpointĂłw API
 """
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -7930,7 +7930,7 @@ def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> User:
-    """Pobranie aktualnego użytkownika z tokena"""
+    """Pobranie aktualnego uĹĽytkownika z tokena"""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -7955,7 +7955,7 @@ def get_current_user(
 def get_current_admin(
     current_user: User = Depends(get_current_user)
 ) -> User:
-    """Pobranie aktualnego użytkownika admin"""
+    """Pobranie aktualnego uĹĽytkownika admin"""
     if current_user.role != UserRole.ADMIN:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -7995,7 +7995,7 @@ async def login(
     user_credentials: UserLogin,
     db: Session = Depends(get_db)
 ):
-    """Logowanie użytkownika"""
+    """Logowanie uĹĽytkownika"""
     user = db.query(User).filter(User.username == user_credentials.username).first()
     
     if not user or not verify_password(user_credentials.password, user.password_hash):
@@ -8025,8 +8025,8 @@ async def register(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
-    """Rejestracja nowego użytkownika (tylko admin)"""
-    # Sprawdzenie czy użytkownik już istnieje
+    """Rejestracja nowego uĹĽytkownika (tylko admin)"""
+    # Sprawdzenie czy uĹĽytkownik juĹĽ istnieje
     existing_user = db.query(User).filter(User.username == user_data.username).first()
     if existing_user:
         raise HTTPException(
@@ -8034,7 +8034,7 @@ async def register(
             detail="Username already registered"
         )
     
-    # Tworzenie użytkownika
+    # Tworzenie uĹĽytkownika
     hashed_password = get_password_hash(user_data.password)
     db_user = User(
         username=user_data.username,
@@ -8051,7 +8051,7 @@ async def register(
 
 ```python
 """
-Główny plik aplikacji FastAPI
+GĹ‚Ăłwny plik aplikacji FastAPI
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8062,7 +8062,7 @@ from app.api.v1 import auth
 # Utworzenie aplikacji
 app = FastAPI(
     title="Digital Signage API",
-    description="API dla systemu zarządzania treścią wyświetlaczy",
+    description="API dla systemu zarzÄ…dzania treĹ›ciÄ… wyĹ›wietlaczy",
     version="0.1.0",
     debug=settings.DEBUG
 )
@@ -8070,19 +8070,19 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # W produkcji ustawić konkretne domeny
+    allow_origins=["*"],  # W produkcji ustawiÄ‡ konkretne domeny
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Rejestracja routerów
+# Rejestracja routerĂłw
 app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
 async def root():
-    """Endpoint główny"""
+    """Endpoint gĹ‚Ăłwny"""
     return {
         "message": "Digital Signage API",
         "version": "0.1.0",
@@ -8107,7 +8107,7 @@ from typing import Optional
 
 
 class Token(BaseModel):
-    """Schemat tokena dostępu"""
+    """Schemat tokena dostÄ™pu"""
     access_token: str
     token_type: str = "bearer"
 
@@ -8191,7 +8191,7 @@ else:
 ```python
 #!/usr/bin/env python3
 """
-Skrypt do utworzenia użytkownika admin
+Skrypt do utworzenia uĹĽytkownika admin
 """
 import sys
 from sqlalchemy.orm import Session
@@ -8205,17 +8205,17 @@ Base.metadata.create_all(bind=engine)
 
 
 def create_admin(username: str, password: str):
-    """Utworzenie użytkownika admin"""
+    """Utworzenie uĹĽytkownika admin"""
     db: Session = SessionLocal()
     
     try:
-        # Sprawdzenie czy użytkownik już istnieje
+        # Sprawdzenie czy uĹĽytkownik juĹĽ istnieje
         existing_user = db.query(User).filter(User.username == username).first()
         if existing_user:
-            print(f"Użytkownik {username} już istnieje!")
+            print(f"UĹĽytkownik {username} juĹĽ istnieje!")
             return
         
-        # Utworzenie użytkownika
+        # Utworzenie uĹĽytkownika
         hashed_password = get_password_hash(password)
         admin_user = User(
             username=username,
@@ -8224,10 +8224,10 @@ def create_admin(username: str, password: str):
         )
         db.add(admin_user)
         db.commit()
-        print(f"Utworzono użytkownika admin: {username}")
+        print(f"Utworzono uĹĽytkownika admin: {username}")
         
     except Exception as e:
-        print(f"Błąd: {e}")
+        print(f"BĹ‚Ä…d: {e}")
         db.rollback()
     finally:
         db.close()
@@ -8235,7 +8235,7 @@ def create_admin(username: str, password: str):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Użycie: python create_admin.py <username> <password>")
+        print("UĹĽycie: python create_admin.py <username> <password>")
         sys.exit(1)
     
     username = sys.argv[1]
@@ -8244,15 +8244,15 @@ if __name__ == "__main__":
 
 ```
 
-Aktualizowanie dokumentacji postępu i tworzenie pliku z instrukcjami kontynuacji:
+Aktualizowanie dokumentacji postÄ™pu i tworzenie pliku z instrukcjami kontynuacji:
 
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Utworzenie struktury projektu
@@ -8262,12 +8262,12 @@ Aktualizowanie dokumentacji postępu i tworzenie pliku z instrukcjami kontynuacj
 - [x] Dokumentacja instalacji
 
 **Notatki:**
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 - Backend: podstawowa struktura utworzona
 
 ---
 
-## Etap 1: Backend API - Podstawy 🔄
+## Etap 1: Backend API - Podstawy đź”„
 
 **Status:** W trakcie
 
@@ -8281,18 +8281,18 @@ Aktualizowanie dokumentacji postępu i tworzenie pliku z instrukcjami kontynuacj
 - [x] Dependencies (get_current_user, get_current_admin)
 - [x] Skrypt tworzenia admina
 
-**Następne kroki:**
+**NastÄ™pne kroki:**
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów autentykacji
-3. Przejście do Etapu 2 (Zarządzanie Wyświetlaczami)
+2. Testowanie endpointĂłw autentykacji
+3. PrzejĹ›cie do Etapu 2 (ZarzÄ…dzanie WyĹ›wietlaczami)
 
 ---
 
-## Status Ogólny
+## Status OgĂłlny
 
-- ✅ Etap 0: Przygotowanie środowiska
-- 🔄 Etap 1: Backend API - Podstawy (w trakcie)
-- ⏳ Etap 2: Backend - Zarządzanie Wyświetlaczami
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- đź”„ Etap 1: Backend API - Podstawy (w trakcie)
+- âŹł Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami
 
 
 ```
@@ -8304,31 +8304,31 @@ Aktualizowanie dokumentacji postępu i tworzenie pliku z instrukcjami kontynuacj
 
 **Etap 1: Backend API - Podstawy** - W trakcie
 
-### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule)
-3. ✅ Schematy Pydantic
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
+### Co zostaĹ‚o zrobione:
+1. âś… Struktura projektu
+2. âś… Modele bazy danych (User, Display, Group, Content, Schedule)
+3. âś… Schematy Pydantic
+4. âś… Konfiguracja bazy danych i Alembic
+5. âś… System autentykacji (JWT)
+6. âś… Endpointy autentykacji (login, register)
 
-### Co trzeba dokończyć w Etapie 1:
+### Co trzeba dokoĹ„czyÄ‡ w Etapie 1:
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów autentykacji
+2. Testowanie endpointĂłw autentykacji
 3. Ewentualne poprawki
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 ### 1. Utworzenie migracji Alembic
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 ```
 
-### 2. Utworzenie użytkownika admin
+### 2. Utworzenie uĹĽytkownika admin
 
 ```bash
 python scripts/create_admin.py admin password123
@@ -8346,51 +8346,51 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
   -d '{"username":"admin","password":"password123"}'
 ```
 
-### 4. Przejście do Etapu 2
+### 4. PrzejĹ›cie do Etapu 2
 
-Po zakończeniu Etapu 1, przejść do:
-- `app/api/v1/displays.py` - endpointy dla wyświetlaczy
-- `app/schemas/display.py` - schematy wyświetlaczy
+Po zakoĹ„czeniu Etapu 1, przejĹ›Ä‡ do:
+- `app/api/v1/displays.py` - endpointy dla wyĹ›wietlaczy
+- `app/schemas/display.py` - schematy wyĹ›wietlaczy
 - `app/services/display_service.py` - logika biznesowa
 
-## Struktura Plików
+## Struktura PlikĂłw
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ schemas/         âś… Gotowe (user, token)
+â”‚   â”‚   â”śâ”€â”€ api/
+â”‚   â”‚   â”‚   â””â”€â”€ v1/
+â”‚   â”‚   â”‚       â””â”€â”€ auth.py   âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ utils/
+â”‚   â”‚   â”‚   â””â”€â”€ security.py  âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ config.py        âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ database.py      âś… Gotowe
+â”‚   â”‚   â””â”€â”€ main.py          âś… Gotowe
+â”‚   â”śâ”€â”€ alembic/             âś… Gotowe
+â”‚   â””â”€â”€ requirements.txt      âś… Gotowe
+â””â”€â”€ docs/
+    â””â”€â”€ INSTALLATION.md       âś… Gotowe
 ```
 
-## Ważne Uwagi
+## WaĹĽne Uwagi
 
-1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
-2. **Każdy etap jest niezależny** - można testować osobno
-3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
+1. **Pliki sÄ… krĂłtkie i moduĹ‚owe** - Ĺ‚atwo kontynuowaÄ‡ pracÄ™
+2. **KaĹĽdy etap jest niezaleĹĽny** - moĹĽna testowaÄ‡ osobno
+3. **Dokumentacja w PROGRESS.md** - Ĺ›ledzenie postÄ™pu
+4. **Migracje Alembic** - waĹĽne przed testowaniem
 
-## Problemy do Rozwiązania
+## Problemy do RozwiÄ…zania
 
-- [ ] Sprawdzenie czy wszystkie importy działają
+- [ ] Sprawdzenie czy wszystkie importy dziaĹ‚ajÄ…
 - [ ] Utworzenie migracji
 - [ ] Testowanie autentykacji
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
+Po zakoĹ„czeniu Etapu 1, rozpoczÄ…Ä‡ Etap 2 zgodnie z planem w `ANALIZA_STUDIO_SUITE.md`.
 
 ```
 
@@ -8414,96 +8414,96 @@ if __name__ == "__main__":
 
 ## Podsumowanie wykonanej pracy
 
-### Etap 0: Przygotowanie środowiska — zakończony
+### Etap 0: Przygotowanie Ĺ›rodowiska â€” zakoĹ„czony
 - Struktura projektu
 - Pliki konfiguracyjne (.gitignore, README)
 - Dokumentacja instalacji
 - Skrypty pomocnicze
 
-### Etap 1: Backend API — podstawy — zakończony
+### Etap 1: Backend API â€” podstawy â€” zakoĹ„czony
 - Modele bazy danych (User, Display, Group, Content, Schedule)
 - Schematy Pydantic (walidacja)
 - Konfiguracja SQLAlchemy i Alembic
 - System autentykacji JWT
 - Endpointy: login, register
 - Dependencies (get_current_user, get_current_admin)
-- Skrypt tworzenia użytkownika admin
+- Skrypt tworzenia uĹĽytkownika admin
 
-## Struktura utworzonych plików
+## Struktura utworzonych plikĂłw
 
-Wszystkie pliki są krótkie i modułowe (50–150 linii), co ułatwia kontynuację:
+Wszystkie pliki sÄ… krĂłtkie i moduĹ‚owe (50â€“150 linii), co uĹ‚atwia kontynuacjÄ™:
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          (5 plików - modele DB)
-│   │   ├── schemas/          (2 pliki - walidacja)
-│   │   ├── api/v1/          (auth.py - endpointy)
-│   │   ├── utils/           (security.py - JWT, hashowanie)
-│   │   ├── config.py
-│   │   ├── database.py
-│   │   └── main.py
-│   ├── alembic/             (konfiguracja migracji)
-│   ├── requirements.txt
-│   └── scripts/             (create_admin.py)
-├── docs/                    (INSTALLATION.md)
-├── scripts/                 (setup_backend.sh)
-├── PROGRESS.md              (śledzenie postępu)
-└── CONTINUE.md              (instrukcje kontynuacji)
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          (5 plikĂłw - modele DB)
+â”‚   â”‚   â”śâ”€â”€ schemas/          (2 pliki - walidacja)
+â”‚   â”‚   â”śâ”€â”€ api/v1/          (auth.py - endpointy)
+â”‚   â”‚   â”śâ”€â”€ utils/           (security.py - JWT, hashowanie)
+â”‚   â”‚   â”śâ”€â”€ config.py
+â”‚   â”‚   â”śâ”€â”€ database.py
+â”‚   â”‚   â””â”€â”€ main.py
+â”‚   â”śâ”€â”€ alembic/             (konfiguracja migracji)
+â”‚   â”śâ”€â”€ requirements.txt
+â”‚   â””â”€â”€ scripts/             (create_admin.py)
+â”śâ”€â”€ docs/                    (INSTALLATION.md)
+â”śâ”€â”€ scripts/                 (setup_backend.sh)
+â”śâ”€â”€ PROGRESS.md              (Ĺ›ledzenie postÄ™pu)
+â””â”€â”€ CONTINUE.md              (instrukcje kontynuacji)
 ```
 
-## Następne kroki (w pliku CONTINUE.md)
+## NastÄ™pne kroki (w pliku CONTINUE.md)
 
 1. Utworzenie migracji Alembic
-2. Utworzenie użytkownika admin
+2. Utworzenie uĹĽytkownika admin
 3. Testowanie API
-4. Przejście do Etapu 2 (Zarządzanie Wyświetlaczami)
+4. PrzejĹ›cie do Etapu 2 (ZarzÄ…dzanie WyĹ›wietlaczami)
 
 ## Gotowe do kontynuacji
 
-- Pliki są krótkie i modułowe
-- Każdy etap jest niezależny i testowalny
-- Dokumentacja postępu w PROGRESS.md
+- Pliki sÄ… krĂłtkie i moduĹ‚owe
+- KaĹĽdy etap jest niezaleĹĽny i testowalny
+- Dokumentacja postÄ™pu w PROGRESS.md
 - Instrukcje kontynuacji w CONTINUE.md
-- Struktura pozwala na łatwe dodawanie kolejnych funkcji
+- Struktura pozwala na Ĺ‚atwe dodawanie kolejnych funkcji
 
-Można kontynuować od Etapu 2 (Zarządzanie Wyświetlaczami) lub najpierw przetestować to, co zostało zrobione.
+MoĹĽna kontynuowaÄ‡ od Etapu 2 (ZarzÄ…dzanie WyĹ›wietlaczami) lub najpierw przetestowaÄ‡ to, co zostaĹ‚o zrobione.
 
 ```plaintext
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          (5 plików - modele DB)
-│   │   ├── schemas/          (2 pliki - walidacja)
-│   │   ├── api/v1/          (auth.py - endpointy)
-│   │   ├── utils/           (security.py - JWT, hashowanie)
-│   │   ├── config.py
-│   │   ├── database.py
-│   │   └── main.py
-│   ├── alembic/             (konfiguracja migracji)
-│   ├── requirements.txt
-│   └── scripts/             (create_admin.py)
-├── docs/                    (INSTALLATION.md)
-├── scripts/                 (setup_backend.sh)
-├── PROGRESS.md              (śledzenie postępu)
-└── CONTINUE.md              (instrukcje kontynuacji)
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          (5 plikĂłw - modele DB)
+â”‚   â”‚   â”śâ”€â”€ schemas/          (2 pliki - walidacja)
+â”‚   â”‚   â”śâ”€â”€ api/v1/          (auth.py - endpointy)
+â”‚   â”‚   â”śâ”€â”€ utils/           (security.py - JWT, hashowanie)
+â”‚   â”‚   â”śâ”€â”€ config.py
+â”‚   â”‚   â”śâ”€â”€ database.py
+â”‚   â”‚   â””â”€â”€ main.py
+â”‚   â”śâ”€â”€ alembic/             (konfiguracja migracji)
+â”‚   â”śâ”€â”€ requirements.txt
+â”‚   â””â”€â”€ scripts/             (create_admin.py)
+â”śâ”€â”€ docs/                    (INSTALLATION.md)
+â”śâ”€â”€ scripts/                 (setup_backend.sh)
+â”śâ”€â”€ PROGRESS.md              (Ĺ›ledzenie postÄ™pu)
+â””â”€â”€ CONTINUE.md              (instrukcje kontynuacji)
 ```
 
 ---
 
 **User**
 
-tak , kontunuuj. czy możesz usunąć pliki porzedniego projektu aby obecny projekt był czysty?
+tak , kontunuuj. czy moĹĽesz usunÄ…Ä‡ pliki porzedniego projektu aby obecny projekt byĹ‚ czysty?
 
 ---
 
 **Cursor**
 
-Sprawdzanie zawartości katalogu głównego, aby zidentyfikować pliki starego projektu do usunięcia. Następnie kontynuuję pracę.
+Sprawdzanie zawartoĹ›ci katalogu gĹ‚Ăłwnego, aby zidentyfikowaÄ‡ pliki starego projektu do usuniÄ™cia. NastÄ™pnie kontynuujÄ™ pracÄ™.
 
 
-Usuwanie plików starego projektu i naprawa błędu w README. Następnie kontynuuję pracę.
+Usuwanie plikĂłw starego projektu i naprawa bĹ‚Ä™du w README. NastÄ™pnie kontynuujÄ™ pracÄ™.
 
 
 ```markdown
@@ -8515,19 +8515,19 @@ Backend systemu digital signage oparty na FastAPI.
 
 ```
 backend/
-├── app/
-│   ├── __init__.py
-│   ├── main.py           # Główny plik aplikacji
-│   ├── config.py         # Konfiguracja
-│   ├── database.py       # Połączenie z bazą danych
-│   ├── models/           # Modele SQLAlchemy
-│   ├── schemas/          # Schematy Pydantic
-│   ├── api/              # Endpointy API
-│   ├── services/         # Logika biznesowa
-│   └── utils/            # Narzędzia pomocnicze
-├── alembic/              # Migracje bazy danych
-├── requirements.txt
-└── .env.example
+â”śâ”€â”€ app/
+â”‚   â”śâ”€â”€ __init__.py
+â”‚   â”śâ”€â”€ main.py           # GĹ‚Ăłwny plik aplikacji
+â”‚   â”śâ”€â”€ config.py         # Konfiguracja
+â”‚   â”śâ”€â”€ database.py       # PoĹ‚Ä…czenie z bazÄ… danych
+â”‚   â”śâ”€â”€ models/           # Modele SQLAlchemy
+â”‚   â”śâ”€â”€ schemas/          # Schematy Pydantic
+â”‚   â”śâ”€â”€ api/              # Endpointy API
+â”‚   â”śâ”€â”€ services/         # Logika biznesowa
+â”‚   â””â”€â”€ utils/            # NarzÄ™dzia pomocnicze
+â”śâ”€â”€ alembic/              # Migracje bazy danych
+â”śâ”€â”€ requirements.txt
+â””â”€â”€ .env.example
 ```
 
 ## Instalacja
@@ -8545,59 +8545,59 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-API dostępne pod: http://localhost:8000
+API dostÄ™pne pod: http://localhost:8000
 Dokumentacja: http://localhost:8000/docs
 
 
 ```
 
-Aktualizowanie głównego README i usuwanie starych plików.
+Aktualizowanie gĹ‚Ăłwnego README i usuwanie starych plikĂłw.
 
 
 ```markdown
 # System Digital Signage
 
-System zarządzania treścią dla wyświetlaczy informacyjnych w szkole.
+System zarzÄ…dzania treĹ›ciÄ… dla wyĹ›wietlaczy informacyjnych w szkole.
 
 ## Opis
 
-System składa się z:
-- **Serwer** (Ubuntu VM na Hyper-V) - backend API i panel zarządzający
-- **Wyświetlacze** (HP T630 z Linuxem) - klienci wyświetlające treści
+System skĹ‚ada siÄ™ z:
+- **Serwer** (Ubuntu VM na Hyper-V) - backend API i panel zarzÄ…dzajÄ…cy
+- **WyĹ›wietlacze** (HP T630 z Linuxem) - klienci wyĹ›wietlajÄ…ce treĹ›ci
 
 ## Funkcje
 
-- ✅ Wyświetlanie treści (PDF, Excel, obrazy, video)
-- ✅ Harmonogramy wyświetlania
-- ✅ Grupowanie wyświetlaczy
-- ✅ Monitoring statusu w czasie rzeczywistym
-- ✅ System dzwonków szkolnych
-- ✅ Integracja z Google Drive (folder ZASTĘPSTWA)
-- ✅ Raportowanie i alerty
+- âś… WyĹ›wietlanie treĹ›ci (PDF, Excel, obrazy, video)
+- âś… Harmonogramy wyĹ›wietlania
+- âś… Grupowanie wyĹ›wietlaczy
+- âś… Monitoring statusu w czasie rzeczywistym
+- âś… System dzwonkĂłw szkolnych
+- âś… Integracja z Google Drive (folder ZASTÄPSTWA)
+- âś… Raportowanie i alerty
 
 ## Struktura Projektu
 
 ```
-digital_signage/
-├── backend/          # Backend API (FastAPI)
-├── frontend/         # Panel webowy (React) - do zrobienia
-├── client/           # Klient wyświetlacza (Python) - do zrobienia
-├── docs/             # Dokumentacja
-└── scripts/          # Skrypty pomocnicze
+studio_suite/
+â”śâ”€â”€ backend/          # Backend API (FastAPI)
+â”śâ”€â”€ frontend/         # Panel webowy (React) - do zrobienia
+â”śâ”€â”€ client/           # Klient wyĹ›wietlacza (Python) - do zrobienia
+â”śâ”€â”€ docs/             # Dokumentacja
+â””â”€â”€ scripts/          # Skrypty pomocnicze
 ```
 
 ## Dokumentacja
 
-- [Analiza i specyfikacja](ANALIZA_DIGITAL_SIGNAGE.md) - pełna analiza systemu
-- [Instrukcja instalacji](digital_signage/docs/INSTALLATION.md) - jak zainstalować system
-- [Postęp implementacji](digital_signage/PROGRESS.md) - aktualny status
-- [Instrukcje kontynuacji](digital_signage/CONTINUE.md) - jak kontynuować pracę
+- [Analiza i specyfikacja](ANALIZA_STUDIO_SUITE.md) - peĹ‚na analiza systemu
+- [Instrukcja instalacji](studio_suite/docs/INSTALLATION.md) - jak zainstalowaÄ‡ system
+- [PostÄ™p implementacji](studio_suite/PROGRESS.md) - aktualny status
+- [Instrukcje kontynuacji](studio_suite/CONTINUE.md) - jak kontynuowaÄ‡ pracÄ™
 
 ## Status Implementacji
 
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy (autentykacja, modele)
-- 🔄 Etap 2: Backend - Zarządzanie Wyświetlaczami (w trakcie)
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy (autentykacja, modele)
+- đź”„ Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami (w trakcie)
 
 ## Wymagania
 
@@ -8609,33 +8609,33 @@ digital_signage/
 
 ## Szybki Start
 
-Zobacz [Instrukcję instalacji](digital_signage/docs/INSTALLATION.md) dla szczegółów.
+Zobacz [InstrukcjÄ™ instalacji](studio_suite/docs/INSTALLATION.md) dla szczegĂłĹ‚Ăłw.
 
 ### Backend
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-API dostępne pod: http://localhost:8000
+API dostÄ™pne pod: http://localhost:8000
 Dokumentacja: http://localhost:8000/docs
 
 ## Licencja
 
-Projekt prywatny - szkoła
+Projekt prywatny - szkoĹ‚a
 
 ```
 
-Kontynuowanie Etapu 2: Zarządzanie Wyświetlaczami. Tworzenie schematów i endpointów API.
+Kontynuowanie Etapu 2: ZarzÄ…dzanie WyĹ›wietlaczami. Tworzenie schematĂłw i endpointĂłw API.
 
 
 ```python
 """
-Schematy wyświetlacza
+Schematy wyĹ›wietlacza
 """
 from pydantic import BaseModel
 from datetime import datetime
@@ -8643,7 +8643,7 @@ from typing import Optional
 
 
 class DisplayBase(BaseModel):
-    """Podstawowy schemat wyświetlacza"""
+    """Podstawowy schemat wyĹ›wietlacza"""
     name: str
     orientation: int = 0
     resolution_width: int = 1920
@@ -8655,12 +8655,12 @@ class DisplayBase(BaseModel):
 
 
 class DisplayCreate(DisplayBase):
-    """Schemat tworzenia wyświetlacza"""
+    """Schemat tworzenia wyĹ›wietlacza"""
     mac_address: str
 
 
 class DisplayUpdate(BaseModel):
-    """Schemat aktualizacji wyświetlacza"""
+    """Schemat aktualizacji wyĹ›wietlacza"""
     name: Optional[str] = None
     orientation: Optional[int] = None
     resolution_width: Optional[int] = None
@@ -8673,7 +8673,7 @@ class DisplayUpdate(BaseModel):
 
 
 class DisplayRegister(BaseModel):
-    """Schemat rejestracji wyświetlacza (przez MAC address)"""
+    """Schemat rejestracji wyĹ›wietlacza (przez MAC address)"""
     mac_address: str
     ip_address: Optional[str] = None
     resolution_width: int = 1920
@@ -8681,14 +8681,14 @@ class DisplayRegister(BaseModel):
 
 
 class DisplayHeartbeat(BaseModel):
-    """Schemat heartbeat od wyświetlacza"""
+    """Schemat heartbeat od wyĹ›wietlacza"""
     current_content_id: Optional[int] = None
     cache_status: Optional[dict] = None
     errors: Optional[list] = None
 
 
 class DisplayResponse(DisplayBase):
-    """Schemat odpowiedzi wyświetlacza"""
+    """Schemat odpowiedzi wyĹ›wietlacza"""
     id: int
     mac_address: str
     ip_address: Optional[str] = None
@@ -8703,7 +8703,7 @@ class DisplayResponse(DisplayBase):
 
 
 class DisplayStatusResponse(BaseModel):
-    """Schemat statusu wyświetlacza"""
+    """Schemat statusu wyĹ›wietlacza"""
     id: int
     name: str
     status: str
@@ -8716,7 +8716,7 @@ class DisplayStatusResponse(BaseModel):
 
 ```python
 """
-Endpointy API dla wyświetlaczy
+Endpointy API dla wyĹ›wietlaczy
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -8744,8 +8744,8 @@ async def register_display(
     display_data: DisplayRegister,
     db: Session = Depends(get_db)
 ):
-    """Rejestracja wyświetlacza przez MAC address"""
-    # Sprawdzenie czy wyświetlacz już istnieje
+    """Rejestracja wyĹ›wietlacza przez MAC address"""
+    # Sprawdzenie czy wyĹ›wietlacz juĹĽ istnieje
     existing_display = db.query(Display).filter(
         Display.mac_address == display_data.mac_address
     ).first()
@@ -8761,7 +8761,7 @@ async def register_display(
         db.refresh(existing_display)
         return existing_display
     
-    # Utworzenie nowego wyświetlacza
+    # Utworzenie nowego wyĹ›wietlacza
     db_display = Display(
         name=f"Display-{display_data.mac_address[-6:]}",
         mac_address=display_data.mac_address,
@@ -8783,7 +8783,7 @@ async def heartbeat(
     heartbeat_data: DisplayHeartbeat,
     db: Session = Depends(get_db)
 ):
-    """Heartbeat od wyświetlacza - aktualizacja statusu"""
+    """Heartbeat od wyĹ›wietlacza - aktualizacja statusu"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -8808,7 +8808,7 @@ async def get_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy wyświetlaczy (admin i operator)"""
+    """Pobranie listy wyĹ›wietlaczy (admin i operator)"""
     query = db.query(Display)
     
     if status_filter:
@@ -8826,7 +8826,7 @@ async def get_display(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów wyświetlacza"""
+    """Pobranie szczegĂłĹ‚Ăłw wyĹ›wietlacza"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -8841,7 +8841,7 @@ async def get_display_status(
     display_id: int,
     db: Session = Depends(get_db)
 ):
-    """Pobranie statusu wyświetlacza (publiczny endpoint dla klienta)"""
+    """Pobranie statusu wyĹ›wietlacza (publiczny endpoint dla klienta)"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -8865,8 +8865,8 @@ async def create_display(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Utworzenie wyświetlacza (tylko admin)"""
-    # Sprawdzenie czy MAC address już istnieje
+    """Utworzenie wyĹ›wietlacza (tylko admin)"""
+    # Sprawdzenie czy MAC address juĹĽ istnieje
     existing = db.query(Display).filter(
         Display.mac_address == display_data.mac_address
     ).first()
@@ -8890,7 +8890,7 @@ async def update_display(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja wyświetlacza (tylko admin)"""
+    """Aktualizacja wyĹ›wietlacza (tylko admin)"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -8913,7 +8913,7 @@ async def delete_display(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie wyświetlacza (tylko admin)"""
+    """UsuniÄ™cie wyĹ›wietlacza (tylko admin)"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -8929,7 +8929,7 @@ async def delete_display(
 
 ```python
 """
-Endpointy API dla wyświetlaczy
+Endpointy API dla wyĹ›wietlaczy
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -8957,8 +8957,8 @@ async def register_display(
     display_data: DisplayRegister,
     db: Session = Depends(get_db)
 ):
-    """Rejestracja wyświetlacza przez MAC address"""
-    # Sprawdzenie czy wyświetlacz już istnieje
+    """Rejestracja wyĹ›wietlacza przez MAC address"""
+    # Sprawdzenie czy wyĹ›wietlacz juĹĽ istnieje
     existing_display = db.query(Display).filter(
         Display.mac_address == display_data.mac_address
     ).first()
@@ -8974,7 +8974,7 @@ async def register_display(
         db.refresh(existing_display)
         return existing_display
     
-    # Utworzenie nowego wyświetlacza
+    # Utworzenie nowego wyĹ›wietlacza
     db_display = Display(
         name=f"Display-{display_data.mac_address[-6:]}",
         mac_address=display_data.mac_address,
@@ -8996,7 +8996,7 @@ async def heartbeat(
     heartbeat_data: DisplayHeartbeat,
     db: Session = Depends(get_db)
 ):
-    """Heartbeat od wyświetlacza - aktualizacja statusu"""
+    """Heartbeat od wyĹ›wietlacza - aktualizacja statusu"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -9021,7 +9021,7 @@ async def get_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy wyświetlaczy (admin i operator)"""
+    """Pobranie listy wyĹ›wietlaczy (admin i operator)"""
     query = db.query(Display)
     
     if status_filter:
@@ -9039,7 +9039,7 @@ async def get_display(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów wyświetlacza"""
+    """Pobranie szczegĂłĹ‚Ăłw wyĹ›wietlacza"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -9054,7 +9054,7 @@ async def get_display_status(
     display_id: int,
     db: Session = Depends(get_db)
 ):
-    """Pobranie statusu wyświetlacza (publiczny endpoint dla klienta)"""
+    """Pobranie statusu wyĹ›wietlacza (publiczny endpoint dla klienta)"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -9078,8 +9078,8 @@ async def create_display(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Utworzenie wyświetlacza (tylko admin)"""
-    # Sprawdzenie czy MAC address już istnieje
+    """Utworzenie wyĹ›wietlacza (tylko admin)"""
+    # Sprawdzenie czy MAC address juĹĽ istnieje
     existing = db.query(Display).filter(
         Display.mac_address == display_data.mac_address
     ).first()
@@ -9103,7 +9103,7 @@ async def update_display(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja wyświetlacza (tylko admin)"""
+    """Aktualizacja wyĹ›wietlacza (tylko admin)"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -9126,7 +9126,7 @@ async def delete_display(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie wyświetlacza (tylko admin)"""
+    """UsuniÄ™cie wyĹ›wietlacza (tylko admin)"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if not display:
         raise HTTPException(
@@ -9143,7 +9143,7 @@ async def delete_display(
 
 ```python
 """
-Serwis do zarządzania wyświetlaczami - logika biznesowa
+Serwis do zarzÄ…dzania wyĹ›wietlaczami - logika biznesowa
 """
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
@@ -9154,12 +9154,12 @@ from app.models.display import Display
 
 def check_offline_displays(db: Session, timeout_minutes: int = 1) -> List[Display]:
     """
-    Sprawdzenie wyświetlaczy, które nie wysłały heartbeat przez określony czas
-    Zwraca listę wyświetlaczy, które powinny być oznaczone jako offline
+    Sprawdzenie wyĹ›wietlaczy, ktĂłre nie wysĹ‚aĹ‚y heartbeat przez okreĹ›lony czas
+    Zwraca listÄ™ wyĹ›wietlaczy, ktĂłre powinny byÄ‡ oznaczone jako offline
     """
     timeout_threshold = datetime.utcnow() - timedelta(minutes=timeout_minutes)
     
-    # Wyświetlacze online, które nie wysłały heartbeat
+    # WyĹ›wietlacze online, ktĂłre nie wysĹ‚aĹ‚y heartbeat
     offline_displays = db.query(Display).filter(
         Display.status == "online",
         (Display.last_seen < timeout_threshold) | (Display.last_seen.is_(None))
@@ -9169,7 +9169,7 @@ def check_offline_displays(db: Session, timeout_minutes: int = 1) -> List[Displa
 
 
 def mark_display_offline(db: Session, display_id: int) -> Display:
-    """Oznaczenie wyświetlacza jako offline"""
+    """Oznaczenie wyĹ›wietlacza jako offline"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if display and display.status == "online":
         display.status = "offline"
@@ -9179,7 +9179,7 @@ def mark_display_offline(db: Session, display_id: int) -> Display:
 
 
 def mark_display_online(db: Session, display_id: int) -> Display:
-    """Oznaczenie wyświetlacza jako online"""
+    """Oznaczenie wyĹ›wietlacza jako online"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if display:
         display.status = "online"
@@ -9190,14 +9190,14 @@ def mark_display_online(db: Session, display_id: int) -> Display:
 
 
 def get_display_by_mac(db: Session, mac_address: str) -> Display:
-    """Pobranie wyświetlacza po MAC address"""
+    """Pobranie wyĹ›wietlacza po MAC address"""
     return db.query(Display).filter(Display.mac_address == mac_address).first()
 
 ```
 
 ```python
 """
-API v1 - rejestracja routerów
+API v1 - rejestracja routerĂłw
 """
 from fastapi import APIRouter
 
@@ -9212,7 +9212,7 @@ api_router.include_router(displays.router)
 
 ```python
 """
-Główny plik aplikacji FastAPI
+GĹ‚Ăłwny plik aplikacji FastAPI
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9223,7 +9223,7 @@ from app.api.v1 import api_router
 # Utworzenie aplikacji
 app = FastAPI(
     title="Digital Signage API",
-    description="API dla systemu zarządzania treścią wyświetlaczy",
+    description="API dla systemu zarzÄ…dzania treĹ›ciÄ… wyĹ›wietlaczy",
     version="0.1.0",
     debug=settings.DEBUG
 )
@@ -9231,19 +9231,19 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # W produkcji ustawić konkretne domeny
+    allow_origins=["*"],  # W produkcji ustawiÄ‡ konkretne domeny
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Rejestracja routerów
+# Rejestracja routerĂłw
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
 async def root():
-    """Endpoint główny"""
+    """Endpoint gĹ‚Ăłwny"""
     return {
         "message": "Digital Signage API",
         "version": "0.1.0",
@@ -9288,7 +9288,7 @@ Zadania w tle (Celery tasks)
 
 ```python
 """
-Zadania monitoringu wyświetlaczy
+Zadania monitoringu wyĹ›wietlaczy
 """
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
@@ -9299,17 +9299,17 @@ from app.services.display_service import check_offline_displays, mark_display_of
 
 def check_displays_offline():
     """
-    Zadanie do sprawdzania wyświetlaczy offline
-    Powinno być uruchamiane przez Celery Beat co minutę
+    Zadanie do sprawdzania wyĹ›wietlaczy offline
+    Powinno byÄ‡ uruchamiane przez Celery Beat co minutÄ™
     """
     db: Session = SessionLocal()
     try:
-        # Sprawdzenie wyświetlaczy offline (brak heartbeat > 1 minuta)
+        # Sprawdzenie wyĹ›wietlaczy offline (brak heartbeat > 1 minuta)
         offline_displays = check_offline_displays(db, timeout_minutes=1)
         
         for display in offline_displays:
             mark_display_offline(db, display.id)
-            print(f"Wyświetlacz {display.name} (ID: {display.id}) oznaczony jako offline")
+            print(f"WyĹ›wietlacz {display.name} (ID: {display.id}) oznaczony jako offline")
         
         return len(offline_displays)
     finally:
@@ -9318,11 +9318,11 @@ def check_displays_offline():
 ```
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Utworzenie struktury projektu
@@ -9332,14 +9332,14 @@ def check_displays_offline():
 - [x] Dokumentacja instalacji
 
 **Notatki:**
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 - Backend: podstawowa struktura utworzona
 
 ---
 
-## Etap 1: Backend API - Podstawy ✅
+## Etap 1: Backend API - Podstawy âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Modele bazy danych (User, Display, Group, Content, Schedule)
@@ -9353,37 +9353,37 @@ def check_displays_offline():
 
 ---
 
-## Etap 2: Backend - Zarządzanie Wyświetlaczami 🔄
+## Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy wyświetlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
-- [x] Endpointy CRUD dla wyświetlaczy (tylko admin)
-- [x] Endpoint rejestracji wyświetlacza (przez MAC address)
+- [x] Schematy wyĹ›wietlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
+- [x] Endpointy CRUD dla wyĹ›wietlaczy (tylko admin)
+- [x] Endpoint rejestracji wyĹ›wietlacza (przez MAC address)
 - [x] Endpoint heartbeat (POST /displays/{id}/heartbeat)
 - [x] Endpoint statusu (GET /displays/{id}/status)
-- [x] Serwis do zarządzania wyświetlaczami (display_service)
+- [x] Serwis do zarzÄ…dzania wyĹ›wietlaczami (display_service)
 - [x] Zadanie monitoringu (sprawdzanie offline)
-- [ ] Testowanie endpointów
+- [ ] Testowanie endpointĂłw
 
-**Następne kroki:**
-1. Testowanie endpointów wyświetlaczy
-2. Przejście do Etapu 3 (Upload treści)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw wyĹ›wietlaczy
+2. PrzejĹ›cie do Etapu 3 (Upload treĹ›ci)
 
 ---
 
-## Status Ogólny
+## Status OgĂłlny
 
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy
-- 🔄 Etap 2: Backend - Zarządzanie Wyświetlaczami (w trakcie)
-- ⏳ Etap 3: Backend - Upload i Przetwarzanie Treści
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy
+- đź”„ Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami (w trakcie)
+- âŹł Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci
 
 
 ```
 
-Aktualizowanie eksportów schematów i dokumentacji.
+Aktualizowanie eksportĂłw schematĂłw i dokumentacji.
 
 
 ```python
@@ -9422,36 +9422,36 @@ __all__ = [
 
 ## Aktualny Status
 
-**Etap 2: Backend - Zarządzanie Wyświetlaczami** - W trakcie
+**Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami** - W trakcie
 
-### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule)
-3. ✅ Schematy Pydantic (User, Token, Display)
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
-7. ✅ Endpointy wyświetlaczy (CRUD, rejestracja, heartbeat, status)
-8. ✅ Serwis zarządzania wyświetlaczami
-9. ✅ Zadanie monitoringu (sprawdzanie offline)
+### Co zostaĹ‚o zrobione:
+1. âś… Struktura projektu
+2. âś… Modele bazy danych (User, Display, Group, Content, Schedule)
+3. âś… Schematy Pydantic (User, Token, Display)
+4. âś… Konfiguracja bazy danych i Alembic
+5. âś… System autentykacji (JWT)
+6. âś… Endpointy autentykacji (login, register)
+7. âś… Endpointy wyĹ›wietlaczy (CRUD, rejestracja, heartbeat, status)
+8. âś… Serwis zarzÄ…dzania wyĹ›wietlaczami
+9. âś… Zadanie monitoringu (sprawdzanie offline)
 
-### Co trzeba dokończyć w Etapie 1:
+### Co trzeba dokoĹ„czyÄ‡ w Etapie 1:
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów autentykacji
+2. Testowanie endpointĂłw autentykacji
 3. Ewentualne poprawki
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 ### 1. Utworzenie migracji Alembic
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 ```
 
-### 2. Utworzenie użytkownika admin
+### 2. Utworzenie uĹĽytkownika admin
 
 ```bash
 python scripts/create_admin.py admin password123
@@ -9469,51 +9469,51 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
   -d '{"username":"admin","password":"password123"}'
 ```
 
-### 4. Przejście do Etapu 2
+### 4. PrzejĹ›cie do Etapu 2
 
-Po zakończeniu Etapu 1, przejść do:
-- `app/api/v1/displays.py` - endpointy dla wyświetlaczy
-- `app/schemas/display.py` - schematy wyświetlaczy
+Po zakoĹ„czeniu Etapu 1, przejĹ›Ä‡ do:
+- `app/api/v1/displays.py` - endpointy dla wyĹ›wietlaczy
+- `app/schemas/display.py` - schematy wyĹ›wietlaczy
 - `app/services/display_service.py` - logika biznesowa
 
-## Struktura Plików
+## Struktura PlikĂłw
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ schemas/         âś… Gotowe (user, token)
+â”‚   â”‚   â”śâ”€â”€ api/
+â”‚   â”‚   â”‚   â””â”€â”€ v1/
+â”‚   â”‚   â”‚       â””â”€â”€ auth.py   âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ utils/
+â”‚   â”‚   â”‚   â””â”€â”€ security.py  âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ config.py        âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ database.py      âś… Gotowe
+â”‚   â”‚   â””â”€â”€ main.py          âś… Gotowe
+â”‚   â”śâ”€â”€ alembic/             âś… Gotowe
+â”‚   â””â”€â”€ requirements.txt      âś… Gotowe
+â””â”€â”€ docs/
+    â””â”€â”€ INSTALLATION.md       âś… Gotowe
 ```
 
-## Ważne Uwagi
+## WaĹĽne Uwagi
 
-1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
-2. **Każdy etap jest niezależny** - można testować osobno
-3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
+1. **Pliki sÄ… krĂłtkie i moduĹ‚owe** - Ĺ‚atwo kontynuowaÄ‡ pracÄ™
+2. **KaĹĽdy etap jest niezaleĹĽny** - moĹĽna testowaÄ‡ osobno
+3. **Dokumentacja w PROGRESS.md** - Ĺ›ledzenie postÄ™pu
+4. **Migracje Alembic** - waĹĽne przed testowaniem
 
-## Problemy do Rozwiązania
+## Problemy do RozwiÄ…zania
 
-- [ ] Sprawdzenie czy wszystkie importy działają
+- [ ] Sprawdzenie czy wszystkie importy dziaĹ‚ajÄ…
 - [ ] Utworzenie migracji
 - [ ] Testowanie autentykacji
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
+Po zakoĹ„czeniu Etapu 1, rozpoczÄ…Ä‡ Etap 2 zgodnie z planem w `ANALIZA_STUDIO_SUITE.md`.
 
 
 ```
@@ -9523,36 +9523,36 @@ Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_
 
 ## Aktualny Status
 
-**Etap 2: Backend - Zarządzanie Wyświetlaczami** - W trakcie
+**Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami** - W trakcie
 
-### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule)
-3. ✅ Schematy Pydantic (User, Token, Display)
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
-7. ✅ Endpointy wyświetlaczy (CRUD, rejestracja, heartbeat, status)
-8. ✅ Serwis zarządzania wyświetlaczami
-9. ✅ Zadanie monitoringu (sprawdzanie offline)
+### Co zostaĹ‚o zrobione:
+1. âś… Struktura projektu
+2. âś… Modele bazy danych (User, Display, Group, Content, Schedule)
+3. âś… Schematy Pydantic (User, Token, Display)
+4. âś… Konfiguracja bazy danych i Alembic
+5. âś… System autentykacji (JWT)
+6. âś… Endpointy autentykacji (login, register)
+7. âś… Endpointy wyĹ›wietlaczy (CRUD, rejestracja, heartbeat, status)
+8. âś… Serwis zarzÄ…dzania wyĹ›wietlaczami
+9. âś… Zadanie monitoringu (sprawdzanie offline)
 
-### Co trzeba dokończyć w Etapie 2:
+### Co trzeba dokoĹ„czyÄ‡ w Etapie 2:
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów wyświetlaczy
+2. Testowanie endpointĂłw wyĹ›wietlaczy
 3. Ewentualne poprawki
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 ### 1. Utworzenie migracji Alembic
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 ```
 
-### 2. Utworzenie użytkownika admin
+### 2. Utworzenie uĹĽytkownika admin
 
 ```bash
 python scripts/create_admin.py admin password123
@@ -9569,7 +9569,7 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"password123"}'
 
-# Test rejestracji wyświetlacza
+# Test rejestracji wyĹ›wietlacza
 curl -X POST http://localhost:8000/api/v1/displays/register \
   -H "Content-Type: application/json" \
   -d '{"mac_address":"00:11:22:33:44:55","ip_address":"192.168.1.100"}'
@@ -9580,61 +9580,61 @@ curl -X POST http://localhost:8000/api/v1/displays/1/heartbeat \
   -d '{"current_content_id":null,"cache_status":{}}'
 ```
 
-### 4. Przejście do Etapu 3
+### 4. PrzejĹ›cie do Etapu 3
 
-Po zakończeniu Etapu 2, przejść do:
-- `app/api/v1/content.py` - endpointy dla treści
-- `app/schemas/content.py` - schematy treści
+Po zakoĹ„czeniu Etapu 2, przejĹ›Ä‡ do:
+- `app/api/v1/content.py` - endpointy dla treĹ›ci
+- `app/schemas/content.py` - schematy treĹ›ci
 - `app/services/content_service.py` - logika biznesowa
-- Upload i przetwarzanie plików
+- Upload i przetwarzanie plikĂłw
 
-## Struktura Plików
+## Struktura PlikĂłw
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ schemas/         âś… Gotowe (user, token)
+â”‚   â”‚   â”śâ”€â”€ api/
+â”‚   â”‚   â”‚   â””â”€â”€ v1/
+â”‚   â”‚   â”‚       â””â”€â”€ auth.py   âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ utils/
+â”‚   â”‚   â”‚   â””â”€â”€ security.py  âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ config.py        âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ database.py      âś… Gotowe
+â”‚   â”‚   â””â”€â”€ main.py          âś… Gotowe
+â”‚   â”śâ”€â”€ alembic/             âś… Gotowe
+â”‚   â””â”€â”€ requirements.txt      âś… Gotowe
+â””â”€â”€ docs/
+    â””â”€â”€ INSTALLATION.md       âś… Gotowe
 ```
 
-## Ważne Uwagi
+## WaĹĽne Uwagi
 
-1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
-2. **Każdy etap jest niezależny** - można testować osobno
-3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
+1. **Pliki sÄ… krĂłtkie i moduĹ‚owe** - Ĺ‚atwo kontynuowaÄ‡ pracÄ™
+2. **KaĹĽdy etap jest niezaleĹĽny** - moĹĽna testowaÄ‡ osobno
+3. **Dokumentacja w PROGRESS.md** - Ĺ›ledzenie postÄ™pu
+4. **Migracje Alembic** - waĹĽne przed testowaniem
 
-## Problemy do Rozwiązania
+## Problemy do RozwiÄ…zania
 
-- [ ] Sprawdzenie czy wszystkie importy działają
+- [ ] Sprawdzenie czy wszystkie importy dziaĹ‚ajÄ…
 - [ ] Utworzenie migracji
 - [ ] Testowanie autentykacji
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
+Po zakoĹ„czeniu Etapu 1, rozpoczÄ…Ä‡ Etap 2 zgodnie z planem w `ANALIZA_STUDIO_SUITE.md`.
 
 
 ```
 
-Zakończono Etap 2. Podsumowanie:
+ZakoĹ„czono Etap 2. Podsumowanie:
 
 ## Podsumowanie wykonanej pracy
 
-### Usunięte pliki starego projektu:
+### UsuniÄ™te pliki starego projektu:
 - `build_game.py`
 - `space_invaders.py`
 - `SpaceInvaders.spec`
@@ -9642,41 +9642,41 @@ Zakończono Etap 2. Podsumowanie:
 - `PUBLISH.md`
 - `requirements.txt` (stary)
 - Katalogi `build/` i `dist/`
-- Zaktualizowano główny `README.md`
+- Zaktualizowano gĹ‚Ăłwny `README.md`
 
-### Etap 2: Zarządzanie Wyświetlaczami — zakończony
+### Etap 2: ZarzÄ…dzanie WyĹ›wietlaczami â€” zakoĹ„czony
 
 **Utworzone pliki:**
-1. `app/schemas/display.py` — schematy wyświetlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
-2. `app/api/v1/displays.py` — endpointy API:
-   - POST `/displays/register` — rejestracja przez MAC address
-   - POST `/displays/{id}/heartbeat` — heartbeat
-   - GET `/displays/{id}/status` — status wyświetlacza
-   - GET `/displays` — lista wyświetlaczy
-   - GET `/displays/{id}` — szczegóły
-   - POST `/displays` — utworzenie (admin)
-   - PUT `/displays/{id}` — aktualizacja (admin)
-   - DELETE `/displays/{id}` — usunięcie (admin)
-3. `app/services/display_service.py` — logika biznesowa (sprawdzanie offline, oznaczanie statusu)
-4. `app/tasks/monitoring.py` — zadanie monitoringu (sprawdzanie wyświetlaczy offline)
+1. `app/schemas/display.py` â€” schematy wyĹ›wietlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
+2. `app/api/v1/displays.py` â€” endpointy API:
+   - POST `/displays/register` â€” rejestracja przez MAC address
+   - POST `/displays/{id}/heartbeat` â€” heartbeat
+   - GET `/displays/{id}/status` â€” status wyĹ›wietlacza
+   - GET `/displays` â€” lista wyĹ›wietlaczy
+   - GET `/displays/{id}` â€” szczegĂłĹ‚y
+   - POST `/displays` â€” utworzenie (admin)
+   - PUT `/displays/{id}` â€” aktualizacja (admin)
+   - DELETE `/displays/{id}` â€” usuniÄ™cie (admin)
+3. `app/services/display_service.py` â€” logika biznesowa (sprawdzanie offline, oznaczanie statusu)
+4. `app/tasks/monitoring.py` â€” zadanie monitoringu (sprawdzanie wyĹ›wietlaczy offline)
 
 **Zaktualizowane pliki:**
-- `app/api/v1/__init__.py` — rejestracja routerów
-- `app/main.py` — dodanie routera wyświetlaczy
-- `app/schemas/__init__.py` — eksport schematów wyświetlaczy
-- `PROGRESS.md` — aktualizacja postępu
-- `CONTINUE.md` — instrukcje kontynuacji
+- `app/api/v1/__init__.py` â€” rejestracja routerĂłw
+- `app/main.py` â€” dodanie routera wyĹ›wietlaczy
+- `app/schemas/__init__.py` â€” eksport schematĂłw wyĹ›wietlaczy
+- `PROGRESS.md` â€” aktualizacja postÄ™pu
+- `CONTINUE.md` â€” instrukcje kontynuacji
 
 ## Status projektu
 
-- Etap 0: Przygotowanie środowiska — zakończony
-- Etap 1: Backend API — podstawy — zakończony
-- Etap 2: Zarządzanie wyświetlaczami — zakończony
-- Etap 3: Upload i przetwarzanie treści — następny
+- Etap 0: Przygotowanie Ĺ›rodowiska â€” zakoĹ„czony
+- Etap 1: Backend API â€” podstawy â€” zakoĹ„czony
+- Etap 2: ZarzÄ…dzanie wyĹ›wietlaczami â€” zakoĹ„czony
+- Etap 3: Upload i przetwarzanie treĹ›ci â€” nastÄ™pny
 
-## Struktura plików
+## Struktura plikĂłw
 
-Wszystkie pliki są krótkie (50–200 linii) i modułowe:
+Wszystkie pliki sÄ… krĂłtkie (50â€“200 linii) i moduĹ‚owe:
 - Schematy: ~80 linii
 - Endpointy: ~200 linii (podzielone na funkcje)
 - Serwisy: ~50 linii
@@ -9684,12 +9684,12 @@ Wszystkie pliki są krótkie (50–200 linii) i modułowe:
 
 ## Gotowe do kontynuacji
 
-Projekt jest gotowy do dalszej pracy. Można:
-1. Przetestować endpointy (zgodnie z `CONTINUE.md`)
-2. Przejść do Etapu 3 (Upload i przetwarzanie treści)
-3. Utworzyć migracje Alembic i przetestować system
+Projekt jest gotowy do dalszej pracy. MoĹĽna:
+1. PrzetestowaÄ‡ endpointy (zgodnie z `CONTINUE.md`)
+2. PrzejĹ›Ä‡ do Etapu 3 (Upload i przetwarzanie treĹ›ci)
+3. UtworzyÄ‡ migracje Alembic i przetestowaÄ‡ system
 
-Wszystkie pliki są krótkie, modułowe i łatwe do kontynuacji.
+Wszystkie pliki sÄ… krĂłtkie, moduĹ‚owe i Ĺ‚atwe do kontynuacji.
 
 ---
 
@@ -9701,12 +9701,12 @@ kontynuuj
 
 **Cursor**
 
-Kontynuowanie Etapu 3: Upload i przetwarzanie treści. Tworzenie schematów, endpointów uploadu i serwisów przetwarzania.
+Kontynuowanie Etapu 3: Upload i przetwarzanie treĹ›ci. Tworzenie schematĂłw, endpointĂłw uploadu i serwisĂłw przetwarzania.
 
 
 ```python
 """
-Schematy treści
+Schematy treĹ›ci
 """
 from pydantic import BaseModel
 from datetime import datetime
@@ -9714,26 +9714,26 @@ from typing import Optional, Dict, Any
 
 
 class ContentBase(BaseModel):
-    """Podstawowy schemat treści"""
+    """Podstawowy schemat treĹ›ci"""
     filename: str
     type: str
 
 
 class ContentCreate(BaseModel):
-    """Schemat tworzenia treści (z uploadu)"""
+    """Schemat tworzenia treĹ›ci (z uploadu)"""
     original_filename: str
     type: str
     file_size_mb: Optional[float] = None
 
 
 class ContentUpdate(BaseModel):
-    """Schemat aktualizacji treści"""
+    """Schemat aktualizacji treĹ›ci"""
     filename: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
 
 
 class ContentResponse(ContentBase):
-    """Schemat odpowiedzi treści"""
+    """Schemat odpowiedzi treĹ›ci"""
     id: int
     original_filename: str
     file_path: str
@@ -9752,7 +9752,7 @@ class ContentResponse(ContentBase):
 
 
 class ContentListResponse(BaseModel):
-    """Schemat listy treści"""
+    """Schemat listy treĹ›ci"""
     items: list[ContentResponse]
     total: int
     skip: int
@@ -9787,7 +9787,7 @@ from app.database import Base
 
 
 class ProcessingJob(Base):
-    """Model zadania przetwarzania treści"""
+    """Model zadania przetwarzania treĹ›ci"""
     __tablename__ = "processing_jobs"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -9830,7 +9830,7 @@ __all__ = [
 
 ```python
 """
-Narzędzia do obsługi plików
+NarzÄ™dzia do obsĹ‚ugi plikĂłw
 """
 import os
 import hashlib
@@ -9851,7 +9851,7 @@ ALLOWED_TYPES = ALLOWED_IMAGE_TYPES | ALLOWED_PDF_TYPES | ALLOWED_EXCEL_TYPES | 
 
 
 def get_file_type(content_type: str) -> Optional[str]:
-    """Określenie typu pliku na podstawie content_type"""
+    """OkreĹ›lenie typu pliku na podstawie content_type"""
     if content_type in ALLOWED_IMAGE_TYPES:
         return "image"
     elif content_type in ALLOWED_PDF_TYPES:
@@ -9875,18 +9875,18 @@ def validate_file_type(content_type: str, filename: str) -> Tuple[bool, Optional
     """
     file_type = get_file_type(content_type)
     if file_type is None:
-        return False, f"Nieobsługiwany typ pliku: {content_type}"
+        return False, f"NieobsĹ‚ugiwany typ pliku: {content_type}"
     
     # Dodatkowa walidacja przez rozszerzenie
     ext = get_file_extension(filename)
     if file_type == "image" and ext not in [".jpg", ".jpeg", ".png", ".gif"]:
-        return False, f"Nieprawidłowe rozszerzenie dla obrazu: {ext}"
+        return False, f"NieprawidĹ‚owe rozszerzenie dla obrazu: {ext}"
     elif file_type == "pdf" and ext != ".pdf":
-        return False, f"Nieprawidłowe rozszerzenie dla PDF: {ext}"
+        return False, f"NieprawidĹ‚owe rozszerzenie dla PDF: {ext}"
     elif file_type == "excel" and ext not in [".xlsx", ".xls"]:
-        return False, f"Nieprawidłowe rozszerzenie dla Excel: {ext}"
+        return False, f"NieprawidĹ‚owe rozszerzenie dla Excel: {ext}"
     elif file_type == "video" and ext not in [".mpg", ".mpeg", ".mp4", ".avi"]:
-        return False, f"Nieprawidłowe rozszerzenie dla video: {ext}"
+        return False, f"NieprawidĹ‚owe rozszerzenie dla video: {ext}"
     
     return True, None
 
@@ -9907,14 +9907,14 @@ def get_file_size_mb(file_path: str) -> float:
 
 
 def ensure_directory_exists(directory: str):
-    """Utworzenie katalogu jeśli nie istnieje"""
+    """Utworzenie katalogu jeĹ›li nie istnieje"""
     Path(directory).mkdir(parents=True, exist_ok=True)
 
 ```
 
 ```python
 """
-Serwis do zarządzania treścią
+Serwis do zarzÄ…dzania treĹ›ciÄ…
 """
 import os
 import shutil
@@ -9940,7 +9940,7 @@ def save_uploaded_file(
     db: Session
 ) -> tuple[str, Optional[str]]:
     """
-    Zapisanie przesłanego pliku
+    Zapisanie przesĹ‚anego pliku
     Zwraca (file_path, error_message)
     """
     # Walidacja typu pliku
@@ -9948,10 +9948,10 @@ def save_uploaded_file(
     if not is_valid:
         return None, error
     
-    # Określenie typu i katalogu
+    # OkreĹ›lenie typu i katalogu
     file_type = get_file_type(file.content_type)
     if file_type == "video":
-        # Video będzie przetworzone później, więc zapisujemy do processed
+        # Video bÄ™dzie przetworzone pĂłĹşniej, wiÄ™c zapisujemy do processed
         save_dir = settings.CONTENT_PROCESSED_DIR
     else:
         save_dir = settings.CONTENT_ORIGINAL_DIR
@@ -9980,7 +9980,7 @@ def create_content_record(
     file_size_mb: float,
     uploaded_by: int
 ) -> Content:
-    """Utworzenie rekordu treści w bazie danych"""
+    """Utworzenie rekordu treĹ›ci w bazie danych"""
     db_content = Content(
         filename=original_filename,
         original_filename=original_filename,
@@ -10033,7 +10033,7 @@ def update_processing_job(
 
 ```python
 """
-Endpointy API dla treści
+Endpointy API dla treĹ›ci
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
@@ -10066,13 +10066,13 @@ async def upload_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Upload treści (tylko admin)"""
+    """Upload treĹ›ci (tylko admin)"""
     # Walidacja typu pliku
     file_type = get_file_type(file.content_type)
     if file_type is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Nieobsługiwany typ pliku: {file.content_type}"
+            detail=f"NieobsĹ‚ugiwany typ pliku: {file.content_type}"
         )
     
     # Tymczasowe zapisanie pliku do obliczenia rozmiaru
@@ -10102,7 +10102,7 @@ async def upload_content(
         file_path, error = save_uploaded_file(file, db_content.id, db)
         
         if error:
-            # Usunięcie rekordu z bazy jeśli błąd
+            # UsuniÄ™cie rekordu z bazy jeĹ›li bĹ‚Ä…d
             db.delete(db_content)
             db.commit()
             raise HTTPException(
@@ -10128,7 +10128,7 @@ async def upload_content(
         return db_content
         
     finally:
-        # Usunięcie pliku tymczasowego
+        # UsuniÄ™cie pliku tymczasowego
         if os.path.exists(tmp_file_path):
             os.unlink(tmp_file_path)
 
@@ -10141,7 +10141,7 @@ async def get_contents(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy treści (admin i operator)"""
+    """Pobranie listy treĹ›ci (admin i operator)"""
     query = db.query(Content)
     
     if type_filter:
@@ -10164,7 +10164,7 @@ async def get_content(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów treści"""
+    """Pobranie szczegĂłĹ‚Ăłw treĹ›ci"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10181,7 +10181,7 @@ async def update_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja treści (tylko admin)"""
+    """Aktualizacja treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10204,7 +10204,7 @@ async def delete_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie treści (tylko admin)"""
+    """UsuniÄ™cie treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10212,7 +10212,7 @@ async def delete_content(
             detail="Content not found"
         )
     
-    # Usunięcie pliku z dysku
+    # UsuniÄ™cie pliku z dysku
     import os
     if os.path.exists(content.file_path):
         os.remove(content.file_path)
@@ -10230,7 +10230,7 @@ async def get_processing_jobs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie zadań przetwarzania dla treści"""
+    """Pobranie zadaĹ„ przetwarzania dla treĹ›ci"""
     from app.models.processing_job import ProcessingJob
     
     jobs = db.query(ProcessingJob).filter(
@@ -10243,7 +10243,7 @@ async def get_processing_jobs(
 
 ```python
 """
-API v1 - rejestracja routerów
+API v1 - rejestracja routerĂłw
 """
 from fastapi import APIRouter
 
@@ -10266,7 +10266,7 @@ from celery import Celery
 from app.config import settings
 
 celery_app = Celery(
-    "digital_signage",
+    "studio_suite",
     broker=settings.CELERY_BROKER_URL,
     backend=settings.CELERY_RESULT_BACKEND,
     include=["app.tasks.processing"]
@@ -10284,7 +10284,7 @@ celery_app.conf.update(
 
 ```python
 """
-Zadania przetwarzania treści (Celery tasks)
+Zadania przetwarzania treĹ›ci (Celery tasks)
 """
 import os
 from pathlib import Path
@@ -10329,7 +10329,7 @@ def process_image_task(content_id: int, job_id: int):
         img.convert("RGB").save(thumbnail_path, "JPEG", quality=85)
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Aktualizacja treści
+        # Aktualizacja treĹ›ci
         content.thumbnail_path = thumbnail_path
         db.commit()
         
@@ -10375,7 +10375,7 @@ def process_pdf_task(content_id: int, job_id: int):
             img.convert("RGB").save(thumbnail_path, "JPEG", quality=85)
             update_processing_job(db, job_id, "processing", progress=90)
             
-            # Aktualizacja treści
+            # Aktualizacja treĹ›ci
             content.thumbnail_path = thumbnail_path
             db.commit()
         
@@ -10427,7 +10427,7 @@ def process_excel_task(content_id: int, job_id: int):
         
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Aktualizacja treści
+        # Aktualizacja treĹ›ci
         content.metadata = metadata
         db.commit()
         
@@ -10442,7 +10442,7 @@ def process_excel_task(content_id: int, job_id: int):
 @celery_app.task(name="process_video")
 def process_video_task(content_id: int, job_id: int):
     """Przetwarzanie video - transkodowanie do MP4 (H.264)"""
-    # To będzie zaimplementowane w Etapie 4
+    # To bÄ™dzie zaimplementowane w Etapie 4
     db: Session = SessionLocal()
     try:
         update_processing_job(db, job_id, "processing", progress=0)
@@ -10478,7 +10478,7 @@ __all__ = [
 
 ```python
 """
-Endpointy API dla treści
+Endpointy API dla treĹ›ci
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
@@ -10511,13 +10511,13 @@ async def upload_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Upload treści (tylko admin)"""
+    """Upload treĹ›ci (tylko admin)"""
     # Walidacja typu pliku
     file_type = get_file_type(file.content_type)
     if file_type is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Nieobsługiwany typ pliku: {file.content_type}"
+            detail=f"NieobsĹ‚ugiwany typ pliku: {file.content_type}"
         )
     
     # Tymczasowe zapisanie pliku do obliczenia rozmiaru
@@ -10547,7 +10547,7 @@ async def upload_content(
         file_path, error = save_uploaded_file(file, db_content.id, db)
         
         if error:
-            # Usunięcie rekordu z bazy jeśli błąd
+            # UsuniÄ™cie rekordu z bazy jeĹ›li bĹ‚Ä…d
             db.delete(db_content)
             db.commit()
             raise HTTPException(
@@ -10582,7 +10582,7 @@ async def upload_content(
         return db_content
         
     finally:
-        # Usunięcie pliku tymczasowego
+        # UsuniÄ™cie pliku tymczasowego
         if os.path.exists(tmp_file_path):
             os.unlink(tmp_file_path)
 
@@ -10595,7 +10595,7 @@ async def get_contents(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy treści (admin i operator)"""
+    """Pobranie listy treĹ›ci (admin i operator)"""
     query = db.query(Content)
     
     if type_filter:
@@ -10618,7 +10618,7 @@ async def get_content(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów treści"""
+    """Pobranie szczegĂłĹ‚Ăłw treĹ›ci"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10635,7 +10635,7 @@ async def update_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja treści (tylko admin)"""
+    """Aktualizacja treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10658,7 +10658,7 @@ async def delete_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie treści (tylko admin)"""
+    """UsuniÄ™cie treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10666,7 +10666,7 @@ async def delete_content(
             detail="Content not found"
         )
     
-    # Usunięcie pliku z dysku
+    # UsuniÄ™cie pliku z dysku
     import os
     if os.path.exists(content.file_path):
         os.remove(content.file_path)
@@ -10684,7 +10684,7 @@ async def get_processing_jobs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie zadań przetwarzania dla treści"""
+    """Pobranie zadaĹ„ przetwarzania dla treĹ›ci"""
     from app.models.processing_job import ProcessingJob
     
     jobs = db.query(ProcessingJob).filter(
@@ -10697,11 +10697,11 @@ async def get_processing_jobs(
 ```
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Utworzenie struktury projektu
@@ -10711,14 +10711,14 @@ async def get_processing_jobs(
 - [x] Dokumentacja instalacji
 
 **Notatki:**
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 - Backend: podstawowa struktura utworzona
 
 ---
 
-## Etap 1: Backend API - Podstawy ✅
+## Etap 1: Backend API - Podstawy âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Modele bazy danych (User, Display, Group, Content, Schedule)
@@ -10732,65 +10732,65 @@ async def get_processing_jobs(
 
 ---
 
-## Etap 2: Backend - Zarządzanie Wyświetlaczami 🔄
+## Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy wyświetlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
-- [x] Endpointy CRUD dla wyświetlaczy (tylko admin)
-- [x] Endpoint rejestracji wyświetlacza (przez MAC address)
+- [x] Schematy wyĹ›wietlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
+- [x] Endpointy CRUD dla wyĹ›wietlaczy (tylko admin)
+- [x] Endpoint rejestracji wyĹ›wietlacza (przez MAC address)
 - [x] Endpoint heartbeat (POST /displays/{id}/heartbeat)
 - [x] Endpoint statusu (GET /displays/{id}/status)
-- [x] Serwis do zarządzania wyświetlaczami (display_service)
+- [x] Serwis do zarzÄ…dzania wyĹ›wietlaczami (display_service)
 - [x] Zadanie monitoringu (sprawdzanie offline)
-- [ ] Testowanie endpointów
+- [ ] Testowanie endpointĂłw
 
-**Następne kroki:**
-1. Testowanie endpointów wyświetlaczy
-2. Przejście do Etapu 3 (Upload treści)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw wyĹ›wietlaczy
+2. PrzejĹ›cie do Etapu 3 (Upload treĹ›ci)
 
 ---
 
-## Etap 3: Backend - Upload i Przetwarzanie Treści 🔄
+## Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy treści (ContentCreate, ContentResponse, ProcessingJobResponse)
+- [x] Schematy treĹ›ci (ContentCreate, ContentResponse, ProcessingJobResponse)
 - [x] Model ProcessingJob w bazie danych
-- [x] Narzędzia do obsługi plików (file_utils)
-- [x] Serwis zarządzania treścią (content_service)
-- [x] Endpoint upload plików (POST /content/upload)
-- [x] Endpointy CRUD dla treści
+- [x] NarzÄ™dzia do obsĹ‚ugi plikĂłw (file_utils)
+- [x] Serwis zarzÄ…dzania treĹ›ciÄ… (content_service)
+- [x] Endpoint upload plikĂłw (POST /content/upload)
+- [x] Endpointy CRUD dla treĹ›ci
 - [x] Konfiguracja Celery
 - [x] Zadania przetwarzania (obraz, PDF, Excel)
 - [x] Generowanie miniatur
 - [ ] Testowanie uploadu i przetwarzania
 
-**Następne kroki:**
-1. Testowanie endpointów uploadu
-2. Przejście do Etapu 4 (Transkodowanie Video)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw uploadu
+2. PrzejĹ›cie do Etapu 4 (Transkodowanie Video)
 
 ---
 
-## Status Ogólny
+## Status OgĂłlny
 
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy
-- ✅ Etap 2: Backend - Zarządzanie Wyświetlaczami
-- 🔄 Etap 3: Backend - Upload i Przetwarzanie Treści (w trakcie)
-- ⏳ Etap 4: Backend - Transkodowanie Video
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy
+- âś… Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami
+- đź”„ Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci (w trakcie)
+- âŹł Etap 4: Backend - Transkodowanie Video
 
 
 ```
 
-Korygowanie obsługi plików i aktualizowanie eksportów.
+Korygowanie obsĹ‚ugi plikĂłw i aktualizowanie eksportĂłw.
 
 
 ```python
 """
-Endpointy API dla treści
+Endpointy API dla treĹ›ci
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
@@ -10823,13 +10823,13 @@ async def upload_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Upload treści (tylko admin)"""
+    """Upload treĹ›ci (tylko admin)"""
     # Walidacja typu pliku
     file_type = get_file_type(file.content_type)
     if file_type is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Nieobsługiwany typ pliku: {file.content_type}"
+            detail=f"NieobsĹ‚ugiwany typ pliku: {file.content_type}"
         )
     
     # Odczyt pliku do obliczenia rozmiaru
@@ -10852,7 +10852,7 @@ async def upload_content(
     file_path, error = save_uploaded_file(file, db_content.id, db)
         
         if error:
-            # Usunięcie rekordu z bazy jeśli błąd
+            # UsuniÄ™cie rekordu z bazy jeĹ›li bĹ‚Ä…d
             db.delete(db_content)
             db.commit()
             raise HTTPException(
@@ -10887,7 +10887,7 @@ async def upload_content(
         return db_content
         
     finally:
-        # Usunięcie pliku tymczasowego
+        # UsuniÄ™cie pliku tymczasowego
         if os.path.exists(tmp_file_path):
             os.unlink(tmp_file_path)
 
@@ -10900,7 +10900,7 @@ async def get_contents(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy treści (admin i operator)"""
+    """Pobranie listy treĹ›ci (admin i operator)"""
     query = db.query(Content)
     
     if type_filter:
@@ -10923,7 +10923,7 @@ async def get_content(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów treści"""
+    """Pobranie szczegĂłĹ‚Ăłw treĹ›ci"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10940,7 +10940,7 @@ async def update_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja treści (tylko admin)"""
+    """Aktualizacja treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10963,7 +10963,7 @@ async def delete_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie treści (tylko admin)"""
+    """UsuniÄ™cie treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -10971,7 +10971,7 @@ async def delete_content(
             detail="Content not found"
         )
     
-    # Usunięcie pliku z dysku
+    # UsuniÄ™cie pliku z dysku
     import os
     if os.path.exists(content.file_path):
         os.remove(content.file_path)
@@ -10989,7 +10989,7 @@ async def get_processing_jobs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie zadań przetwarzania dla treści"""
+    """Pobranie zadaĹ„ przetwarzania dla treĹ›ci"""
     from app.models.processing_job import ProcessingJob
     
     jobs = db.query(ProcessingJob).filter(
@@ -11003,7 +11003,7 @@ async def get_processing_jobs(
 
 ```python
 """
-Endpointy API dla treści
+Endpointy API dla treĹ›ci
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
@@ -11036,13 +11036,13 @@ async def upload_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Upload treści (tylko admin)"""
+    """Upload treĹ›ci (tylko admin)"""
     # Walidacja typu pliku
     file_type = get_file_type(file.content_type)
     if file_type is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Nieobsługiwany typ pliku: {file.content_type}"
+            detail=f"NieobsĹ‚ugiwany typ pliku: {file.content_type}"
         )
     
     # Odczyt pliku do obliczenia rozmiaru
@@ -11065,7 +11065,7 @@ async def upload_content(
     file_path, error = save_uploaded_file(file, db_content.id, db)
         
         if error:
-            # Usunięcie rekordu z bazy jeśli błąd
+            # UsuniÄ™cie rekordu z bazy jeĹ›li bĹ‚Ä…d
             db.delete(db_content)
             db.commit()
             raise HTTPException(
@@ -11108,7 +11108,7 @@ async def get_contents(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy treści (admin i operator)"""
+    """Pobranie listy treĹ›ci (admin i operator)"""
     query = db.query(Content)
     
     if type_filter:
@@ -11131,7 +11131,7 @@ async def get_content(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów treści"""
+    """Pobranie szczegĂłĹ‚Ăłw treĹ›ci"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -11148,7 +11148,7 @@ async def update_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Aktualizacja treści (tylko admin)"""
+    """Aktualizacja treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -11171,7 +11171,7 @@ async def delete_content(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie treści (tylko admin)"""
+    """UsuniÄ™cie treĹ›ci (tylko admin)"""
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
         raise HTTPException(
@@ -11179,7 +11179,7 @@ async def delete_content(
             detail="Content not found"
         )
     
-    # Usunięcie pliku z dysku
+    # UsuniÄ™cie pliku z dysku
     import os
     if os.path.exists(content.file_path):
         os.remove(content.file_path)
@@ -11197,7 +11197,7 @@ async def get_processing_jobs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie zadań przetwarzania dla treści"""
+    """Pobranie zadaĹ„ przetwarzania dla treĹ›ci"""
     from app.models.processing_job import ProcessingJob
     
     jobs = db.query(ProcessingJob).filter(
@@ -11269,41 +11269,41 @@ if __name__ == "__main__":
 
 ## Aktualny Status
 
-**Etap 3: Backend - Upload i Przetwarzanie Treści** - Zakończony
+**Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci** - ZakoĹ„czony
 
-### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
-3. ✅ Schematy Pydantic (User, Token, Display, Content)
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
-7. ✅ Endpointy wyświetlaczy (CRUD, rejestracja, heartbeat, status)
-8. ✅ Serwis zarządzania wyświetlaczami
-9. ✅ Zadanie monitoringu (sprawdzanie offline)
-10. ✅ Endpointy treści (CRUD, upload)
-11. ✅ Konfiguracja Celery
-12. ✅ Zadania przetwarzania (obraz, PDF, Excel)
-13. ✅ Generowanie miniatur
-14. ✅ Narzędzia do obsługi plików
+### Co zostaĹ‚o zrobione:
+1. âś… Struktura projektu
+2. âś… Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
+3. âś… Schematy Pydantic (User, Token, Display, Content)
+4. âś… Konfiguracja bazy danych i Alembic
+5. âś… System autentykacji (JWT)
+6. âś… Endpointy autentykacji (login, register)
+7. âś… Endpointy wyĹ›wietlaczy (CRUD, rejestracja, heartbeat, status)
+8. âś… Serwis zarzÄ…dzania wyĹ›wietlaczami
+9. âś… Zadanie monitoringu (sprawdzanie offline)
+10. âś… Endpointy treĹ›ci (CRUD, upload)
+11. âś… Konfiguracja Celery
+12. âś… Zadania przetwarzania (obraz, PDF, Excel)
+13. âś… Generowanie miniatur
+14. âś… NarzÄ™dzia do obsĹ‚ugi plikĂłw
 
-### Co trzeba dokończyć w Etapie 2:
+### Co trzeba dokoĹ„czyÄ‡ w Etapie 2:
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów wyświetlaczy
+2. Testowanie endpointĂłw wyĹ›wietlaczy
 3. Ewentualne poprawki
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 ### 1. Utworzenie migracji Alembic
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 ```
 
-### 2. Utworzenie użytkownika admin
+### 2. Utworzenie uĹĽytkownika admin
 
 ```bash
 python scripts/create_admin.py admin password123
@@ -11320,7 +11320,7 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"password123"}'
 
-# Test rejestracji wyświetlacza
+# Test rejestracji wyĹ›wietlacza
 curl -X POST http://localhost:8000/api/v1/displays/register \
   -H "Content-Type: application/json" \
   -d '{"mac_address":"00:11:22:33:44:55","ip_address":"192.168.1.100"}'
@@ -11331,52 +11331,52 @@ curl -X POST http://localhost:8000/api/v1/displays/1/heartbeat \
   -d '{"current_content_id":null,"cache_status":{}}'
 ```
 
-### 4. Przejście do Etapu 3
+### 4. PrzejĹ›cie do Etapu 3
 
-Po zakończeniu Etapu 2, przejść do:
-- `app/api/v1/content.py` - endpointy dla treści
-- `app/schemas/content.py` - schematy treści
+Po zakoĹ„czeniu Etapu 2, przejĹ›Ä‡ do:
+- `app/api/v1/content.py` - endpointy dla treĹ›ci
+- `app/schemas/content.py` - schematy treĹ›ci
 - `app/services/content_service.py` - logika biznesowa
-- Upload i przetwarzanie plików
+- Upload i przetwarzanie plikĂłw
 
-## Struktura Plików
+## Struktura PlikĂłw
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ schemas/         âś… Gotowe (user, token)
+â”‚   â”‚   â”śâ”€â”€ api/
+â”‚   â”‚   â”‚   â””â”€â”€ v1/
+â”‚   â”‚   â”‚       â””â”€â”€ auth.py   âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ utils/
+â”‚   â”‚   â”‚   â””â”€â”€ security.py  âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ config.py        âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ database.py      âś… Gotowe
+â”‚   â”‚   â””â”€â”€ main.py          âś… Gotowe
+â”‚   â”śâ”€â”€ alembic/             âś… Gotowe
+â”‚   â””â”€â”€ requirements.txt      âś… Gotowe
+â””â”€â”€ docs/
+    â””â”€â”€ INSTALLATION.md       âś… Gotowe
 ```
 
-## Ważne Uwagi
+## WaĹĽne Uwagi
 
-1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
-2. **Każdy etap jest niezależny** - można testować osobno
-3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
+1. **Pliki sÄ… krĂłtkie i moduĹ‚owe** - Ĺ‚atwo kontynuowaÄ‡ pracÄ™
+2. **KaĹĽdy etap jest niezaleĹĽny** - moĹĽna testowaÄ‡ osobno
+3. **Dokumentacja w PROGRESS.md** - Ĺ›ledzenie postÄ™pu
+4. **Migracje Alembic** - waĹĽne przed testowaniem
 
-## Problemy do Rozwiązania
+## Problemy do RozwiÄ…zania
 
-- [ ] Sprawdzenie czy wszystkie importy działają
+- [ ] Sprawdzenie czy wszystkie importy dziaĹ‚ajÄ…
 - [ ] Utworzenie migracji
 - [ ] Testowanie autentykacji
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
+Po zakoĹ„czeniu Etapu 1, rozpoczÄ…Ä‡ Etap 2 zgodnie z planem w `ANALIZA_STUDIO_SUITE.md`.
 
 
 ```
@@ -11386,43 +11386,43 @@ Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_
 
 ## Aktualny Status
 
-**Etap 3: Backend - Upload i Przetwarzanie Treści** - Zakończony
+**Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci** - ZakoĹ„czony
 
-### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
-3. ✅ Schematy Pydantic (User, Token, Display, Content)
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
-7. ✅ Endpointy wyświetlaczy (CRUD, rejestracja, heartbeat, status)
-8. ✅ Serwis zarządzania wyświetlaczami
-9. ✅ Zadanie monitoringu (sprawdzanie offline)
-10. ✅ Endpointy treści (CRUD, upload)
-11. ✅ Konfiguracja Celery
-12. ✅ Zadania przetwarzania (obraz, PDF, Excel)
-13. ✅ Generowanie miniatur
-14. ✅ Narzędzia do obsługi plików
+### Co zostaĹ‚o zrobione:
+1. âś… Struktura projektu
+2. âś… Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
+3. âś… Schematy Pydantic (User, Token, Display, Content)
+4. âś… Konfiguracja bazy danych i Alembic
+5. âś… System autentykacji (JWT)
+6. âś… Endpointy autentykacji (login, register)
+7. âś… Endpointy wyĹ›wietlaczy (CRUD, rejestracja, heartbeat, status)
+8. âś… Serwis zarzÄ…dzania wyĹ›wietlaczami
+9. âś… Zadanie monitoringu (sprawdzanie offline)
+10. âś… Endpointy treĹ›ci (CRUD, upload)
+11. âś… Konfiguracja Celery
+12. âś… Zadania przetwarzania (obraz, PDF, Excel)
+13. âś… Generowanie miniatur
+14. âś… NarzÄ™dzia do obsĹ‚ugi plikĂłw
 
-### Co trzeba dokończyć w Etapie 3:
+### Co trzeba dokoĹ„czyÄ‡ w Etapie 3:
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów uploadu
+2. Testowanie endpointĂłw uploadu
 3. Uruchomienie Celery worker
-4. Testowanie przetwarzania plików
-5. Przejście do Etapu 4 (Transkodowanie Video)
+4. Testowanie przetwarzania plikĂłw
+5. PrzejĹ›cie do Etapu 4 (Transkodowanie Video)
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 ### 1. Utworzenie migracji Alembic
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 ```
 
-### 2. Utworzenie użytkownika admin
+### 2. Utworzenie uĹĽytkownika admin
 
 ```bash
 python scripts/create_admin.py admin password123
@@ -11439,7 +11439,7 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"password123"}'
 
-# Test rejestracji wyświetlacza
+# Test rejestracji wyĹ›wietlacza
 curl -X POST http://localhost:8000/api/v1/displays/register \
   -H "Content-Type: application/json" \
   -d '{"mac_address":"00:11:22:33:44:55","ip_address":"192.168.1.100"}'
@@ -11450,52 +11450,52 @@ curl -X POST http://localhost:8000/api/v1/displays/1/heartbeat \
   -d '{"current_content_id":null,"cache_status":{}}'
 ```
 
-### 4. Przejście do Etapu 3
+### 4. PrzejĹ›cie do Etapu 3
 
-Po zakończeniu Etapu 2, przejść do:
-- `app/api/v1/content.py` - endpointy dla treści
-- `app/schemas/content.py` - schematy treści
+Po zakoĹ„czeniu Etapu 2, przejĹ›Ä‡ do:
+- `app/api/v1/content.py` - endpointy dla treĹ›ci
+- `app/schemas/content.py` - schematy treĹ›ci
 - `app/services/content_service.py` - logika biznesowa
-- Upload i przetwarzanie plików
+- Upload i przetwarzanie plikĂłw
 
-## Struktura Plików
+## Struktura PlikĂłw
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ schemas/         âś… Gotowe (user, token)
+â”‚   â”‚   â”śâ”€â”€ api/
+â”‚   â”‚   â”‚   â””â”€â”€ v1/
+â”‚   â”‚   â”‚       â””â”€â”€ auth.py   âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ utils/
+â”‚   â”‚   â”‚   â””â”€â”€ security.py  âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ config.py        âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ database.py      âś… Gotowe
+â”‚   â”‚   â””â”€â”€ main.py          âś… Gotowe
+â”‚   â”śâ”€â”€ alembic/             âś… Gotowe
+â”‚   â””â”€â”€ requirements.txt      âś… Gotowe
+â””â”€â”€ docs/
+    â””â”€â”€ INSTALLATION.md       âś… Gotowe
 ```
 
-## Ważne Uwagi
+## WaĹĽne Uwagi
 
-1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
-2. **Każdy etap jest niezależny** - można testować osobno
-3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
+1. **Pliki sÄ… krĂłtkie i moduĹ‚owe** - Ĺ‚atwo kontynuowaÄ‡ pracÄ™
+2. **KaĹĽdy etap jest niezaleĹĽny** - moĹĽna testowaÄ‡ osobno
+3. **Dokumentacja w PROGRESS.md** - Ĺ›ledzenie postÄ™pu
+4. **Migracje Alembic** - waĹĽne przed testowaniem
 
-## Problemy do Rozwiązania
+## Problemy do RozwiÄ…zania
 
-- [ ] Sprawdzenie czy wszystkie importy działają
+- [ ] Sprawdzenie czy wszystkie importy dziaĹ‚ajÄ…
 - [ ] Utworzenie migracji
 - [ ] Testowanie autentykacji
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
+Po zakoĹ„czeniu Etapu 1, rozpoczÄ…Ä‡ Etap 2 zgodnie z planem w `ANALIZA_STUDIO_SUITE.md`.
 
 
 ```
@@ -11505,43 +11505,43 @@ Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_
 
 ## Aktualny Status
 
-**Etap 3: Backend - Upload i Przetwarzanie Treści** - Zakończony
+**Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci** - ZakoĹ„czony
 
-### Co zostało zrobione:
-1. ✅ Struktura projektu
-2. ✅ Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
-3. ✅ Schematy Pydantic (User, Token, Display, Content)
-4. ✅ Konfiguracja bazy danych i Alembic
-5. ✅ System autentykacji (JWT)
-6. ✅ Endpointy autentykacji (login, register)
-7. ✅ Endpointy wyświetlaczy (CRUD, rejestracja, heartbeat, status)
-8. ✅ Serwis zarządzania wyświetlaczami
-9. ✅ Zadanie monitoringu (sprawdzanie offline)
-10. ✅ Endpointy treści (CRUD, upload)
-11. ✅ Konfiguracja Celery
-12. ✅ Zadania przetwarzania (obraz, PDF, Excel)
-13. ✅ Generowanie miniatur
-14. ✅ Narzędzia do obsługi plików
+### Co zostaĹ‚o zrobione:
+1. âś… Struktura projektu
+2. âś… Modele bazy danych (User, Display, Group, Content, Schedule, ProcessingJob)
+3. âś… Schematy Pydantic (User, Token, Display, Content)
+4. âś… Konfiguracja bazy danych i Alembic
+5. âś… System autentykacji (JWT)
+6. âś… Endpointy autentykacji (login, register)
+7. âś… Endpointy wyĹ›wietlaczy (CRUD, rejestracja, heartbeat, status)
+8. âś… Serwis zarzÄ…dzania wyĹ›wietlaczami
+9. âś… Zadanie monitoringu (sprawdzanie offline)
+10. âś… Endpointy treĹ›ci (CRUD, upload)
+11. âś… Konfiguracja Celery
+12. âś… Zadania przetwarzania (obraz, PDF, Excel)
+13. âś… Generowanie miniatur
+14. âś… NarzÄ™dzia do obsĹ‚ugi plikĂłw
 
-### Co trzeba dokończyć w Etapie 3:
+### Co trzeba dokoĹ„czyÄ‡ w Etapie 3:
 1. Utworzenie pierwszej migracji Alembic
-2. Testowanie endpointów uploadu
+2. Testowanie endpointĂłw uploadu
 3. Uruchomienie Celery worker
-4. Testowanie przetwarzania plików
-5. Przejście do Etapu 4 (Transkodowanie Video)
+4. Testowanie przetwarzania plikĂłw
+5. PrzejĹ›cie do Etapu 4 (Transkodowanie Video)
 
-## Następne Kroki
+## NastÄ™pne Kroki
 
 ### 1. Utworzenie migracji Alembic
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
 ```
 
-### 2. Utworzenie użytkownika admin
+### 2. Utworzenie uĹĽytkownika admin
 
 ```bash
 python scripts/create_admin.py admin password123
@@ -11558,7 +11558,7 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"password123"}'
 
-# Test rejestracji wyświetlacza
+# Test rejestracji wyĹ›wietlacza
 curl -X POST http://localhost:8000/api/v1/displays/register \
   -H "Content-Type: application/json" \
   -d '{"mac_address":"00:11:22:33:44:55","ip_address":"192.168.1.100"}'
@@ -11568,7 +11568,7 @@ curl -X POST http://localhost:8000/api/v1/displays/1/heartbeat \
   -H "Content-Type: application/json" \
   -d '{"current_content_id":null,"cache_status":{}}'
 
-# Test upload treści (wymaga tokena admin)
+# Test upload treĹ›ci (wymaga tokena admin)
 curl -X POST http://localhost:8000/api/v1/content/upload \
   -H "Authorization: Bearer <token>" \
   -F "file=@test_image.jpg"
@@ -11578,106 +11578,106 @@ curl -X POST http://localhost:8000/api/v1/content/upload \
 
 ```bash
 # W osobnym terminalu
-cd digital_signage/backend
+cd studio_suite/backend
 source venv/bin/activate
 celery -A app.celery_app worker --loglevel=info
 ```
 
-### 5. Przejście do Etapu 4
+### 5. PrzejĹ›cie do Etapu 4
 
-Po zakończeniu Etapu 3, przejść do:
+Po zakoĹ„czeniu Etapu 3, przejĹ›Ä‡ do:
 - `app/tasks/processing.py` - implementacja transkodowania video (FFmpeg)
 - `app/services/video_service.py` - serwis do przetwarzania video
 
-## Struktura Plików
+## Struktura PlikĂłw
 
 ```
-digital_signage/
-├── backend/
-│   ├── app/
-│   │   ├── models/          ✅ Gotowe
-│   │   ├── schemas/         ✅ Gotowe (user, token)
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── auth.py   ✅ Gotowe
-│   │   ├── utils/
-│   │   │   └── security.py  ✅ Gotowe
-│   │   ├── config.py        ✅ Gotowe
-│   │   ├── database.py      ✅ Gotowe
-│   │   └── main.py          ✅ Gotowe
-│   ├── alembic/             ✅ Gotowe
-│   └── requirements.txt      ✅ Gotowe
-└── docs/
-    └── INSTALLATION.md       ✅ Gotowe
+studio_suite/
+â”śâ”€â”€ backend/
+â”‚   â”śâ”€â”€ app/
+â”‚   â”‚   â”śâ”€â”€ models/          âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ schemas/         âś… Gotowe (user, token)
+â”‚   â”‚   â”śâ”€â”€ api/
+â”‚   â”‚   â”‚   â””â”€â”€ v1/
+â”‚   â”‚   â”‚       â””â”€â”€ auth.py   âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ utils/
+â”‚   â”‚   â”‚   â””â”€â”€ security.py  âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ config.py        âś… Gotowe
+â”‚   â”‚   â”śâ”€â”€ database.py      âś… Gotowe
+â”‚   â”‚   â””â”€â”€ main.py          âś… Gotowe
+â”‚   â”śâ”€â”€ alembic/             âś… Gotowe
+â”‚   â””â”€â”€ requirements.txt      âś… Gotowe
+â””â”€â”€ docs/
+    â””â”€â”€ INSTALLATION.md       âś… Gotowe
 ```
 
-## Ważne Uwagi
+## WaĹĽne Uwagi
 
-1. **Pliki są krótkie i modułowe** - łatwo kontynuować pracę
-2. **Każdy etap jest niezależny** - można testować osobno
-3. **Dokumentacja w PROGRESS.md** - śledzenie postępu
-4. **Migracje Alembic** - ważne przed testowaniem
+1. **Pliki sÄ… krĂłtkie i moduĹ‚owe** - Ĺ‚atwo kontynuowaÄ‡ pracÄ™
+2. **KaĹĽdy etap jest niezaleĹĽny** - moĹĽna testowaÄ‡ osobno
+3. **Dokumentacja w PROGRESS.md** - Ĺ›ledzenie postÄ™pu
+4. **Migracje Alembic** - waĹĽne przed testowaniem
 
-## Problemy do Rozwiązania
+## Problemy do RozwiÄ…zania
 
-- [ ] Sprawdzenie czy wszystkie importy działają
+- [ ] Sprawdzenie czy wszystkie importy dziaĹ‚ajÄ…
 - [ ] Utworzenie migracji
 - [ ] Testowanie autentykacji
 
 ## Kontynuacja
 
-Po zakończeniu Etapu 1, rozpocząć Etap 2 zgodnie z planem w `ANALIZA_DIGITAL_SIGNAGE.md`.
+Po zakoĹ„czeniu Etapu 1, rozpoczÄ…Ä‡ Etap 2 zgodnie z planem w `ANALIZA_STUDIO_SUITE.md`.
 
 
 ```
 
-Zakończono Etap 3. Podsumowanie:
+ZakoĹ„czono Etap 3. Podsumowanie:
 
 ## Podsumowanie Etapu 3
 
 ### Utworzone pliki:
-1. `app/schemas/content.py` — schematy treści i zadań przetwarzania
-2. `app/models/processing_job.py` — model zadań przetwarzania
-3. `app/utils/file_utils.py` — narzędzia do obsługi plików (walidacja, hash, rozmiar)
-4. `app/services/content_service.py` — serwis zarządzania treścią
-5. `app/api/v1/content.py` — endpointy API:
-   - POST `/content/upload` — upload plików
-   - GET `/content` — lista treści
-   - GET `/content/{id}` — szczegóły
-   - PUT `/content/{id}` — aktualizacja (admin)
-   - DELETE `/content/{id}` — usunięcie (admin)
-   - GET `/content/{id}/processing-jobs` — zadania przetwarzania
-6. `app/celery_app.py` — konfiguracja Celery
-7. `app/tasks/processing.py` — zadania przetwarzania:
-   - `process_image_task` — generowanie miniatur obrazów
-   - `process_pdf_task` — generowanie miniatur PDF
-   - `process_excel_task` — analiza struktury Excel
-   - `process_video_task` — placeholder (do Etapu 4)
-8. `run_celery.py` — skrypt uruchomienia Celery worker
+1. `app/schemas/content.py` â€” schematy treĹ›ci i zadaĹ„ przetwarzania
+2. `app/models/processing_job.py` â€” model zadaĹ„ przetwarzania
+3. `app/utils/file_utils.py` â€” narzÄ™dzia do obsĹ‚ugi plikĂłw (walidacja, hash, rozmiar)
+4. `app/services/content_service.py` â€” serwis zarzÄ…dzania treĹ›ciÄ…
+5. `app/api/v1/content.py` â€” endpointy API:
+   - POST `/content/upload` â€” upload plikĂłw
+   - GET `/content` â€” lista treĹ›ci
+   - GET `/content/{id}` â€” szczegĂłĹ‚y
+   - PUT `/content/{id}` â€” aktualizacja (admin)
+   - DELETE `/content/{id}` â€” usuniÄ™cie (admin)
+   - GET `/content/{id}/processing-jobs` â€” zadania przetwarzania
+6. `app/celery_app.py` â€” konfiguracja Celery
+7. `app/tasks/processing.py` â€” zadania przetwarzania:
+   - `process_image_task` â€” generowanie miniatur obrazĂłw
+   - `process_pdf_task` â€” generowanie miniatur PDF
+   - `process_excel_task` â€” analiza struktury Excel
+   - `process_video_task` â€” placeholder (do Etapu 4)
+8. `run_celery.py` â€” skrypt uruchomienia Celery worker
 
 ### Funkcje:
-- Upload plików (obrazy, PDF, Excel, video)
-- Walidacja typów plików
-- Automatyczne tworzenie zadań przetwarzania
-- Generowanie miniatur dla obrazów i PDF
-- Analiza struktury plików Excel
-- Obsługa błędów i statusów przetwarzania
+- Upload plikĂłw (obrazy, PDF, Excel, video)
+- Walidacja typĂłw plikĂłw
+- Automatyczne tworzenie zadaĹ„ przetwarzania
+- Generowanie miniatur dla obrazĂłw i PDF
+- Analiza struktury plikĂłw Excel
+- ObsĹ‚uga bĹ‚Ä™dĂłw i statusĂłw przetwarzania
 
 ## Status projektu
 
-- Etap 0: Przygotowanie środowiska — zakończony
-- Etap 1: Backend API — podstawy — zakończony
-- Etap 2: Zarządzanie wyświetlaczami — zakończony
-- Etap 3: Upload i przetwarzanie treści — zakończony
-- Etap 4: Transkodowanie video — następny
+- Etap 0: Przygotowanie Ĺ›rodowiska â€” zakoĹ„czony
+- Etap 1: Backend API â€” podstawy â€” zakoĹ„czony
+- Etap 2: ZarzÄ…dzanie wyĹ›wietlaczami â€” zakoĹ„czony
+- Etap 3: Upload i przetwarzanie treĹ›ci â€” zakoĹ„czony
+- Etap 4: Transkodowanie video â€” nastÄ™pny
 
-## Następne kroki
+## NastÄ™pne kroki
 
 1. Utworzenie migracji Alembic (wszystkie modele)
 2. Testowanie uploadu i przetwarzania
-3. Przejście do Etapu 4 (Transkodowanie Video z FFmpeg)
+3. PrzejĹ›cie do Etapu 4 (Transkodowanie Video z FFmpeg)
 
-Wszystkie pliki są krótkie i modułowe, gotowe do kontynuacji.
+Wszystkie pliki sÄ… krĂłtkie i moduĹ‚owe, gotowe do kontynuacji.
 
 ---
 
@@ -11689,7 +11689,7 @@ kontynuuj
 
 **Cursor**
 
-Kontynuowanie Etapu 4: Transkodowanie video. Implementowanie transkodowania do MP4 (H.264) przy użyciu FFmpeg.
+Kontynuowanie Etapu 4: Transkodowanie video. Implementowanie transkodowania do MP4 (H.264) przy uĹĽyciu FFmpeg.
 
 
 ```python
@@ -11716,17 +11716,17 @@ def transcode_video(
     Transkodowanie video do MP4 (H.264)
     
     Args:
-        input_path: Ścieżka do pliku wejściowego
-        output_path: Ścieżka do pliku wyjściowego
-        width: Szerokość (domyślnie 1920)
-        height: Wysokość (domyślnie 1080)
-        fps: Frame rate (domyślnie 30)
-        crf: Constant Rate Factor (domyślnie 23, niższe = lepsza jakość)
+        input_path: ĹšcieĹĽka do pliku wejĹ›ciowego
+        output_path: ĹšcieĹĽka do pliku wyjĹ›ciowego
+        width: SzerokoĹ›Ä‡ (domyĹ›lnie 1920)
+        height: WysokoĹ›Ä‡ (domyĹ›lnie 1080)
+        fps: Frame rate (domyĹ›lnie 30)
+        crf: Constant Rate Factor (domyĹ›lnie 23, niĹĽsze = lepsza jakoĹ›Ä‡)
     
     Returns:
         (success, error_message)
     """
-    # Upewnienie się, że katalog wyjściowy istnieje
+    # Upewnienie siÄ™, ĹĽe katalog wyjĹ›ciowy istnieje
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     # Komenda FFmpeg
@@ -11734,14 +11734,14 @@ def transcode_video(
         "ffmpeg",
         "-i", input_path,
         "-c:v", "libx264",  # Codec video: H.264
-        "-preset", "medium",  # Preset kodowania (medium = balans jakości/czasu)
+        "-preset", "medium",  # Preset kodowania (medium = balans jakoĹ›ci/czasu)
         "-crf", str(crf),  # Constant Rate Factor
-        "-s", f"{width}x{height}",  # Rozdzielczość
+        "-s", f"{width}x{height}",  # RozdzielczoĹ›Ä‡
         "-r", str(fps),  # Frame rate
         "-c:a", "aac",  # Codec audio: AAC
         "-b:a", "128k",  # Bitrate audio
         "-movflags", "+faststart",  # Optymalizacja dla streaming
-        "-y",  # Nadpisz plik wyjściowy jeśli istnieje
+        "-y",  # Nadpisz plik wyjĹ›ciowy jeĹ›li istnieje
         output_path
     ]
     
@@ -11765,8 +11765,8 @@ def transcode_video(
 
 def get_video_duration(video_path: str) -> Optional[int]:
     """
-    Pobranie długości video w sekundach
-    Używa ffprobe
+    Pobranie dĹ‚ugoĹ›ci video w sekundach
+    UĹĽywa ffprobe
     """
     cmd = [
         "ffprobe",
@@ -11791,7 +11791,7 @@ def get_video_duration(video_path: str) -> Optional[int]:
 
 def get_video_info(video_path: str) -> dict:
     """
-    Pobranie informacji o video (rozdzielczość, codec, etc.)
+    Pobranie informacji o video (rozdzielczoĹ›Ä‡, codec, etc.)
     """
     cmd = [
         "ffprobe",
@@ -11819,7 +11819,7 @@ def get_video_info(video_path: str) -> dict:
 
 ```python
 """
-Zadania przetwarzania treści (Celery tasks)
+Zadania przetwarzania treĹ›ci (Celery tasks)
 """
 import os
 from pathlib import Path
@@ -11864,7 +11864,7 @@ def process_image_task(content_id: int, job_id: int):
         img.convert("RGB").save(thumbnail_path, "JPEG", quality=85)
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Aktualizacja treści
+        # Aktualizacja treĹ›ci
         content.thumbnail_path = thumbnail_path
         db.commit()
         
@@ -11910,7 +11910,7 @@ def process_pdf_task(content_id: int, job_id: int):
             img.convert("RGB").save(thumbnail_path, "JPEG", quality=85)
             update_processing_job(db, job_id, "processing", progress=90)
             
-            # Aktualizacja treści
+            # Aktualizacja treĹ›ci
             content.thumbnail_path = thumbnail_path
             db.commit()
         
@@ -11962,7 +11962,7 @@ def process_excel_task(content_id: int, job_id: int):
         
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Aktualizacja treści
+        # Aktualizacja treĹ›ci
         content.metadata = metadata
         db.commit()
         
@@ -11988,12 +11988,12 @@ def process_video_task(content_id: int, job_id: int):
         
         from app.services.video_service import transcode_video, get_video_duration
         
-        # Ścieżka do przetworzonego pliku
+        # ĹšcieĹĽka do przetworzonego pliku
         input_path = content.file_path
         output_filename = f"{content_id}_processed.mp4"
         output_path = os.path.join(settings.CONTENT_PROCESSED_DIR, output_filename)
         
-        # Upewnienie się, że katalog istnieje
+        # Upewnienie siÄ™, ĹĽe katalog istnieje
         os.makedirs(settings.CONTENT_PROCESSED_DIR, exist_ok=True)
         
         update_processing_job(db, job_id, "processing", progress=10)
@@ -12014,13 +12014,13 @@ def process_video_task(content_id: int, job_id: int):
         
         update_processing_job(db, job_id, "processing", progress=80)
         
-        # Pobranie długości video
+        # Pobranie dĹ‚ugoĹ›ci video
         duration = get_video_duration(output_path)
         
         update_processing_job(db, job_id, "processing", progress=90)
         
-        # Aktualizacja treści
-        content.file_path = output_path  # Zastąpienie oryginalnego pliku przetworzonym
+        # Aktualizacja treĹ›ci
+        content.file_path = output_path  # ZastÄ…pienie oryginalnego pliku przetworzonym
         content.video_processed = True
         content.video_format = "mp4"
         if duration:
@@ -12080,11 +12080,11 @@ __all__ = [
 ```
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Utworzenie struktury projektu
@@ -12094,14 +12094,14 @@ __all__ = [
 - [x] Dokumentacja instalacji
 
 **Notatki:**
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 - Backend: podstawowa struktura utworzona
 
 ---
 
-## Etap 1: Backend API - Podstawy ✅
+## Etap 1: Backend API - Podstawy âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Modele bazy danych (User, Display, Group, Content, Schedule)
@@ -12115,83 +12115,83 @@ __all__ = [
 
 ---
 
-## Etap 2: Backend - Zarządzanie Wyświetlaczami 🔄
+## Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy wyświetlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
-- [x] Endpointy CRUD dla wyświetlaczy (tylko admin)
-- [x] Endpoint rejestracji wyświetlacza (przez MAC address)
+- [x] Schematy wyĹ›wietlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
+- [x] Endpointy CRUD dla wyĹ›wietlaczy (tylko admin)
+- [x] Endpoint rejestracji wyĹ›wietlacza (przez MAC address)
 - [x] Endpoint heartbeat (POST /displays/{id}/heartbeat)
 - [x] Endpoint statusu (GET /displays/{id}/status)
-- [x] Serwis do zarządzania wyświetlaczami (display_service)
+- [x] Serwis do zarzÄ…dzania wyĹ›wietlaczami (display_service)
 - [x] Zadanie monitoringu (sprawdzanie offline)
-- [ ] Testowanie endpointów
+- [ ] Testowanie endpointĂłw
 
-**Następne kroki:**
-1. Testowanie endpointów wyświetlaczy
-2. Przejście do Etapu 3 (Upload treści)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw wyĹ›wietlaczy
+2. PrzejĹ›cie do Etapu 3 (Upload treĹ›ci)
 
 ---
 
-## Etap 3: Backend - Upload i Przetwarzanie Treści 🔄
+## Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy treści (ContentCreate, ContentResponse, ProcessingJobResponse)
+- [x] Schematy treĹ›ci (ContentCreate, ContentResponse, ProcessingJobResponse)
 - [x] Model ProcessingJob w bazie danych
-- [x] Narzędzia do obsługi plików (file_utils)
-- [x] Serwis zarządzania treścią (content_service)
-- [x] Endpoint upload plików (POST /content/upload)
-- [x] Endpointy CRUD dla treści
+- [x] NarzÄ™dzia do obsĹ‚ugi plikĂłw (file_utils)
+- [x] Serwis zarzÄ…dzania treĹ›ciÄ… (content_service)
+- [x] Endpoint upload plikĂłw (POST /content/upload)
+- [x] Endpointy CRUD dla treĹ›ci
 - [x] Konfiguracja Celery
 - [x] Zadania przetwarzania (obraz, PDF, Excel)
 - [x] Generowanie miniatur
 - [ ] Testowanie uploadu i przetwarzania
 
-**Następne kroki:**
-1. Testowanie endpointów uploadu
-2. Przejście do Etapu 4 (Transkodowanie Video)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw uploadu
+2. PrzejĹ›cie do Etapu 4 (Transkodowanie Video)
 
 ---
 
-## Etap 4: Backend - Transkodowanie Video ✅
+## Etap 4: Backend - Transkodowanie Video âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Serwis przetwarzania video (video_service)
 - [x] Funkcja transkodowania do MP4 (H.264)
-- [x] Parametry: 1920×1080, 30fps, CRF 23
-- [x] Funkcja pobierania długości video
+- [x] Parametry: 1920Ă—1080, 30fps, CRF 23
+- [x] Funkcja pobierania dĹ‚ugoĹ›ci video
 - [x] Funkcja pobierania informacji o video
 - [x] Implementacja process_video_task z FFmpeg
-- [x] Aktualizacja treści po transkodowaniu
-- [x] Endpoint pobierania plików (download)
+- [x] Aktualizacja treĹ›ci po transkodowaniu
+- [x] Endpoint pobierania plikĂłw (download)
 
-**Następne kroki:**
+**NastÄ™pne kroki:**
 1. Testowanie transkodowania video
-2. Przejście do Etapu 5 (Harmonogramy Treści)
+2. PrzejĹ›cie do Etapu 5 (Harmonogramy TreĹ›ci)
 
 ---
 
-## Status Ogólny
+## Status OgĂłlny
 
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy
-- ✅ Etap 2: Backend - Zarządzanie Wyświetlaczami
-- ✅ Etap 3: Backend - Upload i Przetwarzanie Treści
-- ✅ Etap 4: Backend - Transkodowanie Video
-- ⏳ Etap 5: Backend - Harmonogramy Treści
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy
+- âś… Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami
+- âś… Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci
+- âś… Etap 4: Backend - Transkodowanie Video
+- âŹł Etap 5: Backend - Harmonogramy TreĹ›ci
 
 
 ```
 
 ```python
 """
-Schematy harmonogramów
+Schematy harmonogramĂłw
 """
 from pydantic import BaseModel
 from datetime import datetime, time, date
@@ -12250,7 +12250,7 @@ class ScheduleResponse(ScheduleBase):
 
 
 class ScheduleForDisplay(BaseModel):
-    """Schemat harmonogramu dla wyświetlacza"""
+    """Schemat harmonogramu dla wyĹ›wietlacza"""
     id: int
     content_id: int
     start_time: time
@@ -12262,7 +12262,7 @@ class ScheduleForDisplay(BaseModel):
 
 ```python
 """
-Serwis do zarządzania harmonogramami
+Serwis do zarzÄ…dzania harmonogramami
 """
 from datetime import datetime, time, date
 from typing import List, Optional
@@ -12278,24 +12278,24 @@ def get_active_schedules_for_display(
     current_datetime: Optional[datetime] = None
 ) -> List[Schedule]:
     """
-    Pobranie aktywnych harmonogramów dla wyświetlacza w danym czasie
+    Pobranie aktywnych harmonogramĂłw dla wyĹ›wietlacza w danym czasie
     
     Args:
         db: Sesja bazy danych
-        display_id: ID wyświetlacza
-        current_datetime: Aktualna data i czas (domyślnie teraz)
+        display_id: ID wyĹ›wietlacza
+        current_datetime: Aktualna data i czas (domyĹ›lnie teraz)
     
     Returns:
-        Lista aktywnych harmonogramów
+        Lista aktywnych harmonogramĂłw
     """
     if current_datetime is None:
         current_datetime = datetime.now()
     
     current_time = current_datetime.time()
     current_date = current_datetime.date()
-    current_weekday = current_datetime.weekday() + 1  # 1=poniedziałek, 7=niedziela
+    current_weekday = current_datetime.weekday() + 1  # 1=poniedziaĹ‚ek, 7=niedziela
     
-    # Pobranie harmonogramów dla wyświetlacza
+    # Pobranie harmonogramĂłw dla wyĹ›wietlacza
     schedules = db.query(Schedule).filter(
         Schedule.display_id == display_id,
         Schedule.active == True,
@@ -12318,7 +12318,7 @@ def get_active_schedules_for_display(
         
         active_schedules.append(schedule)
     
-    # Sortowanie po priorytecie (wyższy priorytet = wyższa wartość)
+    # Sortowanie po priorytecie (wyĹĽszy priorytet = wyĹĽsza wartoĹ›Ä‡)
     active_schedules.sort(key=lambda x: x.priority, reverse=True)
     
     return active_schedules
@@ -12330,17 +12330,17 @@ def get_current_content_for_display(
     current_datetime: Optional[datetime] = None
 ) -> Optional[int]:
     """
-    Pobranie ID treści do wyświetlenia dla wyświetlacza w danym czasie
+    Pobranie ID treĹ›ci do wyĹ›wietlenia dla wyĹ›wietlacza w danym czasie
     
     Returns:
-        ID treści lub None jeśli brak harmonogramu
+        ID treĹ›ci lub None jeĹ›li brak harmonogramu
     """
     schedules = get_active_schedules_for_display(db, display_id, current_datetime)
     
     if not schedules:
         return None
     
-    # Zwróć treść z harmonogramu o najwyższym priorytecie
+    # ZwrĂłÄ‡ treĹ›Ä‡ z harmonogramu o najwyĹĽszym priorytecie
     return schedules[0].content_id
 
 
@@ -12348,7 +12348,7 @@ def get_schedules_for_group(
     db: Session,
     group_id: int
 ) -> List[Schedule]:
-    """Pobranie harmonogramów dla grupy wyświetlaczy"""
+    """Pobranie harmonogramĂłw dla grupy wyĹ›wietlaczy"""
     return db.query(Schedule).filter(
         Schedule.group_id == group_id,
         Schedule.active == True
@@ -12358,7 +12358,7 @@ def get_schedules_for_group(
 
 ```python
 """
-Endpointy API dla harmonogramów
+Endpointy API dla harmonogramĂłw
 """
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -12390,7 +12390,7 @@ async def create_schedule(
     db: Session = Depends(get_db)
 ):
     """Utworzenie harmonogramu (tylko admin)"""
-    # Walidacja: display_id lub group_id musi być podane
+    # Walidacja: display_id lub group_id musi byÄ‡ podane
     if not schedule_data.display_id and not schedule_data.group_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -12414,7 +12414,7 @@ async def get_schedules(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie listy harmonogramów (admin i operator)"""
+    """Pobranie listy harmonogramĂłw (admin i operator)"""
     query = db.query(Schedule)
     
     if display_id:
@@ -12434,7 +12434,7 @@ async def get_schedule(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów harmonogramu"""
+    """Pobranie szczegĂłĹ‚Ăłw harmonogramu"""
     schedule = db.query(Schedule).filter(Schedule.id == schedule_id).first()
     if not schedule:
         raise HTTPException(
@@ -12474,7 +12474,7 @@ async def delete_schedule(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie harmonogramu (tylko admin)"""
+    """UsuniÄ™cie harmonogramu (tylko admin)"""
     schedule = db.query(Schedule).filter(Schedule.id == schedule_id).first()
     if not schedule:
         raise HTTPException(
@@ -12493,7 +12493,7 @@ async def get_current_schedules_for_display(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie aktualnych harmonogramów dla wyświetlacza"""
+    """Pobranie aktualnych harmonogramĂłw dla wyĹ›wietlacza"""
     schedules = get_active_schedules_for_display(db, display_id)
     
     return [
@@ -12515,7 +12515,7 @@ async def get_display_schedule(
     db: Session = Depends(get_db)
 ):
     """
-    Pobranie harmonogramu dla wyświetlacza (publiczny endpoint dla klienta)
+    Pobranie harmonogramu dla wyĹ›wietlacza (publiczny endpoint dla klienta)
     Zwraca wszystkie aktywne harmonogramy, nie tylko aktualne
     """
     from app.models.schedule import Schedule
@@ -12541,7 +12541,7 @@ async def get_display_schedule(
 
 ```python
 """
-API v1 - rejestracja routerów
+API v1 - rejestracja routerĂłw
 """
 from fastapi import APIRouter
 
@@ -12653,11 +12653,11 @@ __all__ = [
 ```
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Utworzenie struktury projektu
@@ -12667,14 +12667,14 @@ __all__ = [
 - [x] Dokumentacja instalacji
 
 **Notatki:**
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 - Backend: podstawowa struktura utworzona
 
 ---
 
-## Etap 1: Backend API - Podstawy ✅
+## Etap 1: Backend API - Podstawy âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Modele bazy danych (User, Display, Group, Content, Schedule)
@@ -12688,162 +12688,162 @@ __all__ = [
 
 ---
 
-## Etap 2: Backend - Zarządzanie Wyświetlaczami 🔄
+## Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy wyświetlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
-- [x] Endpointy CRUD dla wyświetlaczy (tylko admin)
-- [x] Endpoint rejestracji wyświetlacza (przez MAC address)
+- [x] Schematy wyĹ›wietlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
+- [x] Endpointy CRUD dla wyĹ›wietlaczy (tylko admin)
+- [x] Endpoint rejestracji wyĹ›wietlacza (przez MAC address)
 - [x] Endpoint heartbeat (POST /displays/{id}/heartbeat)
 - [x] Endpoint statusu (GET /displays/{id}/status)
-- [x] Serwis do zarządzania wyświetlaczami (display_service)
+- [x] Serwis do zarzÄ…dzania wyĹ›wietlaczami (display_service)
 - [x] Zadanie monitoringu (sprawdzanie offline)
-- [ ] Testowanie endpointów
+- [ ] Testowanie endpointĂłw
 
-**Następne kroki:**
-1. Testowanie endpointów wyświetlaczy
-2. Przejście do Etapu 3 (Upload treści)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw wyĹ›wietlaczy
+2. PrzejĹ›cie do Etapu 3 (Upload treĹ›ci)
 
 ---
 
-## Etap 3: Backend - Upload i Przetwarzanie Treści 🔄
+## Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy treści (ContentCreate, ContentResponse, ProcessingJobResponse)
+- [x] Schematy treĹ›ci (ContentCreate, ContentResponse, ProcessingJobResponse)
 - [x] Model ProcessingJob w bazie danych
-- [x] Narzędzia do obsługi plików (file_utils)
-- [x] Serwis zarządzania treścią (content_service)
-- [x] Endpoint upload plików (POST /content/upload)
-- [x] Endpointy CRUD dla treści
+- [x] NarzÄ™dzia do obsĹ‚ugi plikĂłw (file_utils)
+- [x] Serwis zarzÄ…dzania treĹ›ciÄ… (content_service)
+- [x] Endpoint upload plikĂłw (POST /content/upload)
+- [x] Endpointy CRUD dla treĹ›ci
 - [x] Konfiguracja Celery
 - [x] Zadania przetwarzania (obraz, PDF, Excel)
 - [x] Generowanie miniatur
 - [ ] Testowanie uploadu i przetwarzania
 
-**Następne kroki:**
-1. Testowanie endpointów uploadu
-2. Przejście do Etapu 4 (Transkodowanie Video)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw uploadu
+2. PrzejĹ›cie do Etapu 4 (Transkodowanie Video)
 
 ---
 
-## Etap 4: Backend - Transkodowanie Video ✅
+## Etap 4: Backend - Transkodowanie Video âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Serwis przetwarzania video (video_service)
 - [x] Funkcja transkodowania do MP4 (H.264)
-- [x] Parametry: 1920×1080, 30fps, CRF 23
-- [x] Funkcja pobierania długości video
+- [x] Parametry: 1920Ă—1080, 30fps, CRF 23
+- [x] Funkcja pobierania dĹ‚ugoĹ›ci video
 - [x] Funkcja pobierania informacji o video
 - [x] Implementacja process_video_task z FFmpeg
-- [x] Aktualizacja treści po transkodowaniu
-- [x] Endpoint pobierania plików (download)
+- [x] Aktualizacja treĹ›ci po transkodowaniu
+- [x] Endpoint pobierania plikĂłw (download)
 
-**Następne kroki:**
+**NastÄ™pne kroki:**
 1. Testowanie transkodowania video
-2. Przejście do Etapu 5 (Harmonogramy Treści)
+2. PrzejĹ›cie do Etapu 5 (Harmonogramy TreĹ›ci)
 
 ---
 
-## Etap 5: Backend - Harmonogramy Treści ✅
+## Etap 5: Backend - Harmonogramy TreĹ›ci âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
-- [x] Schematy harmonogramów (ScheduleCreate, ScheduleUpdate, ScheduleResponse)
-- [x] Serwis zarządzania harmonogramami (schedule_service)
-- [x] Funkcja pobierania aktywnych harmonogramów dla wyświetlacza
-- [x] Funkcja pobierania aktualnej treści dla wyświetlacza
-- [x] Obsługa dni tygodnia i dat
-- [x] Priorytety harmonogramów
-- [x] Endpointy CRUD dla harmonogramów (admin)
-- [x] Endpoint pobierania harmonogramu dla wyświetlacza (publiczny)
-- [x] Endpoint aktualnych harmonogramów (admin/operator)
+- [x] Schematy harmonogramĂłw (ScheduleCreate, ScheduleUpdate, ScheduleResponse)
+- [x] Serwis zarzÄ…dzania harmonogramami (schedule_service)
+- [x] Funkcja pobierania aktywnych harmonogramĂłw dla wyĹ›wietlacza
+- [x] Funkcja pobierania aktualnej treĹ›ci dla wyĹ›wietlacza
+- [x] ObsĹ‚uga dni tygodnia i dat
+- [x] Priorytety harmonogramĂłw
+- [x] Endpointy CRUD dla harmonogramĂłw (admin)
+- [x] Endpoint pobierania harmonogramu dla wyĹ›wietlacza (publiczny)
+- [x] Endpoint aktualnych harmonogramĂłw (admin/operator)
 
-**Następne kroki:**
-1. Testowanie harmonogramów
-2. Przejście do Etapu 6 (Grupowanie Wyświetlaczy)
+**NastÄ™pne kroki:**
+1. Testowanie harmonogramĂłw
+2. PrzejĹ›cie do Etapu 6 (Grupowanie WyĹ›wietlaczy)
 
 ---
 
-## Status Ogólny
+## Status OgĂłlny
 
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy
-- ✅ Etap 2: Backend - Zarządzanie Wyświetlaczami
-- ✅ Etap 3: Backend - Upload i Przetwarzanie Treści
-- ✅ Etap 4: Backend - Transkodowanie Video
-- ✅ Etap 5: Backend - Harmonogramy Treści
-- ⏳ Etap 6: Backend - Grupowanie Wyświetlaczy
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy
+- âś… Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami
+- âś… Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci
+- âś… Etap 4: Backend - Transkodowanie Video
+- âś… Etap 5: Backend - Harmonogramy TreĹ›ci
+- âŹł Etap 6: Backend - Grupowanie WyĹ›wietlaczy
 
 
 ```
 
-Naprawianie błędu w `app/api/v1/content.py`:
+Naprawianie bĹ‚Ä™du w `app/api/v1/content.py`:
 
 
-Zakończono Etapy 4 i 5. Podsumowanie:
+ZakoĹ„czono Etapy 4 i 5. Podsumowanie:
 
 ## Podsumowanie wykonanej pracy
 
-### Etap 4: Transkodowanie Video — zakończony
+### Etap 4: Transkodowanie Video â€” zakoĹ„czony
 
 **Utworzone pliki:**
-1. `app/services/video_service.py` — serwis przetwarzania video:
-   - `transcode_video()` — transkodowanie do MP4 (H.264, 1920×1080, 30fps)
-   - `get_video_duration()` — pobieranie długości video
-   - `get_video_info()` — pobieranie informacji o video
-2. Zaktualizowano `app/tasks/processing.py` — pełna implementacja `process_video_task`
-3. Zaktualizowano `app/api/v1/content.py` — endpoint pobierania plików
+1. `app/services/video_service.py` â€” serwis przetwarzania video:
+   - `transcode_video()` â€” transkodowanie do MP4 (H.264, 1920Ă—1080, 30fps)
+   - `get_video_duration()` â€” pobieranie dĹ‚ugoĹ›ci video
+   - `get_video_info()` â€” pobieranie informacji o video
+2. Zaktualizowano `app/tasks/processing.py` â€” peĹ‚na implementacja `process_video_task`
+3. Zaktualizowano `app/api/v1/content.py` â€” endpoint pobierania plikĂłw
 
-### Etap 5: Harmonogramy Treści — zakończony
+### Etap 5: Harmonogramy TreĹ›ci â€” zakoĹ„czony
 
 **Utworzone pliki:**
-1. `app/schemas/schedule.py` — schematy harmonogramów
-2. `app/services/schedule_service.py` — logika harmonogramów:
-   - `get_active_schedules_for_display()` — aktywne harmonogramy dla wyświetlacza
-   - `get_current_content_for_display()` — aktualna treść do wyświetlenia
-   - `get_schedules_for_group()` — harmonogramy dla grupy
-3. `app/api/v1/schedules.py` — endpointy API:
-   - POST `/schedules` — utworzenie (admin)
-   - GET `/schedules` — lista harmonogramów
-   - GET `/schedules/{id}` — szczegóły
-   - PUT `/schedules/{id}` — aktualizacja (admin)
-   - DELETE `/schedules/{id}` — usunięcie (admin)
-   - GET `/schedules/display/{id}/current` — aktualne harmonogramy
-   - GET `/schedules/display/{id}/schedule` — harmonogram dla klienta (publiczny)
+1. `app/schemas/schedule.py` â€” schematy harmonogramĂłw
+2. `app/services/schedule_service.py` â€” logika harmonogramĂłw:
+   - `get_active_schedules_for_display()` â€” aktywne harmonogramy dla wyĹ›wietlacza
+   - `get_current_content_for_display()` â€” aktualna treĹ›Ä‡ do wyĹ›wietlenia
+   - `get_schedules_for_group()` â€” harmonogramy dla grupy
+3. `app/api/v1/schedules.py` â€” endpointy API:
+   - POST `/schedules` â€” utworzenie (admin)
+   - GET `/schedules` â€” lista harmonogramĂłw
+   - GET `/schedules/{id}` â€” szczegĂłĹ‚y
+   - PUT `/schedules/{id}` â€” aktualizacja (admin)
+   - DELETE `/schedules/{id}` â€” usuniÄ™cie (admin)
+   - GET `/schedules/display/{id}/current` â€” aktualne harmonogramy
+   - GET `/schedules/display/{id}/schedule` â€” harmonogram dla klienta (publiczny)
 
 **Funkcje:**
-- Obsługa dni tygodnia i dat
-- Priorytety harmonogramów
-- Harmonogramy dla pojedynczych wyświetlaczy i grup
-- Automatyczny wybór treści na podstawie czasu i priorytetu
+- ObsĹ‚uga dni tygodnia i dat
+- Priorytety harmonogramĂłw
+- Harmonogramy dla pojedynczych wyĹ›wietlaczy i grup
+- Automatyczny wybĂłr treĹ›ci na podstawie czasu i priorytetu
 
 ## Status projektu
 
-- Etap 0: Przygotowanie środowiska — zakończony
-- Etap 1: Backend API — podstawy — zakończony
-- Etap 2: Zarządzanie wyświetlaczami — zakończony
-- Etap 3: Upload i przetwarzanie treści — zakończony
-- Etap 4: Transkodowanie video — zakończony
-- Etap 5: Harmonogramy treści — zakończony
-- Etap 6: Grupowanie wyświetlaczy — następny
+- Etap 0: Przygotowanie Ĺ›rodowiska â€” zakoĹ„czony
+- Etap 1: Backend API â€” podstawy â€” zakoĹ„czony
+- Etap 2: ZarzÄ…dzanie wyĹ›wietlaczami â€” zakoĹ„czony
+- Etap 3: Upload i przetwarzanie treĹ›ci â€” zakoĹ„czony
+- Etap 4: Transkodowanie video â€” zakoĹ„czony
+- Etap 5: Harmonogramy treĹ›ci â€” zakoĹ„czony
+- Etap 6: Grupowanie wyĹ›wietlaczy â€” nastÄ™pny
 
-## Postęp
+## PostÄ™p
 
-Zrealizowano 5 z 9 etapów backendu. System ma:
-- Autentykację i autoryzację
-- Zarządzanie wyświetlaczami
-- Upload i przetwarzanie treści (obrazy, PDF, Excel, video)
+Zrealizowano 5 z 9 etapĂłw backendu. System ma:
+- AutentykacjÄ™ i autoryzacjÄ™
+- ZarzÄ…dzanie wyĹ›wietlaczami
+- Upload i przetwarzanie treĹ›ci (obrazy, PDF, Excel, video)
 - Transkodowanie video
-- System harmonogramów
+- System harmonogramĂłw
 
-Wszystkie pliki są krótkie i modułowe, gotowe do kontynuacji.
+Wszystkie pliki sÄ… krĂłtkie i moduĹ‚owe, gotowe do kontynuacji.
 
 ---
 
@@ -12855,12 +12855,12 @@ kontynuuj
 
 **Cursor**
 
-Kontynuowanie Etapu 6: Grupowanie wyświetlaczy. Tworzenie schematów, endpointów API i serwisu.
+Kontynuowanie Etapu 6: Grupowanie wyĹ›wietlaczy. Tworzenie schematĂłw, endpointĂłw API i serwisu.
 
 
 ```python
 """
-Schematy grup wyświetlaczy
+Schematy grup wyĹ›wietlaczy
 """
 from pydantic import BaseModel
 from datetime import datetime
@@ -12898,14 +12898,14 @@ class GroupResponse(GroupBase):
 
 
 class GroupWithDisplays(GroupResponse):
-    """Schemat grupy z listą wyświetlaczy"""
+    """Schemat grupy z listÄ… wyĹ›wietlaczy"""
     displays: List[dict] = []
 
 ```
 
 ```python
 """
-Serwis do zarządzania grupami wyświetlaczy
+Serwis do zarzÄ…dzania grupami wyĹ›wietlaczy
 """
 from typing import List
 from sqlalchemy.orm import Session
@@ -12915,12 +12915,12 @@ from app.models.display import Display
 
 
 def get_displays_for_group(db: Session, group_id: int) -> List[Display]:
-    """Pobranie wyświetlaczy w grupie"""
+    """Pobranie wyĹ›wietlaczy w grupie"""
     return db.query(Display).filter(Display.group_id == group_id).all()
 
 
 def add_display_to_group(db: Session, display_id: int, group_id: int) -> Display:
-    """Dodanie wyświetlacza do grupy"""
+    """Dodanie wyĹ›wietlacza do grupy"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if display:
         display.group_id = group_id
@@ -12930,7 +12930,7 @@ def add_display_to_group(db: Session, display_id: int, group_id: int) -> Display
 
 
 def remove_display_from_group(db: Session, display_id: int) -> Display:
-    """Usunięcie wyświetlacza z grupy"""
+    """UsuniÄ™cie wyĹ›wietlacza z grupy"""
     display = db.query(Display).filter(Display.id == display_id).first()
     if display:
         display.group_id = None
@@ -12941,7 +12941,7 @@ def remove_display_from_group(db: Session, display_id: int) -> Display:
 
 def validate_group_type(group_type: str, display_count: int) -> tuple[bool, str]:
     """
-    Walidacja typu grupy względem liczby wyświetlaczy
+    Walidacja typu grupy wzglÄ™dem liczby wyĹ›wietlaczy
     
     Returns:
         (is_valid, error_message)
@@ -12961,7 +12961,7 @@ def validate_group_type(group_type: str, display_count: int) -> tuple[bool, str]
 
 ```python
 """
-Endpointy API dla grup wyświetlaczy
+Endpointy API dla grup wyĹ›wietlaczy
 """
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -13034,7 +13034,7 @@ async def get_group(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów grupy"""
+    """Pobranie szczegĂłĹ‚Ăłw grupy"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13050,7 +13050,7 @@ async def get_group_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie wyświetlaczy w grupie"""
+    """Pobranie wyĹ›wietlaczy w grupie"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13070,7 +13070,7 @@ async def get_group_with_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie grupy z listą wyświetlaczy"""
+    """Pobranie grupy z listÄ… wyĹ›wietlaczy"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13104,7 +13104,7 @@ async def update_group(
     
     update_data = group_data.dict(exclude_unset=True)
     
-    # Walidacja typu jeśli jest zmieniany
+    # Walidacja typu jeĹ›li jest zmieniany
     if "type" in update_data:
         displays = get_displays_for_group(db, group_id)
         is_valid, error = validate_group_type(update_data["type"], len(displays))
@@ -13128,7 +13128,7 @@ async def delete_group(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie grupy (tylko admin)"""
+    """UsuniÄ™cie grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13136,7 +13136,7 @@ async def delete_group(
             detail="Group not found"
         )
     
-    # Usunięcie przypisania wyświetlaczy do grupy
+    # UsuniÄ™cie przypisania wyĹ›wietlaczy do grupy
     displays = get_displays_for_group(db, group_id)
     for display in displays:
         display.group_id = None
@@ -13153,7 +13153,7 @@ async def add_display_to_group_endpoint(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Dodanie wyświetlacza do grupy (tylko admin)"""
+    """Dodanie wyĹ›wietlacza do grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13168,7 +13168,7 @@ async def add_display_to_group_endpoint(
             detail="Display not found"
         )
     
-    # Sprawdzenie czy wyświetlacz nie jest już w innej grupie
+    # Sprawdzenie czy wyĹ›wietlacz nie jest juĹĽ w innej grupie
     if display.group_id and display.group_id != group_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -13195,7 +13195,7 @@ async def remove_display_from_group_endpoint(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie wyświetlacza z grupy (tylko admin)"""
+    """UsuniÄ™cie wyĹ›wietlacza z grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13223,7 +13223,7 @@ async def remove_display_from_group_endpoint(
 
 ```python
 """
-API v1 - rejestracja routerów
+API v1 - rejestracja routerĂłw
 """
 from fastapi import APIRouter
 
@@ -13358,7 +13358,7 @@ __all__ = [
 
 ```python
 """
-Endpointy API dla grup wyświetlaczy
+Endpointy API dla grup wyĹ›wietlaczy
 """
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -13431,7 +13431,7 @@ async def get_group(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów grupy"""
+    """Pobranie szczegĂłĹ‚Ăłw grupy"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13447,7 +13447,7 @@ async def get_group_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie wyświetlaczy w grupie"""
+    """Pobranie wyĹ›wietlaczy w grupie"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13467,7 +13467,7 @@ async def get_group_with_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie grupy z listą wyświetlaczy"""
+    """Pobranie grupy z listÄ… wyĹ›wietlaczy"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13501,7 +13501,7 @@ async def update_group(
     
     update_data = group_data.dict(exclude_unset=True)
     
-    # Walidacja typu jeśli jest zmieniany
+    # Walidacja typu jeĹ›li jest zmieniany
     if "type" in update_data:
         displays = get_displays_for_group(db, group_id)
         is_valid, error = validate_group_type(update_data["type"], len(displays))
@@ -13525,7 +13525,7 @@ async def delete_group(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie grupy (tylko admin)"""
+    """UsuniÄ™cie grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13533,7 +13533,7 @@ async def delete_group(
             detail="Group not found"
         )
     
-    # Usunięcie przypisania wyświetlaczy do grupy
+    # UsuniÄ™cie przypisania wyĹ›wietlaczy do grupy
     displays = get_displays_for_group(db, group_id)
     for display in displays:
         display.group_id = None
@@ -13550,7 +13550,7 @@ async def add_display_to_group_endpoint(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Dodanie wyświetlacza do grupy (tylko admin)"""
+    """Dodanie wyĹ›wietlacza do grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13565,7 +13565,7 @@ async def add_display_to_group_endpoint(
             detail="Display not found"
         )
     
-    # Sprawdzenie czy wyświetlacz nie jest już w innej grupie
+    # Sprawdzenie czy wyĹ›wietlacz nie jest juĹĽ w innej grupie
     if display.group_id and display.group_id != group_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -13592,7 +13592,7 @@ async def remove_display_from_group_endpoint(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie wyświetlacza z grupy (tylko admin)"""
+    """UsuniÄ™cie wyĹ›wietlacza z grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13621,7 +13621,7 @@ async def remove_display_from_group_endpoint(
 
 ```python
 """
-Endpointy API dla grup wyświetlaczy
+Endpointy API dla grup wyĹ›wietlaczy
 """
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -13694,7 +13694,7 @@ async def get_group(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie szczegółów grupy"""
+    """Pobranie szczegĂłĹ‚Ăłw grupy"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13710,7 +13710,7 @@ async def get_group_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie wyświetlaczy w grupie"""
+    """Pobranie wyĹ›wietlaczy w grupie"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13730,7 +13730,7 @@ async def get_group_with_displays(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Pobranie grupy z listą wyświetlaczy"""
+    """Pobranie grupy z listÄ… wyĹ›wietlaczy"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13764,7 +13764,7 @@ async def update_group(
     
     update_data = group_data.dict(exclude_unset=True)
     
-    # Walidacja typu jeśli jest zmieniany
+    # Walidacja typu jeĹ›li jest zmieniany
     if "type" in update_data:
         displays = get_displays_for_group(db, group_id)
         is_valid, error = validate_group_type(update_data["type"], len(displays))
@@ -13788,7 +13788,7 @@ async def delete_group(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie grupy (tylko admin)"""
+    """UsuniÄ™cie grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13796,7 +13796,7 @@ async def delete_group(
             detail="Group not found"
         )
     
-    # Usunięcie przypisania wyświetlaczy do grupy
+    # UsuniÄ™cie przypisania wyĹ›wietlaczy do grupy
     displays = get_displays_for_group(db, group_id)
     for display in displays:
         display.group_id = None
@@ -13813,7 +13813,7 @@ async def add_display_to_group_endpoint(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Dodanie wyświetlacza do grupy (tylko admin)"""
+    """Dodanie wyĹ›wietlacza do grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13828,7 +13828,7 @@ async def add_display_to_group_endpoint(
             detail="Display not found"
         )
     
-    # Sprawdzenie czy wyświetlacz nie jest już w innej grupie
+    # Sprawdzenie czy wyĹ›wietlacz nie jest juĹĽ w innej grupie
     if display.group_id and display.group_id != group_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -13855,7 +13855,7 @@ async def remove_display_from_group_endpoint(
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """Usunięcie wyświetlacza z grupy (tylko admin)"""
+    """UsuniÄ™cie wyĹ›wietlacza z grupy (tylko admin)"""
     group = db.query(Group).filter(Group.id == group_id).first()
     if not group:
         raise HTTPException(
@@ -13883,11 +13883,11 @@ async def remove_display_from_group_endpoint(
 ```
 
 ```markdown
-# Postęp Implementacji
+# PostÄ™p Implementacji
 
-## Etap 0: Przygotowanie Środowiska ✅
+## Etap 0: Przygotowanie Ĺšrodowiska âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Utworzenie struktury projektu
@@ -13897,14 +13897,14 @@ async def remove_display_from_group_endpoint(
 - [x] Dokumentacja instalacji
 
 **Notatki:**
-- Struktura katalogów gotowa
+- Struktura katalogĂłw gotowa
 - Backend: podstawowa struktura utworzona
 
 ---
 
-## Etap 1: Backend API - Podstawy ✅
+## Etap 1: Backend API - Podstawy âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Modele bazy danych (User, Display, Group, Content, Schedule)
@@ -13918,184 +13918,185 @@ async def remove_display_from_group_endpoint(
 
 ---
 
-## Etap 2: Backend - Zarządzanie Wyświetlaczami 🔄
+## Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy wyświetlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
-- [x] Endpointy CRUD dla wyświetlaczy (tylko admin)
-- [x] Endpoint rejestracji wyświetlacza (przez MAC address)
+- [x] Schematy wyĹ›wietlaczy (DisplayCreate, DisplayUpdate, DisplayResponse, etc.)
+- [x] Endpointy CRUD dla wyĹ›wietlaczy (tylko admin)
+- [x] Endpoint rejestracji wyĹ›wietlacza (przez MAC address)
 - [x] Endpoint heartbeat (POST /displays/{id}/heartbeat)
 - [x] Endpoint statusu (GET /displays/{id}/status)
-- [x] Serwis do zarządzania wyświetlaczami (display_service)
+- [x] Serwis do zarzÄ…dzania wyĹ›wietlaczami (display_service)
 - [x] Zadanie monitoringu (sprawdzanie offline)
-- [ ] Testowanie endpointów
+- [ ] Testowanie endpointĂłw
 
-**Następne kroki:**
-1. Testowanie endpointów wyświetlaczy
-2. Przejście do Etapu 3 (Upload treści)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw wyĹ›wietlaczy
+2. PrzejĹ›cie do Etapu 3 (Upload treĹ›ci)
 
 ---
 
-## Etap 3: Backend - Upload i Przetwarzanie Treści 🔄
+## Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci đź”„
 
 **Status:** W trakcie
 
 **Zadania:**
-- [x] Schematy treści (ContentCreate, ContentResponse, ProcessingJobResponse)
+- [x] Schematy treĹ›ci (ContentCreate, ContentResponse, ProcessingJobResponse)
 - [x] Model ProcessingJob w bazie danych
-- [x] Narzędzia do obsługi plików (file_utils)
-- [x] Serwis zarządzania treścią (content_service)
-- [x] Endpoint upload plików (POST /content/upload)
-- [x] Endpointy CRUD dla treści
+- [x] NarzÄ™dzia do obsĹ‚ugi plikĂłw (file_utils)
+- [x] Serwis zarzÄ…dzania treĹ›ciÄ… (content_service)
+- [x] Endpoint upload plikĂłw (POST /content/upload)
+- [x] Endpointy CRUD dla treĹ›ci
 - [x] Konfiguracja Celery
 - [x] Zadania przetwarzania (obraz, PDF, Excel)
 - [x] Generowanie miniatur
 - [ ] Testowanie uploadu i przetwarzania
 
-**Następne kroki:**
-1. Testowanie endpointów uploadu
-2. Przejście do Etapu 4 (Transkodowanie Video)
+**NastÄ™pne kroki:**
+1. Testowanie endpointĂłw uploadu
+2. PrzejĹ›cie do Etapu 4 (Transkodowanie Video)
 
 ---
 
-## Etap 4: Backend - Transkodowanie Video ✅
+## Etap 4: Backend - Transkodowanie Video âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Serwis przetwarzania video (video_service)
 - [x] Funkcja transkodowania do MP4 (H.264)
-- [x] Parametry: 1920×1080, 30fps, CRF 23
-- [x] Funkcja pobierania długości video
+- [x] Parametry: 1920Ă—1080, 30fps, CRF 23
+- [x] Funkcja pobierania dĹ‚ugoĹ›ci video
 - [x] Funkcja pobierania informacji o video
 - [x] Implementacja process_video_task z FFmpeg
-- [x] Aktualizacja treści po transkodowaniu
-- [x] Endpoint pobierania plików (download)
+- [x] Aktualizacja treĹ›ci po transkodowaniu
+- [x] Endpoint pobierania plikĂłw (download)
 
-**Następne kroki:**
+**NastÄ™pne kroki:**
 1. Testowanie transkodowania video
-2. Przejście do Etapu 5 (Harmonogramy Treści)
+2. PrzejĹ›cie do Etapu 5 (Harmonogramy TreĹ›ci)
 
 ---
 
-## Etap 5: Backend - Harmonogramy Treści ✅
+## Etap 5: Backend - Harmonogramy TreĹ›ci âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
-- [x] Schematy harmonogramów (ScheduleCreate, ScheduleUpdate, ScheduleResponse)
-- [x] Serwis zarządzania harmonogramami (schedule_service)
-- [x] Funkcja pobierania aktywnych harmonogramów dla wyświetlacza
-- [x] Funkcja pobierania aktualnej treści dla wyświetlacza
-- [x] Obsługa dni tygodnia i dat
-- [x] Priorytety harmonogramów
-- [x] Endpointy CRUD dla harmonogramów (admin)
-- [x] Endpoint pobierania harmonogramu dla wyświetlacza (publiczny)
-- [x] Endpoint aktualnych harmonogramów (admin/operator)
+- [x] Schematy harmonogramĂłw (ScheduleCreate, ScheduleUpdate, ScheduleResponse)
+- [x] Serwis zarzÄ…dzania harmonogramami (schedule_service)
+- [x] Funkcja pobierania aktywnych harmonogramĂłw dla wyĹ›wietlacza
+- [x] Funkcja pobierania aktualnej treĹ›ci dla wyĹ›wietlacza
+- [x] ObsĹ‚uga dni tygodnia i dat
+- [x] Priorytety harmonogramĂłw
+- [x] Endpointy CRUD dla harmonogramĂłw (admin)
+- [x] Endpoint pobierania harmonogramu dla wyĹ›wietlacza (publiczny)
+- [x] Endpoint aktualnych harmonogramĂłw (admin/operator)
 
-**Następne kroki:**
-1. Testowanie harmonogramów
-2. Przejście do Etapu 6 (Grupowanie Wyświetlaczy)
+**NastÄ™pne kroki:**
+1. Testowanie harmonogramĂłw
+2. PrzejĹ›cie do Etapu 6 (Grupowanie WyĹ›wietlaczy)
 
 ---
 
-## Etap 6: Backend - Grupowanie Wyświetlaczy ✅
+## Etap 6: Backend - Grupowanie WyĹ›wietlaczy âś…
 
-**Status:** Zakończony
+**Status:** ZakoĹ„czony
 
 **Zadania:**
 - [x] Schematy grup (GroupCreate, GroupUpdate, GroupResponse, GroupWithDisplays)
-- [x] Serwis zarządzania grupami (group_service)
-- [x] Funkcje: dodawanie/usuwanie wyświetlaczy z grup
-- [x] Walidacja typu grupy względem liczby wyświetlaczy
+- [x] Serwis zarzÄ…dzania grupami (group_service)
+- [x] Funkcje: dodawanie/usuwanie wyĹ›wietlaczy z grup
+- [x] Walidacja typu grupy wzglÄ™dem liczby wyĹ›wietlaczy
 - [x] Endpointy CRUD dla grup (admin)
-- [x] Endpoint pobierania wyświetlaczy w grupie
-- [x] Endpoint dodawania/usuwania wyświetlaczy z grupy
-- [x] Obsługa typów grup (horizontal, vertical, mixed, single)
+- [x] Endpoint pobierania wyĹ›wietlaczy w grupie
+- [x] Endpoint dodawania/usuwania wyĹ›wietlaczy z grupy
+- [x] ObsĹ‚uga typĂłw grup (horizontal, vertical, mixed, single)
 
-**Następne kroki:**
+**NastÄ™pne kroki:**
 1. Testowanie grupowania
-2. Przejście do Etapu 7 (Monitoring i Alerty)
+2. PrzejĹ›cie do Etapu 7 (Monitoring i Alerty)
 
 ---
 
-## Status Ogólny
+## Status OgĂłlny
 
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy
-- ✅ Etap 2: Backend - Zarządzanie Wyświetlaczami
-- ✅ Etap 3: Backend - Upload i Przetwarzanie Treści
-- ✅ Etap 4: Backend - Transkodowanie Video
-- ✅ Etap 5: Backend - Harmonogramy Treści
-- ✅ Etap 6: Backend - Grupowanie Wyświetlaczy
-- ⏳ Etap 7: Backend - Monitoring i Alerty
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy
+- âś… Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami
+- âś… Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci
+- âś… Etap 4: Backend - Transkodowanie Video
+- âś… Etap 5: Backend - Harmonogramy TreĹ›ci
+- âś… Etap 6: Backend - Grupowanie WyĹ›wietlaczy
+- âŹł Etap 7: Backend - Monitoring i Alerty
 
 
 ```
 
-Zakończono Etap 6. Podsumowanie:
+ZakoĹ„czono Etap 6. Podsumowanie:
 
 ## Podsumowanie Etapu 6
 
 ### Utworzone pliki:
-1. `app/schemas/group.py` — schematy grup:
+1. `app/schemas/group.py` â€” schematy grup:
    - `GroupCreate`, `GroupUpdate`, `GroupResponse`, `GroupWithDisplays`
-2. `app/services/group_service.py` — serwis grup:
-   - `get_displays_for_group()` — pobieranie wyświetlaczy w grupie
-   - `add_display_to_group()` — dodawanie wyświetlacza
-   - `remove_display_from_group()` — usuwanie wyświetlacza
-   - `validate_group_type()` — walidacja typu grupy
-3. `app/api/v1/groups.py` — endpointy API:
-   - POST `/groups` — utworzenie (admin)
-   - GET `/groups` — lista grup
-   - GET `/groups/{id}` — szczegóły
-   - GET `/groups/{id}/displays` — wyświetlacze w grupie
-   - GET `/groups/{id}/with-displays` — grupa z wyświetlaczami
-   - PUT `/groups/{id}` — aktualizacja (admin)
-   - DELETE `/groups/{id}` — usunięcie (admin)
-   - POST `/groups/{id}/displays/{display_id}` — dodanie wyświetlacza
-   - DELETE `/groups/{id}/displays/{display_id}` — usunięcie wyświetlacza
+2. `app/services/group_service.py` â€” serwis grup:
+   - `get_displays_for_group()` â€” pobieranie wyĹ›wietlaczy w grupie
+   - `add_display_to_group()` â€” dodawanie wyĹ›wietlacza
+   - `remove_display_from_group()` â€” usuwanie wyĹ›wietlacza
+   - `validate_group_type()` â€” walidacja typu grupy
+3. `app/api/v1/groups.py` â€” endpointy API:
+   - POST `/groups` â€” utworzenie (admin)
+   - GET `/groups` â€” lista grup
+   - GET `/groups/{id}` â€” szczegĂłĹ‚y
+   - GET `/groups/{id}/displays` â€” wyĹ›wietlacze w grupie
+   - GET `/groups/{id}/with-displays` â€” grupa z wyĹ›wietlaczami
+   - PUT `/groups/{id}` â€” aktualizacja (admin)
+   - DELETE `/groups/{id}` â€” usuniÄ™cie (admin)
+   - POST `/groups/{id}/displays/{display_id}` â€” dodanie wyĹ›wietlacza
+   - DELETE `/groups/{id}/displays/{display_id}` â€” usuniÄ™cie wyĹ›wietlacza
 
 ### Funkcje:
 - Typy grup: `horizontal`, `vertical`, `mixed`, `single`
-- Walidacja liczby wyświetlaczy względem typu
-- Przypisywanie wyświetlaczy do grup
+- Walidacja liczby wyĹ›wietlaczy wzglÄ™dem typu
+- Przypisywanie wyĹ›wietlaczy do grup
 - Konfiguracja layoutu (JSON)
-- Grupowanie po piętrach
+- Grupowanie po piÄ™trach
 
 ## Status projektu
 
-- Etap 0: Przygotowanie środowiska — zakończony
-- Etap 1: Backend API — podstawy — zakończony
-- Etap 2: Zarządzanie wyświetlaczami — zakończony
-- Etap 3: Upload i przetwarzanie treści — zakończony
-- Etap 4: Transkodowanie video — zakończony
-- Etap 5: Harmonogramy treści — zakończony
-- Etap 6: Grupowanie wyświetlaczy — zakończony
-- Etap 7: Monitoring i alerty — następny
+- Etap 0: Przygotowanie Ĺ›rodowiska â€” zakoĹ„czony
+- Etap 1: Backend API â€” podstawy â€” zakoĹ„czony
+- Etap 2: ZarzÄ…dzanie wyĹ›wietlaczami â€” zakoĹ„czony
+- Etap 3: Upload i przetwarzanie treĹ›ci â€” zakoĹ„czony
+- Etap 4: Transkodowanie video â€” zakoĹ„czony
+- Etap 5: Harmonogramy treĹ›ci â€” zakoĹ„czony
+- Etap 6: Grupowanie wyĹ›wietlaczy â€” zakoĹ„czony
+- Etap 7: Monitoring i alerty â€” nastÄ™pny
 
-## Postęp
+## PostÄ™p
 
-Zrealizowano 6 z 9 etapów backendu. System ma:
-- Autentykację i autoryzację
-- Zarządzanie wyświetlaczami z monitoringiem
-- Upload i przetwarzanie treści (obrazy, PDF, Excel, video)
+Zrealizowano 6 z 9 etapĂłw backendu. System ma:
+- AutentykacjÄ™ i autoryzacjÄ™
+- ZarzÄ…dzanie wyĹ›wietlaczami z monitoringiem
+- Upload i przetwarzanie treĹ›ci (obrazy, PDF, Excel, video)
 - Transkodowanie video do MP4
-- System harmonogramów z priorytetami
-- Grupowanie wyświetlaczy z walidacją
+- System harmonogramĂłw z priorytetami
+- Grupowanie wyĹ›wietlaczy z walidacjÄ…
 
-Pozostało:
+PozostaĹ‚o:
 - Etap 7: Monitoring i alerty (wykrywanie offline, alerty, historia)
 - Etap 8: Raportowanie (raporty dzienne, tygodniowe, offline)
-- Etap 9: System dzwonków (harmonogramy dzwonków szkolnych)
+- Etap 9: System dzwonkĂłw (harmonogramy dzwonkĂłw szkolnych)
 
-Wszystkie pliki są krótkie i modułowe, gotowe do kontynuacji.
+Wszystkie pliki sÄ… krĂłtkie i moduĹ‚owe, gotowe do kontynuacji.
 
 ---
 
 **User**
 
 kontunuuj
+
 

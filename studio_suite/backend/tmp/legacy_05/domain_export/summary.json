@@ -1,0 +1,30 @@
+{
+  "CLIENT.FIC": {
+    "record_length": 1099,
+    "row_count": 8001
+  },
+  "PERSONNE.FIC": {
+    "record_length": 308,
+    "row_count": 56
+  },
+  "FICHE.FIC": {
+    "record_length": 207,
+    "row_count": 5062
+  },
+  "HISTORIQ.FIC": {
+    "record_length": 2100,
+    "row_count": 377
+  },
+  "PRODUITS.FIC": {
+    "record_length": 171,
+    "row_count": 259
+  },
+  "STOCK.FIC": {
+    "record_length": 47,
+    "row_count": 374
+  },
+  "RESUME.FIC": {
+    "record_length": 1535,
+    "row_count": 276
+  }
+}

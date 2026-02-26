@@ -1,0 +1,147 @@
+"""
+Endpoints for legacy salon datasets and reports.
+"""
+from datetime import date
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.orm import Session
+
+from app.api.deps import get_current_user
+from app.database import get_db
+from app.models.user import User
+from app.schemas.legacy_reports import (
+    LegacyCashflowResponse,
+    LegacyDailySummaryResponse,
+    LegacyForfaitsReportResponse,
+    LegacyForfaitTransactionResponse,
+    LegacyImportSummaryResponse,
+    LegacyMonthlySummaryResponse,
+    LegacyServiceAggregateResponse,
+    LegacyServiceReportResponse,
+    LegacyStat7WorkerResponse,
+)
+from app.services.legacy_report_service import (
+    get_cashflow_by_payment,
+    get_daily_summary,
+    get_edservice_aggregate,
+    get_forfait_transactions,
+    get_forfaits_revenue,
+    get_import_summary,
+    get_monthly_summary,
+    get_services_aggregate,
+    get_services_by_worker,
+    get_stat7_worker_summary,
+)
+
+router = APIRouter(prefix="/legacy/reports", tags=["legacy-reports"])
+
+
+@router.get("/summary", response_model=LegacyImportSummaryResponse)
+async def get_legacy_summary(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return get_import_summary(db)
+
+
+@router.get("/forfaits", response_model=LegacyForfaitsReportResponse)
+async def get_legacy_forfaits_report(
+    from_date: Optional[date] = Query(default=None),
+    to_date: Optional[date] = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {
+        "from_date": from_date,
+        "to_date": to_date,
+        "rows": get_forfaits_revenue(db, from_date, to_date),
+    }
+
+
+@router.get("/services-by-worker", response_model=LegacyServiceReportResponse)
+async def get_legacy_services_report(
+    from_date: Optional[date] = Query(default=None),
+    to_date: Optional[date] = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {
+        "from_date": from_date,
+        "to_date": to_date,
+        "rows": get_services_by_worker(db, from_date, to_date),
+    }
+
+
+@router.get("/monthly-summary", response_model=LegacyMonthlySummaryResponse)
+async def get_legacy_monthly_summary(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"rows": get_monthly_summary(db)}
+
+
+@router.get("/daily-summary", response_model=LegacyDailySummaryResponse)
+async def get_legacy_daily_summary(
+    from_date: Optional[date] = Query(default=None),
+    to_date: Optional[date] = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"from_date": from_date, "to_date": to_date, "rows": get_daily_summary(db, from_date, to_date)}
+
+
+@router.get("/forfait-transactions", response_model=LegacyForfaitTransactionResponse)
+async def get_legacy_forfait_transactions(
+    from_date: Optional[date] = Query(default=None),
+    to_date: Optional[date] = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"from_date": from_date, "to_date": to_date, "rows": get_forfait_transactions(db, from_date, to_date)}
+
+
+@router.get("/services-aggregate", response_model=LegacyServiceAggregateResponse)
+async def get_legacy_services_aggregate(
+    from_date: Optional[date] = Query(default=None),
+    to_date: Optional[date] = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"from_date": from_date, "to_date": to_date, "rows": get_services_aggregate(db, from_date, to_date)}
+
+
+@router.get("/cashflow", response_model=LegacyCashflowResponse)
+async def get_legacy_cashflow(
+    from_date: Optional[date] = Query(default=None),
+    to_date: Optional[date] = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"from_date": from_date, "to_date": to_date, "rows": get_cashflow_by_payment(db, from_date, to_date)}
+
+
+@router.get("/stat7-worker", response_model=LegacyStat7WorkerResponse)
+async def get_legacy_stat7_worker(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"rows": get_stat7_worker_summary(db)}
+
+
+@router.get("/edservice-aggregate", response_model=LegacyServiceAggregateResponse)
+async def get_legacy_edservice_aggregate(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return {"from_date": None, "to_date": None, "rows": get_edservice_aggregate(db)}

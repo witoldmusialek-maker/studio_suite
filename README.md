@@ -1,64 +1,64 @@
-# System Digital Signage
+﻿# Studio Suite
 
-System zarządzania treścią dla wyświetlaczy informacyjnych w szkole.
+System zarzÄ…dzania treĹ›ciÄ… dla wyĹ›wietlaczy informacyjnych w szkole.
 
 ## Opis
 
-System składa się z:
-- **Serwer** (Ubuntu VM na Hyper-V) - backend API i panel zarządzający
-- **Wyświetlacze** (HP T630 z Linuxem) - klienci wyświetlające treści
+System skĹ‚ada siÄ™ z:
+- **Serwer** (Ubuntu VM na Hyper-V) - backend API i panel zarzÄ…dzajÄ…cy
+- **WyĹ›wietlacze** (HP T630 z Linuxem) - klienci wyĹ›wietlajÄ…ce treĹ›ci
 
 ## Funkcje
 
-- ✅ Wyświetlanie treści (PDF, Excel, obrazy, video)
-- ✅ Harmonogramy wyświetlania
-- ✅ Grupowanie wyświetlaczy
-- ✅ Monitoring statusu w czasie rzeczywistym
-- ✅ System dzwonków szkolnych
-- ✅ Integracja z Google Drive (folder ZASTĘPSTWA)
-- ✅ Raportowanie i alerty
+- âś… WyĹ›wietlanie treĹ›ci (PDF, Excel, obrazy, video)
+- âś… Harmonogramy wyĹ›wietlania
+- âś… Grupowanie wyĹ›wietlaczy
+- âś… Monitoring statusu w czasie rzeczywistym
+- âś… System dzwonkĂłw szkolnych
+- âś… Integracja z Google Drive (folder ZASTÄPSTWA)
+- âś… Raportowanie i alerty
 
 ## Struktura Projektu
 
 ```
-digital_signage/
-├── backend/          # Backend API (FastAPI) ✅
-├── frontend/         # Panel webowy (React) 🔄
-├── client/           # Klient wyświetlacza (Python) ✅
-├── docs/             # Dokumentacja
-└── scripts/          # Skrypty pomocnicze
+studio_suite/
+â”śâ”€â”€ backend/          # Backend API (FastAPI) âś…
+â”śâ”€â”€ frontend/         # Panel webowy (React) đź”„
+â”śâ”€â”€ client/           # Klient wyĹ›wietlacza (Python) âś…
+â”śâ”€â”€ docs/             # Dokumentacja
+â””â”€â”€ scripts/          # Skrypty pomocnicze
 ```
 
 ## Dokumentacja
 
-- [Analiza i specyfikacja](ANALIZA_DIGITAL_SIGNAGE.md) - pełna analiza systemu
-- [Instrukcja instalacji](digital_signage/docs/INSTALLATION.md) - jak zainstalować system
-- [Postęp implementacji](digital_signage/PROGRESS.md) - aktualny status
-- [Instrukcje kontynuacji](digital_signage/CONTINUE.md) - jak kontynuować pracę
+- [Analiza i specyfikacja](ANALIZA_STUDIO_SUITE.md) - peĹ‚na analiza systemu
+- [Instrukcja instalacji](studio_suite/docs/INSTALLATION.md) - jak zainstalowaÄ‡ system
+- [PostÄ™p implementacji](studio_suite/PROGRESS.md) - aktualny status
+- [Instrukcje kontynuacji](studio_suite/CONTINUE.md) - jak kontynuowaÄ‡ pracÄ™
 
 ## Status Implementacji
 
-### Backend ✅
-- ✅ Etap 0: Przygotowanie środowiska
-- ✅ Etap 1: Backend API - Podstawy (autentykacja, modele)
-- ✅ Etap 2: Backend - Zarządzanie Wyświetlaczami
-- ✅ Etap 3: Backend - Upload i Przetwarzanie Treści
-- ✅ Etap 4: Backend - Transkodowanie Video
-- ✅ Etap 5: Backend - Harmonogramy Treści
-- ✅ Etap 6: Backend - Grupowanie Wyświetlaczy
-- ✅ Etap 7: Backend - Monitoring i Alerty
-- ✅ Etap 8: Backend - Raportowanie
-- ✅ Etap 9: Backend - System Dzwonków
+### Backend âś…
+- âś… Etap 0: Przygotowanie Ĺ›rodowiska
+- âś… Etap 1: Backend API - Podstawy (autentykacja, modele)
+- âś… Etap 2: Backend - ZarzÄ…dzanie WyĹ›wietlaczami
+- âś… Etap 3: Backend - Upload i Przetwarzanie TreĹ›ci
+- âś… Etap 4: Backend - Transkodowanie Video
+- âś… Etap 5: Backend - Harmonogramy TreĹ›ci
+- âś… Etap 6: Backend - Grupowanie WyĹ›wietlaczy
+- âś… Etap 7: Backend - Monitoring i Alerty
+- âś… Etap 8: Backend - Raportowanie
+- âś… Etap 9: Backend - System DzwonkĂłw
 
-### Frontend 🔄
-- ✅ Etap 10: Podstawowa struktura
-- ✅ Etap 11: Zarządzanie Wyświetlaczami
-- ✅ Etap 12: Strona Statusu
-- ✅ Etap 13: Upload Treści (podstawowy)
-- ⏳ Etapy 14-16: Do zrobienia
+### Frontend đź”„
+- âś… Etap 10: Podstawowa struktura
+- âś… Etap 11: ZarzÄ…dzanie WyĹ›wietlaczami
+- âś… Etap 12: Strona Statusu
+- âś… Etap 13: Upload TreĹ›ci (podstawowy)
+- âŹł Etapy 14-16: Do zrobienia
 
-### Klient ✅
-- ✅ Etap 17: Podstawowa Aplikacja (gotowa do testów)
+### Klient âś…
+- âś… Etap 17: Podstawowa Aplikacja (gotowa do testĂłw)
 
 ## Wymagania
 
@@ -70,21 +70,23 @@ digital_signage/
 
 ## Szybki Start
 
-Zobacz [Instrukcję instalacji](digital_signage/docs/INSTALLATION.md) dla szczegółów.
+Zobacz [InstrukcjÄ™ instalacji](studio_suite/docs/INSTALLATION.md) dla szczegĂłĹ‚Ăłw.
 
 ### Backend
 
 ```bash
-cd digital_signage/backend
+cd studio_suite/backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-API dostępne pod: http://localhost:8000
+API dostÄ™pne pod: http://localhost:8000
 Dokumentacja: http://localhost:8000/docs
 
 ## Licencja
 
-Projekt prywatny - szkoła
+Projekt prywatny - szkoĹ‚a
+
+
