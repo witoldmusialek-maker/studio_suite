@@ -22,6 +22,7 @@ from app.models import salon_core  # noqa: F401
 from app.models.salon_core import (
     BundleCatalog,
     BundleCatalogItem,
+    LegacyProductCatalogItem,
     Salon,
     SalonServiceCatalogItem,
     ServiceCatalogItem,
@@ -95,6 +96,23 @@ def parse_bundle_lines(forfait_fic: Path) -> Dict[str, Dict[str, object]]:
     return bundles
 
 
+def parse_products_catalog(products_fic: Path) -> Dict[str, Dict[str, str]]:
+    _, _, rows = parse_records(products_fic)
+    out: Dict[str, Dict[str, str]] = {}
+    for row in rows:
+        if len(row) < 3 or not row[0].isdigit():
+            continue
+        code = row[0].zfill(4)
+        out[code] = {
+            "name": row[2].strip(),
+            "type_code": row[1].strip() if len(row) > 1 else "",
+            "family_code": row[3].strip() if len(row) > 3 else "",
+            "brand_1": row[6].strip() if len(row) > 6 else "",
+            "brand_2": row[8].strip() if len(row) > 8 else "",
+        }
+    return out
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Import legacy services/bundles into selected salon scope.")
     parser.add_argument("--input-dir", required=True, help="Directory with SERVICE.FIC and FORFAIT.FIC")
@@ -105,7 +123,7 @@ def main() -> None:
     input_dir = Path(args.input_dir)
     if not input_dir.exists():
         raise SystemExit(f"Input directory not found: {input_dir}")
-    for required in ("SERVICE.FIC", "FORFAIT.FIC"):
+    for required in ("SERVICE.FIC", "FORFAIT.FIC", "PRODUITS.FIC"):
         if not (input_dir / required).exists():
             raise SystemExit(f"Missing required file: {required}")
 
@@ -122,7 +140,36 @@ def main() -> None:
             salon.is_active = True
 
         service_meta_by_code = parse_service_catalog(input_dir / "SERVICE.FIC")
+        products_meta_by_code = parse_products_catalog(input_dir / "PRODUITS.FIC")
         imported_codes = set(service_meta_by_code.keys())
+
+        created_products = 0
+        updated_products = 0
+        existing_products = {
+            row.legacy_code: row for row in db.query(LegacyProductCatalogItem).all()
+        }
+        for product_code, product_meta in sorted(products_meta_by_code.items()):
+            row = existing_products.get(product_code)
+            if row is None:
+                row = LegacyProductCatalogItem(
+                    legacy_code=product_code,
+                    name=product_meta["name"] or product_code,
+                    type_code=product_meta["type_code"] or None,
+                    family_code=product_meta["family_code"] or None,
+                    brand_1=product_meta["brand_1"] or None,
+                    brand_2=product_meta["brand_2"] or None,
+                    is_active=True,
+                )
+                db.add(row)
+                created_products += 1
+            else:
+                row.name = product_meta["name"] or row.name
+                row.type_code = product_meta["type_code"] or None
+                row.family_code = product_meta["family_code"] or None
+                row.brand_1 = product_meta["brand_1"] or None
+                row.brand_2 = product_meta["brand_2"] or None
+                row.is_active = True
+                updated_products += 1
 
         existing_services = db.query(ServiceCatalogItem).all()
         service_by_code = {row.legacy_code: row for row in existing_services}
@@ -248,7 +295,8 @@ def main() -> None:
         db.commit()
         print(
             f"salon={salon.code} created_services={created_services} linked_services={linked_services} "
-            f"bundles={created_bundles} bundle_items={created_bundle_items}"
+            f"bundles={created_bundles} bundle_items={created_bundle_items} "
+            f"products_created={created_products} products_updated={updated_products}"
         )
     finally:
         db.close()
@@ -256,4 +304,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -12,6 +12,15 @@ class LegacyCatalogServicePriceRow(BaseModel):
     price: float
     duration_minutes: int
     is_active: bool
+    is_formula: bool
+    formula_products: list["LegacyCatalogFormulaProductRow"] = []
+
+
+class LegacyCatalogFormulaProductRow(BaseModel):
+    product_id: int
+    product_code: str
+    product_name: str
+    brand: str | None = None
 
 
 class LegacyCatalogBundleItemRow(BaseModel):
@@ -73,3 +82,15 @@ class UpdateServiceRequest(BaseModel):
     default_price: float | None = Field(default=None, ge=0)
     is_active: bool | None = None
     local_name: str | None = Field(default=None, max_length=255)
+
+
+class LegacyProductCatalogRow(BaseModel):
+    product_id: int
+    product_code: str
+    product_name: str
+    brand: str | None = None
+
+
+class UpdateServiceFormulaRequest(BaseModel):
+    is_formula: bool
+    product_ids: list[int] = []

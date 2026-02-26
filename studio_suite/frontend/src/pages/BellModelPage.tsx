@@ -3,6 +3,7 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,6 +11,10 @@ import {
   FormControl,
   IconButton,
   InputLabel,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   MenuItem,
   Paper,
   Select,
@@ -35,10 +40,26 @@ type ServiceRow = {
   price: number
   duration_minutes: number
   is_active: boolean
+  is_formula: boolean
+  formula_products: FormulaProductRow[]
+}
+
+type FormulaProductRow = {
+  product_id: number
+  product_code: string
+  product_name: string
+  brand?: string | null
 }
 
 type CatalogResponse = {
   service_prices: ServiceRow[]
+}
+
+type ProductCatalogRow = {
+  product_id: number
+  product_code: string
+  product_name: string
+  brand?: string | null
 }
 
 type SalonRow = { id: number; code: string; name: string; is_active: boolean }
@@ -65,6 +86,9 @@ const ServicesPage = () => {
   const [info, setInfo] = useState('')
   const [query, setQuery] = useState('')
   const [services, setServices] = useState<ServiceRow[]>([])
+  const [products, setProducts] = useState<ProductCatalogRow[]>([])
+  const [priceDraftByServiceId, setPriceDraftByServiceId] = useState<Record<number, string>>({})
+  const [savingPriceByServiceId, setSavingPriceByServiceId] = useState<Record<number, boolean>>({})
   const [salons, setSalons] = useState<SalonRow[]>([])
   const [selectedSalonId, setSelectedSalonId] = useState<number | ''>('')
 
@@ -74,6 +98,10 @@ const ServicesPage = () => {
   const [editOpen, setEditOpen] = useState(false)
   const [editServiceId, setEditServiceId] = useState<number | null>(null)
   const [editForm, setEditForm] = useState<ServiceForm>(emptyCreateForm)
+  const [formulaOpen, setFormulaOpen] = useState(false)
+  const [formulaService, setFormulaService] = useState<ServiceRow | null>(null)
+  const [formulaSearch, setFormulaSearch] = useState('')
+  const [formulaProductIds, setFormulaProductIds] = useState<number[]>([])
 
   const loadSalons = async () => {
     const res = await api.get<SalonRow[]>('/resources/salons')
@@ -84,6 +112,15 @@ const ServicesPage = () => {
     }
   }
 
+  const loadProducts = async () => {
+    try {
+      const res = await api.get<ProductCatalogRow[]>('/legacy/catalog/products')
+      setProducts(res.data || [])
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie pobrac bazy produktow.')
+    }
+  }
+
   const loadCatalog = async (salonId: number) => {
     setLoading(true)
     setError('')
@@ -91,6 +128,12 @@ const ServicesPage = () => {
       const res = await api.get<CatalogResponse>('/legacy/catalog', { params: { salon_id: salonId } })
       const rows = [...(res.data?.service_prices || [])].sort((a, b) => a.service_code.localeCompare(b.service_code))
       setServices(rows)
+      setPriceDraftByServiceId(
+        rows.reduce<Record<number, string>>((acc, row) => {
+          acc[row.service_id] = String(Number(row.price).toFixed(2))
+          return acc
+        }, {})
+      )
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Nie udalo sie pobrac cennika uslug.')
     } finally {
@@ -101,6 +144,7 @@ const ServicesPage = () => {
   useEffect(() => {
     ;(async () => {
       await loadSalons()
+      await loadProducts()
     })()
   }, [])
 
@@ -116,6 +160,15 @@ const ServicesPage = () => {
       return row.service_code.toLowerCase().includes(q) || row.service_name.toLowerCase().includes(q)
     })
   }, [services, query])
+
+  const filteredProducts = useMemo(() => {
+    const q = formulaSearch.trim().toLowerCase()
+    if (!q) return products
+    return products.filter((row) => {
+      const hay = `${row.product_code} ${row.product_name} ${row.brand || ''}`.toLowerCase()
+      return hay.includes(q)
+    })
+  }, [products, formulaSearch])
 
   const openEdit = (row: ServiceRow) => {
     setEditServiceId(row.service_id)
@@ -170,21 +223,6 @@ const ServicesPage = () => {
     }
   }
 
-  const toggleActive = async (row: ServiceRow) => {
-    if (selectedSalonId === '') return
-    setError('')
-    setInfo('')
-    try {
-      await api.patch('/legacy/catalog/services/' + row.service_id, {
-        is_active: !row.is_active,
-      }, { params: { salon_id: selectedSalonId } })
-      setInfo('Status uslugi ' + row.service_code + ' zostal zmieniony.')
-      await loadCatalog(selectedSalonId)
-    } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Nie udalo sie zmienic statusu uslugi.')
-    }
-  }
-
   const removeService = async (row: ServiceRow) => {
     if (selectedSalonId === '') return
     if (!window.confirm('Usunac usluge ' + row.service_code + ' - ' + row.service_name + '?')) return
@@ -196,6 +234,93 @@ const ServicesPage = () => {
       await loadCatalog(selectedSalonId)
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Nie udalo sie usunac uslugi.')
+    }
+  }
+
+  const toggleFormula = async (row: ServiceRow, checked: boolean) => {
+    if (selectedSalonId === '') return
+    setError('')
+    try {
+      const payload = {
+        is_formula: checked,
+        product_ids: checked ? row.formula_products.map((item) => item.product_id) : [],
+      }
+      const res = await api.patch(`/legacy/catalog/services/${row.service_id}/formula`, payload, {
+        params: { salon_id: selectedSalonId },
+      })
+      const nextProducts = (res.data?.formula_products || []) as FormulaProductRow[]
+      setServices((prev) =>
+        prev.map((item) =>
+          item.service_id === row.service_id
+            ? { ...item, is_formula: checked, formula_products: nextProducts }
+            : item
+        )
+      )
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie zmienic statusu formuly.')
+    }
+  }
+
+  const openFormulaDialog = (row: ServiceRow) => {
+    setFormulaService(row)
+    setFormulaProductIds(row.formula_products.map((item) => item.product_id))
+    setFormulaSearch('')
+    setFormulaOpen(true)
+  }
+
+  const saveFormula = async () => {
+    if (selectedSalonId === '' || !formulaService) return
+    setError('')
+    try {
+      const res = await api.patch(
+        `/legacy/catalog/services/${formulaService.service_id}/formula`,
+        { is_formula: true, product_ids: formulaProductIds },
+        { params: { salon_id: selectedSalonId } }
+      )
+      const nextProducts = (res.data?.formula_products || []) as FormulaProductRow[]
+      setServices((prev) =>
+        prev.map((item) =>
+          item.service_id === formulaService.service_id
+            ? { ...item, is_formula: nextProducts.length > 0, formula_products: nextProducts }
+            : item
+        )
+      )
+      setFormulaOpen(false)
+      setFormulaService(null)
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie zapisac receptury.')
+    }
+  }
+
+  const saveInlinePrice = async (row: ServiceRow) => {
+    if (selectedSalonId === '') return
+    const raw = (priceDraftByServiceId[row.service_id] ?? '').trim().replace(',', '.')
+    if (raw === '') {
+      setPriceDraftByServiceId((prev) => ({ ...prev, [row.service_id]: String(Number(row.price).toFixed(2)) }))
+      return
+    }
+    const parsed = Number(raw)
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      setError('Niepoprawna cena. Wpisz liczbe >= 0.')
+      setPriceDraftByServiceId((prev) => ({ ...prev, [row.service_id]: String(Number(row.price).toFixed(2)) }))
+      return
+    }
+    const normalized = Number(parsed.toFixed(2))
+    if (Number(row.price.toFixed(2)) === normalized) return
+
+    setSavingPriceByServiceId((prev) => ({ ...prev, [row.service_id]: true }))
+    setError('')
+    try {
+      await api.patch(`/legacy/catalog/services/${row.service_id}/price`, { price: normalized }, { params: { salon_id: selectedSalonId } })
+      setServices((prev) =>
+        prev.map((item) => (item.service_id === row.service_id ? { ...item, price: normalized } : item))
+      )
+      setPriceDraftByServiceId((prev) => ({ ...prev, [row.service_id]: String(normalized.toFixed(2)) }))
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie zapisac ceny uslugi.')
+      setPriceDraftByServiceId((prev) => ({ ...prev, [row.service_id]: String(Number(row.price).toFixed(2)) }))
+    } finally {
+      setSavingPriceByServiceId((prev) => ({ ...prev, [row.service_id]: false }))
     }
   }
 
@@ -242,7 +367,7 @@ const ServicesPage = () => {
               <TableCell>Nazwa</TableCell>
               <TableCell align='right'>Czas (min)</TableCell>
               <TableCell align='right'>Cena</TableCell>
-              <TableCell align='center'>Aktywna</TableCell>
+              <TableCell align='center'>Formula</TableCell>
               <TableCell align='right'>Akcje</TableCell>
             </TableRow>
           </TableHead>
@@ -252,9 +377,38 @@ const ServicesPage = () => {
                 <TableCell>{row.service_code}</TableCell>
                 <TableCell>{row.service_name}</TableCell>
                 <TableCell align='right'>{row.duration_minutes}</TableCell>
-                <TableCell align='right'>{row.price.toFixed(2)}</TableCell>
+                <TableCell align='right' sx={{ minWidth: 170 }}>
+                  <TextField
+                    size='small'
+                    type='number'
+                    inputProps={{ step: 0.01, min: 0 }}
+                    value={priceDraftByServiceId[row.service_id] ?? String(Number(row.price).toFixed(2))}
+                    disabled={!!savingPriceByServiceId[row.service_id]}
+                    onFocus={(event) => event.target.select()}
+                    onChange={(event) =>
+                      setPriceDraftByServiceId((prev) => ({ ...prev, [row.service_id]: event.target.value }))
+                    }
+                    onBlur={() => saveInlinePrice(row)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        event.preventDefault()
+                        ;(event.target as HTMLInputElement).blur()
+                      }
+                    }}
+                  />
+                </TableCell>
                 <TableCell align='center'>
-                  <Switch checked={row.is_active} onChange={() => toggleActive(row)} />
+                  <Stack direction='row' spacing={1} justifyContent='center' alignItems='center'>
+                    <Switch checked={row.is_formula} onChange={(_, checked) => toggleFormula(row, checked)} />
+                    <Button
+                      size='small'
+                      variant='outlined'
+                      disabled={!row.is_formula}
+                      onClick={() => openFormulaDialog(row)}
+                    >
+                      Receptura
+                    </Button>
+                  </Stack>
                 </TableCell>
                 <TableCell align='right'>
                   <IconButton size='small' onClick={() => openEdit(row)}>
@@ -376,6 +530,74 @@ const ServicesPage = () => {
             }
           >
             Zapisz
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={formulaOpen}
+        onClose={() => {
+          setFormulaOpen(false)
+          setFormulaService(null)
+        }}
+        fullWidth
+        maxWidth='md'
+      >
+        <DialogTitle>
+          Receptura uslugi {formulaService ? `${formulaService.service_code} - ${formulaService.service_name}` : ''}
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={1.5} sx={{ mt: 0.5 }}>
+            <TextField
+              size='small'
+              label='Szukaj produktu (kod / nazwa / marka)'
+              value={formulaSearch}
+              onChange={(e) => setFormulaSearch(e.target.value)}
+            />
+            <Paper variant='outlined' sx={{ maxHeight: 420, overflowY: 'auto' }}>
+              <List dense>
+                {filteredProducts.map((product) => {
+                  const checked = formulaProductIds.includes(product.product_id)
+                  return (
+                    <ListItem key={product.product_id} disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          setFormulaProductIds((prev) =>
+                            prev.includes(product.product_id)
+                              ? prev.filter((id) => id !== product.product_id)
+                              : [...prev, product.product_id]
+                          )
+                        }
+                      >
+                        <Checkbox edge='start' checked={checked} tabIndex={-1} disableRipple />
+                        <ListItemText
+                          primary={`${product.product_code} - ${product.product_name}`}
+                          secondary={product.brand || undefined}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  )
+                })}
+                {!filteredProducts.length && (
+                  <ListItem>
+                    <ListItemText primary='Brak produktow.' />
+                  </ListItem>
+                )}
+              </List>
+            </Paper>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setFormulaOpen(false)
+              setFormulaService(null)
+            }}
+          >
+            Anuluj
+          </Button>
+          <Button variant='contained' onClick={saveFormula}>
+            Zapisz recepture
           </Button>
         </DialogActions>
       </Dialog>

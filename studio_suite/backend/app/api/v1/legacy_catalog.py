@@ -11,11 +11,13 @@ from app.schemas.legacy_catalog import (
     AddBundleItemRequest,
     CreateBundleRequest,
     CreateServiceRequest,
+    LegacyProductCatalogRow,
     LegacyCatalogResponse,
     UpdateBundleItemPriceRequest,
     UpdateBundlePriceRequest,
     UpdateServicePriceRequest,
     UpdateServiceRequest,
+    UpdateServiceFormulaRequest,
 )
 from app.services.legacy_catalog_service import (
     add_bundle_item,
@@ -24,11 +26,13 @@ from app.services.legacy_catalog_service import (
     delete_bundle,
     delete_bundle_item,
     delete_service,
+    get_legacy_products,
     get_legacy_catalog,
     update_bundle_item_price,
     update_bundle_price,
     update_service,
     update_service_price,
+    update_service_formula,
 )
 
 router = APIRouter(prefix="/legacy/catalog", tags=["legacy-catalog"])
@@ -42,6 +46,15 @@ async def get_catalog(
 ):
     del current_user
     return get_legacy_catalog(db, salon_id=salon_id)
+
+
+@router.get("/products", response_model=list[LegacyProductCatalogRow])
+async def get_products(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    return get_legacy_products(db)
 
 
 @router.post("/services", status_code=status.HTTP_201_CREATED)
@@ -97,6 +110,33 @@ async def patch_service(
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload")
         if str(err) == "salon_not_found":
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+        raise
+
+
+@router.patch("/services/{service_id}/formula")
+async def patch_service_formula(
+    service_id: int,
+    payload: UpdateServiceFormulaRequest,
+    salon_id: int = 1,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    try:
+        return update_service_formula(
+            db,
+            service_id=service_id,
+            salon_id=salon_id,
+            is_formula=payload.is_formula,
+            product_ids=payload.product_ids,
+        )
+    except ValueError as err:
+        if str(err) == "service_not_found":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found")
+        if str(err) == "salon_not_found":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+        if str(err) == "product_not_found":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
         raise
 
 

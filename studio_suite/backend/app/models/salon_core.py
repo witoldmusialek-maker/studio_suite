@@ -114,6 +114,35 @@ class SalonServiceCatalogItem(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class LegacyProductCatalogItem(Base):
+    __tablename__ = "legacy_product_catalog_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    legacy_code = Column(String(16), unique=True, nullable=False, index=True)
+    name = Column(String(255), nullable=False, index=True)
+    type_code = Column(String(16), nullable=True, index=True)
+    family_code = Column(String(16), nullable=True, index=True)
+    brand_1 = Column(String(128), nullable=True)
+    brand_2 = Column(String(128), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class SalonServiceFormulaItem(Base):
+    __tablename__ = "salon_service_formula_items"
+    __table_args__ = (
+        UniqueConstraint("salon_id", "service_id", "position", name="uq_salon_service_formula_position"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=False, index=True)
+    position = Column(Integer, nullable=False)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    product_legacy_code = Column(String(16), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class ServicePriceHistory(Base):
     __tablename__ = "service_price_history"
     __table_args__ = (

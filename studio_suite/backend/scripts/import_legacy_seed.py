@@ -20,10 +20,12 @@ from app.models.salon_core import (
     BundleCatalog,
     BundleCatalogItem,
     LegacyDictionaryEntry,
+    LegacyProductCatalogItem,
     LegacyEdServiceRow,
     LegacyEdition1Daily,
     LegacyFicheLine,
     LegacyForfaitTransaction,
+    SalonServiceFormulaItem,
     LegacyStat7Row,
     Salon,
     SalonServiceCatalogItem,
@@ -115,6 +117,23 @@ def parse_bundle_lines(forfait_fic: Path) -> Dict[str, Dict[str, object]]:
             "total_price": round(sum(item_prices), 2),
         }
     return bundles
+
+
+def parse_products_catalog(products_fic: Path) -> Dict[str, Dict[str, str]]:
+    _, _, rows = parse_records(products_fic)
+    out: Dict[str, Dict[str, str]] = {}
+    for row in rows:
+        if len(row) < 3 or not row[0].isdigit():
+            continue
+        code = row[0].zfill(4)
+        out[code] = {
+            "name": row[2].strip(),
+            "type_code": row[1].strip() if len(row) > 1 else "",
+            "family_code": row[3].strip() if len(row) > 3 else "",
+            "brand_1": row[6].strip() if len(row) > 6 else "",
+            "brand_2": row[8].strip() if len(row) > 8 else "",
+        }
+    return out
 
 
 def parse_bundle_transactions(forfaits_fic: Path) -> List[Dict[str, object]]:
@@ -279,7 +298,9 @@ def clear_import_scope(db) -> None:
         LegacyStat7Row,
         BundleCatalogItem,
         BundleCatalog,
+        SalonServiceFormulaItem,
         ServicePriceHistory,
+        LegacyProductCatalogItem,
         ServiceCatalogItem,
         LegacyDictionaryEntry,
         StaffMember,
@@ -342,6 +363,28 @@ def main() -> None:
             )
 
         service_meta_by_code = parse_service_catalog(input_dir / "SERVICE.FIC")
+        products_meta_by_code = parse_products_catalog(input_dir / "PRODUITS.FIC")
+        for code, meta in sorted(products_meta_by_code.items()):
+            existing = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.legacy_code == code).first()
+            if existing:
+                existing.name = meta["name"] or existing.name
+                existing.type_code = meta["type_code"] or None
+                existing.family_code = meta["family_code"] or None
+                existing.brand_1 = meta["brand_1"] or None
+                existing.brand_2 = meta["brand_2"] or None
+                existing.is_active = True
+                continue
+            db.add(
+                LegacyProductCatalogItem(
+                    legacy_code=code,
+                    name=meta["name"] or code,
+                    type_code=meta["type_code"] or None,
+                    family_code=meta["family_code"] or None,
+                    brand_1=meta["brand_1"] or None,
+                    brand_2=meta["brand_2"] or None,
+                    is_active=True,
+                )
+            )
         service_id_by_code: Dict[str, int] = {}
         for code, meta in sorted(service_meta_by_code.items()):
             item = ServiceCatalogItem(
