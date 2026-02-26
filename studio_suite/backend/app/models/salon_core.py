@@ -86,7 +86,7 @@ class ServiceCatalogItem(Base):
     __tablename__ = "service_catalog_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    legacy_code = Column(String(16), unique=True, nullable=False, index=True)
+    legacy_code = Column(String(32), unique=True, nullable=False, index=True)
     name = Column(String(255), nullable=False, index=True)
     service_type_code = Column(String(16), nullable=True, index=True)
     grouping_code = Column(String(16), nullable=True, index=True)
@@ -120,10 +120,15 @@ class LegacyProductCatalogItem(Base):
     id = Column(Integer, primary_key=True, index=True)
     legacy_code = Column(String(16), unique=True, nullable=False, index=True)
     name = Column(String(255), nullable=False, index=True)
+    name_pl = Column(String(255), nullable=True, index=True)
+    fiscal_code = Column(String(32), nullable=True, index=True)
     type_code = Column(String(16), nullable=True, index=True)
     family_code = Column(String(16), nullable=True, index=True)
     brand_1 = Column(String(128), nullable=True)
     brand_2 = Column(String(128), nullable=True)
+    catalog_price = Column(Numeric(10, 2), nullable=True)
+    sale_price_gross = Column(Numeric(10, 2), nullable=True)
+    s_u = Column(Boolean, nullable=False, default=False)
     stock_mx03 = Column(Numeric(12, 2), nullable=True, default=0)
     stock_mx04 = Column(Numeric(12, 2), nullable=True, default=0)
     stock_mx07 = Column(Numeric(12, 2), nullable=True, default=0)
@@ -142,7 +147,7 @@ class SalonServiceFormulaItem(Base):
     service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=False, index=True)
     position = Column(Integer, nullable=False)
     product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
-    product_legacy_code = Column(String(16), nullable=False, index=True)
+    product_legacy_code = Column(String(32), nullable=False, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 

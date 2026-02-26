@@ -76,6 +76,48 @@ def startup() -> None:
                     "ADD COLUMN IF NOT EXISTS stock_mx07 NUMERIC(12,2)"
                 )
             )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS name_pl VARCHAR(255)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS fiscal_code VARCHAR(32)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS catalog_price NUMERIC(10,2)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS sale_price_gross NUMERIC(10,2)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS s_u BOOLEAN NOT NULL DEFAULT FALSE"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ALTER COLUMN legacy_code TYPE VARCHAR(32)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE salon_service_formula_items "
+                    "ALTER COLUMN product_legacy_code TYPE VARCHAR(32)"
+                )
+            )
     Base.metadata.create_all(bind=engine)
 
 

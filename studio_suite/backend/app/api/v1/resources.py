@@ -50,21 +50,39 @@ def _staff_to_read(staff: StaffMember, salons_by_id: dict[int, Salon], roles_by_
     )
 
 
-def _product_to_read(link: SalonProductCatalogItem, product: LegacyProductCatalogItem) -> ProductRead:
+def _stock_100_for_salon(salon: Salon, product: LegacyProductCatalogItem) -> float | None:
+    code = (salon.code or "").strip()
+    name = (salon.name or "").strip().lower()
+    if code == "05" or "pulaw" in name:
+        return float(product.stock_mx03) if product.stock_mx03 is not None else None
+    if code == "12" or "kras" in name:
+        return float(product.stock_mx04) if product.stock_mx04 is not None else None
+    if code == "07" or "odyn" in name:
+        return float(product.stock_mx07) if product.stock_mx07 is not None else None
+    return float(product.stock_mx04) if product.stock_mx04 is not None else None
+
+
+def _product_to_read(link: SalonProductCatalogItem, product: LegacyProductCatalogItem, salon: Salon) -> ProductRead:
     return ProductRead(
         salon_product_id=link.id,
         salon_id=link.salon_id,
         product_id=product.id,
         product_code=product.legacy_code,
         product_name=link.local_name or product.name,
+        product_name_pl=product.name_pl,
+        fiscal_code=product.fiscal_code,
         brand=product.brand_1 or product.brand_2 or None,
         package_size_g=float(link.package_size_g) if link.package_size_g is not None else None,
+        catalog_price=float(product.catalog_price) if product.catalog_price is not None else None,
+        sale_price_gross=float(product.sale_price_gross) if product.sale_price_gross is not None else None,
+        s_u=bool(product.s_u),
         doses_short=float(link.doses_short),
         doses_medium=float(link.doses_medium),
         doses_long=float(link.doses_long),
         stock_mx03=float(product.stock_mx03) if product.stock_mx03 is not None else None,
         stock_mx04=float(product.stock_mx04) if product.stock_mx04 is not None else None,
         stock_mx07=float(product.stock_mx07) if product.stock_mx07 is not None else None,
+        stock_100=_stock_100_for_salon(salon, product),
         is_active=bool(link.is_active),
     )
 
@@ -266,7 +284,7 @@ async def list_products(
     for link in links:
         product = by_id.get(link.product_id)
         if product:
-            out.append(_product_to_read(link, product))
+            out.append(_product_to_read(link, product, salon))
     out.sort(key=lambda item: item.product_code)
     return out
 
@@ -292,14 +310,27 @@ async def create_product(
         product = LegacyProductCatalogItem(
             legacy_code=code,
             name=name,
+            name_pl=(payload.product_name_pl or "").strip() or None,
+            fiscal_code=(payload.fiscal_code or "").strip() or None,
             brand_1=(payload.brand or "").strip() or None,
+            catalog_price=payload.catalog_price,
+            sale_price_gross=payload.sale_price_gross,
+            s_u=bool(payload.s_u),
             is_active=True,
         )
         db.add(product)
         db.flush()
     else:
+        product.name = name
+        product.name_pl = (payload.product_name_pl or "").strip() or None
+        product.fiscal_code = (payload.fiscal_code or "").strip() or None
         if payload.brand is not None:
             product.brand_1 = (payload.brand or "").strip() or None
+        if payload.catalog_price is not None:
+            product.catalog_price = payload.catalog_price
+        if payload.sale_price_gross is not None:
+            product.sale_price_gross = payload.sale_price_gross
+        product.s_u = bool(payload.s_u)
 
     link = (
         db.query(SalonProductCatalogItem)
@@ -325,7 +356,7 @@ async def create_product(
     db.commit()
     db.refresh(link)
     db.refresh(product)
-    return _product_to_read(link, product)
+    return _product_to_read(link, product, salon)
 
 
 @router.patch("/products/{salon_product_id}", response_model=ProductRead)
@@ -347,10 +378,22 @@ async def update_product(
     if "product_name" in provided and payload.product_name is not None:
         clean = payload.product_name.strip()
         link.local_name = clean or None
+        if clean:
+            product.name = clean
+    if "product_name_pl" in provided:
+        product.name_pl = (payload.product_name_pl or "").strip() or None
+    if "fiscal_code" in provided:
+        product.fiscal_code = (payload.fiscal_code or "").strip() or None
     if "brand" in provided:
         product.brand_1 = (payload.brand or "").strip() or None
     if "package_size_g" in provided:
         link.package_size_g = payload.package_size_g
+    if "catalog_price" in provided:
+        product.catalog_price = payload.catalog_price
+    if "sale_price_gross" in provided:
+        product.sale_price_gross = payload.sale_price_gross
+    if "s_u" in provided and payload.s_u is not None:
+        product.s_u = payload.s_u
     if "doses_short" in provided and payload.doses_short is not None:
         link.doses_short = payload.doses_short
     if "doses_medium" in provided and payload.doses_medium is not None:
@@ -363,7 +406,10 @@ async def update_product(
     db.commit()
     db.refresh(link)
     db.refresh(product)
-    return _product_to_read(link, product)
+    salon = db.query(Salon).filter(Salon.id == link.salon_id).first()
+    if not salon:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    return _product_to_read(link, product, salon)
 
 
 @router.delete("/products/{salon_product_id}", status_code=status.HTTP_204_NO_CONTENT)

@@ -60,6 +60,9 @@ type ProductCatalogRow = {
   product_id: number
   product_code: string
   product_name: string
+  product_name_pl?: string | null
+  fiscal_code?: string | null
+  s_u?: boolean
   brand?: string | null
   package_size_g?: number | null
   doses_short: number
@@ -172,7 +175,7 @@ const ServicesPage = () => {
     const q = formulaSearch.trim().toLowerCase()
     if (!q) return products
     return products.filter((row) => {
-      const hay = `${row.product_code} ${row.product_name} ${row.brand || ''}`.toLowerCase()
+      const hay = `${row.product_code} ${row.product_name} ${row.product_name_pl || ''} ${row.fiscal_code || ''} ${row.brand || ''}`.toLowerCase()
       return hay.includes(q)
     })
   }, [products, formulaSearch])

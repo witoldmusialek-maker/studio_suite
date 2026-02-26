@@ -89,8 +89,13 @@ class LegacyProductCatalogRow(BaseModel):
     product_id: int
     product_code: str
     product_name: str
+    product_name_pl: str | None = None
+    fiscal_code: str | None = None
     brand: str | None = None
     package_size_g: float | None = None
+    catalog_price: float | None = None
+    sale_price_gross: float | None = None
+    s_u: bool = False
     doses_short: float
     doses_medium: float
     doses_long: float

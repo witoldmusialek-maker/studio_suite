@@ -65,10 +65,15 @@ class StaffRead(BaseModel):
 
 class ProductCreate(BaseModel):
     salon_id: int
-    product_code: str = Field(min_length=1, max_length=16)
+    product_code: str = Field(min_length=1, max_length=32)
     product_name: str = Field(min_length=1, max_length=255)
+    product_name_pl: str | None = Field(default=None, max_length=255)
+    fiscal_code: str | None = Field(default=None, max_length=32)
     brand: str | None = Field(default=None, max_length=128)
     package_size_g: float | None = Field(default=100, ge=0)
+    catalog_price: float | None = Field(default=None, ge=0)
+    sale_price_gross: float | None = Field(default=None, ge=0)
+    s_u: bool = False
     doses_short: float = Field(default=4, gt=0)
     doses_medium: float = Field(default=2, gt=0)
     doses_long: float = Field(default=1.25, gt=0)
@@ -77,8 +82,13 @@ class ProductCreate(BaseModel):
 
 class ProductUpdate(BaseModel):
     product_name: str | None = Field(default=None, min_length=1, max_length=255)
+    product_name_pl: str | None = Field(default=None, max_length=255)
+    fiscal_code: str | None = Field(default=None, max_length=32)
     brand: str | None = Field(default=None, max_length=128)
     package_size_g: float | None = Field(default=None, ge=0)
+    catalog_price: float | None = Field(default=None, ge=0)
+    sale_price_gross: float | None = Field(default=None, ge=0)
+    s_u: bool | None = None
     doses_short: float | None = Field(default=None, gt=0)
     doses_medium: float | None = Field(default=None, gt=0)
     doses_long: float | None = Field(default=None, gt=0)
@@ -91,12 +101,18 @@ class ProductRead(BaseModel):
     product_id: int
     product_code: str
     product_name: str
+    product_name_pl: str | None = None
+    fiscal_code: str | None = None
     brand: str | None
     package_size_g: float | None
+    catalog_price: float | None = None
+    sale_price_gross: float | None = None
+    s_u: bool = False
     doses_short: float
     doses_medium: float
     doses_long: float
     stock_mx03: float | None = None
     stock_mx04: float | None = None
     stock_mx07: float | None = None
+    stock_100: float | None = None
     is_active: bool

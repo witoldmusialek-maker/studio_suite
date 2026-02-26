@@ -204,13 +204,21 @@ def get_legacy_products(db: Session, salon_id: int) -> list[dict]:
         product = by_id.get(link.product_id)
         if not product:
             continue
+        # Recipe lists should only include products marked for services (S_U = 0).
+        if bool(product.s_u):
+            continue
         out.append(
             {
                 "product_id": product.id,
                 "product_code": product.legacy_code,
                 "product_name": link.local_name or product.name,
+                "product_name_pl": product.name_pl,
+                "fiscal_code": product.fiscal_code,
                 "brand": product.brand_1 or product.brand_2 or None,
                 "package_size_g": float(link.package_size_g) if link.package_size_g is not None else None,
+                "catalog_price": float(product.catalog_price) if product.catalog_price is not None else None,
+                "sale_price_gross": float(product.sale_price_gross) if product.sale_price_gross is not None else None,
+                "s_u": bool(product.s_u),
                 "doses_short": float(link.doses_short),
                 "doses_medium": float(link.doses_medium),
                 "doses_long": float(link.doses_long),

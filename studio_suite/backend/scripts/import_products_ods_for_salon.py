@@ -18,7 +18,12 @@ if str(BACKEND_DIR) not in sys.path:
 
 from app.database import Base, SessionLocal, engine
 from app.models import salon_core  # noqa: F401
-from app.models.salon_core import LegacyProductCatalogItem, Salon, SalonProductCatalogItem
+from app.models.salon_core import (
+    LegacyProductCatalogItem,
+    Salon,
+    SalonProductCatalogItem,
+    SalonServiceFormulaItem,
+)
 
 NS = {
     "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
@@ -59,6 +64,22 @@ def parse_package_size_g(token: str) -> float | None:
     return round(value, 2)
 
 
+def parse_price_value(token: str) -> float | None:
+    raw = (token or "").strip().replace(",", ".")
+    if not raw:
+        return None
+    m = re.search(r"-?\d+(?:\.\d+)?", raw)
+    if not m:
+        return None
+    try:
+        value = float(m.group(0))
+    except ValueError:
+        return None
+    if value < 0:
+        return None
+    return round(value, 2)
+
+
 def parse_stock_value(token: str) -> float | None:
     raw = (token or "").strip().replace(",", ".")
     if not raw:
@@ -70,13 +91,6 @@ def parse_stock_value(token: str) -> float | None:
         return round(float(m.group(0)), 2)
     except ValueError:
         return None
-
-
-def pick_name(pl_name: str, short_name: str) -> str:
-    candidate = (pl_name or "").strip()
-    if candidate:
-        return candidate
-    return (short_name or "").strip()
 
 
 def normalize_default_doses(package_size_g: float | None) -> tuple[float, float, float]:
@@ -106,6 +120,7 @@ def main() -> None:
     parser.add_argument("--salon-code", required=True, help="Salon code, e.g. 12")
     parser.add_argument("--salon-name", required=True, help="Salon name")
     parser.add_argument("--deactivate-missing", action="store_true")
+    parser.add_argument("--replace-all", action="store_true", help="Delete existing product base and replace in full")
     args = parser.parse_args()
 
     ods_file = Path(args.input_file)
@@ -122,7 +137,7 @@ def main() -> None:
         if col and col not in idx:
             idx[col] = i
 
-    required = ["ID_P", "NAZWAPL", "NAZWA1"]
+    required = ["ID_P", "NAZWAPL", "NAZWA1", "FISK", "POJ", "CENASPBRT"]
     missing = [name for name in required if name not in idx]
     if missing:
         raise SystemExit(f"Missing required columns: {', '.join(missing)}")
@@ -145,6 +160,12 @@ def main() -> None:
             salon.name = args.salon_name
             salon.is_active = True
 
+        if args.replace_all:
+            db.query(SalonServiceFormulaItem).delete()
+            db.query(SalonProductCatalogItem).delete()
+            db.query(LegacyProductCatalogItem).delete()
+            db.flush()
+
         processed_codes: set[str] = set()
         processed_links: set[tuple[int, int]] = set()
         created_products = 0
@@ -158,28 +179,39 @@ def main() -> None:
         for row in rows[1:]:
             code_raw = col(row, "ID_P")
             code = code_raw.zfill(4) if code_raw.isdigit() else code_raw
-            name = pick_name(col(row, "NAZWAPL"), col(row, "NAZWA1"))
+            name = col(row, "NAZWA1")
+            name_pl = col(row, "NAZWAPL")
             if not code or not name:
                 continue
             processed_codes.add(code)
 
             package_size_g = parse_package_size_g(col(row, "POJ"))
+            fiscal_code = trunc(col(row, "FISK"), 32)
+            catalog_price = parse_price_value(col(row, "cena_sp_f") or col(row, "F"))
+            sale_price_gross = parse_price_value(col(row, "CENASPBRT"))
             stock_mx03 = parse_stock_value(col(row, "MX03"))
             stock_mx04 = parse_stock_value(col(row, "MX04"))
             stock_mx07 = parse_stock_value(col(row, "MX07"))
             brand = trunc(col(row, "GRUPA"), 128)
             type_code = trunc(col(row, "CECHA_RODZINA"), 16)
             family_code = trunc(col(row, "rodzina2"), 16)
+            s_u_token = (col(row, "S_U") or "").strip()
+            s_u = s_u_token in {"1", "true", "TRUE", "t", "T", "yes", "YES"}
 
             product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.legacy_code == code).first()
             if product is None:
                 product = LegacyProductCatalogItem(
                     legacy_code=code,
                     name=name,
+                    name_pl=name_pl or None,
+                    fiscal_code=fiscal_code,
                     type_code=type_code,
                     family_code=family_code,
                     brand_1=brand,
                     brand_2=None,
+                    catalog_price=catalog_price,
+                    sale_price_gross=sale_price_gross,
+                    s_u=s_u,
                     stock_mx03=stock_mx03,
                     stock_mx04=stock_mx04,
                     stock_mx07=stock_mx07,
@@ -190,9 +222,14 @@ def main() -> None:
                 created_products += 1
             else:
                 product.name = name
+                product.name_pl = name_pl or None
+                product.fiscal_code = fiscal_code
                 product.type_code = type_code
                 product.family_code = family_code
                 product.brand_1 = brand
+                product.catalog_price = catalog_price
+                product.sale_price_gross = sale_price_gross
+                product.s_u = s_u
                 product.stock_mx03 = stock_mx03
                 product.stock_mx04 = stock_mx04
                 product.stock_mx07 = stock_mx07
