@@ -78,6 +78,15 @@ def normalize_default_doses(package_size_g: float | None) -> tuple[float, float,
     return 2.0, 1.0, 0.75
 
 
+def trunc(value: str | None, max_len: int) -> str | None:
+    if value is None:
+        return None
+    clean = value.strip()
+    if not clean:
+        return None
+    return clean[:max_len]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Import ODS product base for selected salon.")
     parser.add_argument("--input-file", required=True, help="Path to .ods file")
@@ -137,9 +146,9 @@ def main() -> None:
             processed_codes.add(code)
 
             package_size_g = parse_package_size_g(col(row, "POJ"))
-            brand = col(row, "GRUPA") or None
-            type_code = col(row, "CECHA_RODZINA") or None
-            family_code = col(row, "rodzina2") or None
+            brand = trunc(col(row, "GRUPA"), 128)
+            type_code = trunc(col(row, "CECHA_RODZINA"), 16)
+            family_code = trunc(col(row, "rodzina2"), 16)
 
             product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.legacy_code == code).first()
             if product is None:
@@ -215,4 +224,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
