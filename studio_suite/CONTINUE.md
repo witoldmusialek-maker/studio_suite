@@ -1,87 +1,54 @@
+CONTINUE (handoff 2026-02-26)
 
-CONTINUE
-Current State
-Source repo: witoldmusialek-maker/studio_suite (private)
-Dev server: 192.168.200.116
-Deploy path: ~/projects/studio_suite_repo/studio_suite
-URL: https://dev2.witold.ovh/
-API: /api/v1 (frontend uses relative API_URL)
-Standard Deploy
-cd ~/projects/studio_suite_repo
-git pull origin master
-cd studio_suite
-docker compose up -d --build
-docker compose ps
+Zakres i separacja projektow
+- NIE ruszac: `dev.witold.ovh` (digital signage / projekt1).
+- Pracujemy tylko na: `dev2.witold.ovh` (Studio Suite / projekt2).
+- Repo lokalne: `C:\Users\Wit\projekty\cline\projekt2\studio_suite`
+- Repo na serwerze: `~/projects/projekt2_repo/studio_suite`
 
-Quick Diagnostics
-docker compose logs backend --tail 80
-docker compose logs frontend --tail 80
+Aktualna wersja
+- Backend + frontend: `v1.0.0-beta.2026-02-26.09`
+- Commit wersji: `01ea8de`
 
-Notes
-Websocket (socket.io) is LAN-only.
-On dev2.witold.ovh warnings are expected if backend has no socket endpoint.
-Operacyjny workflow (stan aktualny)
-Branching
-master = stabilne wydania
-develop = integracja zmian
-feature/* = praca nad pojedynczym zadaniem
-Deploy dev1 (jednym poleceniem)
-Skrypt:
+Najwazniejsze zmiany z tej sesji
+- Przebudowana tabela produktow pod import 1:1 z ODS.
+- Jedna wspolna baza produktow (ta sama tabela), bez separacji danych per salon.
+- W UI pokazujemy jedna kolumne magazynowa zalezna od salonu:
+  - salon 05 -> `MX03`
+  - salon 12 -> `MX04`
+  - salon 07 -> `MX07`
+- Dodane filtry do wszystkich kolumn w widoku tabeli produktow.
+- `ID_P` jest kodem relacyjnym produktu (`legacy_code`).
+- Dodane/obslugiwane pola: `NAZWA1`, `NAZWAPL`, `FISK`, `POJ`, `CENAKATNET`, `CENASPBRT`, `CENA_ZAK`, `S_U` i pozostale kolumny 1:1 (z pominiêciami uzgodnionymi).
 
-studio_suite/scripts/deploy-dev1.ps1
-Uruchomienie:
-Set-Location C:\Users\Wit\projekty\cline\projekt2\studio_suite
-.\scripts\deploy-dev1.ps1 -DevHost dev1 -Branch master
+Krytyczna poprawka importera
+- Commit: `bdcdbd4`
+- Problem: parser ODS czytal tylko `text:p`, a czesc liczb byla w `office:value`.
+- Skutek: ceny byly puste mimo poprawnych wartosci w pliku.
+- Naprawa: odczyt `office:value` / `office:string-value`.
 
-Co robi:
+Stan danych po ostatniej naprawie
+- Import wykonano bezposrednio na `dev1` (zdalnie) z `--replace-all`.
+- Biezacy wynik na dev2:
+  - `legacy_product_catalog_items`: `2832`
+  - zakres kodow: `10003 ... DOPISAÆ`
+  - testowe rekordy (17056/17057/20001/20002/20007) maja poprawne ceny.
 
-SSH na dev1
-git fetch + checkout branch + git pull
-docker compose up -d --build
-docker compose ps
-Lokalny smoke test publicznego URL
-Smoke test
-Skrypt:
+Wazne operacyjnie
+- Sam deploy NIE uruchamia importu ODS.
+- Po zmianach importera lub nowej paczce danych trzeba recznie uruchomic import na serwerze.
+- Zdarzyl sie problem `no space left on device` na dev1 podczas deploy; pomoglo czyszczenie Docker cache.
 
-studio_suite/scripts/smoke-test.ps1
-Uruchomienie:
-.\scripts\smoke-test.ps1
+Komendy referencyjne (dev1)
+- Deploy:
+  - `powershell -ExecutionPolicy Bypass -File scripts\\deploy-dev2.ps1`
+- Czyszczenie miejsca (gdy brak miejsca):
+  - `ssh dev1 "docker builder prune -af && docker image prune -af"`
+- Import ODS (na serwerze):
+  - `ssh dev1 --% "cd ~/projects/projekt2_repo/studio_suite && docker cp LUTYbaza20260224.ods studio_suite-backend-1:/tmp/LUTYbaza20260224.ods && docker exec studio_suite-backend-1 python scripts/import_products_ods_for_salon.py --input-file /tmp/LUTYbaza20260224.ods --salon-code 12 --salon-name Krasiñskiego --replace-all"`
+- Szybka walidacja wersji:
+  - `https://dev2.witold.ovh/health`
 
-Sprawdza:
-
-/ => 200
-/health => 200
-/api/v1/auth/login (GET) => 405
-Synchronizacja danych lokalny -> dev
-Skrypt:
-
-studio_suite/scripts/sync-to-dev.ps1
-Uruchomienie:
-.\scripts\sync-to-dev.ps1 -DevHost dev1
-
-Zakres:
-
-dump/restore PostgreSQL
-sync backend/content
-Synchronizacja danych dev -> lokalny
-Skrypt:
-
-studio_suite/scripts/sync-from-dev.ps1
-Uruchomienie:
-.\scripts\sync-from-dev.ps1 -DevHost dev1
-
-Zakres:
-
-dump/restore PostgreSQL
-sync backend/content
-SSH
-Alias w C:\Users\Wit\.ssh\config:
-
-dev1 -> 192.168.200.116
-
-Gateway routing
-- Host: gateway (192.168.200.115)
-- Nginx config dir: /home/witold/gateway-services/nginx/conf.d
-- Script: studio_suite/scripts/setup-gateway-dev2-nginx.ps1
-
-
+Zalecenie na kolejna sesje
+- Pracowac bezposrednio na `dev1` (build/import/weryfikacja), z lokalnym repo jako backup.
+- To minimalizuje rozjazdy miedzy lokalnym Docker a rzeczywistym stanem `dev2`.
