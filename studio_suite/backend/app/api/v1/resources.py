@@ -9,7 +9,6 @@ from app.database import get_db
 from app.models.salon_core import (
     LegacyProductCatalogItem,
     Salon,
-    SalonProductCatalogItem,
     StaffMember,
     StaffRole,
 )
@@ -62,28 +61,43 @@ def _stock_100_for_salon(salon: Salon, product: LegacyProductCatalogItem) -> flo
     return float(product.stock_mx04) if product.stock_mx04 is not None else None
 
 
-def _product_to_read(link: SalonProductCatalogItem, product: LegacyProductCatalogItem, salon: Salon) -> ProductRead:
+def _product_to_read(product: LegacyProductCatalogItem, salon: Salon) -> ProductRead:
     return ProductRead(
-        salon_product_id=link.id,
-        salon_id=link.salon_id,
+        salon_product_id=product.id,
+        salon_id=salon.id,
         product_id=product.id,
         product_code=product.legacy_code,
-        product_name=link.local_name or product.name,
+        product_name=product.name,
         product_name_pl=product.name_pl,
         fiscal_code=product.fiscal_code,
         brand=product.brand_1 or product.brand_2 or None,
-        package_size_g=float(link.package_size_g) if link.package_size_g is not None else None,
+        package_size_g=float(product.quantity) if product.quantity is not None else None,
+        catalog_net_price=float(product.catalog_net_price) if product.catalog_net_price is not None else None,
+        unit_count=float(product.unit_count) if product.unit_count is not None else None,
+        warehouse=product.warehouse,
+        type_code=product.type_code,
+        purchase_price=float(product.purchase_price) if product.purchase_price is not None else None,
+        family_code=product.family_code,
+        weight=float(product.weight) if product.weight is not None else None,
+        package_weight=float(product.package_weight) if product.package_weight is not None else None,
+        min_unit=float(product.min_unit) if product.min_unit is not None else None,
+        note=product.note,
+        ean=product.ean,
+        salon_sale_price=float(product.salon_sale_price) if product.salon_sale_price is not None else None,
+        purchase_price_c=float(product.purchase_price_c) if product.purchase_price_c is not None else None,
+        is_locked=bool(product.is_locked),
+        upsize_ts=product.upsize_ts,
         catalog_price=float(product.catalog_price) if product.catalog_price is not None else None,
         sale_price_gross=float(product.sale_price_gross) if product.sale_price_gross is not None else None,
         s_u=bool(product.s_u),
-        doses_short=float(link.doses_short),
-        doses_medium=float(link.doses_medium),
-        doses_long=float(link.doses_long),
+        doses_short=4.0,
+        doses_medium=2.0,
+        doses_long=1.25,
         stock_mx03=float(product.stock_mx03) if product.stock_mx03 is not None else None,
         stock_mx04=float(product.stock_mx04) if product.stock_mx04 is not None else None,
         stock_mx07=float(product.stock_mx07) if product.stock_mx07 is not None else None,
         stock_100=_stock_100_for_salon(salon, product),
-        is_active=bool(link.is_active),
+        is_active=bool(product.is_active),
     )
 
 
@@ -269,22 +283,10 @@ async def list_products(
     if not salon:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
 
-    links = (
-        db.query(SalonProductCatalogItem)
-        .filter(SalonProductCatalogItem.salon_id == salon_id)
-        .order_by(SalonProductCatalogItem.id.asc())
-        .all()
-    )
-    if not links:
-        return []
-    product_ids = [link.product_id for link in links]
-    products = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id.in_(product_ids)).all()
-    by_id = {row.id: row for row in products}
+    products = db.query(LegacyProductCatalogItem).order_by(LegacyProductCatalogItem.legacy_code.asc()).all()
     out: list[ProductRead] = []
-    for link in links:
-        product = by_id.get(link.product_id)
-        if product:
-            out.append(_product_to_read(link, product, salon))
+    for product in products:
+        out.append(_product_to_read(product, salon))
     out.sort(key=lambda item: item.product_code)
     return out
 
@@ -296,9 +298,10 @@ async def create_product(
     db: Session = Depends(get_db),
 ):
     _ensure_admin_or_manager(current_user)
-    salon = db.query(Salon).filter(Salon.id == payload.salon_id).first()
-    if not salon:
+    salons = db.query(Salon).order_by(Salon.id.asc()).all()
+    if not salons:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    salon = salons[0]
 
     code = payload.product_code.strip().upper()
     name = payload.product_name.strip()
@@ -313,6 +316,22 @@ async def create_product(
             name_pl=(payload.product_name_pl or "").strip() or None,
             fiscal_code=(payload.fiscal_code or "").strip() or None,
             brand_1=(payload.brand or "").strip() or None,
+            quantity=payload.package_size_g,
+            catalog_net_price=payload.catalog_net_price,
+            unit_count=payload.unit_count,
+            warehouse=(payload.warehouse or "").strip() or None,
+            type_code=(payload.type_code or "").strip() or None,
+            purchase_price=payload.purchase_price,
+            family_code=(payload.family_code or "").strip() or None,
+            weight=payload.weight,
+            package_weight=payload.package_weight,
+            min_unit=payload.min_unit,
+            note=(payload.note or "").strip() or None,
+            ean=(payload.ean or "").strip() or None,
+            salon_sale_price=payload.salon_sale_price,
+            purchase_price_c=payload.purchase_price_c,
+            is_locked=bool(payload.is_locked),
+            upsize_ts=(payload.upsize_ts or "").strip() or None,
             catalog_price=payload.catalog_price,
             sale_price_gross=payload.sale_price_gross,
             s_u=bool(payload.s_u),
@@ -326,58 +345,49 @@ async def create_product(
         product.fiscal_code = (payload.fiscal_code or "").strip() or None
         if payload.brand is not None:
             product.brand_1 = (payload.brand or "").strip() or None
+        product.quantity = payload.package_size_g
+        product.catalog_net_price = payload.catalog_net_price
+        product.unit_count = payload.unit_count
+        product.warehouse = (payload.warehouse or "").strip() or None
+        product.type_code = (payload.type_code or "").strip() or None
+        product.purchase_price = payload.purchase_price
+        product.family_code = (payload.family_code or "").strip() or None
+        product.weight = payload.weight
+        product.package_weight = payload.package_weight
+        product.min_unit = payload.min_unit
+        product.note = (payload.note or "").strip() or None
+        product.ean = (payload.ean or "").strip() or None
+        product.salon_sale_price = payload.salon_sale_price
+        product.purchase_price_c = payload.purchase_price_c
+        product.is_locked = bool(payload.is_locked)
+        product.upsize_ts = (payload.upsize_ts or "").strip() or None
         if payload.catalog_price is not None:
             product.catalog_price = payload.catalog_price
         if payload.sale_price_gross is not None:
             product.sale_price_gross = payload.sale_price_gross
         product.s_u = bool(payload.s_u)
-
-    link = (
-        db.query(SalonProductCatalogItem)
-        .filter(
-            SalonProductCatalogItem.salon_id == payload.salon_id,
-            SalonProductCatalogItem.product_id == product.id,
-        )
-        .first()
-    )
-    if link is None:
-        link = SalonProductCatalogItem(
-            salon_id=payload.salon_id,
-            product_id=product.id,
-        )
-        db.add(link)
-    link.local_name = name if name != product.name else None
-    link.package_size_g = payload.package_size_g
-    link.doses_short = payload.doses_short
-    link.doses_medium = payload.doses_medium
-    link.doses_long = payload.doses_long
-    link.is_active = payload.is_active
+    product.is_active = payload.is_active
 
     db.commit()
-    db.refresh(link)
     db.refresh(product)
-    return _product_to_read(link, product, salon)
+    return _product_to_read(product, salon)
 
 
-@router.patch("/products/{salon_product_id}", response_model=ProductRead)
+@router.patch("/products/{product_id}", response_model=ProductRead)
 async def update_product(
-    salon_product_id: int,
+    product_id: int,
     payload: ProductUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     _ensure_admin_or_manager(current_user)
-    link = db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.id == salon_product_id).first()
-    if not link:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
-    product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == link.product_id).first()
+    product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == product_id).first()
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
     provided = payload.model_fields_set
     if "product_name" in provided and payload.product_name is not None:
         clean = payload.product_name.strip()
-        link.local_name = clean or None
         if clean:
             product.name = clean
     if "product_name_pl" in provided:
@@ -387,41 +397,64 @@ async def update_product(
     if "brand" in provided:
         product.brand_1 = (payload.brand or "").strip() or None
     if "package_size_g" in provided:
-        link.package_size_g = payload.package_size_g
+        product.quantity = payload.package_size_g
+    if "catalog_net_price" in provided:
+        product.catalog_net_price = payload.catalog_net_price
+    if "unit_count" in provided:
+        product.unit_count = payload.unit_count
+    if "warehouse" in provided:
+        product.warehouse = (payload.warehouse or "").strip() or None
+    if "type_code" in provided:
+        product.type_code = (payload.type_code or "").strip() or None
+    if "purchase_price" in provided:
+        product.purchase_price = payload.purchase_price
+    if "family_code" in provided:
+        product.family_code = (payload.family_code or "").strip() or None
+    if "weight" in provided:
+        product.weight = payload.weight
+    if "package_weight" in provided:
+        product.package_weight = payload.package_weight
+    if "min_unit" in provided:
+        product.min_unit = payload.min_unit
+    if "note" in provided:
+        product.note = (payload.note or "").strip() or None
+    if "ean" in provided:
+        product.ean = (payload.ean or "").strip() or None
+    if "salon_sale_price" in provided:
+        product.salon_sale_price = payload.salon_sale_price
+    if "purchase_price_c" in provided:
+        product.purchase_price_c = payload.purchase_price_c
+    if "is_locked" in provided and payload.is_locked is not None:
+        product.is_locked = payload.is_locked
+    if "upsize_ts" in provided:
+        product.upsize_ts = (payload.upsize_ts or "").strip() or None
     if "catalog_price" in provided:
         product.catalog_price = payload.catalog_price
     if "sale_price_gross" in provided:
         product.sale_price_gross = payload.sale_price_gross
     if "s_u" in provided and payload.s_u is not None:
         product.s_u = payload.s_u
-    if "doses_short" in provided and payload.doses_short is not None:
-        link.doses_short = payload.doses_short
-    if "doses_medium" in provided and payload.doses_medium is not None:
-        link.doses_medium = payload.doses_medium
-    if "doses_long" in provided and payload.doses_long is not None:
-        link.doses_long = payload.doses_long
     if "is_active" in provided and payload.is_active is not None:
-        link.is_active = payload.is_active
+        product.is_active = payload.is_active
 
     db.commit()
-    db.refresh(link)
     db.refresh(product)
-    salon = db.query(Salon).filter(Salon.id == link.salon_id).first()
+    salon = db.query(Salon).order_by(Salon.id.asc()).first()
     if not salon:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
-    return _product_to_read(link, product, salon)
+    return _product_to_read(product, salon)
 
 
-@router.delete("/products/{salon_product_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/products/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_product(
-    salon_product_id: int,
+    product_id: int,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     _ensure_admin_or_manager(current_user)
-    link = db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.id == salon_product_id).first()
-    if not link:
+    product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == product_id).first()
+    if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
-    link.is_active = False
+    product.is_active = False
     db.commit()
     return None

@@ -106,6 +106,20 @@ def startup() -> None:
                     "ADD COLUMN IF NOT EXISTS s_u BOOLEAN NOT NULL DEFAULT FALSE"
                 )
             )
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS quantity NUMERIC(12,2)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS catalog_net_price NUMERIC(10,2)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS unit_count NUMERIC(12,2)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS warehouse VARCHAR(64)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS purchase_price NUMERIC(10,2)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS weight NUMERIC(12,4)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS package_weight NUMERIC(12,4)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS min_unit NUMERIC(12,4)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS note VARCHAR(255)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS ean VARCHAR(64)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS salon_sale_price NUMERIC(10,2)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS purchase_price_c NUMERIC(10,2)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS is_locked BOOLEAN NOT NULL DEFAULT FALSE"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS upsize_ts VARCHAR(64)"))
             conn.execute(
                 text(
                     "ALTER TABLE legacy_product_catalog_items "

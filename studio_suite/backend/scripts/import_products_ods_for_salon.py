@@ -64,6 +64,19 @@ def parse_package_size_g(token: str) -> float | None:
     return round(value, 2)
 
 
+def parse_numeric_value(token: str) -> float | None:
+    raw = (token or "").strip().replace(",", ".")
+    if not raw:
+        return None
+    m = re.search(r"-?\d+(?:\.\d+)?", raw)
+    if not m:
+        return None
+    try:
+        return round(float(m.group(0)), 4)
+    except ValueError:
+        return None
+
+
 def parse_price_value(token: str) -> float | None:
     raw = (token or "").strip().replace(",", ".")
     if not raw:
@@ -137,7 +150,7 @@ def main() -> None:
         if col and col not in idx:
             idx[col] = i
 
-    required = ["ID_P", "NAZWAPL", "NAZWA1", "FISK", "POJ", "CENASPBRT"]
+    required = ["ID_P", "NAZWAPL", "NAZWA1"]
     missing = [name for name in required if name not in idx]
     if missing:
         raise SystemExit(f"Missing required columns: {', '.join(missing)}")
@@ -177,24 +190,37 @@ def main() -> None:
         }
 
         for row in rows[1:]:
-            code_raw = col(row, "ID_P")
-            code = code_raw.zfill(4) if code_raw.isdigit() else code_raw
+            code = col(row, "ID_P")
             name = col(row, "NAZWA1")
             name_pl = col(row, "NAZWAPL")
             if not code or not name:
                 continue
             processed_codes.add(code)
 
-            package_size_g = parse_package_size_g(col(row, "POJ"))
+            package_size_g = parse_numeric_value(col(row, "POJ"))
             fiscal_code = trunc(col(row, "FISK"), 32)
             catalog_price = parse_price_value(col(row, "cena_sp_f") or col(row, "F"))
+            catalog_net_price = parse_price_value(col(row, "CENAKATNET"))
             sale_price_gross = parse_price_value(col(row, "CENASPBRT"))
+            unit_count = parse_numeric_value(col(row, "IL_JEDN"))
+            purchase_price = parse_price_value(col(row, "CENA_ZAK"))
+            weight = parse_numeric_value(col(row, "WAGA"))
+            package_weight = parse_numeric_value(col(row, "WAGA_OP"))
+            min_unit = parse_numeric_value(col(row, "MIN_JEDN"))
+            salon_sale_price = parse_price_value(col(row, "cena_sp_salon"))
+            purchase_price_c = parse_price_value(col(row, "cena_zak_c"))
             stock_mx03 = parse_stock_value(col(row, "MX03"))
             stock_mx04 = parse_stock_value(col(row, "MX04"))
             stock_mx07 = parse_stock_value(col(row, "MX07"))
             brand = trunc(col(row, "GRUPA"), 128)
             type_code = trunc(col(row, "CECHA_RODZINA"), 16)
             family_code = trunc(col(row, "rodzina2"), 16)
+            warehouse = trunc(col(row, "MAGAZYN"), 64)
+            note = trunc(col(row, "REM"), 255)
+            ean = trunc(col(row, "EAN"), 64)
+            upsize_ts = trunc(col(row, "upsize_ts"), 64)
+            is_locked_token = (col(row, "ISlocked") or "").strip()
+            is_locked = is_locked_token in {"1", "true", "TRUE", "t", "T", "yes", "YES"}
             s_u_token = (col(row, "S_U") or "").strip()
             s_u = s_u_token in {"1", "true", "TRUE", "t", "T", "yes", "YES"}
 
@@ -205,10 +231,24 @@ def main() -> None:
                     name=name,
                     name_pl=name_pl or None,
                     fiscal_code=fiscal_code,
+                    quantity=package_size_g,
+                    catalog_net_price=catalog_net_price,
+                    unit_count=unit_count,
+                    warehouse=warehouse,
                     type_code=type_code,
+                    purchase_price=purchase_price,
                     family_code=family_code,
                     brand_1=brand,
                     brand_2=None,
+                    weight=weight,
+                    package_weight=package_weight,
+                    min_unit=min_unit,
+                    note=note,
+                    ean=ean,
+                    salon_sale_price=salon_sale_price,
+                    purchase_price_c=purchase_price_c,
+                    is_locked=is_locked,
+                    upsize_ts=upsize_ts,
                     catalog_price=catalog_price,
                     sale_price_gross=sale_price_gross,
                     s_u=s_u,
@@ -224,9 +264,23 @@ def main() -> None:
                 product.name = name
                 product.name_pl = name_pl or None
                 product.fiscal_code = fiscal_code
+                product.quantity = package_size_g
+                product.catalog_net_price = catalog_net_price
+                product.unit_count = unit_count
+                product.warehouse = warehouse
                 product.type_code = type_code
+                product.purchase_price = purchase_price
                 product.family_code = family_code
                 product.brand_1 = brand
+                product.weight = weight
+                product.package_weight = package_weight
+                product.min_unit = min_unit
+                product.note = note
+                product.ean = ean
+                product.salon_sale_price = salon_sale_price
+                product.purchase_price_c = purchase_price_c
+                product.is_locked = is_locked
+                product.upsize_ts = upsize_ts
                 product.catalog_price = catalog_price
                 product.sale_price_gross = sale_price_gross
                 product.s_u = s_u
