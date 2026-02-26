@@ -28,6 +28,7 @@ from app.models.salon_core import (
 NS = {
     "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
     "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
+    "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
 }
 
 
@@ -45,6 +46,12 @@ def parse_ods_rows(path: Path) -> List[List[str]]:
                 cell.attrib.get("{urn:oasis:names:tc:opendocument:xmlns:table:1.0}number-columns-repeated", "1")
             )
             text = "".join((p.text or "") for p in cell.findall(".//text:p", NS)).strip()
+            if not text:
+                text = (
+                    cell.attrib.get("{urn:oasis:names:tc:opendocument:xmlns:office:1.0}string-value")
+                    or cell.attrib.get("{urn:oasis:names:tc:opendocument:xmlns:office:1.0}value")
+                    or ""
+                ).strip()
             values.extend([text] * repeated)
         if any(values):
             rows.append(values)
