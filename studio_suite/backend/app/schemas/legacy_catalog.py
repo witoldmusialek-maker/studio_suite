@@ -85,10 +85,16 @@ class UpdateServiceRequest(BaseModel):
 
 
 class LegacyProductCatalogRow(BaseModel):
+    salon_product_id: int
     product_id: int
     product_code: str
     product_name: str
     brand: str | None = None
+    package_size_g: float | None = None
+    doses_short: float
+    doses_medium: float
+    doses_long: float
+    is_active: bool
 
 
 class UpdateServiceFormulaRequest(BaseModel):

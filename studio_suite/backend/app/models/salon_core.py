@@ -143,6 +143,24 @@ class SalonServiceFormulaItem(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class SalonProductCatalogItem(Base):
+    __tablename__ = "salon_product_catalog_items"
+    __table_args__ = (
+        UniqueConstraint("salon_id", "product_id", name="uq_salon_product_catalog_items_salon_product"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    local_name = Column(String(255), nullable=True)
+    package_size_g = Column(Numeric(10, 2), nullable=True, default=100)
+    doses_short = Column(Numeric(10, 2), nullable=False, default=4)
+    doses_medium = Column(Numeric(10, 2), nullable=False, default=2)
+    doses_long = Column(Numeric(10, 2), nullable=False, default=1.25)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class ServicePriceHistory(Base):
     __tablename__ = "service_price_history"
     __table_args__ = (

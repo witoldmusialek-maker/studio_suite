@@ -1,14 +1,23 @@
 """
-CRUD endpoints for salons and staff resources.
+CRUD endpoints for salons, staff and salon product catalog.
 """
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
 from app.database import get_db
-from app.models.salon_core import Salon, StaffMember, StaffRole
+from app.models.salon_core import (
+    LegacyProductCatalogItem,
+    Salon,
+    SalonProductCatalogItem,
+    StaffMember,
+    StaffRole,
+)
 from app.models.user import User
 from app.schemas.resources import (
+    ProductCreate,
+    ProductRead,
+    ProductUpdate,
     SalonCreate,
     SalonRead,
     SalonUpdate,
@@ -38,6 +47,22 @@ def _staff_to_read(staff: StaffMember, salons_by_id: dict[int, Salon], roles_by_
         role_name=role.name if role else None,
         is_active=bool(staff.is_active),
         legacy_code=staff.legacy_code,
+    )
+
+
+def _product_to_read(link: SalonProductCatalogItem, product: LegacyProductCatalogItem) -> ProductRead:
+    return ProductRead(
+        salon_product_id=link.id,
+        salon_id=link.salon_id,
+        product_id=product.id,
+        product_code=product.legacy_code,
+        product_name=link.local_name or product.name,
+        brand=product.brand_1 or product.brand_2 or None,
+        package_size_g=float(link.package_size_g) if link.package_size_g is not None else None,
+        doses_short=float(link.doses_short),
+        doses_medium=float(link.doses_medium),
+        doses_long=float(link.doses_long),
+        is_active=bool(link.is_active),
     )
 
 
@@ -208,5 +233,146 @@ async def delete_staff(
     if not row:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Staff not found")
     db.delete(row)
+    db.commit()
+    return None
+
+
+@router.get("/products", response_model=list[ProductRead])
+async def list_products(
+    salon_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    salon = db.query(Salon).filter(Salon.id == salon_id).first()
+    if not salon:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+
+    links = (
+        db.query(SalonProductCatalogItem)
+        .filter(SalonProductCatalogItem.salon_id == salon_id)
+        .order_by(SalonProductCatalogItem.id.asc())
+        .all()
+    )
+    if not links:
+        return []
+    product_ids = [link.product_id for link in links]
+    products = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id.in_(product_ids)).all()
+    by_id = {row.id: row for row in products}
+    out: list[ProductRead] = []
+    for link in links:
+        product = by_id.get(link.product_id)
+        if product:
+            out.append(_product_to_read(link, product))
+    out.sort(key=lambda item: item.product_code)
+    return out
+
+
+@router.post("/products", response_model=ProductRead, status_code=status.HTTP_201_CREATED)
+async def create_product(
+    payload: ProductCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _ensure_admin_or_manager(current_user)
+    salon = db.query(Salon).filter(Salon.id == payload.salon_id).first()
+    if not salon:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+
+    code = payload.product_code.strip().upper()
+    name = payload.product_name.strip()
+    if not code or not name:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload")
+
+    product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.legacy_code == code).first()
+    if product is None:
+        product = LegacyProductCatalogItem(
+            legacy_code=code,
+            name=name,
+            brand_1=(payload.brand or "").strip() or None,
+            is_active=True,
+        )
+        db.add(product)
+        db.flush()
+    else:
+        if payload.brand is not None:
+            product.brand_1 = (payload.brand or "").strip() or None
+
+    link = (
+        db.query(SalonProductCatalogItem)
+        .filter(
+            SalonProductCatalogItem.salon_id == payload.salon_id,
+            SalonProductCatalogItem.product_id == product.id,
+        )
+        .first()
+    )
+    if link is None:
+        link = SalonProductCatalogItem(
+            salon_id=payload.salon_id,
+            product_id=product.id,
+        )
+        db.add(link)
+    link.local_name = name if name != product.name else None
+    link.package_size_g = payload.package_size_g
+    link.doses_short = payload.doses_short
+    link.doses_medium = payload.doses_medium
+    link.doses_long = payload.doses_long
+    link.is_active = payload.is_active
+
+    db.commit()
+    db.refresh(link)
+    db.refresh(product)
+    return _product_to_read(link, product)
+
+
+@router.patch("/products/{salon_product_id}", response_model=ProductRead)
+async def update_product(
+    salon_product_id: int,
+    payload: ProductUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _ensure_admin_or_manager(current_user)
+    link = db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.id == salon_product_id).first()
+    if not link:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+    product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == link.product_id).first()
+    if not product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+
+    provided = payload.model_fields_set
+    if "product_name" in provided and payload.product_name is not None:
+        clean = payload.product_name.strip()
+        link.local_name = clean or None
+    if "brand" in provided:
+        product.brand_1 = (payload.brand or "").strip() or None
+    if "package_size_g" in provided:
+        link.package_size_g = payload.package_size_g
+    if "doses_short" in provided and payload.doses_short is not None:
+        link.doses_short = payload.doses_short
+    if "doses_medium" in provided and payload.doses_medium is not None:
+        link.doses_medium = payload.doses_medium
+    if "doses_long" in provided and payload.doses_long is not None:
+        link.doses_long = payload.doses_long
+    if "is_active" in provided and payload.is_active is not None:
+        link.is_active = payload.is_active
+
+    db.commit()
+    db.refresh(link)
+    db.refresh(product)
+    return _product_to_read(link, product)
+
+
+@router.delete("/products/{salon_product_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_product(
+    salon_product_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _ensure_admin_or_manager(current_user)
+    link = db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.id == salon_product_id).first()
+    if not link:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+    link.is_active = False
     db.commit()
     return None

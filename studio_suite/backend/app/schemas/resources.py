@@ -62,3 +62,38 @@ class StaffRead(BaseModel):
     is_active: bool
     legacy_code: str | None
 
+
+class ProductCreate(BaseModel):
+    salon_id: int
+    product_code: str = Field(min_length=1, max_length=16)
+    product_name: str = Field(min_length=1, max_length=255)
+    brand: str | None = Field(default=None, max_length=128)
+    package_size_g: float | None = Field(default=100, ge=0)
+    doses_short: float = Field(default=4, gt=0)
+    doses_medium: float = Field(default=2, gt=0)
+    doses_long: float = Field(default=1.25, gt=0)
+    is_active: bool = True
+
+
+class ProductUpdate(BaseModel):
+    product_name: str | None = Field(default=None, min_length=1, max_length=255)
+    brand: str | None = Field(default=None, max_length=128)
+    package_size_g: float | None = Field(default=None, ge=0)
+    doses_short: float | None = Field(default=None, gt=0)
+    doses_medium: float | None = Field(default=None, gt=0)
+    doses_long: float | None = Field(default=None, gt=0)
+    is_active: bool | None = None
+
+
+class ProductRead(BaseModel):
+    salon_product_id: int
+    salon_id: int
+    product_id: int
+    product_code: str
+    product_name: str
+    brand: str | None
+    package_size_g: float | None
+    doses_short: float
+    doses_medium: float
+    doses_long: float
+    is_active: bool

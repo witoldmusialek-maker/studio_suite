@@ -21,6 +21,7 @@ from app.models.salon_core import (
     BundleCatalogItem,
     LegacyDictionaryEntry,
     LegacyProductCatalogItem,
+    SalonProductCatalogItem,
     LegacyEdServiceRow,
     LegacyEdition1Daily,
     LegacyFicheLine,
@@ -299,6 +300,7 @@ def clear_import_scope(db) -> None:
         BundleCatalogItem,
         BundleCatalog,
         SalonServiceFormulaItem,
+        SalonProductCatalogItem,
         ServicePriceHistory,
         LegacyProductCatalogItem,
         ServiceCatalogItem,
@@ -382,6 +384,34 @@ def main() -> None:
                     family_code=meta["family_code"] or None,
                     brand_1=meta["brand_1"] or None,
                     brand_2=meta["brand_2"] or None,
+                    is_active=True,
+                )
+            )
+
+        db.flush()
+        for code in sorted(products_meta_by_code.keys()):
+            product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.legacy_code == code).first()
+            if not product:
+                continue
+            link = (
+                db.query(SalonProductCatalogItem)
+                .filter(
+                    SalonProductCatalogItem.salon_id == salon.id,
+                    SalonProductCatalogItem.product_id == product.id,
+                )
+                .first()
+            )
+            if link:
+                link.is_active = True
+                continue
+            db.add(
+                SalonProductCatalogItem(
+                    salon_id=salon.id,
+                    product_id=product.id,
+                    package_size_g=100,
+                    doses_short=4,
+                    doses_medium=2,
+                    doses_long=1.25,
                     is_active=True,
                 )
             )

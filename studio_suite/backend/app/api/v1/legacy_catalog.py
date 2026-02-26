@@ -50,11 +50,12 @@ async def get_catalog(
 
 @router.get("/products", response_model=list[LegacyProductCatalogRow])
 async def get_products(
+    salon_id: int = 1,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     del current_user
-    return get_legacy_products(db)
+    return get_legacy_products(db, salon_id=salon_id)
 
 
 @router.post("/services", status_code=status.HTTP_201_CREATED)
@@ -137,6 +138,8 @@ async def patch_service_formula(
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
         if str(err) == "product_not_found":
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+        if str(err) == "product_not_available_in_salon":
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Product not available in salon")
         raise
 
 

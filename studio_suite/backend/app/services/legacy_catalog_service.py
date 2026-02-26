@@ -12,6 +12,7 @@ from app.models.salon_core import (
     LegacyDictionaryEntry,
     LegacyProductCatalogItem,
     Salon,
+    SalonProductCatalogItem,
     SalonServiceCatalogItem,
     SalonServiceFormulaItem,
     ServiceCatalogItem,
@@ -120,6 +121,31 @@ def _recalculate_bundle_price(db: Session, bundle_id: int, salon_id: int = 1) ->
     return _round_price(bundle.price)
 
 
+def _seed_missing_product_links_for_salon(db: Session, salon_id: int) -> None:
+    existing_count = (
+        db.query(func.count(SalonProductCatalogItem.id))
+        .filter(SalonProductCatalogItem.salon_id == salon_id)
+        .scalar()
+        or 0
+    )
+    if existing_count > 0:
+        return
+    product_ids = [row[0] for row in db.query(LegacyProductCatalogItem.id).all()]
+    for product_id in product_ids:
+        db.add(
+            SalonProductCatalogItem(
+                salon_id=salon_id,
+                product_id=product_id,
+                package_size_g=100,
+                doses_short=4,
+                doses_medium=2,
+                doses_long=1.25,
+                is_active=True,
+            )
+        )
+    db.flush()
+
+
 def _formula_products_by_service_id(db: Session, salon_id: int, service_ids: list[int]) -> dict[int, list[dict]]:
     if not service_ids:
         return {}
@@ -135,12 +161,14 @@ def _formula_products_by_service_id(db: Session, salon_id: int, service_ids: lis
     if not formula_rows:
         return {}
     product_ids = sorted({row.product_id for row in formula_rows})
-    products = (
-        db.query(LegacyProductCatalogItem)
-        .filter(LegacyProductCatalogItem.id.in_(product_ids))
+    products = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id.in_(product_ids)).all()
+    product_links = (
+        db.query(SalonProductCatalogItem)
+        .filter(SalonProductCatalogItem.salon_id == salon_id, SalonProductCatalogItem.product_id.in_(product_ids))
         .all()
     )
     products_by_id = {row.id: row for row in products}
+    links_by_product_id = {row.product_id: row for row in product_links}
     out: dict[int, list[dict]] = {}
     for row in formula_rows:
         product = products_by_id.get(row.product_id)
@@ -150,26 +178,48 @@ def _formula_products_by_service_id(db: Session, salon_id: int, service_ids: lis
             {
                 "product_id": product.id,
                 "product_code": product.legacy_code,
-                "product_name": product.name,
+                "product_name": (links_by_product_id.get(product.id).local_name if links_by_product_id.get(product.id) and links_by_product_id.get(product.id).local_name else product.name),
                 "brand": product.brand_1 or product.brand_2 or None,
             }
         )
     return out
 
 
-def get_legacy_products(db: Session) -> list[dict]:
-    rows = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.is_active == True).order_by(  # noqa: E712
-        LegacyProductCatalogItem.legacy_code.asc()
-    ).all()
-    return [
-        {
-            "product_id": row.id,
-            "product_code": row.legacy_code,
-            "product_name": row.name,
-            "brand": row.brand_1 or row.brand_2 or None,
-        }
-        for row in rows
-    ]
+def get_legacy_products(db: Session, salon_id: int) -> list[dict]:
+    _ensure_salon(db, salon_id)
+    _seed_missing_product_links_for_salon(db, salon_id)
+    links = (
+        db.query(SalonProductCatalogItem)
+        .filter(SalonProductCatalogItem.salon_id == salon_id, SalonProductCatalogItem.is_active == True)  # noqa: E712
+        .order_by(SalonProductCatalogItem.id.asc())
+        .all()
+    )
+    if not links:
+        return []
+    product_ids = [row.product_id for row in links]
+    products = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id.in_(product_ids)).all()
+    by_id = {row.id: row for row in products}
+    out: list[dict] = []
+    for link in links:
+        product = by_id.get(link.product_id)
+        if not product:
+            continue
+        out.append(
+            {
+                "product_id": product.id,
+                "product_code": product.legacy_code,
+                "product_name": link.local_name or product.name,
+                "brand": product.brand_1 or product.brand_2 or None,
+                "package_size_g": float(link.package_size_g) if link.package_size_g is not None else None,
+                "doses_short": float(link.doses_short),
+                "doses_medium": float(link.doses_medium),
+                "doses_long": float(link.doses_long),
+                "is_active": bool(link.is_active),
+                "salon_product_id": link.id,
+            }
+        )
+    out.sort(key=lambda row: row["product_code"])
+    return out
 
 
 def get_legacy_catalog(db: Session, salon_id: int = 1) -> dict:
@@ -592,6 +642,7 @@ def delete_service(db: Session, service_id: int, salon_id: int) -> None:
 
 def update_service_formula(db: Session, service_id: int, salon_id: int, is_formula: bool, product_ids: list[int]) -> dict:
     _ensure_salon(db, salon_id)
+    _seed_missing_product_links_for_salon(db, salon_id)
     service = db.query(ServiceCatalogItem).filter(ServiceCatalogItem.id == service_id).first()
     if not service:
         raise ValueError("service_not_found")
@@ -618,10 +669,22 @@ def update_service_formula(db: Session, service_id: int, salon_id: int, is_formu
                 .all()
             )
             products_by_id = {row.id: row for row in product_rows}
+            active_link_ids = {
+                row.product_id
+                for row in db.query(SalonProductCatalogItem)
+                .filter(
+                    SalonProductCatalogItem.salon_id == salon_id,
+                    SalonProductCatalogItem.product_id.in_(unique_ids),
+                    SalonProductCatalogItem.is_active == True,  # noqa: E712
+                )
+                .all()
+            }
             for idx, product_id in enumerate(unique_ids, start=1):
                 product = products_by_id.get(product_id)
                 if not product:
                     raise ValueError("product_not_found")
+                if product_id not in active_link_ids:
+                    raise ValueError("product_not_available_in_salon")
                 db.add(
                     SalonServiceFormulaItem(
                         salon_id=salon_id,

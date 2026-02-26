@@ -24,6 +24,7 @@ from app.models.salon_core import (
     BundleCatalogItem,
     LegacyProductCatalogItem,
     Salon,
+    SalonProductCatalogItem,
     SalonServiceCatalogItem,
     ServiceCatalogItem,
     ServicePriceHistory,
@@ -145,6 +146,7 @@ def main() -> None:
 
         created_products = 0
         updated_products = 0
+        linked_products = 0
         existing_products = {
             row.legacy_code: row for row in db.query(LegacyProductCatalogItem).all()
         }
@@ -170,6 +172,30 @@ def main() -> None:
                 row.brand_2 = product_meta["brand_2"] or None
                 row.is_active = True
                 updated_products += 1
+
+            db.flush()
+            link = (
+                db.query(SalonProductCatalogItem)
+                .filter(
+                    SalonProductCatalogItem.salon_id == salon.id,
+                    SalonProductCatalogItem.product_id == row.id,
+                )
+                .first()
+            )
+            if link is None:
+                link = SalonProductCatalogItem(
+                    salon_id=salon.id,
+                    product_id=row.id,
+                    package_size_g=100,
+                    doses_short=4,
+                    doses_medium=2,
+                    doses_long=1.25,
+                    is_active=True,
+                )
+                db.add(link)
+            link.local_name = product_meta["name"] if product_meta["name"] != row.name else None
+            link.is_active = True
+            linked_products += 1
 
         existing_services = db.query(ServiceCatalogItem).all()
         service_by_code = {row.legacy_code: row for row in existing_services}
@@ -292,11 +318,18 @@ def main() -> None:
                 link.is_active = False
                 link.local_name = None
 
+        imported_product_codes = set(products_meta_by_code.keys())
+        for link in db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.salon_id == salon.id).all():
+            product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == link.product_id).first()
+            if product and product.legacy_code not in imported_product_codes:
+                link.is_active = False
+                link.local_name = None
+
         db.commit()
         print(
             f"salon={salon.code} created_services={created_services} linked_services={linked_services} "
             f"bundles={created_bundles} bundle_items={created_bundle_items} "
-            f"products_created={created_products} products_updated={updated_products}"
+            f"products_created={created_products} products_updated={updated_products} linked_products={linked_products}"
         )
     finally:
         db.close()

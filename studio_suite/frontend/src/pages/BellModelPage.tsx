@@ -56,10 +56,16 @@ type CatalogResponse = {
 }
 
 type ProductCatalogRow = {
+  salon_product_id: number
   product_id: number
   product_code: string
   product_name: string
   brand?: string | null
+  package_size_g?: number | null
+  doses_short: number
+  doses_medium: number
+  doses_long: number
+  is_active: boolean
 }
 
 type SalonRow = { id: number; code: string; name: string; is_active: boolean }
@@ -113,8 +119,9 @@ const ServicesPage = () => {
   }
 
   const loadProducts = async () => {
+    if (selectedSalonId === '') return
     try {
-      const res = await api.get<ProductCatalogRow[]>('/legacy/catalog/products')
+      const res = await api.get<ProductCatalogRow[]>('/legacy/catalog/products', { params: { salon_id: selectedSalonId } })
       setProducts(res.data || [])
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Nie udalo sie pobrac bazy produktow.')
@@ -144,13 +151,13 @@ const ServicesPage = () => {
   useEffect(() => {
     ;(async () => {
       await loadSalons()
-      await loadProducts()
     })()
   }, [])
 
   useEffect(() => {
     if (selectedSalonId === '') return
     loadCatalog(selectedSalonId)
+    loadProducts()
   }, [selectedSalonId])
 
   const filtered = useMemo(() => {
@@ -570,10 +577,10 @@ const ServicesPage = () => {
                         }
                       >
                         <Checkbox edge='start' checked={checked} tabIndex={-1} disableRipple />
-                        <ListItemText
-                          primary={`${product.product_code} - ${product.product_name}`}
-                          secondary={product.brand || undefined}
-                        />
+                          <ListItemText
+                            primary={`${product.product_code} - ${product.product_name}`}
+                            secondary={`${product.brand || ''}${product.brand ? ' | ' : ''}opak.: ${product.package_size_g ?? '-'}g | dawki S:${product.doses_short} M:${product.doses_medium} L:${product.doses_long}`}
+                          />
                       </ListItemButton>
                     </ListItem>
                   )
