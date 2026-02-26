@@ -133,9 +133,14 @@ def main() -> None:
             salon.is_active = True
 
         processed_codes: set[str] = set()
+        processed_links: set[tuple[int, int]] = set()
         created_products = 0
         updated_products = 0
         linked_products = 0
+        link_by_product_id = {
+            row.product_id: row
+            for row in db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.salon_id == salon.id).all()
+        }
 
         for row in rows[1:]:
             code_raw = col(row, "ID_P")
@@ -172,14 +177,7 @@ def main() -> None:
                 product.is_active = True
                 updated_products += 1
 
-            link = (
-                db.query(SalonProductCatalogItem)
-                .filter(
-                    SalonProductCatalogItem.salon_id == salon.id,
-                    SalonProductCatalogItem.product_id == product.id,
-                )
-                .first()
-            )
+            link = link_by_product_id.get(product.id)
             doses_short, doses_medium, doses_long = normalize_default_doses(package_size_g)
             if link is None:
                 link = SalonProductCatalogItem(
@@ -193,6 +191,8 @@ def main() -> None:
                     is_active=True,
                 )
                 db.add(link)
+                db.flush()
+                link_by_product_id[product.id] = link
             else:
                 link.local_name = name if name != product.name else None
                 if package_size_g is not None:
@@ -204,7 +204,10 @@ def main() -> None:
                 if float(link.doses_long) <= 0:
                     link.doses_long = doses_long
                 link.is_active = True
-            linked_products += 1
+            key = (salon.id, product.id)
+            if key not in processed_links:
+                processed_links.add(key)
+                linked_products += 1
 
         if args.deactivate_missing:
             links = db.query(SalonProductCatalogItem).filter(SalonProductCatalogItem.salon_id == salon.id).all()
