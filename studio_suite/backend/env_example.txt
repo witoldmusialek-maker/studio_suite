@@ -1,0 +1,43 @@
+# Skopiuj ten plik jako .env i uzupeĹ‚nij wartoĹ›ci
+
+# Database
+DATABASE_URL=postgresql://ds_user:StrongPass123@db:5432/studio_suite
+
+# Redis
+REDIS_URL=redis://redis:6379/0
+
+# Security
+SECRET_KEY=replace-with-random-64-hex-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=15
+
+# Application
+DEBUG=False
+API_V1_PREFIX=/api/v1
+APP_TIMEZONE=Europe/Warsaw
+CORS_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000"]
+
+# Content Storage
+CONTENT_DIR=./content
+CONTENT_ORIGINAL_DIR=./content/original
+CONTENT_PROCESSED_DIR=./content/processed
+CONTENT_THUMBNAILS_DIR=./content/thumbnails
+
+# Celery
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+# Google Drive (opcjonalnie)
+GOOGLE_DRIVE_CLIENT_ID=
+GOOGLE_DRIVE_CLIENT_SECRET=
+GOOGLE_DRIVE_REDIRECT_URI=
+
+# Bells runtime mode
+# Serwer T620 / radiowezel: ustaw True + komenda odtwarzacza
+BELL_SERVER_PLAYBACK_ENABLED=False
+BELL_CLIENT_PLAYBACK_ENABLED=True
+# Przyklad Linux: BELL_SERVER_PLAYER_CMD=ffplay -nodisp -autoexit "{file_path}"
+# Przyklad Windows: BELL_SERVER_PLAYER_CMD=powershell -c "(New-Object Media.SoundPlayer '{file_path}').PlaySync()"
+BELL_SERVER_PLAYER_CMD=
+BELL_SERVER_PLAYER_TIMEOUT_SEC=20
+
