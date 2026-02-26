@@ -43,6 +43,8 @@ type BundleRow = {
   items: BundleItemRow[]
 }
 
+type SalonRow = { id: number; code: string; name: string; is_active: boolean }
+
 const formatPrice = (value: number) => `${value.toFixed(2)} PLN`
 
 const SoundsPage = () => {
@@ -54,12 +56,14 @@ const SoundsPage = () => {
   const [newCode, setNewCode] = useState('')
   const [newName, setNewName] = useState('')
   const [addServiceIdByBundle, setAddServiceIdByBundle] = useState<Record<number, number>>({})
+  const [salons, setSalons] = useState<SalonRow[]>([])
+  const [selectedSalonId, setSelectedSalonId] = useState<number | ''>('')
 
-  const load = async () => {
+  const load = async (salonId: number) => {
     setLoading(true)
     setError('')
     try {
-      const response = await api.get('/legacy/catalog')
+      const response = await api.get('/legacy/catalog', { params: { salon_id: salonId } })
       setBundles((response.data.bundles || []) as BundleRow[])
       setServiceRows((response.data.service_prices || []) as ServicePriceRow[])
     } catch (err) {
@@ -71,8 +75,25 @@ const SoundsPage = () => {
   }
 
   useEffect(() => {
-    load()
+    ;(async () => {
+      try {
+        const salonsRes = await api.get<SalonRow[]>('/resources/salons')
+        const rows = salonsRes.data || []
+        setSalons(rows)
+        if (rows.length) {
+          setSelectedSalonId(rows[0].id)
+        }
+      } catch (err) {
+        console.error(err)
+        setError('Nie udalo sie pobrac listy salonow.')
+      }
+    })()
   }, [])
+
+  useEffect(() => {
+    if (selectedSalonId === '') return
+    load(selectedSalonId)
+  }, [selectedSalonId])
 
   const servicePriceById = useMemo(() => new Map(serviceRows.map((row) => [row.service_id, row.price])), [serviceRows])
 
@@ -83,10 +104,11 @@ const SoundsPage = () => {
   }, [bundles, query])
 
   const updateBundleItemOverride = async (bundle: BundleRow, item: BundleItemRow, rawValue: string) => {
+    if (selectedSalonId === '') return
     try {
       const normalizedValue = rawValue.trim() === '' ? null : Math.round((Number(rawValue) || 0) * 100) / 100
       await api.patch(`/legacy/catalog/bundles/${bundle.bundle_id}/items/${item.position}`, { override_price: normalizedValue })
-      await load()
+      await load(selectedSalonId)
     } catch (err) {
       console.error(err)
       setError('Nie udalo sie zapisac ceny pozycji forfaitu.')
@@ -94,12 +116,16 @@ const SoundsPage = () => {
   }
 
   const createBundle = async () => {
-    if (!newCode.trim() || !newName.trim()) return
+    if (!newCode.trim() || !newName.trim() || selectedSalonId === '') return
     try {
-      await api.post('/legacy/catalog/bundles', { bundle_code: newCode.trim(), bundle_name: newName.trim(), salon_id: 1 })
+      await api.post('/legacy/catalog/bundles', {
+        bundle_code: newCode.trim(),
+        bundle_name: newName.trim(),
+        salon_id: selectedSalonId,
+      })
       setNewCode('')
       setNewName('')
-      await load()
+      await load(selectedSalonId)
     } catch (err) {
       console.error(err)
       setError('Nie udalo sie dodac forfaitu.')
@@ -107,9 +133,10 @@ const SoundsPage = () => {
   }
 
   const removeBundle = async (bundleId: number) => {
+    if (selectedSalonId === '') return
     try {
       await api.delete(`/legacy/catalog/bundles/${bundleId}`)
-      await load()
+      await load(selectedSalonId)
     } catch (err) {
       console.error(err)
       setError('Nie udalo sie usunac forfaitu.')
@@ -117,11 +144,12 @@ const SoundsPage = () => {
   }
 
   const addItemToBundle = async (bundleId: number) => {
+    if (selectedSalonId === '') return
     const serviceId = addServiceIdByBundle[bundleId]
     if (!serviceId) return
     try {
       await api.post(`/legacy/catalog/bundles/${bundleId}/items`, { service_id: serviceId, override_price: null })
-      await load()
+      await load(selectedSalonId)
     } catch (err) {
       console.error(err)
       setError('Nie udalo sie dodac uslugi do forfaitu.')
@@ -129,9 +157,10 @@ const SoundsPage = () => {
   }
 
   const removeItemFromBundle = async (bundleId: number, position: number) => {
+    if (selectedSalonId === '') return
     try {
       await api.delete(`/legacy/catalog/bundles/${bundleId}/items/${position}`)
-      await load()
+      await load(selectedSalonId)
     } catch (err) {
       console.error(err)
       setError('Nie udalo sie usunac uslugi z forfaitu.')
@@ -145,9 +174,23 @@ const SoundsPage = () => {
       <Card>
         <CardContent>
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ xs: 'stretch', md: 'center' }}>
+            <TextField
+              select
+              label="Salon"
+              value={selectedSalonId}
+              onChange={(event) => setSelectedSalonId(event.target.value === '' ? '' : Number(event.target.value))}
+              size="small"
+              sx={{ minWidth: 300 }}
+            >
+              {salons.map((salon) => (
+                <MenuItem key={salon.id} value={salon.id}>
+                  {salon.code} - {salon.name}
+                </MenuItem>
+              ))}
+            </TextField>
             <TextField label="Kod nowego forfaitu" value={newCode} onChange={(event) => setNewCode(event.target.value)} size="small" />
             <TextField label="Nazwa nowego forfaitu" value={newName} onChange={(event) => setNewName(event.target.value)} size="small" sx={{ minWidth: 320 }} />
-            <Button variant="contained" startIcon={<AddCircleOutline />} onClick={createBundle}>
+            <Button variant="contained" startIcon={<AddCircleOutline />} onClick={createBundle} disabled={selectedSalonId === ''}>
               Dodaj forfait
             </Button>
           </Stack>

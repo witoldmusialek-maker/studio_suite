@@ -100,6 +100,20 @@ class ServiceCatalogItem(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class SalonServiceCatalogItem(Base):
+    __tablename__ = "salon_service_catalog_items"
+    __table_args__ = (
+        UniqueConstraint("salon_id", "service_id", name="uq_salon_service_catalog_items_salon_service"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=False, index=True)
+    local_name = Column(String(255), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class ServicePriceHistory(Base):
     __tablename__ = "service_price_history"
     __table_args__ = (

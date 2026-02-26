@@ -26,6 +26,7 @@ from app.models.salon_core import (
     LegacyForfaitTransaction,
     LegacyStat7Row,
     Salon,
+    SalonServiceCatalogItem,
     ServiceCatalogItem,
     ServicePriceHistory,
     StaffMember,
@@ -357,6 +358,13 @@ def main() -> None:
             db.add(item)
             db.flush()
             service_id_by_code[code] = item.id
+            db.add(
+                SalonServiceCatalogItem(
+                    salon_id=salon.id,
+                    service_id=item.id,
+                    is_active=True,
+                )
+            )
             db.add(
                 ServicePriceHistory(
                     service_id=item.id,

@@ -10,6 +10,8 @@ class LegacyCatalogServicePriceRow(BaseModel):
     service_name: str
     salon_id: int
     price: float
+    duration_minutes: int
+    is_active: bool
 
 
 class LegacyCatalogBundleItemRow(BaseModel):
@@ -55,3 +57,19 @@ class CreateBundleRequest(BaseModel):
 class AddBundleItemRequest(BaseModel):
     service_id: int
     override_price: float | None = Field(default=None, ge=0)
+
+
+class CreateServiceRequest(BaseModel):
+    service_code: str = Field(min_length=1, max_length=16)
+    service_name: str = Field(min_length=1, max_length=255)
+    duration_minutes: int = Field(default=0, ge=0)
+    default_price: float = Field(ge=0)
+    salon_id: int = 1
+
+
+class UpdateServiceRequest(BaseModel):
+    service_name: str | None = Field(default=None, min_length=1, max_length=255)
+    duration_minutes: int | None = Field(default=None, ge=0)
+    default_price: float | None = Field(default=None, ge=0)
+    is_active: bool | None = None
+    local_name: str | None = Field(default=None, max_length=255)
