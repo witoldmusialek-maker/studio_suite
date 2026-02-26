@@ -40,6 +40,9 @@ type ProductRow = {
   doses_short: number
   doses_medium: number
   doses_long: number
+  stock_mx03?: number | null
+  stock_mx04?: number | null
+  stock_mx07?: number | null
   is_active: boolean
 }
 
@@ -65,11 +68,40 @@ const emptyForm: ProductForm = {
   is_active: true,
 }
 
+type ProductColumnFilters = {
+  product_code: string
+  product_name: string
+  brand: string
+  package_size_g: string
+  doses_short: string
+  doses_medium: string
+  doses_long: string
+  stock_mx03: string
+  stock_mx04: string
+  stock_mx07: string
+  is_active: 'all' | 'true' | 'false'
+}
+
+const emptyFilters: ProductColumnFilters = {
+  product_code: '',
+  product_name: '',
+  brand: '',
+  package_size_g: '',
+  doses_short: '',
+  doses_medium: '',
+  doses_long: '',
+  stock_mx03: '',
+  stock_mx04: '',
+  stock_mx07: '',
+  is_active: 'all',
+}
+
 const AlertsPage = () => {
   const [salons, setSalons] = useState<SalonRow[]>([])
   const [selectedSalonId, setSelectedSalonId] = useState<number | ''>('')
   const [rows, setRows] = useState<ProductRow[]>([])
   const [query, setQuery] = useState('')
+  const [filters, setFilters] = useState<ProductColumnFilters>(emptyFilters)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
@@ -114,9 +146,38 @@ const AlertsPage = () => {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    if (!q) return rows
-    return rows.filter((row) => (`${row.product_code} ${row.product_name} ${row.brand || ''}`).toLowerCase().includes(q))
-  }, [rows, query])
+    return rows.filter((row) => {
+      const matchesGlobal = !q || `${row.product_code} ${row.product_name} ${row.brand || ''}`.toLowerCase().includes(q)
+      const matchesCode = !filters.product_code.trim() || row.product_code.toLowerCase().includes(filters.product_code.trim().toLowerCase())
+      const matchesName = !filters.product_name.trim() || row.product_name.toLowerCase().includes(filters.product_name.trim().toLowerCase())
+      const matchesBrand = !filters.brand.trim() || (row.brand || '').toLowerCase().includes(filters.brand.trim().toLowerCase())
+      const matchesPackage = !filters.package_size_g.trim() || String(row.package_size_g ?? '').includes(filters.package_size_g.trim())
+      const matchesShort = !filters.doses_short.trim() || String(row.doses_short).includes(filters.doses_short.trim())
+      const matchesMedium = !filters.doses_medium.trim() || String(row.doses_medium).includes(filters.doses_medium.trim())
+      const matchesLong = !filters.doses_long.trim() || String(row.doses_long).includes(filters.doses_long.trim())
+      const matchesMx03 = !filters.stock_mx03.trim() || String(row.stock_mx03 ?? '').includes(filters.stock_mx03.trim())
+      const matchesMx04 = !filters.stock_mx04.trim() || String(row.stock_mx04 ?? '').includes(filters.stock_mx04.trim())
+      const matchesMx07 = !filters.stock_mx07.trim() || String(row.stock_mx07 ?? '').includes(filters.stock_mx07.trim())
+      const matchesActive =
+        filters.is_active === 'all' ||
+        (filters.is_active === 'true' && row.is_active) ||
+        (filters.is_active === 'false' && !row.is_active)
+      return (
+        matchesGlobal &&
+        matchesCode &&
+        matchesName &&
+        matchesBrand &&
+        matchesPackage &&
+        matchesShort &&
+        matchesMedium &&
+        matchesLong &&
+        matchesMx03 &&
+        matchesMx04 &&
+        matchesMx07 &&
+        matchesActive
+      )
+    })
+  }, [rows, query, filters])
 
   const openCreate = () => {
     setEditing(null)
@@ -241,8 +302,111 @@ const AlertsPage = () => {
               <TableCell align='right'>Dawki krotkie</TableCell>
               <TableCell align='right'>Dawki srednie</TableCell>
               <TableCell align='right'>Dawki dlugie</TableCell>
+              <TableCell align='right'>MX03 (05-Pulawska)</TableCell>
+              <TableCell align='right'>MX04 (Krasinskiego)</TableCell>
+              <TableCell align='right'>MX07 (Odynca)</TableCell>
               <TableCell align='center'>Aktywny</TableCell>
               <TableCell align='right'>Akcje</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.product_code}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, product_code: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.product_name}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, product_name: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.brand}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, brand: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.package_size_g}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, package_size_g: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.doses_short}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, doses_short: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.doses_medium}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, doses_medium: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.doses_long}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, doses_long: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.stock_mx03}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, stock_mx03: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.stock_mx04}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, stock_mx04: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  size='small'
+                  value={filters.stock_mx07}
+                  onChange={(e) => setFilters((prev) => ({ ...prev, stock_mx07: e.target.value }))}
+                  placeholder='Filtr'
+                />
+              </TableCell>
+              <TableCell>
+                <Select
+                  size='small'
+                  value={filters.is_active}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, is_active: e.target.value as ProductColumnFilters['is_active'] }))
+                  }
+                >
+                  <MenuItem value='all'>Wszystkie</MenuItem>
+                  <MenuItem value='true'>TAK</MenuItem>
+                  <MenuItem value='false'>NIE</MenuItem>
+                </Select>
+              </TableCell>
+              <TableCell align='right'>
+                <Button size='small' onClick={() => setFilters(emptyFilters)}>
+                  Reset
+                </Button>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -255,6 +419,9 @@ const AlertsPage = () => {
                 <TableCell align='right'>{row.doses_short}</TableCell>
                 <TableCell align='right'>{row.doses_medium}</TableCell>
                 <TableCell align='right'>{row.doses_long}</TableCell>
+                <TableCell align='right'>{row.stock_mx03 ?? '-'}</TableCell>
+                <TableCell align='right'>{row.stock_mx04 ?? '-'}</TableCell>
+                <TableCell align='right'>{row.stock_mx07 ?? '-'}</TableCell>
                 <TableCell align='center'>{row.is_active ? 'TAK' : 'NIE'}</TableCell>
                 <TableCell align='right'>
                   <IconButton size='small' onClick={() => openEdit(row)}>
@@ -268,12 +435,12 @@ const AlertsPage = () => {
             ))}
             {!filtered.length && !loading && (
               <TableRow>
-                <TableCell colSpan={9}>Brak produktow.</TableCell>
+                <TableCell colSpan={12}>Brak produktow.</TableCell>
               </TableRow>
             )}
             {loading && (
               <TableRow>
-                <TableCell colSpan={9}>Ladowanie...</TableCell>
+                <TableCell colSpan={12}>Ladowanie...</TableCell>
               </TableRow>
             )}
           </TableBody>

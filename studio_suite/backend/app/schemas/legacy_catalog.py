@@ -94,6 +94,9 @@ class LegacyProductCatalogRow(BaseModel):
     doses_short: float
     doses_medium: float
     doses_long: float
+    stock_mx03: float | None = None
+    stock_mx04: float | None = None
+    stock_mx07: float | None = None
     is_active: bool
 
 

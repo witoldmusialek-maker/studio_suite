@@ -124,6 +124,9 @@ class LegacyProductCatalogItem(Base):
     family_code = Column(String(16), nullable=True, index=True)
     brand_1 = Column(String(128), nullable=True)
     brand_2 = Column(String(128), nullable=True)
+    stock_mx03 = Column(Numeric(12, 2), nullable=True, default=0)
+    stock_mx04 = Column(Numeric(12, 2), nullable=True, default=0)
+    stock_mx07 = Column(Numeric(12, 2), nullable=True, default=0)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

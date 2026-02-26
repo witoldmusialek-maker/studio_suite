@@ -58,6 +58,24 @@ def startup() -> None:
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_BELLS'"))
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'MANAGER'"))
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'EMPLOYEE'"))
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS stock_mx03 NUMERIC(12,2)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS stock_mx04 NUMERIC(12,2)"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE legacy_product_catalog_items "
+                    "ADD COLUMN IF NOT EXISTS stock_mx07 NUMERIC(12,2)"
+                )
+            )
     Base.metadata.create_all(bind=engine)
 
 

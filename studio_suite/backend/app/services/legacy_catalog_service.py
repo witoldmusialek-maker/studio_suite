@@ -214,6 +214,9 @@ def get_legacy_products(db: Session, salon_id: int) -> list[dict]:
                 "doses_short": float(link.doses_short),
                 "doses_medium": float(link.doses_medium),
                 "doses_long": float(link.doses_long),
+                "stock_mx03": float(product.stock_mx03) if product.stock_mx03 is not None else None,
+                "stock_mx04": float(product.stock_mx04) if product.stock_mx04 is not None else None,
+                "stock_mx07": float(product.stock_mx07) if product.stock_mx07 is not None else None,
                 "is_active": bool(link.is_active),
                 "salon_product_id": link.id,
             }

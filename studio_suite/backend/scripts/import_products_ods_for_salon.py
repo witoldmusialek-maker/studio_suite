@@ -12,9 +12,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, List
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
 
 from app.database import Base, SessionLocal, engine
 from app.models import salon_core  # noqa: F401
@@ -57,6 +57,19 @@ def parse_package_size_g(token: str) -> float | None:
     if value <= 0:
         return None
     return round(value, 2)
+
+
+def parse_stock_value(token: str) -> float | None:
+    raw = (token or "").strip().replace(",", ".")
+    if not raw:
+        return None
+    m = re.search(r"-?\d+(?:\.\d+)?", raw)
+    if not m:
+        return None
+    try:
+        return round(float(m.group(0)), 2)
+    except ValueError:
+        return None
 
 
 def pick_name(pl_name: str, short_name: str) -> str:
@@ -151,6 +164,9 @@ def main() -> None:
             processed_codes.add(code)
 
             package_size_g = parse_package_size_g(col(row, "POJ"))
+            stock_mx03 = parse_stock_value(col(row, "MX03"))
+            stock_mx04 = parse_stock_value(col(row, "MX04"))
+            stock_mx07 = parse_stock_value(col(row, "MX07"))
             brand = trunc(col(row, "GRUPA"), 128)
             type_code = trunc(col(row, "CECHA_RODZINA"), 16)
             family_code = trunc(col(row, "rodzina2"), 16)
@@ -164,6 +180,9 @@ def main() -> None:
                     family_code=family_code,
                     brand_1=brand,
                     brand_2=None,
+                    stock_mx03=stock_mx03,
+                    stock_mx04=stock_mx04,
+                    stock_mx07=stock_mx07,
                     is_active=True,
                 )
                 db.add(product)
@@ -174,6 +193,9 @@ def main() -> None:
                 product.type_code = type_code
                 product.family_code = family_code
                 product.brand_1 = brand
+                product.stock_mx03 = stock_mx03
+                product.stock_mx04 = stock_mx04
+                product.stock_mx07 = stock_mx07
                 product.is_active = True
                 updated_products += 1
 
