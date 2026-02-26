@@ -1,6 +1,6 @@
 param(
   [string]$DevHost = "dev1",
-  [string]$RemoteRepo = "~/projects/studio_suite_repo/studio_suite",
+  [string]$RemoteRepo = "~/projects/projekt2_repo/studio_suite",
   [string]$DbUser = "ds_user",
   [string]$DbName = "studio_suite"
 )

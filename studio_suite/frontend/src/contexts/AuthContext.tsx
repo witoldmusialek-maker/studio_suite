@@ -16,7 +16,15 @@ const USER_KEY = 'booking_user'
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const mapRole = (role: string): User['role'] => {
-  if (role === 'admin' || role === 'manager' || role === 'receptionist' || role === 'operator_displays' || role === 'operator_bells' || role === 'operator') {
+  if (
+    role === 'admin' ||
+    role === 'manager' ||
+    role === 'employee' ||
+    role === 'receptionist' ||
+    role === 'operator_displays' ||
+    role === 'operator_bells' ||
+    role === 'operator'
+  ) {
     return role
   }
   return 'manager'

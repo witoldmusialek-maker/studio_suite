@@ -11,7 +11,7 @@ from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
 
-APP_VERSION = "v1.0.0-beta.2026-02-25.05"
+APP_VERSION = "v1.0.0-beta.2026-02-26.06"
 
 # Utworzenie aplikacji
 app = FastAPI(
@@ -56,6 +56,8 @@ def startup() -> None:
             if enum_exists:
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_DISPLAYS'"))
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_BELLS'"))
+                conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'MANAGER'"))
+                conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'EMPLOYEE'"))
     Base.metadata.create_all(bind=engine)
 
 

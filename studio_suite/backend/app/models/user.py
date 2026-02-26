@@ -11,6 +11,8 @@ from app.database import Base
 class UserRole(str, enum.Enum):
     """Role użytkowników"""
     ADMIN = "admin"
+    MANAGER = "manager"
+    EMPLOYEE = "employee"
     OPERATOR_DISPLAYS = "operator_displays"
     OPERATOR_BELLS = "operator_bells"
     OPERATOR = "operator"  # legacy alias; traktowany jak operator wyświetlaczy

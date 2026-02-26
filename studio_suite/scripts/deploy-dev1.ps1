@@ -1,6 +1,6 @@
 param(
   [string]$DevHost = "dev1",
-  [string]$RemoteRepoRoot = "~/projects/studio_suite_repo",
+  [string]$RemoteRepoRoot = "~/projects/projekt2_repo",
   [string]$Branch = "master"
 )
 

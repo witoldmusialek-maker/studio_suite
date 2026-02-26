@@ -10,10 +10,10 @@ from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_admin, get_current_user
+from app.api.deps import get_current_user
 from app.config import settings
 from app.database import get_db
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.token import Token
 from app.schemas.user import (
     PasswordChangeRequest,
@@ -35,6 +35,11 @@ login_protection = LoginProtection(
     lockout_seconds=settings.LOGIN_LOCKOUT_SECONDS,
 )
 
+MANAGEABLE_ROLES = {
+    "admin": {"admin", "manager", "employee", "operator_displays", "operator_bells", "operator"},
+    "manager": {"employee"},
+}
+
 
 def _generate_temporary_password(length: int = 12) -> str:
     alphabet = string.ascii_letters + string.digits
@@ -48,6 +53,10 @@ def _get_client_ip(request: Request) -> str:
     if request.client and request.client.host:
         return request.client.host
     return "unknown"
+
+
+def _can_manage(current_user: User, target_role: str) -> bool:
+    return target_role in MANAGEABLE_ROLES.get(current_user.role.value, set())
 
 
 @router.post("/login", response_model=Token)
@@ -104,10 +113,15 @@ async def register(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role.value != "admin":
+    if current_user.role.value not in {"admin", "manager"}:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only admin can register users",
+            detail="Only admin or manager can register users",
+        )
+    if not _can_manage(current_user, user_data.role.value):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions for selected role",
         )
 
     existing_user = db.query(User).filter(User.username == user_data.username).first()
@@ -131,9 +145,21 @@ async def register(
 @router.get("/users", response_model=list[UserResponse])
 async def list_users(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin),
+    current_user: User = Depends(get_current_user),
 ):
-    return db.query(User).order_by(User.username.asc()).all()
+    if current_user.role.value == "admin":
+        return db.query(User).order_by(User.username.asc()).all()
+    if current_user.role.value == "manager":
+        return (
+            db.query(User)
+            .filter(User.role == UserRole.EMPLOYEE)
+            .order_by(User.username.asc())
+            .all()
+        )
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Not enough permissions",
+    )
 
 
 @router.patch("/users/{user_id}", response_model=UserResponse)
@@ -141,11 +167,17 @@ async def update_user(
     user_id: int,
     payload: UserUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin),
+    current_user: User = Depends(get_current_user),
 ):
+    if current_user.role.value not in {"admin", "manager"}:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if not _can_manage(current_user, user.role.value):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
+    if not _can_manage(current_user, payload.role.value):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions for selected role")
 
     user.role = payload.role
     db.commit()
@@ -157,13 +189,17 @@ async def update_user(
 async def delete_user(
     user_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin),
+    current_user: User = Depends(get_current_user),
 ):
+    if current_user.role.value not in {"admin", "manager"}:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     if user.id == current_user.id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot delete yourself")
+    if not _can_manage(current_user, user.role.value):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
 
     db.delete(user)
     db.commit()
@@ -175,11 +211,15 @@ async def reset_user_password(
     user_id: int,
     payload: PasswordResetRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin),
+    current_user: User = Depends(get_current_user),
 ):
+    if current_user.role.value not in {"admin", "manager"}:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if not _can_manage(current_user, user.role.value):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
 
     plain_password = payload.new_password or _generate_temporary_password()
     user.password_hash = get_password_hash(plain_password)
@@ -209,4 +249,3 @@ async def change_own_password(
 @router.get("/me", response_model=UserResponse)
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
-

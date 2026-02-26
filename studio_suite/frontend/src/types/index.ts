@@ -4,6 +4,7 @@ export interface User {
   role:
     | 'admin'
     | 'manager'
+    | 'employee'
     | 'receptionist'
     | 'operator_displays'
     | 'operator_bells'

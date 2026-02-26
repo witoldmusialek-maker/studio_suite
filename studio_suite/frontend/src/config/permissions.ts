@@ -13,7 +13,8 @@ export type AppSection =
 
 const roleSections: Record<User['role'], AppSection[]> = {
   admin: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'reports', 'users'],
-  manager: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'reports'],
+  manager: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'reports', 'users'],
+  employee: ['dashboard'],
   receptionist: ['dashboard', 'calendar', 'clients'],
   operator_displays: ['dashboard'],
   operator_bells: ['dashboard'],
