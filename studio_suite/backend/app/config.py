@@ -4,11 +4,16 @@ Konfiguracja aplikacji
 from typing import List, Optional
 
 from pydantic import field_validator
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Ustawienia aplikacji"""
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+        extra="ignore",
+    )
 
     # Database
     DATABASE_URL: str = "postgresql://user:password@localhost:5432/studio_suite"
@@ -49,11 +54,6 @@ class Settings(BaseSettings):
         if value in {"", "change-this-in-production"}:
             raise ValueError("SECRET_KEY must be set in environment")
         return value
-
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
-
 
 settings = Settings()
 
