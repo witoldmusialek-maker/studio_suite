@@ -1,16 +1,7 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
-import {
-  mockAppointments,
-  mockBundles,
-  mockClients,
-  mockColorProducts,
-  mockPerformedServiceLines,
-  mockPriceListItems,
-  mockResources,
-  mockSalons,
-  mockServices,
-  mockStaffRoles,
-} from '../mocks/bookingData'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+
+import { api } from '../services/api'
+import { useAuth } from './AuthContext'
 import {
   Appointment,
   BundleCatalog,
@@ -68,47 +59,97 @@ type BookingContextType = {
   colorProducts: ColorProduct[]
   appointments: Appointment[]
   performedServiceLines: PerformedServiceLine[]
-  addClient: (input: CreateClientInput) => ClientCard
-  addAppointment: (input: CreateAppointmentInput) => Appointment
-  completeAppointment: (input: CompleteAppointmentInput) => void
+  addClient: (input: CreateClientInput) => Promise<ClientCard>
+  addAppointment: (input: CreateAppointmentInput) => Promise<Appointment>
+  completeAppointment: (input: CompleteAppointmentInput) => Promise<void>
   estimateTotal: (salonId: number, serviceIds: number[], bundleId?: number) => number
   getAppointmentRevenue: (appointmentId: number) => number
-  updateServicePrice: (input: UpdatePriceInput) => void
-  updateBundlePrice: (input: UpdateBundlePriceInput) => void
-  updateBundleItemPrice: (input: UpdateBundleItemPriceInput) => void
+  updateServicePrice: (input: UpdatePriceInput) => Promise<void>
+  updateBundlePrice: (input: UpdateBundlePriceInput) => Promise<void>
+  updateBundleItemPrice: (input: UpdateBundleItemPriceInput) => Promise<void>
+}
+
+type BookingBootstrap = {
+  salons: Array<{ id: number; code: string; name: string; is_active: boolean }>
+  staffRoles: StaffRole[]
+  resources: StaffResource[]
+  clients: ClientCard[]
+  services: ServiceCatalogItem[]
+  priceListItems: PriceListItem[]
+  bundles: BundleCatalog[]
+  colorProducts: ColorProduct[]
+  appointments: Appointment[]
+  performedServiceLines: PerformedServiceLine[]
 }
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined)
-const PRICE_LIST_STORAGE_KEY = 'booking_price_list_v1'
-const BUNDLE_STORAGE_KEY = 'booking_bundle_list_v1'
 
 const resolveServicePrice = (salonId: number, serviceId: number, list: PriceListItem[]) =>
   list.find((item) => item.salon_id === salonId && item.service_id === serviceId)?.price ?? 0
 
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [clients, setClients] = useState<ClientCard[]>(mockClients)
-  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments)
-  const [performedServiceLines, setPerformedServiceLines] = useState<PerformedServiceLine[]>(mockPerformedServiceLines)
-  const [priceListItems, setPriceListItems] = useState<PriceListItem[]>(() => {
-    try {
-      const raw = localStorage.getItem(PRICE_LIST_STORAGE_KEY)
-      if (!raw) return mockPriceListItems
-      const parsed = JSON.parse(raw) as PriceListItem[]
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : mockPriceListItems
-    } catch {
-      return mockPriceListItems
+  const { user } = useAuth()
+  const [salons, setSalons] = useState<Salon[]>([])
+  const [staffRoles, setStaffRoles] = useState<StaffRole[]>([])
+  const [resources, setResources] = useState<StaffResource[]>([])
+  const [clients, setClients] = useState<ClientCard[]>([])
+  const [services, setServices] = useState<ServiceCatalogItem[]>([])
+  const [priceListItems, setPriceListItems] = useState<PriceListItem[]>([])
+  const [bundles, setBundles] = useState<BundleCatalog[]>([])
+  const [colorProducts, setColorProducts] = useState<ColorProduct[]>([])
+  const [appointments, setAppointments] = useState<Appointment[]>([])
+  const [performedServiceLines, setPerformedServiceLines] = useState<PerformedServiceLine[]>([])
+
+  const reload = async () => {
+    const res = await api.get<BookingBootstrap>('/booking/bootstrap')
+    const data = res.data
+    setSalons(
+      (data.salons || []).map((row) => ({
+        id: row.id,
+        name: row.name,
+        city: row.code,
+        code: row.code,
+        is_active: row.is_active,
+      })),
+    )
+    setStaffRoles(data.staffRoles || [])
+    setResources(data.resources || [])
+    setClients(data.clients || [])
+    setServices(data.services || [])
+    setPriceListItems(data.priceListItems || [])
+    setBundles(data.bundles || [])
+    setColorProducts(data.colorProducts || [])
+    setAppointments(data.appointments || [])
+    setPerformedServiceLines(data.performedServiceLines || [])
+  }
+
+  useEffect(() => {
+    if (!user) {
+      setSalons([])
+      setStaffRoles([])
+      setResources([])
+      setClients([])
+      setServices([])
+      setPriceListItems([])
+      setBundles([])
+      setColorProducts([])
+      setAppointments([])
+      setPerformedServiceLines([])
+      return
     }
-  })
-  const [bundles, setBundles] = useState<BundleCatalog[]>(() => {
-    try {
-      const raw = localStorage.getItem(BUNDLE_STORAGE_KEY)
-      if (!raw) return mockBundles
-      const parsed = JSON.parse(raw) as BundleCatalog[]
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : mockBundles
-    } catch {
-      return mockBundles
-    }
-  })
+    reload().catch(() => {
+      setSalons([])
+      setStaffRoles([])
+      setResources([])
+      setClients([])
+      setServices([])
+      setPriceListItems([])
+      setBundles([])
+      setColorProducts([])
+      setAppointments([])
+      setPerformedServiceLines([])
+    })
+  }, [user])
 
   const estimateTotal = (salonId: number, serviceIds: number[], bundleId?: number) => {
     if (bundleId) {
@@ -118,67 +159,33 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return serviceIds.reduce((sum, serviceId) => sum + resolveServicePrice(salonId, serviceId, priceListItems), 0)
   }
 
-  const addClient = (input: CreateClientInput) => {
-    const newClient: ClientCard = {
-      id: clients.reduce((maxId, client) => Math.max(maxId, client.id), 0) + 1,
-      full_name: input.full_name,
-      phone: input.phone,
-      email: input.email,
-    }
-    setClients((prev) => [...prev, newClient])
-    return newClient
+  const addClient = async (input: CreateClientInput) => {
+    const res = await api.post<ClientCard>('/booking/clients', input)
+    const created = res.data
+    setClients((prev) => [...prev, created])
+    return created
   }
 
-  const addAppointment = (input: CreateAppointmentInput) => {
+  const addAppointment = async (input: CreateAppointmentInput) => {
     const total = estimateTotal(input.salon_id, input.services, input.bundle_id)
-    const next: Appointment = {
-      id: appointments.reduce((maxId, item) => Math.max(maxId, item.id), 0) + 1,
-      salon_id: input.salon_id,
-      client_id: input.client_id,
-      start_at: input.start_at,
-      end_at: input.end_at,
-      status: 'planned',
-      resources: input.resources,
-      services: input.services,
-      bundle_id: input.bundle_id,
+    const payload = {
+      ...input,
       total_price_snapshot: total,
     }
-
-    setAppointments((prev) => [...prev, next])
-    return next
+    const res = await api.post<Appointment>('/booking/appointments', payload)
+    const created = res.data
+    setAppointments((prev) => [created, ...prev])
+    return created
   }
 
-  const completeAppointment = (input: CompleteAppointmentInput) => {
-    const nextLineId = performedServiceLines.reduce((maxId, line) => Math.max(maxId, line.id), 0) + 1
-    const createdLines: PerformedServiceLine[] = input.lines.map((line, index) => ({
-      id: nextLineId + index,
-      appointment_id: input.appointment_id,
-      service_id: line.service_id,
-      worker_id: line.worker_id,
-      worker_role_id: line.worker_role_id,
-      price_snapshot: line.price_snapshot,
+  const completeAppointment = async (input: CompleteAppointmentInput) => {
+    const res = await api.post<Appointment>(`/booking/appointments/${input.appointment_id}/complete`, {
       performed_at: input.performed_at,
-      color_product_id: line.color_product_id,
-    }))
-
-    const revenue = createdLines.reduce((sum, line) => sum + line.price_snapshot, 0)
-
-    setPerformedServiceLines((prev) => [
-      ...prev.filter((line) => line.appointment_id !== input.appointment_id),
-      ...createdLines,
-    ])
-
-    setAppointments((prev) =>
-      prev.map((appointment) =>
-        appointment.id === input.appointment_id
-          ? {
-              ...appointment,
-              status: 'done',
-              total_price_snapshot: revenue,
-            }
-          : appointment,
-      ),
-    )
+      lines: input.lines,
+    })
+    const updated = res.data
+    setAppointments((prev) => prev.map((appointment) => (appointment.id === updated.id ? updated : appointment)))
+    await reload()
   }
 
   const getAppointmentRevenue = (appointmentId: number) => {
@@ -189,55 +196,46 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return appointments.find((appointment) => appointment.id === appointmentId)?.total_price_snapshot ?? 0
   }
 
-  const updateServicePrice = (input: UpdatePriceInput) => {
-    setPriceListItems((prev) => {
-      const next = prev.map((item) =>
-        item.id === input.price_list_item_id ? { ...item, price: Math.max(0, Number(input.price) || 0) } : item,
-      )
-      localStorage.setItem(PRICE_LIST_STORAGE_KEY, JSON.stringify(next))
-      return next
+  const updateServicePrice = async (input: UpdatePriceInput) => {
+    const row = priceListItems.find((item) => item.id === input.price_list_item_id)
+    if (!row) return
+    await api.patch(`/legacy/catalog/services/${row.service_id}/price`, {
+      price: Math.max(0, Number(input.price) || 0),
+    }, {
+      params: { salon_id: row.salon_id },
     })
+    await reload()
   }
 
-  const updateBundlePrice = (input: UpdateBundlePriceInput) => {
-    setBundles((prev) => {
-      const next = prev.map((bundle) =>
-        bundle.id === input.bundle_id ? { ...bundle, price: Math.max(0, Number(input.price) || 0) } : bundle,
-      )
-      localStorage.setItem(BUNDLE_STORAGE_KEY, JSON.stringify(next))
-      return next
+  const updateBundlePrice = async (input: UpdateBundlePriceInput) => {
+    await api.patch(`/legacy/catalog/bundles/${input.bundle_id}/price`, {
+      price: Math.max(0, Number(input.price) || 0),
     })
+    await reload()
   }
 
-  const updateBundleItemPrice = (input: UpdateBundleItemPriceInput) => {
-    setBundles((prev) => {
-      const next = prev.map((bundle) => {
-        if (bundle.id !== input.bundle_id) return bundle
-        const items = bundle.items.map((item, index) => {
-          if (index !== input.item_index) return item
-          if (input.override_price === undefined || Number.isNaN(input.override_price)) {
-            const { override_price, ...rest } = item
-            return rest
-          }
-          return { ...item, override_price: Math.max(0, Number(input.override_price) || 0) }
-        })
-        return { ...bundle, items }
-      })
-      localStorage.setItem(BUNDLE_STORAGE_KEY, JSON.stringify(next))
-      return next
+  const updateBundleItemPrice = async (input: UpdateBundleItemPriceInput) => {
+    const bundle = bundles.find((item) => item.id === input.bundle_id)
+    if (!bundle) return
+    await api.patch(`/legacy/catalog/bundles/${input.bundle_id}/items/${input.item_index + 1}`, {
+      override_price:
+        input.override_price === undefined || Number.isNaN(input.override_price)
+          ? null
+          : Math.max(0, Number(input.override_price) || 0),
     })
+    await reload()
   }
 
   const value = useMemo(
     () => ({
-      salons: mockSalons,
-      staffRoles: mockStaffRoles,
-      resources: mockResources,
+      salons,
+      staffRoles,
+      resources,
       clients,
-      services: mockServices,
+      services,
       priceListItems,
       bundles,
-      colorProducts: mockColorProducts,
+      colorProducts,
       appointments,
       performedServiceLines,
       addClient,
@@ -249,7 +247,18 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       updateBundlePrice,
       updateBundleItemPrice,
     }),
-    [appointments, bundles, clients, performedServiceLines, priceListItems],
+    [
+      appointments,
+      bundles,
+      clients,
+      colorProducts,
+      performedServiceLines,
+      priceListItems,
+      resources,
+      salons,
+      services,
+      staffRoles,
+    ],
   )
 
   return <BookingContext.Provider value={value}>{children}</BookingContext.Provider>

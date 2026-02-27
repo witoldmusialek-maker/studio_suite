@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,10 +11,6 @@ import {
   FormControl,
   IconButton,
   InputLabel,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   MenuItem,
   Paper,
   Select,
@@ -30,6 +26,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Delete, Edit, Refresh } from '@mui/icons-material'
+import { useAuth } from '../contexts/AuthContext'
 import { api } from '../services/api'
 
 type ServiceRow = {
@@ -64,6 +61,7 @@ type ProductCatalogRow = {
   fiscal_code?: string | null
   s_u?: boolean
   brand?: string | null
+  family_code?: string | null
   package_size_g?: number | null
   doses_short: number
   doses_medium: number
@@ -81,6 +79,17 @@ type ServiceForm = {
   is_active: boolean
 }
 
+type RecipeItemRow = {
+  id: number
+  service_id: number
+  product_family?: string | null
+  product_id?: number | null
+  product_name?: string | null
+  planned_quantity: number
+  unit: string
+  note?: string | null
+}
+
 const emptyCreateForm: ServiceForm = {
   service_code: '',
   service_name: '',
@@ -90,6 +99,7 @@ const emptyCreateForm: ServiceForm = {
 }
 
 const ServicesPage = () => {
+  const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
@@ -110,7 +120,15 @@ const ServicesPage = () => {
   const [formulaOpen, setFormulaOpen] = useState(false)
   const [formulaService, setFormulaService] = useState<ServiceRow | null>(null)
   const [formulaSearch, setFormulaSearch] = useState('')
-  const [formulaProductIds, setFormulaProductIds] = useState<number[]>([])
+  const [recipeItems, setRecipeItems] = useState<RecipeItemRow[]>([])
+  const [recipeEditingId, setRecipeEditingId] = useState<number | null>(null)
+  const [recipeProductFamily, setRecipeProductFamily] = useState('')
+  const [recipeProduct, setRecipeProduct] = useState<ProductCatalogRow | null>(null)
+  const [recipeQuantity, setRecipeQuantity] = useState('0')
+  const [recipeUnit, setRecipeUnit] = useState('G')
+  const [recipeNote, setRecipeNote] = useState('')
+
+  const canEditRecipe = user?.role === 'admin' || user?.role === 'manager'
 
   const loadSalons = async () => {
     const res = await api.get<SalonRow[]>('/resources/salons')
@@ -124,7 +142,7 @@ const ServicesPage = () => {
   const loadProducts = async () => {
     if (selectedSalonId === '') return
     try {
-      const res = await api.get<ProductCatalogRow[]>('/legacy/catalog/products', { params: { salon_id: selectedSalonId } })
+      const res = await api.get<ProductCatalogRow[]>('/resources/products', { params: { salon_id: selectedSalonId } })
       setProducts(res.data || [])
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Nie udalo sie pobrac bazy produktow.')
@@ -273,32 +291,76 @@ const ServicesPage = () => {
 
   const openFormulaDialog = (row: ServiceRow) => {
     setFormulaService(row)
-    setFormulaProductIds(row.formula_products.map((item) => item.product_id))
     setFormulaSearch('')
+    setRecipeItems([])
+    setRecipeEditingId(null)
+    setRecipeProductFamily('')
+    setRecipeProduct(null)
+    setRecipeQuantity('0')
+    setRecipeUnit('G')
+    setRecipeNote('')
     setFormulaOpen(true)
+    api.get<RecipeItemRow[]>(`/services/${row.service_id}/recipe`)
+      .then((res) => setRecipeItems(res.data || []))
+      .catch((err: any) => setError(err?.response?.data?.detail || 'Nie udalo sie pobrac receptury.'))
   }
 
-  const saveFormula = async () => {
+  const resetRecipeDraft = () => {
+    setRecipeEditingId(null)
+    setRecipeProductFamily('')
+    setRecipeProduct(null)
+    setRecipeQuantity('0')
+    setRecipeUnit('G')
+    setRecipeNote('')
+  }
+
+  const saveRecipeItem = async () => {
     if (selectedSalonId === '' || !formulaService) return
     setError('')
     try {
-      const res = await api.patch(
-        `/legacy/catalog/services/${formulaService.service_id}/formula`,
-        { is_formula: true, product_ids: formulaProductIds },
-        { params: { salon_id: selectedSalonId } }
-      )
-      const nextProducts = (res.data?.formula_products || []) as FormulaProductRow[]
-      setServices((prev) =>
-        prev.map((item) =>
-          item.service_id === formulaService.service_id
-            ? { ...item, is_formula: nextProducts.length > 0, formula_products: nextProducts }
-            : item
+      const payload = {
+        product_family: recipeProductFamily.trim() || null,
+        product_id: recipeProduct?.product_id ?? null,
+        planned_quantity: Number(recipeQuantity),
+        unit: recipeUnit,
+        note: recipeNote.trim() || null,
+      }
+      if (recipeEditingId) {
+        const res = await api.patch<RecipeItemRow>(
+          `/services/${formulaService.service_id}/recipe/${recipeEditingId}`,
+          payload,
         )
-      )
-      setFormulaOpen(false)
-      setFormulaService(null)
+        setRecipeItems((prev) => prev.map((item) => (item.id === recipeEditingId ? res.data : item)))
+      } else {
+        const res = await api.post<RecipeItemRow>(`/services/${formulaService.service_id}/recipe`, payload)
+        setRecipeItems((prev) => [...prev, res.data])
+      }
+      resetRecipeDraft()
     } catch (err: any) {
       setError(err?.response?.data?.detail || 'Nie udalo sie zapisac receptury.')
+    }
+  }
+
+  const editRecipeItem = (item: RecipeItemRow) => {
+    setRecipeEditingId(item.id)
+    setRecipeProductFamily(item.product_family || '')
+    setRecipeProduct(products.find((product) => product.product_id === item.product_id) || null)
+    setRecipeQuantity(String(item.planned_quantity))
+    setRecipeUnit(item.unit || 'G')
+    setRecipeNote(item.note || '')
+  }
+
+  const deleteRecipeItem = async (item: RecipeItemRow) => {
+    if (!formulaService) return
+    setError('')
+    try {
+      await api.delete(`/services/${formulaService.service_id}/recipe/${item.id}`)
+      setRecipeItems((prev) => prev.filter((row) => row.id !== item.id))
+      if (recipeEditingId === item.id) {
+        resetRecipeDraft()
+      }
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie usunac pozycji receptury.')
     }
   }
 
@@ -413,7 +475,6 @@ const ServicesPage = () => {
                     <Button
                       size='small'
                       variant='outlined'
-                      disabled={!row.is_formula}
                       onClick={() => openFormulaDialog(row)}
                     >
                       Receptura
@@ -558,43 +619,100 @@ const ServicesPage = () => {
         </DialogTitle>
         <DialogContent>
           <Stack spacing={1.5} sx={{ mt: 0.5 }}>
+            <Paper variant='outlined'>
+              <Table size='small'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Rodzina</TableCell>
+                    <TableCell>Produkt</TableCell>
+                    <TableCell align='right'>Ilosc</TableCell>
+                    <TableCell>JM</TableCell>
+                    <TableCell>Notatka</TableCell>
+                    <TableCell align='right'>Akcje</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {recipeItems.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.product_family || '-'}</TableCell>
+                      <TableCell>{item.product_name || '-'}</TableCell>
+                      <TableCell align='right'>{Number(item.planned_quantity).toFixed(2)}</TableCell>
+                      <TableCell>{item.unit}</TableCell>
+                      <TableCell>{item.note || '-'}</TableCell>
+                      <TableCell align='right'>
+                        {canEditRecipe && (
+                          <>
+                            <IconButton size='small' onClick={() => editRecipeItem(item)}>
+                              <Edit fontSize='small' />
+                            </IconButton>
+                            <IconButton size='small' color='error' onClick={() => deleteRecipeItem(item)}>
+                              <Delete fontSize='small' />
+                            </IconButton>
+                          </>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {!recipeItems.length && (
+                    <TableRow>
+                      <TableCell colSpan={6}>Brak pozycji receptury.</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </Paper>
             <TextField
               size='small'
               label='Szukaj produktu (kod / nazwa / marka)'
               value={formulaSearch}
               onChange={(e) => setFormulaSearch(e.target.value)}
             />
-            <Paper variant='outlined' sx={{ maxHeight: 420, overflowY: 'auto' }}>
-              <List dense>
-                {filteredProducts.map((product) => {
-                  const checked = formulaProductIds.includes(product.product_id)
-                  return (
-                    <ListItem key={product.product_id} disablePadding>
-                      <ListItemButton
-                        onClick={() =>
-                          setFormulaProductIds((prev) =>
-                            prev.includes(product.product_id)
-                              ? prev.filter((id) => id !== product.product_id)
-                              : [...prev, product.product_id]
-                          )
-                        }
-                      >
-                        <Checkbox edge='start' checked={checked} tabIndex={-1} disableRipple />
-                          <ListItemText
-                            primary={`${product.product_code} - ${product.product_name}`}
-                            secondary={`${product.brand || ''}${product.brand ? ' | ' : ''}opak.: ${product.package_size_g ?? '-'}g | dawki S:${product.doses_short} M:${product.doses_medium} L:${product.doses_long}`}
-                          />
-                      </ListItemButton>
-                    </ListItem>
-                  )
-                })}
-                {!filteredProducts.length && (
-                  <ListItem>
-                    <ListItemText primary='Brak produktow.' />
-                  </ListItem>
-                )}
-              </List>
-            </Paper>
+            <Autocomplete
+              options={filteredProducts}
+              value={recipeProduct}
+              onChange={(_, value) => setRecipeProduct(value)}
+              getOptionLabel={(option) => `${option.product_code} - ${option.product_name}`}
+              renderInput={(params) => <TextField {...params} size='small' label='Konkretny produkt (opcjonalnie)' />}
+              disabled={!canEditRecipe}
+            />
+            <TextField
+              size='small'
+              label='Rodzina produktu (opcjonalnie)'
+              value={recipeProductFamily}
+              onChange={(e) => setRecipeProductFamily(e.target.value)}
+              disabled={!canEditRecipe}
+              helperText='Np. FARBA TRWALA'
+            />
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5}>
+              <TextField
+                size='small'
+                type='number'
+                label='Planowana ilosc'
+                value={recipeQuantity}
+                onChange={(e) => setRecipeQuantity(e.target.value)}
+                disabled={!canEditRecipe}
+              />
+              <FormControl size='small' sx={{ minWidth: 140 }}>
+                <InputLabel>Jednostka</InputLabel>
+                <Select
+                  label='Jednostka'
+                  value={recipeUnit}
+                  onChange={(e) => setRecipeUnit(String(e.target.value))}
+                  disabled={!canEditRecipe}
+                >
+                  <MenuItem value='G'>G</MenuItem>
+                  <MenuItem value='ML'>ML</MenuItem>
+                  <MenuItem value='PCS'>PCS</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+            <TextField
+              size='small'
+              label='Notatka'
+              value={recipeNote}
+              onChange={(e) => setRecipeNote(e.target.value)}
+              disabled={!canEditRecipe}
+            />
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -606,9 +724,15 @@ const ServicesPage = () => {
           >
             Anuluj
           </Button>
-          <Button variant='contained' onClick={saveFormula}>
-            Zapisz recepture
-          </Button>
+          {canEditRecipe && (
+            <Button
+              variant='contained'
+              onClick={saveRecipeItem}
+              disabled={Number(recipeQuantity) <= 0}
+            >
+              {recipeEditingId ? 'Zapisz pozycje' : 'Dodaj pozycje'}
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </Box>

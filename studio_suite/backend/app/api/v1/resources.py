@@ -82,12 +82,9 @@ def _product_to_read(product: LegacyProductCatalogItem, salon: Salon) -> Product
         package_weight=float(product.package_weight) if product.package_weight is not None else None,
         min_unit=float(product.min_unit) if product.min_unit is not None else None,
         note=product.note,
-        ean=product.ean,
         salon_sale_price=float(product.salon_sale_price) if product.salon_sale_price is not None else None,
         purchase_price_c=float(product.purchase_price_c) if product.purchase_price_c is not None else None,
         is_locked=bool(product.is_locked),
-        upsize_ts=product.upsize_ts,
-        catalog_price=float(product.catalog_price) if product.catalog_price is not None else None,
         sale_price_gross=float(product.sale_price_gross) if product.sale_price_gross is not None else None,
         s_u=bool(product.s_u),
         doses_short=4.0,
@@ -327,12 +324,9 @@ async def create_product(
             package_weight=payload.package_weight,
             min_unit=payload.min_unit,
             note=(payload.note or "").strip() or None,
-            ean=(payload.ean or "").strip() or None,
             salon_sale_price=payload.salon_sale_price,
             purchase_price_c=payload.purchase_price_c,
             is_locked=bool(payload.is_locked),
-            upsize_ts=(payload.upsize_ts or "").strip() or None,
-            catalog_price=payload.catalog_price,
             sale_price_gross=payload.sale_price_gross,
             s_u=bool(payload.s_u),
             is_active=True,
@@ -356,13 +350,9 @@ async def create_product(
         product.package_weight = payload.package_weight
         product.min_unit = payload.min_unit
         product.note = (payload.note or "").strip() or None
-        product.ean = (payload.ean or "").strip() or None
         product.salon_sale_price = payload.salon_sale_price
         product.purchase_price_c = payload.purchase_price_c
         product.is_locked = bool(payload.is_locked)
-        product.upsize_ts = (payload.upsize_ts or "").strip() or None
-        if payload.catalog_price is not None:
-            product.catalog_price = payload.catalog_price
         if payload.sale_price_gross is not None:
             product.sale_price_gross = payload.sale_price_gross
         product.s_u = bool(payload.s_u)
@@ -386,6 +376,13 @@ async def update_product(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
     provided = payload.model_fields_set
+    if product.is_locked:
+        allowed_when_locked = {"is_locked"}
+        if any(field not in allowed_when_locked for field in provided):
+            raise HTTPException(
+                status_code=status.HTTP_423_LOCKED,
+                detail="Product is locked. Unlock it first to edit other fields.",
+            )
     if "product_name" in provided and payload.product_name is not None:
         clean = payload.product_name.strip()
         if clean:
@@ -418,18 +415,12 @@ async def update_product(
         product.min_unit = payload.min_unit
     if "note" in provided:
         product.note = (payload.note or "").strip() or None
-    if "ean" in provided:
-        product.ean = (payload.ean or "").strip() or None
     if "salon_sale_price" in provided:
         product.salon_sale_price = payload.salon_sale_price
     if "purchase_price_c" in provided:
         product.purchase_price_c = payload.purchase_price_c
     if "is_locked" in provided and payload.is_locked is not None:
         product.is_locked = payload.is_locked
-    if "upsize_ts" in provided:
-        product.upsize_ts = (payload.upsize_ts or "").strip() or None
-    if "catalog_price" in provided:
-        product.catalog_price = payload.catalog_price
     if "sale_price_gross" in provided:
         product.sale_price_gross = payload.sale_price_gross
     if "s_u" in provided and payload.s_u is not None:

@@ -37,6 +37,9 @@ const AdminUsersPage = () => {
   const [createUsername, setCreateUsername] = useState('')
   const [createPassword, setCreatePassword] = useState('')
   const [createRole, setCreateRole] = useState<User['role']>('employee')
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [snack, setSnack] = useState<{ message: string; severity: 'success' | 'error' } | null>(null)
 
   const roleOptions = useMemo(() => {
@@ -45,9 +48,13 @@ const AdminUsersPage = () => {
         { value: 'admin', label: 'Admin' },
         { value: 'manager', label: 'Manager' },
         { value: 'employee', label: 'Employee' },
+        { value: 'receptionist', label: 'Receptionist' },
       ] as const
     }
-    return [{ value: 'employee', label: 'Employee' }] as const
+    return [
+      { value: 'employee', label: 'Employee' },
+      { value: 'receptionist', label: 'Receptionist' },
+    ] as const
   }, [currentUser?.role])
 
   const fetchUsers = async () => {
@@ -95,7 +102,7 @@ const AdminUsersPage = () => {
   }
 
   const handleResetPassword = async (id: number) => {
-    const newPassword = window.prompt('Nowe haslo (min 8 znakow):')
+    const newPassword = window.prompt('Nowe haslo (min 10, mala/duza/cyfra):')
     if (!newPassword) return
     try {
       await api.post(`/auth/users/${id}/reset-password`, { new_password: newPassword })
@@ -118,7 +125,38 @@ const AdminUsersPage = () => {
 
   const canManageRole = (role: User['role']) => {
     if (currentUser?.role === 'admin') return true
-    return currentUser?.role === 'manager' && role === 'employee'
+    return currentUser?.role === 'manager' && (role === 'employee' || role === 'receptionist')
+  }
+
+  const canEditUserRole = (target: User) => {
+    if (!canManageRole(target.role)) return false
+    if (currentUser?.role === 'admin' && target.id === currentUser.id) return false
+    return true
+  }
+
+  const canDeleteUser = (target: User) => target.id !== currentUser?.id && canManageRole(target.role)
+
+  const handleOwnPasswordChange = async () => {
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setSnack({ message: 'Uzupelnij wszystkie pola hasla', severity: 'error' })
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setSnack({ message: 'Nowe hasla nie sa takie same', severity: 'error' })
+      return
+    }
+    try {
+      await api.post('/auth/change-password', {
+        current_password: currentPassword,
+        new_password: newPassword,
+      })
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setSnack({ message: 'Haslo zostalo zmienione', severity: 'success' })
+    } catch (err: any) {
+      setSnack({ message: err?.response?.data?.detail || 'Nie udalo sie zmienic hasla', severity: 'error' })
+    }
   }
 
   return (
@@ -144,7 +182,7 @@ const AdminUsersPage = () => {
                 <TableRow key={user.id}>
                   <TableCell>{user.username}</TableCell>
                   <TableCell>
-                    {canManageRole(user.role) ? (
+                    {canEditUserRole(user) ? (
                       <FormControl size="small" sx={{ minWidth: 220 }}>
                         <InputLabel>Rola</InputLabel>
                         <Select
@@ -168,14 +206,14 @@ const AdminUsersPage = () => {
                       <IconButton
                         size="small"
                         onClick={() => handleResetPassword(user.id)}
-                        disabled={!canManageRole(user.role)}
+                        disabled={!canDeleteUser(user)}
                       >
                         <LockReset fontSize="small" />
                       </IconButton>
                       <IconButton
                         size="small"
                         onClick={() => handleDelete(user.id)}
-                        disabled={!canManageRole(user.role)}
+                        disabled={!canDeleteUser(user)}
                       >
                         <Delete fontSize="small" />
                       </IconButton>
@@ -190,6 +228,45 @@ const AdminUsersPage = () => {
               )}
             </TableBody>
           </Table>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <Typography variant="h6" sx={{ mb: 1 }}>Zmiana wlasnego hasla</Typography>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+            <TextField
+              label="Obecne haslo"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Nowe haslo"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Powtorz nowe haslo"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              fullWidth
+            />
+            <Button
+              variant="contained"
+              onClick={handleOwnPasswordChange}
+              disabled={!currentPassword || newPassword.length < 10 || newPassword !== confirmPassword}
+            >
+              Zmien haslo
+            </Button>
+          </Stack>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+            Wymagania: min. 10 znakow, mala i duza litera, cyfra, bez spacji.
+          </Typography>
         </CardContent>
       </Card>
 
@@ -231,7 +308,7 @@ const AdminUsersPage = () => {
           <Button
             variant="contained"
             onClick={handleCreate}
-            disabled={createUsername.trim().length < 3 || createPassword.length < 8}
+            disabled={createUsername.trim().length < 3 || createPassword.length < 10}
           >
             Zapisz
           </Button>

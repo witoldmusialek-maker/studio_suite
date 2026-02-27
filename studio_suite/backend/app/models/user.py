@@ -13,6 +13,7 @@ class UserRole(str, enum.Enum):
     ADMIN = "admin"
     MANAGER = "manager"
     EMPLOYEE = "employee"
+    RECEPTIONIST = "receptionist"
     OPERATOR_DISPLAYS = "operator_displays"
     OPERATOR_BELLS = "operator_bells"
     OPERATOR = "operator"  # legacy alias; traktowany jak operator wyświetlaczy
@@ -31,4 +32,3 @@ class User(Base):
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, role={self.role})>"
-

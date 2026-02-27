@@ -11,7 +11,7 @@ from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
 
-APP_VERSION = "v1.0.0-beta.2026-02-26.09"
+APP_VERSION = "v1.0.0-beta.2026-02-27.25"
 
 # Utworzenie aplikacji
 app = FastAPI(
@@ -56,6 +56,7 @@ def startup() -> None:
             if enum_exists:
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'MANAGER'"))
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'EMPLOYEE'"))
+                conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'RECEPTIONIST'"))
             conn.execute(
                 text(
                     "ALTER TABLE legacy_product_catalog_items "
@@ -89,12 +90,6 @@ def startup() -> None:
             conn.execute(
                 text(
                     "ALTER TABLE legacy_product_catalog_items "
-                    "ADD COLUMN IF NOT EXISTS catalog_price NUMERIC(10,2)"
-                )
-            )
-            conn.execute(
-                text(
-                    "ALTER TABLE legacy_product_catalog_items "
                     "ADD COLUMN IF NOT EXISTS sale_price_gross NUMERIC(10,2)"
                 )
             )
@@ -113,11 +108,12 @@ def startup() -> None:
             conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS package_weight NUMERIC(12,4)"))
             conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS min_unit NUMERIC(12,4)"))
             conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS note VARCHAR(255)"))
-            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS ean VARCHAR(64)"))
             conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS salon_sale_price NUMERIC(10,2)"))
             conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS purchase_price_c NUMERIC(10,2)"))
             conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS is_locked BOOLEAN NOT NULL DEFAULT FALSE"))
-            conn.execute(text("ALTER TABLE legacy_product_catalog_items ADD COLUMN IF NOT EXISTS upsize_ts VARCHAR(64)"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items DROP COLUMN IF EXISTS upsize_ts"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items DROP COLUMN IF EXISTS catalog_price"))
+            conn.execute(text("ALTER TABLE legacy_product_catalog_items DROP COLUMN IF EXISTS ean"))
             conn.execute(
                 text(
                     "ALTER TABLE legacy_product_catalog_items "
@@ -128,6 +124,41 @@ def startup() -> None:
                 text(
                     "ALTER TABLE salon_service_formula_items "
                     "ALTER COLUMN product_legacy_code TYPE VARCHAR(32)"
+                )
+            )
+            # Additive only migration path for new operational modules.
+            conn.execute(text("ALTER TABLE staff_members ADD COLUMN IF NOT EXISTS user_id INTEGER"))
+            conn.execute(text("ALTER TABLE staff_members ADD COLUMN IF NOT EXISTS can_be_booked BOOLEAN NOT NULL DEFAULT TRUE"))
+            conn.execute(
+                text(
+                    "DO $$ BEGIN "
+                    "IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_staff_members_user_id') THEN "
+                    "ALTER TABLE staff_members ADD CONSTRAINT fk_staff_members_user_id "
+                    "FOREIGN KEY (user_id) REFERENCES users(id); "
+                    "END IF; "
+                    "END $$;"
+                )
+            )
+            conn.execute(
+                text(
+                    "ALTER TABLE inventory_issues "
+                    "ADD COLUMN IF NOT EXISTS performed_line_id INTEGER"
+                )
+            )
+            conn.execute(
+                text(
+                    "DO $$ BEGIN "
+                    "IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_inventory_issues_performed_line_id') THEN "
+                    "ALTER TABLE inventory_issues ADD CONSTRAINT fk_inventory_issues_performed_line_id "
+                    "FOREIGN KEY (performed_line_id) REFERENCES appointment_performed_lines(id); "
+                    "END IF; "
+                    "END $$;"
+                )
+            )
+            conn.execute(
+                text(
+                    "CREATE INDEX IF NOT EXISTS ix_inventory_issues_performed_line "
+                    "ON inventory_issues(performed_line_id)"
                 )
             )
     Base.metadata.create_all(bind=engine)
@@ -147,4 +178,3 @@ async def root():
 async def health():
     """Health check"""
     return {"status": "ok", "version": APP_VERSION}
-

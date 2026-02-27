@@ -14,6 +14,8 @@ export interface Salon {
   id: number
   name: string
   city: string
+  code?: string
+  is_active?: boolean
 }
 
 export interface StaffRole {
@@ -111,6 +113,5 @@ export interface PerformedServiceLine {
   performed_at: string
   color_product_id?: number
 }
-
 
 

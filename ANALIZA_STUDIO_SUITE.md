@@ -5,12 +5,21 @@ Ten plik zastapil poprzednia analize projektu Digital Signage.
 Aktualny projekt dotyczy domeny salonowej i nie obejmuje wyswietlaczy ani dzwonkow.
 
 ## Zakres funkcjonalny
-- Uwierzytelnianie i role (`admin`, `manager`, `employee`)
+- Uwierzytelnianie i role (`admin`, `manager`, `employee`, `receptionist`)
 - Zarzadzanie salonami i personelem
 - Kartoteka klientow i kalendarz wizyt
 - Cennik uslug i pakiety (forfety)
 - Baza produktow/kolorow
 - Raporty legacy
+
+## Tryb danych
+- Frontend korzysta z API (bez mockow) dla modulu klientow i kalendarza.
+- Bootstrap danych operacyjnych:
+  - `GET /api/v1/booking/bootstrap`
+- Operacje zapisu:
+  - `POST /api/v1/booking/clients`
+  - `POST /api/v1/booking/appointments`
+  - `POST /api/v1/booking/appointments/{appointment_id}/complete`
 
 ## Architektura
 - Backend: FastAPI + SQLAlchemy + PostgreSQL
@@ -34,4 +43,4 @@ Aktualny projekt dotyczy domeny salonowej i nie obejmuje wyswietlaczy ani dzwonk
 
 ## Operacyjnie
 - Deploy: `studio_suite/scripts/deploy-dev2.ps1`
-- Smoke: `studio_suite/scripts/smoke-test.ps1` oraz `studio_suite/scripts/smoke_test.ps1`
+- Smoke: `studio_suite/scripts/smoke-test.ps1` (alias: `studio_suite/scripts/smoke_test.ps1`)

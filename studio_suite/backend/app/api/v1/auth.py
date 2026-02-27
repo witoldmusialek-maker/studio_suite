@@ -3,6 +3,7 @@ Authentication endpoints.
 """
 import asyncio
 import random
+import re
 import secrets
 import string
 from datetime import datetime, timedelta
@@ -36,14 +37,48 @@ login_protection = LoginProtection(
 )
 
 MANAGEABLE_ROLES = {
-    "admin": {"admin", "manager", "employee"},
-    "manager": {"employee"},
+    "admin": {"admin", "manager", "employee", "receptionist"},
+    "manager": {"employee", "receptionist"},
 }
+
+
+def _normalize_username(username: str) -> str:
+    return username.strip().lower()
+
+
+def _validate_password_strength(password: str, username: str | None = None) -> None:
+    issues: list[str] = []
+    if len(password) < 10:
+        issues.append("minimum length is 10 characters")
+    if not re.search(r"[a-z]", password):
+        issues.append("must contain a lowercase letter")
+    if not re.search(r"[A-Z]", password):
+        issues.append("must contain an uppercase letter")
+    if not re.search(r"\d", password):
+        issues.append("must contain a digit")
+    if any(ch.isspace() for ch in password):
+        issues.append("cannot contain spaces")
+    if issues:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password does not meet requirements: " + "; ".join(issues),
+        )
 
 
 def _generate_temporary_password(length: int = 12) -> str:
     alphabet = string.ascii_letters + string.digits
-    return "".join(secrets.choice(alphabet) for _ in range(length))
+    seed = [
+        secrets.choice(string.ascii_lowercase),
+        secrets.choice(string.ascii_uppercase),
+        secrets.choice(string.digits),
+        secrets.choice(string.ascii_lowercase),
+    ]
+    while len(seed) < max(10, length):
+        seed.append(secrets.choice(alphabet))
+    secrets.SystemRandom().shuffle(seed)
+    generated = "".join(seed)
+    _validate_password_strength(generated)
+    return generated
 
 
 def _get_client_ip(request: Request) -> str:
@@ -65,7 +100,7 @@ async def login(
     user_credentials: UserLogin,
     db: Session = Depends(get_db),
 ):
-    username = user_credentials.username.strip().lower()
+    username = _normalize_username(user_credentials.username)
     ip = _get_client_ip(request)
     ip_key = f"ip:{ip}"
     user_key = f"user:{username}"
@@ -80,7 +115,7 @@ async def login(
             detail=f"Too many failed login attempts. Retry in {blocked_seconds}s.",
         )
 
-    user = db.query(User).filter(User.username == user_credentials.username).first()
+    user = db.query(User).filter(User.username == username).first()
 
     if not user or not verify_password(user_credentials.password, user.password_hash):
         login_protection.register_failure(ip_key)
@@ -124,7 +159,10 @@ async def register(
             detail="Not enough permissions for selected role",
         )
 
-    existing_user = db.query(User).filter(User.username == user_data.username).first()
+    username = _normalize_username(user_data.username)
+    _validate_password_strength(user_data.password, username=username)
+
+    existing_user = db.query(User).filter(User.username == username).first()
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -132,7 +170,7 @@ async def register(
         )
 
     db_user = User(
-        username=user_data.username,
+        username=username,
         password_hash=get_password_hash(user_data.password),
         role=user_data.role,
     )
@@ -152,7 +190,7 @@ async def list_users(
     if current_user.role.value == "manager":
         return (
             db.query(User)
-            .filter(User.role == UserRole.EMPLOYEE)
+            .filter(User.role.in_([UserRole.EMPLOYEE, UserRole.RECEPTIONIST]))
             .order_by(User.username.asc())
             .all()
         )
@@ -178,6 +216,15 @@ async def update_user(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     if not _can_manage(current_user, payload.role.value):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions for selected role")
+    if (
+        current_user.id == user.id
+        and current_user.role == UserRole.ADMIN
+        and payload.role != UserRole.ADMIN
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Admin cannot remove own admin role",
+        )
 
     user.role = payload.role
     db.commit()
@@ -221,6 +268,8 @@ async def reset_user_password(
     if not _can_manage(current_user, user.role.value):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
 
+    if payload.new_password:
+        _validate_password_strength(payload.new_password, username=user.username)
     plain_password = payload.new_password or _generate_temporary_password()
     user.password_hash = get_password_hash(plain_password)
     db.commit()
@@ -240,6 +289,9 @@ async def change_own_password(
 ):
     if not verify_password(payload.current_password, current_user.password_hash):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is invalid")
+    if verify_password(payload.new_password, current_user.password_hash):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="New password must be different")
+    _validate_password_strength(payload.new_password, username=current_user.username)
 
     current_user.password_hash = get_password_hash(payload.new_password)
     db.commit()

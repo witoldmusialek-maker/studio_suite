@@ -216,7 +216,6 @@ def get_legacy_products(db: Session, salon_id: int) -> list[dict]:
                 "fiscal_code": product.fiscal_code,
                 "brand": product.brand_1 or product.brand_2 or None,
                 "package_size_g": float(link.package_size_g) if link.package_size_g is not None else None,
-                "catalog_price": float(product.catalog_price) if product.catalog_price is not None else None,
                 "sale_price_gross": float(product.sale_price_gross) if product.sale_price_gross is not None else None,
                 "s_u": bool(product.s_u),
                 "doses_short": float(link.doses_short),

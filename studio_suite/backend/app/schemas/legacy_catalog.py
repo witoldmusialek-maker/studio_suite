@@ -93,7 +93,6 @@ class LegacyProductCatalogRow(BaseModel):
     fiscal_code: str | None = None
     brand: str | None = None
     package_size_g: float | None = None
-    catalog_price: float | None = None
     sale_price_gross: float | None = None
     s_u: bool = False
     doses_short: float

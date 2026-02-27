@@ -5,11 +5,13 @@ import {
   Button,
   Card,
   CardContent,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
   MenuItem,
@@ -24,7 +26,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { Delete, Edit, PersonAdd, AddBusiness } from '@mui/icons-material'
+import { Delete, Edit, PersonAdd, AddBusiness, Storefront } from '@mui/icons-material'
 import { api } from '../services/api'
 
 type Salon = { id: number; code: string; name: string; is_active: boolean }
@@ -73,6 +75,9 @@ const GroupsPage = () => {
   const [staffSalonId, setStaffSalonId] = useState<number | ''>('')
   const [staffRoleId, setStaffRoleId] = useState<number | ''>('')
   const [staffActive, setStaffActive] = useState(true)
+  const [staffLocationsOpen, setStaffLocationsOpen] = useState(false)
+  const [selectedStaffForLocations, setSelectedStaffForLocations] = useState<StaffMember | null>(null)
+  const [selectedLocationSalonIds, setSelectedLocationSalonIds] = useState<number[]>([])
 
   const loadData = async () => {
     setLoading(true)
@@ -274,6 +279,47 @@ const GroupsPage = () => {
     }
   }
 
+  const openStaffLocations = async (row: StaffMember) => {
+    setError('')
+    setInfo('')
+    try {
+      const res = await api.get(`/booking/staff/${row.id}/locations`)
+      setSelectedStaffForLocations(row)
+      setSelectedLocationSalonIds((res.data || []).map((item: any) => item.salon_id))
+      setStaffLocationsOpen(true)
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie pobrac przypisania salonow.')
+    }
+  }
+
+  const saveStaffLocations = async () => {
+    if (!selectedStaffForLocations) return
+    setError('')
+    setInfo('')
+    try {
+      const currentRes = await api.get(`/booking/staff/${selectedStaffForLocations.id}/locations`)
+      const currentIds: number[] = (currentRes.data || []).map((item: any) => item.salon_id)
+      const toAdd = selectedLocationSalonIds.filter((id) => !currentIds.includes(id))
+      const toRemove = currentIds.filter((id) => !selectedLocationSalonIds.includes(id))
+
+      await Promise.all([
+        ...toAdd.map((salonId) =>
+          api.post(`/booking/staff/${selectedStaffForLocations.id}/locations`, { salon_id: salonId }),
+        ),
+        ...toRemove.map((salonId) =>
+          api.delete(`/booking/staff/${selectedStaffForLocations.id}/locations`, { params: { salon_id: salonId } }),
+        ),
+      ])
+
+      setStaffLocationsOpen(false)
+      setSelectedStaffForLocations(null)
+      setInfo('Przypisanie salonow zaktualizowane.')
+      await loadData()
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie zapisac przypisania salonow.')
+    }
+  }
+
   return (
     <Box>
       <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='space-between' sx={{ mb: 2 }}>
@@ -421,6 +467,7 @@ const GroupsPage = () => {
                 <TableRow>
                   <TableCell>Pracownik</TableCell>
                   <TableCell>Funkcja</TableCell>
+                  <TableCell>Salony</TableCell>
                   <TableCell>Salon</TableCell>
                   <TableCell>Aktywny</TableCell>
                   <TableCell align='right'>Akcje</TableCell>
@@ -431,6 +478,15 @@ const GroupsPage = () => {
                   <TableRow key={row.id}>
                     <TableCell>{row.display_name}</TableCell>
                     <TableCell>{row.role_name || '-'}</TableCell>
+                    <TableCell>
+                      <Button
+                        size='small'
+                        startIcon={<Storefront />}
+                        onClick={() => openStaffLocations(row)}
+                      >
+                        Salony
+                      </Button>
+                    </TableCell>
                     <TableCell>
                       <FormControl size='small' sx={{ minWidth: 220 }}>
                         <InputLabel>Salon</InputLabel>
@@ -454,7 +510,7 @@ const GroupsPage = () => {
                   </TableRow>
                 ))}
                 {!filteredStaff.length && !loading && (
-                  <TableRow><TableCell colSpan={5}>Brak pracownikow</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={6}>Brak pracownikow</TableCell></TableRow>
                 )}
               </TableBody>
             </Table>
@@ -517,6 +573,36 @@ const GroupsPage = () => {
           <Button variant='contained' onClick={saveStaff} disabled={staffName.trim().length === 0}>
             Zapisz
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={staffLocationsOpen} onClose={() => setStaffLocationsOpen(false)} fullWidth maxWidth='sm'>
+        <DialogTitle>
+          Salony pracownika: {selectedStaffForLocations?.display_name}
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={0.5} sx={{ mt: 1 }}>
+            {salons.map((salon) => (
+              <FormControlLabel
+                key={salon.id}
+                control={
+                  <Checkbox
+                    checked={selectedLocationSalonIds.includes(salon.id)}
+                    onChange={(_, checked) =>
+                      setSelectedLocationSalonIds((prev) =>
+                        checked ? [...prev, salon.id] : prev.filter((id) => id !== salon.id),
+                      )
+                    }
+                  />
+                }
+                label={salon.name}
+              />
+            ))}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setStaffLocationsOpen(false)}>Anuluj</Button>
+          <Button variant='contained' onClick={saveStaffLocations}>Zapisz</Button>
         </DialogActions>
       </Dialog>
     </Box>

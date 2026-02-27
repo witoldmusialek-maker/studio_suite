@@ -81,12 +81,9 @@ class ProductCreate(BaseModel):
     package_weight: float | None = Field(default=None, ge=0)
     min_unit: float | None = Field(default=None, ge=0)
     note: str | None = Field(default=None, max_length=255)
-    ean: str | None = Field(default=None, max_length=64)
     salon_sale_price: float | None = Field(default=None, ge=0)
     purchase_price_c: float | None = Field(default=None, ge=0)
     is_locked: bool = False
-    upsize_ts: str | None = Field(default=None, max_length=64)
-    catalog_price: float | None = Field(default=None, ge=0)
     sale_price_gross: float | None = Field(default=None, ge=0)
     s_u: bool = False
     doses_short: float = Field(default=4, gt=0)
@@ -111,12 +108,9 @@ class ProductUpdate(BaseModel):
     package_weight: float | None = Field(default=None, ge=0)
     min_unit: float | None = Field(default=None, ge=0)
     note: str | None = Field(default=None, max_length=255)
-    ean: str | None = Field(default=None, max_length=64)
     salon_sale_price: float | None = Field(default=None, ge=0)
     purchase_price_c: float | None = Field(default=None, ge=0)
     is_locked: bool | None = None
-    upsize_ts: str | None = Field(default=None, max_length=64)
-    catalog_price: float | None = Field(default=None, ge=0)
     sale_price_gross: float | None = Field(default=None, ge=0)
     s_u: bool | None = None
     doses_short: float | None = Field(default=None, gt=0)
@@ -145,12 +139,9 @@ class ProductRead(BaseModel):
     package_weight: float | None = None
     min_unit: float | None = None
     note: str | None = None
-    ean: str | None = None
     salon_sale_price: float | None = None
     purchase_price_c: float | None = None
     is_locked: bool = False
-    upsize_ts: str | None = None
-    catalog_price: float | None = None
     sale_price_gross: float | None = None
     s_u: bool = False
     doses_short: float

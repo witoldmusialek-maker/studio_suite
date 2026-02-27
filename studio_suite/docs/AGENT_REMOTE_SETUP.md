@@ -77,6 +77,8 @@ Opcjonalnie publiczny:
 powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\smoke-test.ps1 -BaseUrl https://dev2.witold.ovh
 ```
 
+Alias kompatybilnosci: `studio_suite/scripts/smoke_test.ps1` (deleguje do `smoke-test.ps1`).
+
 ## Standardowy flow pracy
 1. `git checkout master`
 2. `git pull origin master`
@@ -120,4 +122,3 @@ docker compose logs --no-color backend --tail 200
 docker compose up -d --remove-orphans
 ```
 - Nie pracuj w kopii repo poza `~/projects/projekt2_repo`, bo deploy skrypt bazuje na tej lokalizacji.
-

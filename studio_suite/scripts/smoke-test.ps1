@@ -1,25 +1,56 @@
 param(
-  [string]$BaseUrl = "https://dev2.witold.ovh"
+    [string]$BaseUrl = "http://localhost:8000",
+    [string]$Username = "admin",
+    [string]$Password = "password123"
 )
 
 $ErrorActionPreference = "Stop"
 
-function Get-StatusCode([string]$Url, [string]$Method = "GET") {
-  $code = curl.exe -s -o NUL -w "%{http_code}" -X $Method $Url
-  return [int]$code
+function Step([string]$Message) {
+    Write-Host "[SMOKE] $Message" -ForegroundColor Cyan
 }
 
-function Assert-Status([string]$Url, [int]$Expected, [string]$Method = "GET") {
-  $got = Get-StatusCode -Url $Url -Method $Method
-  if ($got -ne $Expected) {
-    throw "FAIL $Method $Url -> $got (expected $Expected)"
-  }
-  Write-Host "OK   $Method $Url -> $got"
+function Ensure([bool]$Condition, [string]$Message) {
+    if (-not $Condition) {
+        throw $Message
+    }
 }
 
-Write-Host "Smoke test: $BaseUrl"
-Assert-Status "$BaseUrl/" 200
-Assert-Status "$BaseUrl/health" 200
-Assert-Status "$BaseUrl/api/v1/auth/login" 405 "GET"
+Step "Checking health endpoint"
+$health = Invoke-RestMethod -Uri "$BaseUrl/health" -Method Get
+Ensure ($health.status -eq "ok") "Health check failed"
 
-Write-Host "DONE: smoke test przeszed³."
+Step "Logging in as $Username"
+$loginBody = @{ username = $Username; password = $Password } | ConvertTo-Json
+$tokenResponse = Invoke-RestMethod -Uri "$BaseUrl/api/v1/auth/login" -Method Post -ContentType "application/json" -Body $loginBody
+Ensure (-not [string]::IsNullOrWhiteSpace($tokenResponse.access_token)) "Login did not return access_token"
+$headers = @{ Authorization = "Bearer $($tokenResponse.access_token)" }
+
+Step "Validating auth/me"
+$me = Invoke-RestMethod -Uri "$BaseUrl/api/v1/auth/me" -Method Get -Headers $headers
+Ensure ($me.username -eq $Username) "auth/me returned unexpected username"
+
+Step "Checking resources/salons"
+$salons = Invoke-RestMethod -Uri "$BaseUrl/api/v1/resources/salons" -Method Get -Headers $headers
+Ensure ($null -ne $salons) "resources/salons returned null"
+
+$salonId = $null
+if ($salons.Count -gt 0) {
+    $salonId = $salons[0].id
+}
+
+if ($null -ne $salonId) {
+    Step "Checking legacy/catalog for salon_id=$salonId"
+    $catalog = Invoke-RestMethod -Uri "$BaseUrl/api/v1/legacy/catalog?salon_id=$salonId" -Method Get -Headers $headers
+    Ensure ($null -ne $catalog) "legacy/catalog returned null"
+}
+
+Step "Checking booking/bootstrap"
+$bootstrap = Invoke-RestMethod -Uri "$BaseUrl/api/v1/booking/bootstrap" -Method Get -Headers $headers
+Ensure ($null -ne $bootstrap) "booking/bootstrap returned null"
+
+Step "Checking legacy/reports/summary"
+$summary = Invoke-RestMethod -Uri "$BaseUrl/api/v1/legacy/reports/summary" -Method Get -Headers $headers
+Ensure ($null -ne $summary) "legacy/reports/summary returned null"
+
+Write-Host "SMOKE TEST PASSED" -ForegroundColor Green

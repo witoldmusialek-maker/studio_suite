@@ -16,6 +16,7 @@ import {
 import {
   CalendarMonth,
   Groups,
+  Inventory2,
   LocalOffer,
   Logout,
   Palette,
@@ -26,9 +27,9 @@ import {
   ViewKanban,
 } from '@mui/icons-material'
 import { useAuth } from '../contexts/AuthContext'
+import { useBooking } from '../contexts/BookingContext'
 import { APP_VERSION } from '../version'
 import { AppSection, canAccess } from '../config/permissions'
-import { mockSalons } from '../mocks/bookingData'
 
 const drawerWidth = 280
 
@@ -51,17 +52,19 @@ const navItems: NavItem[] = [
   { label: 'Cennik uslug', path: '/services', section: 'services', icon: <LocalOffer /> },
   { label: 'Pakiety (forfety)', path: '/bundles', section: 'bundles', icon: <ViewKanban /> },
   { label: 'Farby i kolory', path: '/colors', section: 'colors', icon: <Palette /> },
+  { label: 'Magazyn', path: '/inventory/stock-levels', section: 'inventory', icon: <Inventory2 /> },
   { label: 'Raporty', path: '/reports', section: 'reports', icon: <Summarize /> },
   { label: 'Uzytkownicy i role', path: '/users', section: 'users', icon: <People /> },
 ]
 
 const Layout = ({ children }: LayoutProps) => {
   const { user, logout } = useAuth()
+  const { salons: allSalons } = useBooking()
   const navigate = useNavigate()
   const location = useLocation()
 
   const visible = navItems.filter((item) => canAccess(user, item.section))
-  const salons = mockSalons.filter((salon) => user?.assigned_salon_ids?.includes(salon.id))
+  const salons = allSalons.filter((salon) => user?.assigned_salon_ids?.includes(salon.id))
   const showSalonChips = user?.role !== 'receptionist'
 
   return (
@@ -114,7 +117,14 @@ const Layout = ({ children }: LayoutProps) => {
         <List>
           {visible.map((item) => (
             <ListItem key={item.path} disablePadding>
-              <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)}>
+              <ListItemButton
+                selected={
+                  location.pathname === item.path ||
+                  location.pathname.startsWith(`${item.path}/`) ||
+                  (item.path.startsWith('/inventory') && location.pathname.startsWith('/inventory/'))
+                }
+                onClick={() => navigate(item.path)}
+              >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItemButton>

@@ -27,6 +27,12 @@ const mapRole = (role: string): User['role'] => {
   return 'manager'
 }
 
+const resolveAssignedSalonIds = (role: User['role'], salonIds: number[]) => {
+  if (salonIds.length === 0) return [1]
+  if (role === 'receptionist') return [salonIds[0]]
+  return salonIds
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
@@ -40,13 +46,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       try {
         const me = await api.get('/auth/me')
+        const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
         const payload = me.data
+        const role = mapRole(payload.role)
+        const salonIds = (salonsRes.data || []).map((salon) => salon.id)
         const mappedUser: User = {
           id: payload.id,
           username: payload.username,
-          role: mapRole(payload.role),
+          role,
           full_name: payload.username,
-          assigned_salon_ids: [1],
+          assigned_salon_ids: resolveAssignedSalonIds(role, salonIds),
         }
         localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
         setUser(mappedUser)
@@ -67,13 +76,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(TOKEN_KEY, token)
 
     const me = await api.get('/auth/me')
+    const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
     const payload = me.data
+    const role = mapRole(payload.role)
+    const salonIds = (salonsRes.data || []).map((salon) => salon.id)
     const mappedUser: User = {
       id: payload.id,
       username: payload.username,
-      role: mapRole(payload.role),
+      role,
       full_name: payload.username,
-      assigned_salon_ids: [1],
+      assigned_salon_ids: resolveAssignedSalonIds(role, salonIds),
     }
     localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
     setUser(mappedUser)
