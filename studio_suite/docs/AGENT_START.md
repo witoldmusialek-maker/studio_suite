@@ -5,11 +5,12 @@ Szybki start pracy nad aktualnym projektem salonowym (bez modulow Digital Signag
 
 ## Czytaj w tej kolejnosci (2-3 min)
 1. `studio_suite/docs/AGENT_MAP.md`
-2. `README.md`
-3. `studio_suite/docker-compose.yml`
-4. `studio_suite/frontend/src/services/api.ts`
-5. `studio_suite/backend/app/main.py`
-6. `studio_suite/backend/app/api/v1/auth.py`
+2. `studio_suite/docs/AGENT_REMOTE_SETUP.md`
+3. `README.md`
+4. `studio_suite/docker-compose.yml`
+5. `studio_suite/frontend/src/services/api.ts`
+6. `studio_suite/backend/app/main.py`
+7. `studio_suite/backend/app/api/v1/auth.py`
 
 ## Szybka diagnostyka lokalnie
 - `docker compose -f studio_suite/docker-compose.yml ps`
