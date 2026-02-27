@@ -45,9 +45,6 @@ const AdminUsersPage = () => {
         { value: 'admin', label: 'Admin' },
         { value: 'manager', label: 'Manager' },
         { value: 'employee', label: 'Employee' },
-        { value: 'operator_displays', label: 'Operator Displays' },
-        { value: 'operator_bells', label: 'Operator Bells' },
-        { value: 'operator', label: 'Operator' },
       ] as const
     }
     return [{ value: 'employee', label: 'Employee' }] as const

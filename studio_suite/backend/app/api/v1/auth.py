@@ -36,7 +36,7 @@ login_protection = LoginProtection(
 )
 
 MANAGEABLE_ROLES = {
-    "admin": {"admin", "manager", "employee", "operator_displays", "operator_bells", "operator"},
+    "admin": {"admin", "manager", "employee"},
     "manager": {"employee"},
 }
 

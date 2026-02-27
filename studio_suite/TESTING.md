@@ -1,4 +1,4 @@
-# TESTING - Studio Suite v1
+﻿# TESTING - Studio Suite
 
 ## Recommended path (Windows + Docker)
 
@@ -22,50 +22,28 @@ powershell -ExecutionPolicy Bypass -File .\scripts\smoke_test.ps1
 ## Manual functional checklist
 
 1. Login
-- Open `http://localhost:3000`
+- Open `http://localhost:8082`
 - Login as `admin / password123`
 - Verify dashboard loads
 
-2. Displays
-- Add a display from `Displays` page
-- Edit name/orientation/resolution
-- Delete display
+2. Salons and staff
+- Open `Resources`
+- Add/edit/delete salon
+- Add/edit/delete staff member
 
-3. Content
-- Upload PNG/JPG in `Content`
-- Verify item appears
-- Verify thumbnail appears after processing
-- Delete content
+3. Legacy catalog
+- Open `Services` and verify CRUD for service
+- Open `Bundles` and verify add/remove bundle item
+- Open `Colors` and verify product list loads
 
-4. Heartbeat/status
-- Register display through API (`/displays/register`)
-- Send heartbeat (`/displays/{id}/heartbeat`)
-- Verify `status=online` and `last_seen` updates
-
-5. Schedules
-- Create schedule active for current time
-- Verify `/schedules/display/{id}/current` returns assigned content
-
-6. Groups
-- Create `horizontal` group
-- Add first display (must work)
-- Add second display (must work)
-
-7. Reports
-- Check `daily`, `weekly`, `offline`
-- Check `export-csv` endpoints return CSV
-
-8. Bells
-- Upload sound
-- Create bell schedule for current minute
-- Check `/bells/display/{id}/play-command`
-- Call `/bells/mark-played`
-- Verify history in `/bells/{id}/history`
+4. Reports
+- Open `Reports`
+- Change date range and verify tables load
 
 ## API references
 
-- Swagger: `http://localhost:8000/docs`
-- Health: `http://localhost:8000/health`
+- Swagger: `http://localhost:8003/docs`
+- Health: `http://localhost:8003/health`
 
 ## Stop environment
 
@@ -73,4 +51,3 @@ powershell -ExecutionPolicy Bypass -File .\scripts\smoke_test.ps1
 cd studio_suite
 docker compose down
 ```
-

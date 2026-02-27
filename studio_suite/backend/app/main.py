@@ -54,8 +54,6 @@ def startup() -> None:
                 text("SELECT 1 FROM pg_type WHERE typname = 'userrole'")
             ).scalar()
             if enum_exists:
-                conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_DISPLAYS'"))
-                conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'OPERATOR_BELLS'"))
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'MANAGER'"))
                 conn.execute(text("ALTER TYPE userrole ADD VALUE IF NOT EXISTS 'EMPLOYEE'"))
             conn.execute(

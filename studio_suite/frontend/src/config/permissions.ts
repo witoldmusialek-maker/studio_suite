@@ -16,9 +16,6 @@ const roleSections: Record<User['role'], AppSection[]> = {
   manager: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'reports', 'users'],
   employee: ['dashboard'],
   receptionist: ['dashboard', 'calendar', 'clients'],
-  operator_displays: ['dashboard'],
-  operator_bells: ['dashboard'],
-  operator: ['dashboard'],
 }
 
 export const canAccess = (user: User | null | undefined, section: AppSection): boolean => {

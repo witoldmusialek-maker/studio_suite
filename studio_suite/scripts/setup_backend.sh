@@ -25,7 +25,7 @@ fi
 
 echo "Backend zainstalowany!"
 echo "NastÄ™pne kroki:"
-echo "1. Skonfiguruj .env (DATABASE_URL, REDIS_URL, SECRET_KEY)"
+echo "1. Skonfiguruj .env (DATABASE_URL, SECRET_KEY)"
 echo "2. UtwĂłrz bazÄ™ danych PostgreSQL"
 echo "3. Uruchom migracje: alembic upgrade head"
 echo "4. Uruchom serwer: uvicorn app.main:app --reload"

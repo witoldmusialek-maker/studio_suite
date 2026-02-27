@@ -13,9 +13,6 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql://user:password@localhost:5432/studio_suite"
 
-    # Redis
-    REDIS_URL: str = "redis://localhost:6379/0"
-
     # Security
     SECRET_KEY: str = "change-this-in-production"
     ALGORITHM: str = "HS256"
@@ -41,21 +38,10 @@ class Settings(BaseSettings):
     CONTENT_PROCESSED_DIR: str = "./content/processed"
     CONTENT_THUMBNAILS_DIR: str = "./content/thumbnails"
 
-    # Celery
-    CELERY_BROKER_URL: str = "redis://localhost:6379/0"
-    CELERY_RESULT_BACKEND: str = "redis://localhost:6379/0"
-
     # Google Drive (opcjonalnie)
     GOOGLE_DRIVE_CLIENT_ID: Optional[str] = None
     GOOGLE_DRIVE_CLIENT_SECRET: Optional[str] = None
     GOOGLE_DRIVE_REDIRECT_URI: Optional[str] = None
-
-    # Bells
-    BELLS_SOUNDS_DIR: str = "./content/sounds"
-    BELL_SERVER_PLAYBACK_ENABLED: bool = False
-    BELL_CLIENT_PLAYBACK_ENABLED: bool = True
-    BELL_SERVER_PLAYER_CMD: Optional[str] = None
-    BELL_SERVER_PLAYER_TIMEOUT_SEC: int = 20
 
     @field_validator("SECRET_KEY")
     @classmethod

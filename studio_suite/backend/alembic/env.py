@@ -21,7 +21,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Import all models here for autogenerate
-from app.models import user, display, group, content, schedule, salon_core
+from app.models import user, salon_core
 
 target_metadata = Base.metadata
 

@@ -20,10 +20,7 @@ const mapRole = (role: string): User['role'] => {
     role === 'admin' ||
     role === 'manager' ||
     role === 'employee' ||
-    role === 'receptionist' ||
-    role === 'operator_displays' ||
-    role === 'operator_bells' ||
-    role === 'operator'
+    role === 'receptionist'
   ) {
     return role
   }
