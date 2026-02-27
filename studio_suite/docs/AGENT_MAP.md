@@ -1,31 +1,35 @@
-# AGENT MAP (Studio Suite)
+﻿# AGENT MAP (Studio Suite)
+
+## Aktualny zakres
+Studio Suite to projekt domeny salonowej:
+- auth i role
+- salony, pracownicy, produkty
+- cennik uslug i pakiety
+- raporty legacy
+
+Poza zakresem:
+- wyswietlacze
+- dzwonki
+- klienci urzadzen
+- Celery/Redis runtime
 
 ## Struktura
-- `studio_suite/backend` - FastAPI + Celery + SQLAlchemy
+- `studio_suite/backend` - FastAPI + SQLAlchemy
 - `studio_suite/frontend` - React + Vite + MUI
-- `studio_suite/docker-compose.yml` - gĹ‚Ăłwny runtime
-- `studio_suite/nginx` - pomocnicze konfiguracje nginx
-- `studio_suite/scripts` - smoke/test narzÄ™dzia
+- `studio_suite/docker-compose.yml` - runtime (db, backend, frontend)
+- `studio_suite/scripts` - deploy i smoke test
 
 ## Krytyczne pliki
 - Backend entry: `backend/app/main.py`
+- API routing: `backend/app/api/v1/__init__.py`
 - Auth API: `backend/app/api/v1/auth.py`
+- Resource API: `backend/app/api/v1/resources.py`
+- Legacy APIs: `backend/app/api/v1/legacy_catalog.py`, `backend/app/api/v1/legacy_reports.py`
 - Frontend API client: `frontend/src/services/api.ts`
-- Frontend websocket: `frontend/src/services/websocket.ts`
-- Status page: `frontend/src/pages/StatusPage.tsx`
+- Frontend routing: `frontend/src/App.tsx`
 - Compose: `docker-compose.yml`
-- Runtime env (nie commitowaÄ‡): `backend/.env`
 
-## Routing produkcyjny (obecny)`r`n- Gateway reverse proxy: `gateway` (`192.168.200.115`)
-- FE: `https://dev2.witold.ovh/`
-- API: `https://dev2.witold.ovh/api/v1/...`
-
-## Deploy flow`r`n0. Gateway: aktywny vhost `dev2.witold.ovh` w `gateway-services/nginx/conf.d`
-1. Lokalnie: commit/push `master`
-2. dev1:
-   - `cd ~/projects/studio_suite_repo`
-   - `git pull origin master`
-   - `cd studio_suite`
-   - `docker compose up -d --build`
-
-
+## Deploy flow
+1. commit/push `master`
+2. `studio_suite/scripts/deploy-dev2.ps1`
+3. ewentualne sprzatanie orphanow: `docker compose up -d --remove-orphans`

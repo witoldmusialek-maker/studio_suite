@@ -23,7 +23,9 @@ cd studio_suite\backend
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
-copy .env.example .env
+# utworz plik .env z minimum:
+# DATABASE_URL=postgresql://user:password@localhost:5432/studio_suite
+# SECRET_KEY=change-me
 uvicorn app.main:app --reload --port 8000
 ```
 
