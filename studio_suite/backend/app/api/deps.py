@@ -101,11 +101,10 @@ def _assert_tenant_module_enabled(db: Session, tenant_id: int, module_code: str)
         )
         .first()
     )
-    # Backward-compatible policy: missing row means module enabled.
-    if row is not None and not bool(row[0]):
+    if row is None or not bool(row[0]):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Module {code} is disabled for this tenant",
+            detail=f"Module {code} is not licensed for this tenant",
         )
 
 

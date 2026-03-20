@@ -10,6 +10,13 @@ interface AuthContextType {
   loading: boolean
 }
 
+type TenantContextResponse = {
+  licenses?: Array<{
+    module_code?: string
+    is_enabled?: boolean
+  }>
+}
+
 const TOKEN_KEY = 'token'
 const USER_KEY = 'booking_user'
 
@@ -38,6 +45,7 @@ const resolveAssignedSalonIds = (role: User['role'], salonIds: number[]) => {
 const buildMappedUser = (
   payload: any,
   fallbackSalonIds: number[],
+  licensedModules: string[],
 ): User => {
   const role = mapRole(payload.role)
   const isSuperadmin = Boolean(payload.is_superadmin)
@@ -61,7 +69,18 @@ const buildMappedUser = (
     totp_enabled: Boolean(payload.totp_enabled),
     tenant_id: typeof payload.tenant_id === 'number' ? payload.tenant_id : undefined,
     is_superadmin: isSuperadmin,
+    licensed_modules: licensedModules,
   }
+}
+
+const fetchLicensedModules = async (isSuperadmin: boolean): Promise<string[]> => {
+  if (isSuperadmin) return []
+  const res = await api.get<TenantContextResponse>('/auth/tenant-context')
+  const rows = res.data?.licenses || []
+  return rows
+    .filter((row) => Boolean(row?.is_enabled))
+    .map((row) => String(row?.module_code || '').trim().toUpperCase())
+    .filter((code) => code.length > 0)
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -78,12 +97,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const me = await api.get('/auth/me')
         const payload = me.data
+        const licensedModules = await fetchLicensedModules(Boolean(payload?.is_superadmin))
         let salonIds: number[] = []
         if (!payload?.is_superadmin) {
           const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
           salonIds = (salonsRes.data || []).map((salon) => salon.id)
         }
-        const mappedUser = buildMappedUser(payload, salonIds)
+        const mappedUser = buildMappedUser(payload, salonIds, licensedModules)
         localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
         setUser(mappedUser)
       } catch {
@@ -105,12 +125,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const me = await api.get('/auth/me')
       const payload = me.data
+      const licensedModules = await fetchLicensedModules(Boolean(payload?.is_superadmin))
       let salonIds: number[] = []
       if (!payload?.is_superadmin) {
         const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
         salonIds = (salonsRes.data || []).map((salon) => salon.id)
       }
-      const mappedUser = buildMappedUser(payload, salonIds)
+      const mappedUser = buildMappedUser(payload, salonIds, licensedModules)
       localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
       setUser(mappedUser)
     } catch (err: any) {

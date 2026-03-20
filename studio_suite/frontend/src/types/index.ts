@@ -17,6 +17,7 @@ export interface User {
   totp_enabled?: boolean
   tenant_id?: number
   is_superadmin?: boolean
+  licensed_modules?: string[]
 }
 
 export interface Salon {

@@ -64,8 +64,7 @@ def _is_public_booking_enabled_for_tenant(db: Session, tenant_id: int) -> bool:
         )
         .first()
     )
-    # Backward-compatible: missing row means enabled.
-    return True if row is None else bool(row[0])
+    return bool(row[0]) if row is not None else False
 
 
 def _assert_public_booking_enabled_for_salon(db: Session, salon_id: int) -> Salon:
