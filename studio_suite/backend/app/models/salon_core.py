@@ -11,6 +11,7 @@ from sqlalchemy import (
     Numeric,
     String,
     Text,
+    LargeBinary,
     Time,
     UniqueConstraint,
     Index,
@@ -24,6 +25,7 @@ class Salon(Base):
     __tablename__ = "salons"
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     code = Column(String(16), unique=True, nullable=False, index=True)
     name = Column(String(128), nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
@@ -46,6 +48,7 @@ class StaffMember(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     # UserRole (admin/manager/employee/receptionist) stays in users for authz.
     # Salon-operational roles (hairdresser/assistant/receptionist/...) are mapped via StaffRole.
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
@@ -55,6 +58,10 @@ class StaffMember(Base):
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
     display_name = Column(String(256), nullable=False)
+    public_bio = Column(Text, nullable=True)
+    public_photo_url = Column(String(1024), nullable=True)
+    public_photo_data = Column(LargeBinary, nullable=True)
+    public_photo_content_type = Column(String(64), nullable=True)
     can_be_booked = Column(Boolean, nullable=False, default=True)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -91,6 +98,24 @@ class StaffWeeklySchedule(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class StaffMonthlySchedule(Base):
+    __tablename__ = "staff_monthly_schedules"
+    __table_args__ = (
+        UniqueConstraint("staff_id", "salon_id", "work_date", "time_from", "time_to", name="uq_staff_monthly_schedule_slot"),
+        Index("ix_staff_monthly_schedules_staff_date", "staff_id", "work_date"),
+        Index("ix_staff_monthly_schedules_salon_date", "salon_id", "work_date"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    staff_id = Column(Integer, ForeignKey("staff_members.id"), nullable=False, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    work_date = Column(Date, nullable=False, index=True)
+    time_from = Column(Time, nullable=False)
+    time_to = Column(Time, nullable=False)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class StaffTimeOff(Base):
     __tablename__ = "staff_time_off"
     __table_args__ = (
@@ -110,6 +135,7 @@ class Customer(Base):
     __tablename__ = "customers"
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     legacy_code = Column(String(64), nullable=True, index=True)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
@@ -121,15 +147,102 @@ class Customer(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class ClientCard(Base):
+    __tablename__ = "client_cards"
+    __table_args__ = (
+        UniqueConstraint("client_id", name="uq_client_cards_client"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    client_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
+    discount_pct = Column(Numeric(6, 2), nullable=False, default=0)
+    expiry = Column(Date, nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Invitation(Base):
+    __tablename__ = "invitations"
+    __table_args__ = (
+        Index("ix_invitations_client_expiry", "client_id", "expiry"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    client_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
+    service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=False, index=True)
+    expiry = Column(Date, nullable=True, index=True)
+    used_on_payment_id = Column(Integer, ForeignKey("payments.id"), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+    __table_args__ = (
+        Index("ix_notifications_appointment_type", "appointment_id", "notification_type"),
+        Index("ix_notifications_status_created", "status", "created_at"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=False, index=True)
+    phone = Column(String(64), nullable=False, index=True)
+    notification_type = Column(String(32), nullable=False, default="confirmation")
+    status = Column(String(16), nullable=False, default="pending", index=True)
+    message = Column(String(512), nullable=False)
+    provider_message_id = Column(String(64), nullable=True, index=True)
+    error_message = Column(String(255), nullable=True)
+    sent_at = Column(DateTime(timezone=False), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class SmsGatewayPairingCode(Base):
+    __tablename__ = "sms_gateway_pairing_codes"
+    __table_args__ = (
+        Index("ix_sms_gateway_pairing_codes_code", "pair_code", unique=True),
+        Index("ix_sms_gateway_pairing_codes_salon_expiry", "salon_id", "expires_at"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    pair_code = Column(String(32), nullable=False, index=True)
+    expires_at = Column(DateTime(timezone=False), nullable=False, index=True)
+    is_used = Column(Boolean, nullable=False, default=False, index=True)
+    used_at = Column(DateTime(timezone=False), nullable=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class SmsGatewayDevice(Base):
+    __tablename__ = "sms_gateway_devices"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "salon_id", "device_uuid", name="uq_sms_gateway_device_tenant_salon_uuid"),
+        Index("ix_sms_gateway_devices_salon_active", "salon_id", "is_active"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    device_uuid = Column(String(128), nullable=False, index=True)
+    device_name = Column(String(128), nullable=False)
+    endpoint_url = Column(String(512), nullable=False)
+    auth_token = Column(String(128), nullable=False)
+    app_version = Column(String(32), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True, index=True)
+    last_seen_at = Column(DateTime(timezone=False), nullable=True, index=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class Appointment(Base):
     __tablename__ = "appointments"
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
     client_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
     start_at = Column(DateTime(timezone=False), nullable=False, index=True)
     end_at = Column(DateTime(timezone=False), nullable=False, index=True)
     status = Column(String(16), nullable=False, default="planned")
+    allow_overlap = Column(Boolean, nullable=False, default=False)
     bundle_id = Column(Integer, ForeignKey("bundle_catalog.id"), nullable=True, index=True)
     total_price_snapshot = Column(Numeric(10, 2), nullable=False, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -189,9 +302,35 @@ class AppointmentPerformedLine(Base):
     service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=False, index=True)
     worker_id = Column(Integer, ForeignKey("staff_members.id"), nullable=False, index=True)
     worker_role_id = Column(Integer, ForeignKey("staff_roles.id"), nullable=False, index=True)
+    service_name_snapshot = Column(String(255), nullable=True)
+    list_price_snapshot = Column(Numeric(10, 2), nullable=True)
+    discount_allocated_snapshot = Column(Numeric(10, 2), nullable=True)
+    sold_as_bundle = Column(Boolean, nullable=False, default=False)
+    bundle_id_snapshot = Column(Integer, ForeignKey("bundle_catalog.id"), nullable=True, index=True)
     price_snapshot = Column(Numeric(10, 2), nullable=False, default=0)
     performed_at = Column(DateTime(timezone=False), nullable=False, index=True)
     color_product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class PerformedLineResource(Base):
+    __tablename__ = "performedline_resources"
+    __table_args__ = (
+        UniqueConstraint("performedline_id", "recipeitem_id", name="uq_performedline_resources_line_recipe"),
+        Index("ix_performedline_resources_line", "performedline_id"),
+        Index("ix_performedline_resources_product", "product_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    performedline_id = Column(Integer, ForeignKey("appointment_performed_lines.id", ondelete="CASCADE"), nullable=False, index=True)
+    recipeitem_id = Column(Integer, ForeignKey("service_recipe_items.id", ondelete="CASCADE"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    product_family_snapshot = Column(String(100), nullable=True)
+    product_name_snapshot = Column(String(255), nullable=True)
+    quantity_used = Column(Numeric(10, 3), nullable=False, default=0)
+    quantity_unit = Column(String(20), nullable=True)
+    unit_cost_snapshot = Column(Numeric(10, 2), nullable=True)
+    total_cost_snapshot = Column(Numeric(10, 2), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
@@ -222,6 +361,7 @@ class ServiceCatalogItem(Base):
     duration_minutes = Column(Integer, nullable=False, default=0)
     default_price = Column(Numeric(10, 2), nullable=False, default=0)
     holiday_price = Column(Numeric(10, 2), nullable=False, default=0)
+    bookable = Column(Boolean, nullable=False, default=True)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -269,6 +409,35 @@ class LegacyProductCatalogItem(Base):
     stock_mx03 = Column(Numeric(12, 2), nullable=True, default=0)
     stock_mx04 = Column(Numeric(12, 2), nullable=True, default=0)
     stock_mx07 = Column(Numeric(12, 2), nullable=True, default=0)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ProductFamilyDictionary(Base):
+    __tablename__ = "product_family_dictionaries"
+    __table_args__ = (
+        UniqueConstraint("code", name="uq_product_family_dictionaries_code"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    code = Column(String(64), nullable=False, index=True)
+    name = Column(String(128), nullable=False)
+    description = Column(String(255), nullable=True)
+    sort_order = Column(Integer, nullable=False, default=100)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ProductFamilyLegacyRule(Base):
+    __tablename__ = "product_family_legacy_rules"
+    __table_args__ = (
+        Index("ix_product_family_legacy_rules_family_sort", "family_id", "sort_order"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    family_id = Column(Integer, ForeignKey("product_family_dictionaries.id", ondelete="CASCADE"), nullable=False, index=True)
+    match_token = Column(String(128), nullable=False, index=True)
+    sort_order = Column(Integer, nullable=False, default=100)
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -330,10 +499,25 @@ class ServiceRecipeItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     service_id = Column(Integer, ForeignKey("service_catalog_items.id", ondelete="CASCADE"), nullable=False, index=True)
+    variant_code = Column(String(32), nullable=True, index=True)
+    position = Column(Integer, nullable=False, default=1)
     product_family = Column(String(100), nullable=True)
     product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=True, index=True)
+    product_label_snapshot = Column(String(255), nullable=True)
+    is_optional = Column(Boolean, nullable=False, default=False)
+    is_required = Column(Boolean, nullable=False, default=True)
+    quantity_mode = Column(String(16), nullable=False, default="EXACT")
     planned_quantity = Column(Numeric(10, 3), nullable=False, default=0)
+    planned_min = Column(Numeric(10, 3), nullable=True)
+    planned_default = Column(Numeric(10, 3), nullable=True)
+    planned_max = Column(Numeric(10, 3), nullable=True)
     unit = Column(String(20), nullable=False, default="PCS")
+    recipe_unit_label = Column(String(20), nullable=True)
+    package_unit_count = Column(Numeric(10, 3), nullable=True)
+    package_unit_label = Column(String(20), nullable=True)
+    package_size_value = Column(Numeric(10, 3), nullable=True)
+    package_size_unit = Column(String(20), nullable=True)
+    inventory_mode = Column(String(24), nullable=False, default="PER_SERVICE")
     note = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -365,6 +549,47 @@ class BundleCatalogItem(Base):
     override_price = Column(Numeric(10, 2), nullable=True)
 
 
+class StaffBundleOffer(Base):
+    __tablename__ = "staff_bundle_offers"
+    __table_args__ = (
+        UniqueConstraint("staff_id", "bundle_id", name="uq_staff_bundle_offer_staff_bundle"),
+        Index("ix_staff_bundle_offers_salon_staff", "salon_id", "staff_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    staff_id = Column(Integer, ForeignKey("staff_members.id"), nullable=False, index=True)
+    bundle_id = Column(Integer, ForeignKey("bundle_catalog.id"), nullable=False, index=True)
+    priority = Column(Integer, nullable=False, default=100)
+    is_active = Column(Boolean, nullable=False, default=True)
+    valid_from = Column(DateTime(timezone=False), nullable=True, index=True)
+    valid_to = Column(DateTime(timezone=False), nullable=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class PublicBookingOtpChallenge(Base):
+    __tablename__ = "public_booking_otp_challenges"
+    __table_args__ = (
+        Index("ix_public_booking_otp_phone_created", "phone", "created_at"),
+        Index("ix_public_booking_otp_expires", "expires_at"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    phone = Column(String(64), nullable=False, index=True)
+    otp_hash = Column(String(128), nullable=False)
+    expires_at = Column(DateTime(timezone=False), nullable=False, index=True)
+    verified_at = Column(DateTime(timezone=False), nullable=True, index=True)
+    attempts_count = Column(Integer, nullable=False, default=0)
+    last_attempt_at = Column(DateTime(timezone=False), nullable=True)
+    request_ip = Column(String(64), nullable=True)
+    payload_json = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class StockLocation(Base):
     __tablename__ = "stock_locations"
     __table_args__ = (
@@ -372,6 +597,7 @@ class StockLocation(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
     code = Column(String(32), nullable=False, index=True)
     name = Column(String(128), nullable=False)
@@ -394,6 +620,110 @@ class StockLevel(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
+class SalonProductTargetStock(Base):
+    __tablename__ = "salon_product_target_stocks"
+    __table_args__ = (
+        UniqueConstraint("salon_id", "product_id", name="uq_salon_product_target_stock"),
+        Index("ix_salon_product_target_stocks_salon_product", "salon_id", "product_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    target_quantity = Column(Numeric(14, 4), nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class ReplenishmentSuggestion(Base):
+    __tablename__ = "replenishment_suggestions"
+    __table_args__ = (
+        Index("ix_replenishment_suggestions_salon_status", "salon_id", "status"),
+        Index("ix_replenishment_suggestions_product_status", "product_id", "status"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    target_quantity = Column(Numeric(14, 4), nullable=False, default=0)
+    actual_quantity = Column(Numeric(14, 4), nullable=False, default=0)
+    suggested_quantity = Column(Numeric(14, 4), nullable=False, default=0)
+    status = Column(String(16), nullable=False, default="OPEN", index=True)
+    generated_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+    resolved_at = Column(DateTime(timezone=True), nullable=True, index=True)
+    note = Column(String(255), nullable=True)
+
+
+class PurchaseOrder(Base):
+    __tablename__ = "purchase_orders"
+    __table_args__ = (
+        Index("ix_purchase_orders_salon_created", "salon_id", "created_at"),
+        Index("ix_purchase_orders_status", "status"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    approved_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    status = Column(String(16), nullable=False, default="DRAFT", index=True)
+    note = Column(String(255), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+    approved_at = Column(DateTime(timezone=True), nullable=True)
+    ordered_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class PurchaseOrderLine(Base):
+    __tablename__ = "purchase_order_lines"
+    __table_args__ = (
+        Index("ix_purchase_order_lines_po", "purchase_order_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    purchase_order_id = Column(Integer, ForeignKey("purchase_orders.id", ondelete="CASCADE"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    target_quantity = Column(Numeric(14, 4), nullable=True)
+    actual_quantity = Column(Numeric(14, 4), nullable=True)
+    ordered_quantity = Column(Numeric(14, 4), nullable=False, default=0)
+    unit = Column(String(8), nullable=False, default="PCS")
+    unit_cost = Column(Numeric(12, 4), nullable=True)
+    total_cost = Column(Numeric(14, 4), nullable=True)
+
+
+class GoodsReceipt(Base):
+    __tablename__ = "goods_receipts"
+    __table_args__ = (
+        Index("ix_goods_receipts_salon_received", "salon_id", "received_at"),
+        Index("ix_goods_receipts_status", "status"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    purchase_order_id = Column(Integer, ForeignKey("purchase_orders.id"), nullable=True, index=True)
+    received_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    status = Column(String(16), nullable=False, default="DRAFT", index=True)
+    note = Column(String(255), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+    received_at = Column(DateTime(timezone=True), nullable=True)
+    posted_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class GoodsReceiptLine(Base):
+    __tablename__ = "goods_receipt_lines"
+    __table_args__ = (
+        Index("ix_goods_receipt_lines_receipt", "goods_receipt_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    goods_receipt_id = Column(Integer, ForeignKey("goods_receipts.id", ondelete="CASCADE"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    quantity = Column(Numeric(14, 4), nullable=False, default=0)
+    unit = Column(String(8), nullable=False, default="PCS")
+    unit_cost = Column(Numeric(12, 4), nullable=True)
+    total_cost = Column(Numeric(14, 4), nullable=True)
+
+
 class InventoryIssue(Base):
     __tablename__ = "inventory_issues"
     __table_args__ = (
@@ -403,6 +733,7 @@ class InventoryIssue(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
     stock_location_id = Column(Integer, ForeignKey("stock_locations.id"), nullable=False, index=True)
     appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=True, index=True)
@@ -449,6 +780,7 @@ class Sale(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=True, index=True)
     appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=True, index=True)
@@ -476,10 +808,92 @@ class SaleLine(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class Payment(Base):
+    __tablename__ = "payments"
+    __table_args__ = (
+        Index("ix_payments_salon_time", "salon_id", "paid_at"),
+        Index("ix_payments_method", "method"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=False, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    client_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    sale_id = Column(Integer, ForeignKey("sales.id"), nullable=True, index=True)
+    client_card_id = Column(Integer, ForeignKey("client_cards.id"), nullable=True, index=True)
+    promotion_id = Column(Integer, ForeignKey("promotions.id"), nullable=True, index=True)
+    method = Column(String(16), nullable=False, default="cash", index=True)
+    amount = Column(Numeric(12, 2), nullable=False, default=0)
+    service_gross = Column(Numeric(12, 2), nullable=False, default=0)
+    retail_gross = Column(Numeric(12, 2), nullable=False, default=0)
+    discount_total = Column(Numeric(12, 2), nullable=False, default=0)
+    discount_reason_snapshot = Column(String(64), nullable=True)
+    promotion_name_snapshot = Column(String(255), nullable=True)
+    paid_at = Column(DateTime(timezone=False), nullable=False, index=True)
+    status = Column(String(16), nullable=False, default="completed")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class PaymentAllocation(Base):
+    __tablename__ = "payment_allocations"
+    __table_args__ = (
+        Index("ix_payment_allocations_payment_method", "payment_id", "method"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    payment_id = Column(Integer, ForeignKey("payments.id", ondelete="CASCADE"), nullable=False, index=True)
+    method = Column(String(16), nullable=False, default="cash", index=True)
+    amount = Column(Numeric(12, 2), nullable=False, default=0)
+    voucher_reference = Column(String(128), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class PaymentLine(Base):
+    __tablename__ = "payment_lines"
+    __table_args__ = (
+        Index("ix_payment_lines_payment_kind", "payment_id", "item_kind"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    payment_id = Column(Integer, ForeignKey("payments.id"), nullable=False, index=True)
+    item_kind = Column(String(16), nullable=False, default="service")
+    service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=True, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=True, index=True)
+    invitation_id = Column(Integer, ForeignKey("invitations.id"), nullable=True, index=True)
+    label = Column(String(255), nullable=False)
+    quantity = Column(Numeric(12, 2), nullable=False, default=1)
+    unit_price = Column(Numeric(12, 2), nullable=False, default=0)
+    total_gross = Column(Numeric(12, 2), nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Promotion(Base):
+    __tablename__ = "promotions"
+    __table_args__ = (
+        Index("ix_promotions_validity", "valid_from", "valid_to"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False, index=True)
+    promotion_type = Column(String(32), nullable=False, default="fixed_discount")
+    value = Column(Numeric(12, 2), nullable=False, default=0)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=True, index=True)
+    service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=True, index=True)
+    bundle_id = Column(Integer, ForeignKey("bundle_catalog.id"), nullable=True, index=True)
+    customer_tier = Column(String(32), nullable=True, index=True)
+    valid_from = Column(Date, nullable=True)
+    valid_to = Column(Date, nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class LegacyForfaitTransaction(Base):
     __tablename__ = "legacy_forfait_transactions"
 
     id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=True, index=True)
+    salon_code = Column(String(16), nullable=True, index=True)
     row_index = Column(Integer, nullable=False, index=True)
     date_token = Column(String(32), nullable=True, index=True)
     bundle_code = Column(String(16), nullable=False, index=True)
@@ -503,6 +917,8 @@ class LegacyFicheLine(Base):
     __tablename__ = "legacy_fiche_lines"
 
     id = Column(Integer, primary_key=True, index=True)
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=True, index=True)
+    salon_code = Column(String(16), nullable=True, index=True)
     row_index = Column(Integer, nullable=False, index=True)
     ticket_code = Column(String(32), nullable=True, index=True)
     line_code = Column(String(32), nullable=True)
@@ -758,3 +1174,77 @@ class LegacyCustomerMatch(Base):
     is_accepted = Column(Boolean, nullable=False, default=False)
     note = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class LegacyStockReportBatch(Base):
+    __tablename__ = "legacy_stock_report_batches"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    source_archive_path = Column(String(512), nullable=False)
+    source_archive_name = Column(String(255), nullable=False, index=True)
+    source_archive_sha256 = Column(String(64), nullable=True, index=True)
+    source_archive_size_bytes = Column(Integer, nullable=True)
+    notes = Column(Text, nullable=True)
+    imported_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+
+class LegacyStockReportFile(Base):
+    __tablename__ = "legacy_stock_report_files"
+    __table_args__ = (
+        UniqueConstraint("batch_id", "file_name", name="uq_legacy_stock_report_files_batch_file"),
+        Index("ix_legacy_stock_report_files_salon_type", "salon_id", "report_type"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    batch_id = Column(Integer, ForeignKey("legacy_stock_report_batches.id", ondelete="CASCADE"), nullable=False, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=True, index=True)
+    salon_label = Column(String(128), nullable=True, index=True)
+    file_name = Column(String(255), nullable=False, index=True)
+    file_ext = Column(String(16), nullable=False, index=True)
+    report_type = Column(String(64), nullable=False, index=True)
+    report_year = Column(Integer, nullable=True, index=True)
+    report_month = Column(Integer, nullable=True, index=True)
+    report_generated_at = Column(DateTime(timezone=False), nullable=True, index=True)
+    row_count = Column(Integer, nullable=False, default=0)
+    parse_status = Column(String(32), nullable=False, default="pending", index=True)
+    parse_error = Column(Text, nullable=True)
+    file_size_bytes = Column(Integer, nullable=True)
+    imported_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+
+class LegacyStockReportRow(Base):
+    __tablename__ = "legacy_stock_report_rows"
+    __table_args__ = (
+        UniqueConstraint("report_file_id", "row_index", name="uq_legacy_stock_report_rows_file_row"),
+        Index("ix_legacy_stock_report_rows_product_code", "product_code"),
+        Index("ix_legacy_stock_report_rows_mapped_product", "mapped_product_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    report_file_id = Column(Integer, ForeignKey("legacy_stock_report_files.id", ondelete="CASCADE"), nullable=False, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=True, index=True)
+    row_index = Column(Integer, nullable=False, index=True)
+    product_code = Column(String(64), nullable=True, index=True)
+    product_name_pl = Column(String(255), nullable=True)
+    product_name = Column(String(255), nullable=True)
+    family_code = Column(String(128), nullable=True, index=True)
+    package_label = Column(String(64), nullable=True)
+    catalog_price = Column(Numeric(12, 4), nullable=True)
+    sale_price_gross = Column(Numeric(12, 4), nullable=True)
+    unit_count = Column(Numeric(14, 4), nullable=True)
+    counted_units_pcs = Column(Numeric(14, 4), nullable=True)
+    counted_units_dose = Column(Numeric(14, 4), nullable=True)
+    counted_weight_gross = Column(Numeric(14, 4), nullable=True)
+    counted_packages = Column(Numeric(14, 4), nullable=True)
+    balance_open = Column(Numeric(14, 4), nullable=True)
+    balance_pz = Column(Numeric(14, 4), nullable=True)
+    balance_wz_rw = Column(Numeric(14, 4), nullable=True)
+    balance_adjustment = Column(Numeric(14, 4), nullable=True)
+    balance_close = Column(Numeric(14, 4), nullable=True)
+    raw_payload = Column(Text, nullable=True)
+    mapped_product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=True, index=True)
+    mapping_confidence = Column(Numeric(5, 4), nullable=True)
+    imported_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)

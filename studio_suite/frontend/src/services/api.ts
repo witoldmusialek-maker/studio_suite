@@ -9,7 +9,6 @@ export const api = axios.create({
   },
 })
 
-// Interceptor do dodawania tokena
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
@@ -18,17 +17,18 @@ api.interceptors.request.use(
     }
     return config
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 )
 
-// Interceptor do obs³ugi b³êdów
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const requestUrl = String(error?.config?.url || '')
+    const isLoginRequest = requestUrl.includes('/auth/login')
+    if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem('token')
       window.location.href = '/login'
     }
     return Promise.reject(error)
-  }
+  },
 )

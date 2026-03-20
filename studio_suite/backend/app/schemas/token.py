@@ -15,4 +15,4 @@ class TokenData(BaseModel):
     """Dane w tokenie"""
     username: Optional[str] = None
     role: Optional[str] = None
-
+    tenant_id: Optional[int] = None

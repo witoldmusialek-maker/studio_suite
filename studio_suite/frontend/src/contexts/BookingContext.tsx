@@ -24,6 +24,13 @@ type CreateClientInput = {
   email?: string
 }
 
+type UpdateClientInput = {
+  client_id: number
+  full_name?: string
+  phone?: string
+  email?: string
+}
+
 type CreateAppointmentInput = {
   salon_id: number
   client_id: number
@@ -31,10 +38,16 @@ type CreateAppointmentInput = {
   end_at: string
   resources: number[]
   services: number[]
+  allow_overlap?: boolean
   bundle_id?: number
 }
 
 type CompleteAppointmentLineInput = {
+  resources?: Array<{
+    recipe_item_id: number
+    product_id: number
+    quantity_used: number
+  }>
   service_id: number
   worker_id: number
   worker_role_id: number
@@ -59,7 +72,10 @@ type BookingContextType = {
   colorProducts: ColorProduct[]
   appointments: Appointment[]
   performedServiceLines: PerformedServiceLine[]
+  reload: () => Promise<void>
   addClient: (input: CreateClientInput) => Promise<ClientCard>
+  updateClient: (input: UpdateClientInput) => Promise<ClientCard>
+  deleteClient: (clientId: number) => Promise<void>
   addAppointment: (input: CreateAppointmentInput) => Promise<Appointment>
   completeAppointment: (input: CompleteAppointmentInput) => Promise<void>
   estimateTotal: (salonId: number, serviceIds: number[], bundleId?: number) => number
@@ -166,6 +182,22 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return created
   }
 
+  const updateClient = async (input: UpdateClientInput) => {
+    const payload: Record<string, string | undefined> = {}
+    if (input.full_name !== undefined) payload.full_name = input.full_name
+    if (input.phone !== undefined) payload.phone = input.phone
+    if (input.email !== undefined) payload.email = input.email
+    const res = await api.patch<ClientCard>(`/booking/clients/${input.client_id}`, payload)
+    const updated = res.data
+    setClients((prev) => prev.map((row) => (row.id === updated.id ? updated : row)))
+    return updated
+  }
+
+  const deleteClient = async (clientId: number) => {
+    await api.delete(`/booking/clients/${clientId}`)
+    setClients((prev) => prev.filter((row) => row.id !== clientId))
+  }
+
   const addAppointment = async (input: CreateAppointmentInput) => {
     const total = estimateTotal(input.salon_id, input.services, input.bundle_id)
     const payload = {
@@ -175,11 +207,12 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const res = await api.post<Appointment>('/booking/appointments', payload)
     const created = res.data
     setAppointments((prev) => [created, ...prev])
+    await reload()
     return created
   }
 
   const completeAppointment = async (input: CompleteAppointmentInput) => {
-    const res = await api.post<Appointment>(`/booking/appointments/${input.appointment_id}/complete`, {
+    const res = await api.post<Appointment>(`/booking/appointments/${input.appointment_id}/perform`, {
       performed_at: input.performed_at,
       lines: input.lines,
     })
@@ -238,7 +271,10 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       colorProducts,
       appointments,
       performedServiceLines,
+      reload,
       addClient,
+      updateClient,
+      deleteClient,
       addAppointment,
       completeAppointment,
       estimateTotal,
@@ -252,8 +288,11 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       bundles,
       clients,
       colorProducts,
+      updateClient,
+      deleteClient,
       performedServiceLines,
       priceListItems,
+      reload,
       resources,
       salons,
       services,

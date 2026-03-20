@@ -10,14 +10,17 @@ import {
   Typography,
 } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
+import { getBranding } from '../config/branding'
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('admin')
-  const [password, setPassword] = useState('Admin2026.')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [website, setWebsite] = useState('')
+  const [totpCode, setTotpCode] = useState('')
   const [error, setError] = useState('')
   const { login } = useAuth()
   const navigate = useNavigate()
+  const branding = getBranding(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,12 +28,21 @@ const LoginPage = () => {
 
     try {
       if (website.trim()) {
-        throw new Error('Blad logowania')
+        throw new Error('Błąd logowania')
       }
-      await login(username, password)
+      await login(username, password, totpCode || undefined)
       navigate('/')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Blad logowania')
+      const message = err instanceof Error ? err.message : 'Błąd logowania'
+      if (message === 'TOTP_REQUIRED') {
+        setError('Podaj kod TOTP z aplikacji uwierzytelniajacej.')
+        return
+      }
+      if (message === 'TOTP_INVALID') {
+        setError('Niepoprawny kod TOTP.')
+        return
+      }
+      setError(message)
     }
   }
 
@@ -38,9 +50,9 @@ const LoginPage = () => {
     <Container maxWidth="sm">
       <Box sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>
         <Paper sx={{ width: '100%', p: 4 }}>
-          <Typography variant="h4" sx={{ mb: 1 }}>Salon Booking Frontend</Typography>
+          <Typography variant="h4" sx={{ mb: 1 }}>{branding.loginTitle}</Typography>
           <Typography color="text.secondary" sx={{ mb: 3 }}>
-            Logowanie do backend API.
+            {branding.loginSubtitle}
           </Typography>
 
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -52,6 +64,7 @@ const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               sx={{ mb: 2 }}
+              autoComplete="username"
             />
             <TextField
               label="Haslo"
@@ -60,6 +73,16 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{ mb: 2 }}
+              autoComplete="current-password"
+            />
+            <TextField
+              label="Kod TOTP"
+              fullWidth
+              value={totpCode}
+              onChange={(e) => setTotpCode(e.target.value)}
+              sx={{ mb: 2 }}
+              inputProps={{ inputMode: 'numeric', maxLength: 8 }}
+              helperText="Wpisz kod, jeśli konto ma włączone 2FA."
             />
             <TextField
               label="Website"
@@ -70,8 +93,8 @@ const LoginPage = () => {
               tabIndex={-1}
               autoComplete="off"
             />
-            <Button type="submit" variant="contained" fullWidth>
-              Wejdz do panelu
+            <Button type="submit" variant="contained" fullWidth sx={{ bgcolor: '#1f1b14' }}>
+              Wejdź do panelu
             </Button>
           </Box>
         </Paper>

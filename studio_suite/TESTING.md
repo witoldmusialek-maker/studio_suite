@@ -44,6 +44,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\smoke_test.ps1
 
 - Swagger: `http://localhost:8003/docs`
 - Health: `http://localhost:8003/health`
+- Public app: `http://localhost:8084`
+- Public API docs: `http://localhost:8004/docs`
 
 ## Stop environment
 

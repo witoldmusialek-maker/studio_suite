@@ -122,3 +122,46 @@ class LegacyStat7WorkerRow(BaseModel):
 
 class LegacyStat7WorkerResponse(BaseModel):
     rows: List[LegacyStat7WorkerRow]
+
+
+class LegacyRebuildFicheResponse(BaseModel):
+    fiche_lines: int
+    forfait_transactions: int
+
+
+class LegacyFicheDocumentRow(BaseModel):
+    date_token: str
+    ticket_code: str
+    lines_count: int
+    total_amount: float
+    payment_hint: str
+    services: str
+
+
+class LegacyFicheDocumentResponse(BaseModel):
+    from_date: Optional[date]
+    to_date: Optional[date]
+    rows: List[LegacyFicheDocumentRow]
+
+
+class LegacyFicheServiceLineRow(BaseModel):
+    date_token: str
+    time_label: str
+    ticket_code: str
+    line_code: str
+    worker_code: str
+    worker_name: str
+    service_code: str
+    service_name: str
+    amount: float
+    payment_hint: str
+
+
+class LegacyFicheServiceLineResponse(BaseModel):
+    from_date: Optional[date]
+    to_date: Optional[date]
+    rows: List[LegacyFicheServiceLineRow]
+
+
+class LegacyAvailableMonthsResponse(BaseModel):
+    months: List[str]

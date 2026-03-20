@@ -39,16 +39,22 @@ class StaffFunctionRead(BaseModel):
 class StaffCreate(BaseModel):
     display_name: str = Field(min_length=1, max_length=256)
     legacy_code: str | None = Field(default=None, max_length=16)
+    public_bio: str | None = Field(default=None, max_length=4000)
+    public_photo_url: str | None = Field(default=None, max_length=1024)
     salon_id: int | None = None
     role_id: int | None = None
+    user_id: int | None = None
     is_active: bool = True
 
 
 class StaffUpdate(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=256)
     legacy_code: str | None = Field(default=None, max_length=16)
+    public_bio: str | None = Field(default=None, max_length=4000)
+    public_photo_url: str | None = Field(default=None, max_length=1024)
     salon_id: int | None = None
     role_id: int | None = None
+    user_id: int | None = None
     is_active: bool | None = None
 
 
@@ -59,13 +65,20 @@ class StaffRead(BaseModel):
     salon_name: str | None
     role_id: int | None
     role_name: str | None
+    user_id: int | None = None
+    login_username: str | None = None
+    login_role: str | None = None
     is_active: bool
     legacy_code: str | None
+    public_bio: str | None = None
+    public_photo_url: str | None = None
+    public_photo_preview_url: str | None = None
+    public_photo_has_blob: bool = False
 
 
 class ProductCreate(BaseModel):
     salon_id: int | None = None
-    product_code: str = Field(min_length=1, max_length=32)
+    product_code: str | None = Field(default=None, max_length=32)
     product_name: str = Field(min_length=1, max_length=255)
     product_name_pl: str | None = Field(default=None, max_length=255)
     fiscal_code: str | None = Field(default=None, max_length=32)
@@ -76,7 +89,7 @@ class ProductCreate(BaseModel):
     warehouse: str | None = Field(default=None, max_length=64)
     type_code: str | None = Field(default=None, max_length=16)
     purchase_price: float | None = Field(default=None, ge=0)
-    family_code: str | None = Field(default=None, max_length=16)
+    family_code: str | None = Field(default=None, max_length=128)
     weight: float | None = Field(default=None, ge=0)
     package_weight: float | None = Field(default=None, ge=0)
     min_unit: float | None = Field(default=None, ge=0)
@@ -89,10 +102,12 @@ class ProductCreate(BaseModel):
     doses_short: float = Field(default=4, gt=0)
     doses_medium: float = Field(default=2, gt=0)
     doses_long: float = Field(default=1.25, gt=0)
+    stock_100: float | None = Field(default=None, ge=0)
     is_active: bool = True
 
 
 class ProductUpdate(BaseModel):
+    salon_id: int | None = None
     product_name: str | None = Field(default=None, min_length=1, max_length=255)
     product_name_pl: str | None = Field(default=None, max_length=255)
     fiscal_code: str | None = Field(default=None, max_length=32)
@@ -103,7 +118,7 @@ class ProductUpdate(BaseModel):
     warehouse: str | None = Field(default=None, max_length=64)
     type_code: str | None = Field(default=None, max_length=16)
     purchase_price: float | None = Field(default=None, ge=0)
-    family_code: str | None = Field(default=None, max_length=16)
+    family_code: str | None = Field(default=None, max_length=128)
     weight: float | None = Field(default=None, ge=0)
     package_weight: float | None = Field(default=None, ge=0)
     min_unit: float | None = Field(default=None, ge=0)
@@ -116,6 +131,7 @@ class ProductUpdate(BaseModel):
     doses_short: float | None = Field(default=None, gt=0)
     doses_medium: float | None = Field(default=None, gt=0)
     doses_long: float | None = Field(default=None, gt=0)
+    stock_100: float | None = Field(default=None, ge=0)
     is_active: bool | None = None
 
 
@@ -152,3 +168,74 @@ class ProductRead(BaseModel):
     stock_mx07: float | None = None
     stock_100: float | None = None
     is_active: bool
+
+
+class ColorRead(BaseModel):
+    id: int
+    code: str
+    name: str
+    family_code: str | None = None
+    brand: str | None = None
+
+
+class ColorFamilyRead(BaseModel):
+    id: int | None = None
+    value: str
+    label: str
+    product_count: int
+
+
+class ProductFamilyDictionaryBase(BaseModel):
+    code: str = Field(min_length=1, max_length=64)
+    name: str = Field(min_length=1, max_length=128)
+    description: str | None = Field(default=None, max_length=255)
+    sort_order: int = 100
+    is_active: bool = True
+
+
+class ProductFamilyDictionaryCreate(ProductFamilyDictionaryBase):
+    pass
+
+
+class ProductFamilyDictionaryUpdate(BaseModel):
+    code: str | None = Field(default=None, min_length=1, max_length=64)
+    name: str | None = Field(default=None, min_length=1, max_length=128)
+    description: str | None = Field(default=None, max_length=255)
+    sort_order: int | None = None
+    is_active: bool | None = None
+
+
+class ProductFamilyDictionaryRead(ProductFamilyDictionaryBase):
+    id: int
+    product_count: int = 0
+
+
+class ProductFamilyLegacyRuleBase(BaseModel):
+    match_token: str = Field(min_length=1, max_length=128)
+    sort_order: int = 100
+    is_active: bool = True
+
+
+class ProductFamilyLegacyRuleCreate(ProductFamilyLegacyRuleBase):
+    pass
+
+
+class ProductFamilyLegacyRuleUpdate(BaseModel):
+    match_token: str | None = Field(default=None, min_length=1, max_length=128)
+    sort_order: int | None = None
+    is_active: bool | None = None
+
+
+class ProductFamilyLegacyRuleRead(ProductFamilyLegacyRuleBase):
+    id: int
+    family_id: int
+
+
+class ColorDetailRead(BaseModel):
+    id: int
+    code: str
+    name: str
+    family_code: str | None = None
+    brand: str | None = None
+    poj: str | None = None
+    iljedn: str | None = None

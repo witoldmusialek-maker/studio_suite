@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.SmsBridge" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#0F5EA8</item>
+        <item name="colorPrimaryVariant">#084A84</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:statusBarColor" tools:targetApi="l">#084A84</item>
+    </style>
+</resources>

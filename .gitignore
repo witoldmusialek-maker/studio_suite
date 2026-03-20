@@ -4,3 +4,8 @@ client/__pycache__/
 digital_signage/.tmp_sync/
 key2
 key2.pub
+
+# Local workspace artifacts (do not commit)
+2.7z
+CENY kalkulacja pakietow kwiecień 2025.xls
+.vscode/extensions.json

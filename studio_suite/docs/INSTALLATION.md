@@ -14,6 +14,12 @@ cd studio_suite
 docker compose up -d --build
 ```
 
+Po starcie uslugi sa dostepne pod:
+- Frontend: `http://localhost:8082`
+- Backend API: `http://localhost:8003/api/v1`
+- Frontend public: `http://localhost:8084`
+- Backend public API: `http://localhost:8004/api/v1`
+
 ## Opcja B: lokalnie
 
 ### Backend

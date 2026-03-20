@@ -45,6 +45,26 @@ type BundleRow = {
 
 type SalonRow = { id: number; code: string; name: string; is_active: boolean }
 
+type LegacySyncDiffResponse = {
+  salon_id: number
+  salon_code: string
+  salon_name: string
+  diff: {
+    total: number
+  }
+}
+
+type LegacySyncApplyResponse = {
+  report: LegacySyncDiffResponse
+  created_services: number
+  updated_service_names: number
+  updated_service_durations: number
+  updated_service_prices: number
+  created_bundles: number
+  updated_bundle_names: number
+  rebuilt_bundle_items: number
+}
+
 const formatPrice = (value: number) => `${value.toFixed(2)} PLN`
 
 const SoundsPage = () => {
@@ -58,6 +78,8 @@ const SoundsPage = () => {
   const [addServiceIdByBundle, setAddServiceIdByBundle] = useState<Record<number, number>>({})
   const [salons, setSalons] = useState<SalonRow[]>([])
   const [selectedSalonId, setSelectedSalonId] = useState<number | ''>('')
+  const [syncDiff, setSyncDiff] = useState<LegacySyncDiffResponse | null>(null)
+  const [syncBusy, setSyncBusy] = useState(false)
 
   const load = async (salonId: number) => {
     setLoading(true)
@@ -66,11 +88,39 @@ const SoundsPage = () => {
       const response = await api.get('/legacy/catalog', { params: { salon_id: salonId } })
       setBundles((response.data.bundles || []) as BundleRow[])
       setServiceRows((response.data.service_prices || []) as ServicePriceRow[])
+      try {
+        const diffRes = await api.get<LegacySyncDiffResponse>('/legacy/catalog/sync/diff', { params: { salon_id: salonId } })
+        setSyncDiff(diffRes.data || null)
+      } catch {
+        setSyncDiff(null)
+      }
     } catch (err) {
       console.error(err)
       setError('Nie udalo sie pobrac cennika forfaitow z bazy.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const syncFromLegacy = async () => {
+    if (selectedSalonId === '') return
+    setSyncBusy(true)
+    setError('')
+    try {
+      const response = await api.post<LegacySyncApplyResponse>('/legacy/catalog/sync/apply', null, {
+        params: { salon_id: selectedSalonId },
+      })
+      const payload = response.data
+      setError('')
+      await load(selectedSalonId)
+      alert(
+        `Synchronizacja zakonczona. Dodane uslugi: ${payload?.created_services ?? 0}, dodane forfety: ${payload?.created_bundles ?? 0}, przebudowane pozycje forfetow: ${payload?.rebuilt_bundle_items ?? 0}.`,
+      )
+    } catch (err: any) {
+      console.error(err)
+      setError(err?.response?.data?.detail || 'Nie udalo sie zsynchronizowac z legacy.')
+    } finally {
+      setSyncBusy(false)
     }
   }
 
@@ -192,6 +242,22 @@ const SoundsPage = () => {
             <TextField label="Nazwa nowego forfaitu" value={newName} onChange={(event) => setNewName(event.target.value)} size="small" sx={{ minWidth: 320 }} />
             <Button variant="contained" startIcon={<AddCircleOutline />} onClick={createBundle} disabled={selectedSalonId === ''}>
               Dodaj forfait
+            </Button>
+            <Button
+              variant="outlined"
+              color={(syncDiff?.diff?.total || 0) > 0 ? 'warning' : 'success'}
+              onClick={() => selectedSalonId !== '' && load(selectedSalonId)}
+              disabled={selectedSalonId === '' || syncBusy}
+            >
+              Roznice legacy: {syncDiff?.diff?.total ?? '-'}
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={syncFromLegacy}
+              disabled={selectedSalonId === '' || syncBusy}
+            >
+              {syncBusy ? 'Synchronizacja...' : 'Synchronizuj z legacy'}
             </Button>
           </Stack>
         </CardContent>

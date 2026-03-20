@@ -12,9 +12,13 @@ import BellModelPage from './pages/BellModelPage'
 import SoundsPage from './pages/SoundsPage'
 import AlertsPage from './pages/AlertsPage'
 import AdminUsersPage from './pages/AdminUsersPage'
+import PublicBookingPage from './pages/PublicBookingPage'
+import TenantsPage from './pages/TenantsPage'
+import HelpPage from './pages/HelpPage'
 
 const ReportsPage = lazy(() => import('./pages/ReportsPage'))
 const InventoryPage = lazy(() => import('./pages/InventoryPage'))
+const StocktakeLegacyPage = lazy(() => import('./pages/StocktakeLegacyPage'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -47,6 +51,7 @@ function App() {
     <Suspense fallback={lazyFallback}>
       <Routes>
         <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={getDefaultRouteForUser(user)} replace />} />
+        <Route path="/public/client-booking" element={<PublicBookingPage />} />
         <Route path="/" element={<Navigate to={getDefaultRouteForUser(user)} replace />} />
         <Route path="/dashboard" element={<RoleRoute section="dashboard"><DashboardPage /></RoleRoute>} />
         <Route path="/calendar" element={<RoleRoute section="calendar"><SchedulesPage /></RoleRoute>} />
@@ -55,9 +60,12 @@ function App() {
         <Route path="/services" element={<RoleRoute section="services"><BellModelPage /></RoleRoute>} />
         <Route path="/bundles" element={<RoleRoute section="bundles"><SoundsPage /></RoleRoute>} />
         <Route path="/colors" element={<RoleRoute section="colors"><AlertsPage /></RoleRoute>} />
+        <Route path="/inventory/stocktake-legacy" element={<RoleRoute section="stocktake_legacy"><StocktakeLegacyPage /></RoleRoute>} />
         <Route path="/inventory/*" element={<RoleRoute section="inventory"><InventoryPage /></RoleRoute>} />
         <Route path="/reports" element={<RoleRoute section="reports"><ReportsPage /></RoleRoute>} />
         <Route path="/users" element={<RoleRoute section="users"><AdminUsersPage /></RoleRoute>} />
+        <Route path="/tenants" element={<RoleRoute section="tenants"><TenantsPage /></RoleRoute>} />
+        <Route path="/help" element={<RoleRoute section="help"><HelpPage /></RoleRoute>} />
         <Route path="/no-access" element={<ProtectedRoute><div>Brak dostepu do modulow dla tej roli.</div></ProtectedRoute>} />
         <Route path="*" element={<Navigate to={getDefaultRouteForUser(user)} replace />} />
       </Routes>

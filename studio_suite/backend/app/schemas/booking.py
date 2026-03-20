@@ -75,6 +75,7 @@ class BookingAppointment(BaseModel):
     start_at: str
     end_at: str
     status: str
+    allow_overlap: bool = False
     resources: list[int]
     services: list[int]
     bundle_id: int | None = None
@@ -85,11 +86,51 @@ class BookingPerformedServiceLine(BaseModel):
     id: int
     appointment_id: int
     service_id: int
+    service_name_snapshot: str | None = None
     worker_id: int
     worker_role_id: int
+    list_price_snapshot: float | None = None
+    discount_allocated_snapshot: float | None = None
+    sold_as_bundle: bool = False
+    bundle_id_snapshot: int | None = None
     price_snapshot: float
     performed_at: str
     color_product_id: int | None = None
+
+
+class BookingPerformedLineResourceRead(BaseModel):
+    performed_line_id: int
+    service_id: int
+    service_name: str | None = None
+    worker_id: int
+    worker_name: str | None = None
+    worker_role_id: int
+    worker_role_name: str | None = None
+    product_id: int
+    product_family: str | None = None
+    product_name: str | None = None
+    quantity_used: float
+    quantity_unit: str | None = None
+    unit_cost_snapshot: float | None = None
+    total_cost_snapshot: float | None = None
+
+
+class BookingSmsNotifyRequest(BaseModel):
+    phone: str | None = Field(default=None, max_length=64)
+
+
+class BookingSmsNotifyResponse(BaseModel):
+    notification_id: int
+    appointment_id: int
+    phone: str
+    status: str
+    notification_type: str
+    error_message: str | None = None
+
+
+class BookingSmsBatchResponse(BaseModel):
+    sent: int
+    failed: int
 
 
 class BookingBootstrapResponse(BaseModel):
@@ -111,6 +152,12 @@ class BookingClientCreate(BaseModel):
     email: str | None = Field(default=None, max_length=255)
 
 
+class BookingClientUpdate(BaseModel):
+    full_name: str | None = Field(default=None, min_length=1, max_length=256)
+    phone: str | None = Field(default=None, min_length=1, max_length=64)
+    email: str | None = Field(default=None, max_length=255)
+
+
 class BookingAppointmentCreate(BaseModel):
     salon_id: int
     client_id: int
@@ -118,8 +165,16 @@ class BookingAppointmentCreate(BaseModel):
     end_at: datetime
     resources: list[int] = Field(default_factory=list)
     services: list[int] = Field(default_factory=list)
+    allow_overlap: bool = False
     bundle_id: int | None = None
     total_price_snapshot: float = Field(ge=0, default=0)
+
+
+class BookingExecutionResourceCreate(BaseModel):
+    recipe_item_id: int
+    product_id: int
+    quantity_used: float = Field(gt=0)
+    quantity_unit: str | None = Field(default=None, max_length=20)
 
 
 class BookingExecutionLineCreate(BaseModel):
@@ -128,6 +183,7 @@ class BookingExecutionLineCreate(BaseModel):
     worker_role_id: int
     price_snapshot: float = Field(ge=0)
     color_product_id: int | None = None
+    resources: list[BookingExecutionResourceCreate] = Field(default_factory=list)
 
 
 class BookingAppointmentComplete(BaseModel):
@@ -158,6 +214,25 @@ class BookingStaffLocationRead(BaseModel):
 class BookingStaffLocationWrite(BaseModel):
     salon_id: int
     is_primary: bool = False
+
+
+class BookingStaffBundleOfferRead(BaseModel):
+    staff_id: int
+    bundle_id: int
+    bundle_code: str
+    bundle_name: str
+    priority: int = 100
+    is_active: bool = True
+
+
+class BookingStaffBundleOfferWriteItem(BaseModel):
+    bundle_id: int
+    priority: int = 100
+    is_active: bool = True
+
+
+class BookingStaffBundleOfferWrite(BaseModel):
+    offers: list[BookingStaffBundleOfferWriteItem] = Field(default_factory=list)
 
 
 class BookingStatsResponse(BaseModel):
@@ -195,6 +270,30 @@ class BookingStaffWeeklyScheduleRead(BaseModel):
     time_from: time
     time_to: time
     is_active: bool
+
+
+class BookingStaffMonthlyScheduleRead(BaseModel):
+    id: int
+    staff_id: int
+    salon_id: int
+    work_date: date
+    time_from: time
+    time_to: time
+    is_active: bool
+
+
+class BookingStaffMonthlyScheduleWriteItem(BaseModel):
+    salon_id: int
+    work_date: date
+    time_from: time
+    time_to: time
+    is_active: bool = True
+
+
+class BookingStaffMonthlyScheduleReplace(BaseModel):
+    date_from: date
+    date_to: date
+    entries: list[BookingStaffMonthlyScheduleWriteItem] = Field(default_factory=list)
 
 
 class BookingStaffTimeOffCreate(BaseModel):

@@ -3,13 +3,18 @@ import {
   Button,
   Card,
   CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Stack,
+  TableContainer,
   TextField,
   Typography,
 } from '@mui/material'
@@ -19,13 +24,19 @@ import { useBooking } from '../contexts/BookingContext'
 
 const ContentPage = () => {
   const { user } = useAuth()
-  const { clients, appointments, salons, services, addClient } = useBooking()
+  const { clients, appointments, salons, services, addClient, updateClient, deleteClient } = useBooking()
 
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [flash, setFlash] = useState('')
+  const [search, setSearch] = useState('')
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null)
+  const [editOpen, setEditOpen] = useState(false)
+  const [editingClientId, setEditingClientId] = useState<number | null>(null)
+  const [editFullName, setEditFullName] = useState('')
+  const [editPhone, setEditPhone] = useState('')
+  const [editEmail, setEditEmail] = useState('')
 
   const visibleAppointments = useMemo(
     () => appointments.filter((appointment) => user?.assigned_salon_ids?.includes(appointment.salon_id)),
@@ -49,6 +60,53 @@ const ContentPage = () => {
     }
   }
 
+  const openEditClient = (clientId: number) => {
+    const row = clients.find((client) => client.id === clientId)
+    if (!row) return
+    setEditingClientId(row.id)
+    setEditFullName(row.full_name || '')
+    setEditPhone(row.phone || '')
+    setEditEmail(row.email || '')
+    setEditOpen(true)
+  }
+
+  const saveClientEdit = async () => {
+    if (!editingClientId) return
+    if (!editFullName.trim() || !editPhone.trim()) {
+      setFlash('Imie i nazwisko oraz telefon sa wymagane.')
+      return
+    }
+    try {
+      const updated = await updateClient({
+        client_id: editingClientId,
+        full_name: editFullName.trim(),
+        phone: editPhone.trim(),
+        email: editEmail.trim() || '',
+      })
+      setSelectedClientId(updated.id)
+      setEditOpen(false)
+      setFlash('Dane klienta zaktualizowane.')
+    } catch {
+      setFlash('Nie udalo sie zaktualizowac klienta.')
+    }
+  }
+
+  const removeClient = async (clientId: number) => {
+    const row = clients.find((client) => client.id === clientId)
+    if (!row) return
+    if (!window.confirm(`Usunac klienta ${row.full_name}?`)) return
+    try {
+      await deleteClient(clientId)
+      if (selectedClientId === clientId) {
+        setSelectedClientId(null)
+      }
+      setFlash('Klient usuniety.')
+    } catch (err: any) {
+      const detail = err?.response?.data?.detail
+      setFlash(detail || 'Nie udalo sie usunac klienta.')
+    }
+  }
+
   const selectedClient = useMemo(
     () => clients.find((client) => client.id === selectedClientId) ?? null,
     [clients, selectedClientId],
@@ -60,6 +118,15 @@ const ContentPage = () => {
       .sort((a, b) => b.start_at.localeCompare(a.start_at)),
     [selectedClientId, visibleAppointments],
   )
+
+  const filteredClients = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return clients
+    return clients.filter((client) => {
+      const haystack = `${client.full_name || ''} ${client.phone || ''} ${client.email || ''}`.toLowerCase()
+      return haystack.includes(q)
+    })
+  }, [clients, search])
 
   return (
     <Stack spacing={2}>
@@ -89,17 +156,39 @@ const ContentPage = () => {
       {selectedClient ? (
         <Card>
           <CardContent>
-            <Typography variant="h6">{selectedClient.full_name}</Typography>
-            <Typography color="text.secondary">
-              {selectedClient.phone} {selectedClient.email ? `| ${selectedClient.email}` : ''}
-            </Typography>
+            <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='space-between' spacing={1}>
+              <Stack spacing={0.25}>
+                <Typography variant="h6">{selectedClient.full_name}</Typography>
+                <Typography color="text.secondary">
+                  {selectedClient.phone} {selectedClient.email ? `| ${selectedClient.email}` : ''}
+                </Typography>
+              </Stack>
+              <Stack direction='row' spacing={1}>
+                <Button
+                  size='small'
+                  variant='outlined'
+                  onClick={() => openEditClient(selectedClient.id)}
+                >
+                  Edytuj klienta
+                </Button>
+                <Button
+                  size='small'
+                  variant='outlined'
+                  color='error'
+                  onClick={() => removeClient(selectedClient.id)}
+                >
+                  Usun
+                </Button>
+              </Stack>
+            </Stack>
             <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
               Historia wizyt
             </Typography>
             {selectedClientHistory.length === 0 ? (
               <Alert severity="info">Brak wizyt dla wybranego klienta.</Alert>
             ) : (
-              <Table size="small" sx={{ mt: 1 }}>
+              <TableContainer sx={{ mt: 1 }}>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Data</TableCell>
@@ -124,6 +213,7 @@ const ContentPage = () => {
                   ))}
                 </TableBody>
               </Table>
+              </TableContainer>
             )}
           </CardContent>
         </Card>
@@ -131,12 +221,22 @@ const ContentPage = () => {
 
       <Card>
         <CardContent>
-          <Typography variant="h6" sx={{ mb: 1 }}>Kartoteka klientow</Typography>
+          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='space-between' spacing={1} sx={{ mb: 1 }}>
+            <Typography variant="h6">Kartoteka klientow</Typography>
+            <TextField
+              size='small'
+              label='Szukaj klienta'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              sx={{ minWidth: 280 }}
+            />
+          </Stack>
           {!clients.length ? (
             <Alert severity="info" sx={{ mb: 2 }}>
               Lista klientow jest pusta, bo w bazie nie ma jeszcze rekordow w tabeli `customers`.
             </Alert>
           ) : null}
+          <TableContainer>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -147,7 +247,7 @@ const ContentPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {clients.map((client) => {
+              {filteredClients.map((client) => {
                 const visitsCount = visibleAppointments.filter((appointment) => appointment.client_id === client.id).length
                 return (
                   <TableRow
@@ -161,22 +261,75 @@ const ContentPage = () => {
                     <TableCell>{client.phone} {client.email ? `| ${client.email}` : ''}</TableCell>
                     <TableCell align="right">{visitsCount}</TableCell>
                     <TableCell>
-                      <Button size="small" variant="outlined" onClick={() => setSelectedClientId(client.id)}>
-                        Historia wizyt
-                      </Button>
+                      <Stack direction='row' spacing={1}>
+                        <Button size="small" variant="outlined" onClick={() => setSelectedClientId(client.id)}>
+                          Historia
+                        </Button>
+                        <Button size="small" variant="outlined" onClick={() => openEditClient(client.id)}>
+                          Edytuj
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          color='error'
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            void removeClient(client.id)
+                          }}
+                        >
+                          Usun
+                        </Button>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 )
               })}
-              {!clients.length && (
+              {!filteredClients.length && (
                 <TableRow>
-                  <TableCell colSpan={4}>Brak klientow.</TableCell>
+                  <TableCell colSpan={4}>Brak klientow dla podanego filtra.</TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+          </TableContainer>
         </CardContent>
       </Card>
+
+      <Dialog open={editOpen} onClose={() => setEditOpen(false)} fullWidth maxWidth='sm'>
+        <DialogTitle>Edytuj klienta</DialogTitle>
+        <DialogContent>
+          <Stack spacing={1.5} sx={{ mt: 1 }}>
+            <TextField
+              label='Imie i nazwisko'
+              size='small'
+              value={editFullName}
+              onChange={(e) => setEditFullName(e.target.value)}
+            />
+            <TextField
+              label='Telefon'
+              size='small'
+              value={editPhone}
+              onChange={(e) => setEditPhone(e.target.value)}
+            />
+            <TextField
+              label='Email'
+              size='small'
+              value={editEmail}
+              onChange={(e) => setEditEmail(e.target.value)}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditOpen(false)}>Anuluj</Button>
+          <Button
+            variant='contained'
+            onClick={saveClientEdit}
+            disabled={!editFullName.trim() || !editPhone.trim()}
+          >
+            Zapisz
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   )
 }

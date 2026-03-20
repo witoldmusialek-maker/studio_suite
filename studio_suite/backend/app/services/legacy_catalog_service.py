@@ -15,9 +15,56 @@ from app.models.salon_core import (
     SalonProductCatalogItem,
     SalonServiceCatalogItem,
     SalonServiceFormulaItem,
+    ServiceRecipeItem,
     ServiceCatalogItem,
     ServicePriceHistory,
 )
+
+
+SERVICE_SEGMENT_VALUES = {"PANI", "PAN", "ESTETYKA", "SPRZEDAZ"}
+
+
+def _normalize_service_segment(value: str | None) -> str | None:
+    if value is None:
+        return None
+    clean = value.strip().upper()
+    if clean == "SPRZEDAŻ":
+        clean = "SPRZEDAZ"
+    if clean == "1":
+        clean = "PANI"
+    if clean == "2":
+        clean = "PAN"
+    if clean == "3":
+        clean = "ESTETYKA"
+    if clean == "4":
+        clean = "SPRZEDAZ"
+    if clean in SERVICE_SEGMENT_VALUES:
+        return clean
+    return None
+
+
+def _infer_service_segment_from_code(service_code: str | None) -> str | None:
+    code = (service_code or "").strip()
+    if not code.isdigit():
+        return None
+    numeric = int(code)
+    if 1 <= numeric <= 99:
+        return "PANI"
+    if 101 <= numeric <= 199:
+        return "PAN"
+    if 200 <= numeric <= 299:
+        return "SPRZEDAZ"
+    if 300 <= numeric <= 399:
+        return "ESTETYKA"
+    return None
+
+
+def _resolve_service_segment(service: ServiceCatalogItem) -> str:
+    normalized = _normalize_service_segment(service.service_type_code)
+    if normalized:
+        return normalized
+    inferred = _infer_service_segment_from_code(service.legacy_code)
+    return inferred or "PANI"
 
 
 def _round_price(value: float) -> float:
@@ -49,28 +96,30 @@ def _ensure_salon_service_link(db: Session, salon_id: int, service_id: int) -> S
 
 
 def _seed_missing_links_for_salon(db: Session, salon_id: int) -> None:
-    existing_count = (
-        db.query(func.count(SalonServiceCatalogItem.id))
-        .filter(SalonServiceCatalogItem.salon_id == salon_id)
-        .scalar()
-        or 0
-    )
-    if existing_count > 0:
-        return
-
-    service_ids = [
+    existing_service_ids = {
         row[0]
-        for row in db.query(ServicePriceHistory.service_id)
-        .filter(ServicePriceHistory.salon_id == salon_id)
-        .distinct()
+        for row in db.query(SalonServiceCatalogItem.service_id)
+        .filter(SalonServiceCatalogItem.salon_id == salon_id)
         .all()
-    ]
-    if not service_ids:
+    }
+    if not existing_service_ids:
+        service_ids = [
+            row[0]
+            for row in db.query(ServicePriceHistory.service_id)
+            .filter(ServicePriceHistory.salon_id == salon_id)
+            .distinct()
+            .all()
+        ]
+        if not service_ids:
+            service_ids = [row[0] for row in db.query(ServiceCatalogItem.id).all()]
+    else:
         service_ids = [row[0] for row in db.query(ServiceCatalogItem.id).all()]
 
-    for service_id in service_ids:
+    missing_ids = [service_id for service_id in service_ids if service_id not in existing_service_ids]
+    for service_id in missing_ids:
         db.add(SalonServiceCatalogItem(salon_id=salon_id, service_id=service_id, is_active=True))
-    db.flush()
+    if missing_ids:
+        db.flush()
 
 
 def _latest_prices_by_service_id(db: Session, salon_id: int = 1) -> dict[int, float]:
@@ -185,6 +234,18 @@ def _formula_products_by_service_id(db: Session, salon_id: int, service_ids: lis
     return out
 
 
+def _recipe_service_ids(db: Session, service_ids: list[int]) -> set[int]:
+    if not service_ids:
+        return set()
+    rows = (
+        db.query(ServiceRecipeItem.service_id)
+        .filter(ServiceRecipeItem.service_id.in_(service_ids))
+        .distinct()
+        .all()
+    )
+    return {int(row[0]) for row in rows if row and row[0] is not None}
+
+
 def get_legacy_products(db: Session, salon_id: int) -> list[dict]:
     _ensure_salon(db, salon_id)
     _seed_missing_product_links_for_salon(db, salon_id)
@@ -251,6 +312,7 @@ def get_legacy_catalog(db: Session, salon_id: int = 1) -> dict:
     )
     link_by_service_id = {link.service_id: link for link in links}
     formula_by_service_id = _formula_products_by_service_id(db, salon_id=salon_id, service_ids=service_ids)
+    services_with_recipe = _recipe_service_ids(db, service_ids=service_ids)
 
     service_prices = []
     for service in services:
@@ -262,11 +324,13 @@ def get_legacy_catalog(db: Session, salon_id: int = 1) -> dict:
                 "service_id": service.id,
                 "service_code": service.legacy_code,
                 "service_name": (link.local_name if link and link.local_name else service.name),
+                "service_segment": _resolve_service_segment(service),
                 "salon_id": salon_id,
                 "price": _round_price(current_price),
                 "duration_minutes": int(service.duration_minutes or 0),
+                "bookable": bool(service.bookable),
                 "is_active": bool(service.is_active and (link.is_active if link else True)),
-                "is_formula": len(formula_products) > 0,
+                "is_formula": (len(formula_products) > 0) or (service.id in services_with_recipe),
                 "formula_products": formula_products,
             }
         )
@@ -480,21 +544,27 @@ def create_service(
     db: Session,
     service_code: str,
     service_name: str,
+    service_segment: str,
     duration_minutes: int,
     default_price: float,
+    bookable: bool = True,
     salon_id: int = 1,
 ) -> dict:
     _ensure_salon(db, salon_id)
     code = service_code.strip().upper()
     name = service_name.strip()
+    normalized_segment = _normalize_service_segment(service_segment) or _infer_service_segment_from_code(code)
     if not code or not name:
         raise ValueError("invalid_payload")
+    if not normalized_segment:
+        raise ValueError("invalid_service_segment")
 
     existing = db.query(ServiceCatalogItem).filter(ServiceCatalogItem.legacy_code == code).first()
     if existing:
         link = _ensure_salon_service_link(db, salon_id=salon_id, service_id=existing.id)
         link.is_active = True
         link.local_name = name if name != existing.name else None
+        existing.service_type_code = normalized_segment
         db.add(
             ServicePriceHistory(
                 service_id=existing.id,
@@ -510,17 +580,21 @@ def create_service(
             "service_id": existing.id,
             "service_code": existing.legacy_code,
             "service_name": link.local_name or existing.name,
+            "service_segment": _resolve_service_segment(existing),
             "duration_minutes": int(existing.duration_minutes or 0),
             "default_price": _round_price(default_price),
+            "bookable": bool(existing.bookable),
             "is_active": bool(link.is_active and existing.is_active),
         }
 
     service = ServiceCatalogItem(
         legacy_code=code,
         name=name,
+        service_type_code=normalized_segment,
         duration_minutes=int(duration_minutes),
         default_price=default_price,
         holiday_price=default_price,
+        bookable=bool(bookable),
         is_active=True,
     )
     db.add(service)
@@ -542,8 +616,10 @@ def create_service(
         "service_id": service.id,
         "service_code": service.legacy_code,
         "service_name": service.name,
+        "service_segment": _resolve_service_segment(service),
         "duration_minutes": int(service.duration_minutes or 0),
         "default_price": _round_price(service.default_price),
+        "bookable": bool(service.bookable),
         "is_active": bool(service.is_active),
     }
 
@@ -552,8 +628,10 @@ def update_service(
     db: Session,
     service_id: int,
     service_name: str | None,
+    service_segment: str | None,
     duration_minutes: int | None,
     default_price: float | None,
+    bookable: bool | None,
     is_active: bool | None,
     local_name: str | None,
     salon_id: int = 1,
@@ -570,12 +648,21 @@ def update_service(
             raise ValueError("invalid_payload")
         service.name = clean_name
 
+    if service_segment is not None:
+        normalized_segment = _normalize_service_segment(service_segment)
+        if not normalized_segment:
+            raise ValueError("invalid_service_segment")
+        service.service_type_code = normalized_segment
+
     if local_name is not None:
         cleaned_local = local_name.strip()
         link.local_name = cleaned_local or None
 
     if duration_minutes is not None:
         service.duration_minutes = int(duration_minutes)
+
+    if bookable is not None:
+        service.bookable = bool(bookable)
 
     price_changed = False
     resolved_price = service.default_price
@@ -613,8 +700,10 @@ def update_service(
         "service_id": service.id,
         "service_code": service.legacy_code,
         "service_name": link.local_name or service.name,
+        "service_segment": _resolve_service_segment(service),
         "duration_minutes": int(service.duration_minutes or 0),
         "default_price": _round_price(resolved_price),
+        "bookable": bool(service.bookable),
         "is_active": bool(service.is_active and link.is_active),
     }
 

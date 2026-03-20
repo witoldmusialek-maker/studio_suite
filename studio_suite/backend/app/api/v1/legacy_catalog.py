@@ -18,6 +18,8 @@ from app.schemas.legacy_catalog import (
     UpdateServicePriceRequest,
     UpdateServiceRequest,
     UpdateServiceFormulaRequest,
+    LegacyCatalogSyncReport,
+    LegacyCatalogSyncApplyResult,
 )
 from app.services.legacy_catalog_service import (
     add_bundle_item,
@@ -34,6 +36,7 @@ from app.services.legacy_catalog_service import (
     update_service_price,
     update_service_formula,
 )
+from app.services.legacy_sync_service import apply_sync_from_legacy, build_sync_report
 
 router = APIRouter(prefix="/legacy/catalog", tags=["legacy-catalog"])
 
@@ -46,6 +49,42 @@ async def get_catalog(
 ):
     del current_user
     return get_legacy_catalog(db, salon_id=salon_id)
+
+
+@router.get("/sync/diff", response_model=LegacyCatalogSyncReport)
+async def get_legacy_sync_diff(
+    salon_id: int = 1,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    try:
+        result = build_sync_report(db, salon_id=salon_id)
+        result.pop("_legacy_snapshot", None)
+        return result
+    except ValueError as err:
+        if str(err) == "salon_not_found":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+        raise
+    except Exception as err:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Sync diff failed: {err}")
+
+
+@router.post("/sync/apply", response_model=LegacyCatalogSyncApplyResult)
+async def post_legacy_sync_apply(
+    salon_id: int = 1,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    del current_user
+    try:
+        return apply_sync_from_legacy(db, salon_id=salon_id)
+    except ValueError as err:
+        if str(err) == "salon_not_found":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+        raise
+    except Exception as err:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Sync apply failed: {err}")
 
 
 @router.get("/products", response_model=list[LegacyProductCatalogRow])
@@ -70,8 +109,10 @@ async def post_service(
             db,
             service_code=payload.service_code,
             service_name=payload.service_name,
+            service_segment=payload.service_segment,
             duration_minutes=payload.duration_minutes,
             default_price=payload.default_price,
+            bookable=payload.bookable,
             salon_id=payload.salon_id,
         )
     except ValueError as err:
@@ -79,6 +120,8 @@ async def post_service(
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Service code already exists")
         if str(err) == "invalid_payload":
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload")
+        if str(err) == "invalid_service_segment":
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid service segment")
         if str(err) == "salon_not_found":
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
         raise
@@ -98,8 +141,10 @@ async def patch_service(
             db,
             service_id=service_id,
             service_name=payload.service_name,
+            service_segment=payload.service_segment,
             duration_minutes=payload.duration_minutes,
             default_price=payload.default_price,
+            bookable=payload.bookable,
             is_active=payload.is_active,
             local_name=payload.local_name,
             salon_id=salon_id,
@@ -109,6 +154,8 @@ async def patch_service(
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found")
         if str(err) == "invalid_payload":
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload")
+        if str(err) == "invalid_service_segment":
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid service segment")
         if str(err) == "salon_not_found":
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
         raise

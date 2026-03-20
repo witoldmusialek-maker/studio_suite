@@ -5,7 +5,7 @@ import { User } from '../types'
 
 interface AuthContextType {
   user: User | null
-  login: (username: string, password: string) => Promise<void>
+  login: (username: string, password: string, totpCode?: string) => Promise<void>
   logout: () => void
   loading: boolean
 }
@@ -19,6 +19,8 @@ const mapRole = (role: string): User['role'] => {
   if (
     role === 'admin' ||
     role === 'manager' ||
+    role === 'manager_main' ||
+    role === 'manager_salon' ||
     role === 'employee' ||
     role === 'receptionist'
   ) {
@@ -29,8 +31,34 @@ const mapRole = (role: string): User['role'] => {
 
 const resolveAssignedSalonIds = (role: User['role'], salonIds: number[]) => {
   if (salonIds.length === 0) return [1]
-  if (role === 'receptionist') return [salonIds[0]]
+  if (role === 'receptionist' || role === 'manager_salon') return [salonIds[0]]
   return salonIds
+}
+
+const buildMappedUser = (
+  payload: any,
+  fallbackSalonIds: number[],
+): User => {
+  const role = mapRole(payload.role)
+  const linkedSalonId = typeof payload.linked_salon_id === 'number' ? payload.linked_salon_id : undefined
+  const effectiveSalonIds = linkedSalonId
+    ? [linkedSalonId]
+    : resolveAssignedSalonIds(role, fallbackSalonIds)
+
+  return {
+    id: payload.id,
+    username: payload.username,
+    role,
+    full_name: payload.username,
+    assigned_salon_ids: effectiveSalonIds,
+    linked_staff_id: payload.linked_staff_id,
+    linked_staff_name: payload.linked_staff_name,
+    linked_salon_id: payload.linked_salon_id,
+    linked_salon_name: payload.linked_salon_name,
+    totp_enabled: Boolean(payload.totp_enabled),
+    tenant_id: typeof payload.tenant_id === 'number' ? payload.tenant_id : undefined,
+    is_superadmin: Boolean(payload.is_superadmin),
+  }
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -48,15 +76,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const me = await api.get('/auth/me')
         const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
         const payload = me.data
-        const role = mapRole(payload.role)
         const salonIds = (salonsRes.data || []).map((salon) => salon.id)
-        const mappedUser: User = {
-          id: payload.id,
-          username: payload.username,
-          role,
-          full_name: payload.username,
-          assigned_salon_ids: resolveAssignedSalonIds(role, salonIds),
-        }
+        const mappedUser = buildMappedUser(payload, salonIds)
         localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
         setUser(mappedUser)
       } catch {
@@ -70,25 +91,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     bootstrap()
   }, [])
 
-  const login = async (username: string, password: string) => {
-    const loginRes = await api.post('/auth/login', { username, password })
-    const token = loginRes.data.access_token as string
-    localStorage.setItem(TOKEN_KEY, token)
+  const login = async (username: string, password: string, totpCode?: string) => {
+    try {
+      const loginRes = await api.post('/auth/login', { username, password, totp_code: totpCode || undefined })
+      const token = loginRes.data.access_token as string
+      localStorage.setItem(TOKEN_KEY, token)
 
-    const me = await api.get('/auth/me')
-    const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
-    const payload = me.data
-    const role = mapRole(payload.role)
-    const salonIds = (salonsRes.data || []).map((salon) => salon.id)
-    const mappedUser: User = {
-      id: payload.id,
-      username: payload.username,
-      role,
-      full_name: payload.username,
-      assigned_salon_ids: resolveAssignedSalonIds(role, salonIds),
+      const me = await api.get('/auth/me')
+      const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
+      const payload = me.data
+      const salonIds = (salonsRes.data || []).map((salon) => salon.id)
+      const mappedUser = buildMappedUser(payload, salonIds)
+      localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
+      setUser(mappedUser)
+    } catch (err: any) {
+      const detail = err?.response?.data?.detail
+      if (typeof detail === 'string' && detail.length > 0) {
+        throw new Error(detail)
+      }
+      throw new Error('Blad logowania')
     }
-    localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
-    setUser(mappedUser)
   }
 
   const logout = () => {

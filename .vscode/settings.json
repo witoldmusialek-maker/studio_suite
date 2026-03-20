@@ -23,5 +23,6 @@
     "**/build/**": true,
     "**/android-client/app/build/**": true,
     "**/android-tv-client/app/build/**": true
-  }
+  },
+  "chatgpt.openOnStartup": true
 }

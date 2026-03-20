@@ -4,10 +4,19 @@ export interface User {
   role:
     | 'admin'
     | 'manager'
+    | 'manager_main'
+    | 'manager_salon'
     | 'employee'
     | 'receptionist'
   full_name?: string
   assigned_salon_ids?: number[]
+  linked_staff_id?: number
+  linked_staff_name?: string
+  linked_salon_id?: number
+  linked_salon_name?: string
+  totp_enabled?: boolean
+  tenant_id?: number
+  is_superadmin?: boolean
 }
 
 export interface Salon {
@@ -96,7 +105,8 @@ export interface Appointment {
   client_id: number
   start_at: string
   end_at: string
-  status: 'planned' | 'confirmed' | 'done' | 'cancelled'
+  status: 'pending' | 'planned' | 'confirmed' | 'done' | 'cancelled' | 'no_show' | 'started' | 'in_progress' | 'completed'
+  allow_overlap?: boolean
   resources: number[]
   services: number[]
   bundle_id?: number
@@ -107,11 +117,14 @@ export interface PerformedServiceLine {
   id: number
   appointment_id: number
   service_id: number
+  service_name_snapshot?: string
   worker_id: number
   worker_role_id: number
+  list_price_snapshot?: number
+  discount_allocated_snapshot?: number
+  sold_as_bundle?: boolean
+  bundle_id_snapshot?: number
   price_snapshot: number
   performed_at: string
   color_product_id?: number
 }
-
-

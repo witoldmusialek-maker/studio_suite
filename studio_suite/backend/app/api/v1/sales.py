@@ -27,14 +27,14 @@ def _allowed_salons_for_user(db: Session, current_user: User, current_staff: Sta
     if current_user.role == UserRole.ADMIN:
         return None
     allowed = get_staff_allowed_salons(db, current_staff)
-    if current_user.role == UserRole.MANAGER and not allowed:
+    if current_user.role in {UserRole.MANAGER, UserRole.MANAGER_MAIN, UserRole.MANAGER_SALON} and not allowed:
         return None
     return allowed
 
 
 def _ensure_sale_write_access(db: Session, current_user: User, salon_id: int) -> None:
     require_salon_access(db, current_user, salon_id)
-    if current_user.role in {UserRole.ADMIN, UserRole.MANAGER, UserRole.RECEPTIONIST}:
+    if current_user.role in {UserRole.ADMIN, UserRole.MANAGER, UserRole.MANAGER_MAIN, UserRole.MANAGER_SALON, UserRole.RECEPTIONIST}:
         return
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
 
@@ -75,6 +75,12 @@ def _retail_location_for_salon(db: Session, salon_id: int) -> StockLocation | No
         .order_by(StockLocation.id.asc())
         .first()
     )
+
+
+def _format_qty(value: Decimal) -> str:
+    normalized = value.quantize(Decimal("0.0001"))
+    text = format(normalized, "f")
+    return text.rstrip("0").rstrip(".") if "." in text else text
 
 
 @router.post("", response_model=SaleRead, status_code=status.HTTP_201_CREATED)
@@ -159,6 +165,9 @@ async def complete_sale(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Sale has no lines")
 
     for line in lines:
+        product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == line.product_id).first()
+        if not product:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Product not found: {line.product_id}")
         level = (
             db.query(StockLevel)
             .filter(
@@ -175,7 +184,18 @@ async def complete_sale(
             )
             db.add(level)
             db.flush()
-        level.quantity = Decimal(str(level.quantity)) - Decimal(str(line.quantity))
+        current_quantity = Decimal(str(level.quantity or 0))
+        requested_quantity = Decimal(str(line.quantity))
+        next_quantity = current_quantity - requested_quantity
+        if next_quantity < Decimal("0"):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    f"Insufficient retail stock for product {product.legacy_code} - {product.name}. "
+                    f"Available: {_format_qty(current_quantity)}, requested: {_format_qty(requested_quantity)}"
+                ),
+            )
+        level.quantity = next_quantity
 
     sale.status = "COMPLETED"
     db.commit()

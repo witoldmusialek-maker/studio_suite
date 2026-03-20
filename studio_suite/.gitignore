@@ -31,6 +31,13 @@ Thumbs.db
 content/
 backend/tmp/
 LUTYbaza*.ods
+
+# Android SMS bridge (local build/cache)
+android/sms_bridge/.gradle/
+android/sms_bridge/build/
+android/sms_bridge/app/build/
+android/sms_bridge/local.properties
+android/sms_bridge/app/local.properties
 # Local secrets
 backend/.env
 .env

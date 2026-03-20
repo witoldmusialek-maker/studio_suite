@@ -43,6 +43,31 @@ services:
       timeout: 5s
       retries: 5
 
+  backend_public:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8004:8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - studio_suite_net
+    command: uvicorn app.public_main:app --host 0.0.0.0 --port 8000 --reload --proxy-headers --forwarded-allow-ips=*
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
   frontend:
     build:
       context: ./frontend
@@ -58,6 +83,21 @@ services:
       backend:
         condition: service_healthy
 
+  frontend_public:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_URL: /api/v1
+    restart: unless-stopped
+    ports:
+      - "8084:80"
+    networks:
+      - studio_suite_net
+    depends_on:
+      backend_public:
+        condition: service_healthy
+
 
 networks:
   studio_suite_net:
@@ -66,4 +106,3 @@ networks:
 volumes:
   studio_suite_postgres_data:
   studio_suite_frontend_node_modules:
-

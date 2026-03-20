@@ -40,9 +40,19 @@ type StockLevelRow = {
   stock_location_name?: string | null
   salon_id?: number | null
   product_id: number
+  product_code?: string | null
   product_name?: string | null
+  brand?: string | null
+  family_code?: string | null
+  is_active?: boolean
+  target_stock_100?: number | null
   quantity: number
   unit: string
+  quantity_base?: number | null
+  unit_base?: string | null
+  unit_count?: number | null
+  dose_weight?: number | null
+  package_net_weight?: number | null
 }
 type StaffRow = { id: number; display_name: string; role_code?: string | null; can_be_booked: boolean }
 type IssueLineRow = {
@@ -91,18 +101,89 @@ type SaleRow = {
   status: string
   lines: SaleLineRow[]
 }
+type PurchaseOrderLineRow = {
+  id: number
+  product_id: number
+  product_name?: string | null
+  ordered_quantity: number
+  unit: string
+  unit_cost?: number | null
+  total_cost?: number | null
+}
+type PurchaseOrderRow = {
+  id: number
+  salon_id: number
+  status: string
+  note?: string | null
+  created_at?: string | null
+  approved_at?: string | null
+  ordered_at?: string | null
+  lines: PurchaseOrderLineRow[]
+}
+type GoodsReceiptLineRow = {
+  id: number
+  product_id: number
+  product_name?: string | null
+  quantity: number
+  unit: string
+  unit_cost?: number | null
+  total_cost?: number | null
+}
+type GoodsReceiptRow = {
+  id: number
+  salon_id: number
+  purchase_order_id?: number | null
+  status: string
+  note?: string | null
+  created_at?: string | null
+  received_at?: string | null
+  posted_at?: string | null
+  lines: GoodsReceiptLineRow[]
+}
 type ProductOption = { product_id: number; product_name: string; fiscal_code?: string | null; sale_price_gross?: number | null; family_code?: string | null }
+type StocktakeCandidate = {
+  product_id: number
+  product_code: string
+  product_name: string
+  unit: string
+  measurement_mode: 'PCS' | 'WEIGHT'
+  dose_weight?: number | null
+  package_weight?: number | null
+  full_weight?: number | null
+}
 
 type IssueDraftLine = { product: ProductOption | null; quantityActual: string; unit: string }
 type SaleDraftLine = { product: ProductOption | null; quantity: string; unit: string; unitPriceGross: string }
 type IssueEditDraft = { id: number; remarks: string; lines: Array<{ id: number; product: ProductOption | null; quantityActual: string; unit: string; recipeProductFamily?: string | null }> }
+type StockAdjustmentLineDraft = { product: ProductOption | null; quantity: string; unit: string }
+type StocktakeLineDraft = { candidate: StocktakeCandidate | null; countedUnits: string; measuredGrossWeight: string }
 
 const INVENTORY_TABS = [
-  { label: 'Lokalizacje', path: '/inventory/stock-locations' },
   { label: 'Stany', path: '/inventory/stock-levels' },
+  { label: 'Dokumenty', path: '/inventory/documents' },
   { label: 'Rozchody', path: '/inventory/issues' },
   { label: 'Sprzedaz', path: '/inventory/sales' },
 ] as const
+
+const SALON_ORDER_CODES = ['05', '12', '02', '07'] as const
+
+const getSalonOrderRank = (salon: { code?: string | null; name: string }) => {
+  const code = (salon.code || '').trim()
+  const idx = SALON_ORDER_CODES.indexOf(code as (typeof SALON_ORDER_CODES)[number])
+  if (idx >= 0) return idx
+  const normalized = salon.name.toLowerCase()
+  if (normalized.includes('pulaw')) return 0
+  if (normalized.includes('kras')) return 1
+  if (normalized.includes('odyn')) return 2
+  return 99
+}
+
+const sortSalonsPreferred = <T extends { code?: string | null; name: string }>(rows: T[]) =>
+  [...rows].sort((left, right) => {
+    const rankDiff = getSalonOrderRank(left) - getSalonOrderRank(right)
+    if (rankDiff !== 0) return rankDiff
+    return left.name.localeCompare(right.name, 'pl')
+  })
 
 const InventoryPage = () => {
   const { user } = useAuth()
@@ -111,7 +192,7 @@ const InventoryPage = () => {
   const location = useLocation()
 
   const salons = useMemo<SalonRow[]>(() => bookingSalons.map((s) => ({ id: s.id, code: s.code, name: s.name })), [bookingSalons])
-  const currentTab = INVENTORY_TABS.find((item) => location.pathname.startsWith(item.path))?.path ?? INVENTORY_TABS[1].path
+  const currentTab = INVENTORY_TABS.find((item) => location.pathname.startsWith(item.path))?.path ?? INVENTORY_TABS[0].path
   const appointmentFilterId = useMemo(() => {
     const raw = new URLSearchParams(location.search).get('appointment_id')
     if (!raw) return null
@@ -127,12 +208,16 @@ const InventoryPage = () => {
   const [stockLevels, setStockLevels] = useState<StockLevelRow[]>([])
   const [issues, setIssues] = useState<InventoryIssueRow[]>([])
   const [sales, setSales] = useState<SaleRow[]>([])
+  const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrderRow[]>([])
+  const [goodsReceipts, setGoodsReceipts] = useState<GoodsReceiptRow[]>([])
   const [salonStaff, setSalonStaff] = useState<StaffRow[]>([])
   const [productOptions, setProductOptions] = useState<ProductOption[]>([])
+  const [stocktakeCandidates, setStocktakeCandidates] = useState<StocktakeCandidate[]>([])
 
   const [selectedSalonId, setSelectedSalonId] = useState<number | ''>('')
   const [selectedLocationId, setSelectedLocationId] = useState<number | ''>('')
   const [productQuery, setProductQuery] = useState('')
+  const [showInactiveInStock, setShowInactiveInStock] = useState(false)
   const [issueStatusFilter, setIssueStatusFilter] = useState<'ALL' | 'PLANNED' | 'POSTED'>('ALL')
   const [salesFromDate, setSalesFromDate] = useState('')
   const [salesToDate, setSalesToDate] = useState('')
@@ -155,10 +240,21 @@ const InventoryPage = () => {
   const [draftSaleCustomerId, setDraftSaleCustomerId] = useState<number | ''>('')
   const [draftSaleAppointmentId, setDraftSaleAppointmentId] = useState<number | ''>('')
   const [draftSaleLines, setDraftSaleLines] = useState<SaleDraftLine[]>([{ product: null, quantity: '1', unit: 'PCS', unitPriceGross: '' }])
+  const [deltaDialogOpen, setDeltaDialogOpen] = useState(false)
+  const [stocktakeDialogOpen, setStocktakeDialogOpen] = useState(false)
+  const [adjustmentLocationId, setAdjustmentLocationId] = useState<number | ''>('')
+  const [adjustmentRemarks, setAdjustmentRemarks] = useState('')
+  const [deltaLines, setDeltaLines] = useState<StockAdjustmentLineDraft[]>([{ product: null, quantity: '', unit: 'PCS' }])
+  const [stocktakeLines, setStocktakeLines] = useState<StocktakeLineDraft[]>([{ candidate: null, countedUnits: '', measuredGrossWeight: '' }])
 
-  const canManageLocations = user?.role === 'admin' || user?.role === 'manager'
-  const canWriteInventory = ['admin', 'manager', 'receptionist', 'employee'].includes(user?.role || '')
-  const canWriteSales = ['admin', 'manager', 'receptionist'].includes(user?.role || '')
+  const isManagerRole = ['manager', 'manager_main', 'manager_salon'].includes(user?.role || '')
+  const canManageLocations = user?.role === 'admin' || isManagerRole
+  const canRunStocktake = ['admin', 'receptionist', 'employee'].includes(user?.role || '')
+  const canWriteInventory = ['admin', 'receptionist', 'employee'].includes(user?.role || '')
+  const canApproveInventory = ['admin', 'manager', 'manager_main', 'manager_salon'].includes(user?.role || '')
+  const canWriteSales = ['admin', 'receptionist'].includes(user?.role || '')
+  const canViewActualStock = ['admin', 'manager', 'manager_main', 'manager_salon'].includes(user?.role || '')
+  const isReceptionist = user?.role === 'receptionist'
 
   const locationOptions = useMemo(
     () => stockLocations.filter((item) => (selectedSalonId === '' ? true : item.salon_id === selectedSalonId)),
@@ -167,8 +263,13 @@ const InventoryPage = () => {
 
   const visibleStockLevels = useMemo(() => {
     const q = productQuery.trim().toLowerCase()
-    return stockLevels.filter((row) => (q ? `${row.product_name || ''}`.toLowerCase().includes(q) : true))
-  }, [productQuery, stockLevels])
+    return stockLevels.filter((row) => {
+      if (!showInactiveInStock && row.is_active === false) return false
+      if (!q) return true
+      const haystack = `${row.product_code || ''} ${row.product_name || ''}`.toLowerCase()
+      return haystack.includes(q)
+    })
+  }, [productQuery, showInactiveInStock, stockLevels])
 
   const visibleAppointments = useMemo(
     () => appointments.filter((item) => (selectedSalonId === '' ? true : item.salon_id === selectedSalonId)),
@@ -190,7 +291,6 @@ const InventoryPage = () => {
   const loadStockLevels = async () => {
     const params: Record<string, number> = {}
     if (selectedSalonId !== '') params.salon_id = selectedSalonId
-    if (selectedLocationId !== '') params.location_id = selectedLocationId
     const res = await api.get<StockLevelRow[]>('/inventory/stock-levels', { params })
     setStockLevels(res.data || [])
   }
@@ -229,6 +329,21 @@ const InventoryPage = () => {
     setSales(res.data || [])
   }
 
+  const loadPurchaseOrders = async () => {
+    const params: Record<string, number> = {}
+    if (selectedSalonId !== '') params.salon_id = selectedSalonId
+    const res = await api.get<PurchaseOrderRow[]>('/inventory/purchase-orders', { params })
+    setPurchaseOrders(res.data || [])
+  }
+
+  const loadGoodsReceipts = async () => {
+    const params: Record<string, number> = {}
+    if (selectedSalonId !== '') params.salon_id = selectedSalonId
+    const res = await api.get<GoodsReceiptRow[]>('/inventory/goods-receipts', { params })
+    setGoodsReceipts(res.data || [])
+  }
+
+
   const loadSalonStaff = async (salonId: number) => {
     const res = await api.get<StaffRow[]>(`/booking/salons/${salonId}/staff`)
     setSalonStaff(res.data || [])
@@ -237,6 +352,13 @@ const InventoryPage = () => {
   const loadProductsForSalon = async (salonId: number) => {
     const res = await api.get<ProductOption[]>('/resources/products', { params: { salon_id: salonId } })
     setProductOptions(res.data || [])
+  }
+
+  const loadStocktakeCandidates = async (salonId: number, locationId?: number) => {
+    const params: Record<string, number> = { salon_id: salonId }
+    if (locationId) params.location_id = locationId
+    const res = await api.get<StocktakeCandidate[]>('/inventory/stocktake-candidates', { params })
+    setStocktakeCandidates(res.data || [])
   }
 
   const safeLoad = async (fn: () => Promise<void>) => {
@@ -253,7 +375,8 @@ const InventoryPage = () => {
 
   useEffect(() => {
     if (selectedSalonId === '' && salons.length) {
-      const allowed = user?.assigned_salon_ids?.length ? user.assigned_salon_ids[0] : salons[0].id
+      const allowed =
+        sortSalonsPreferred(salons).find((salon) => user?.assigned_salon_ids?.includes(salon.id))?.id ?? salons[0].id
       setSelectedSalonId(allowed)
     }
   }, [salons, selectedSalonId, user?.assigned_salon_ids])
@@ -264,27 +387,39 @@ const InventoryPage = () => {
     })
   }, [selectedSalonId])
 
+  const visibleTabs = useMemo(
+    () => (isManagerRole ? INVENTORY_TABS.filter((tab) => tab.path !== '/inventory/issues' && tab.path !== '/inventory/sales') : INVENTORY_TABS),
+    [isManagerRole],
+  )
+  const selectedTabValue = visibleTabs.some((tab) => tab.path === currentTab) ? currentTab : visibleTabs[0].path
+
   useEffect(() => {
-    if (currentTab === '/inventory/stock-levels') {
+    if (selectedTabValue === '/inventory/stock-levels') {
       safeLoad(loadStockLevels)
       const timer = window.setInterval(() => {
         loadStockLevels().catch(() => undefined)
       }, 60000)
       return () => window.clearInterval(timer)
     }
-    if (currentTab === '/inventory/issues') {
+    if (selectedTabValue === '/inventory/documents') {
+      safeLoad(async () => {
+        await Promise.all([loadPurchaseOrders(), loadGoodsReceipts()])
+      })
+    }
+    if (selectedTabValue === '/inventory/issues') {
       safeLoad(loadIssues)
     }
-    if (currentTab === '/inventory/sales') {
+    if (selectedTabValue === '/inventory/sales') {
       safeLoad(loadSales)
     }
     return undefined
-  }, [currentTab, selectedSalonId, selectedLocationId, issueStatusFilter, salesFromDate, salesToDate, appointmentFilterId])
+  }, [selectedTabValue, selectedSalonId, selectedLocationId, issueStatusFilter, salesFromDate, salesToDate, appointmentFilterId])
 
   useEffect(() => {
     if (selectedSalonId === '') return
     loadSalonStaff(selectedSalonId).catch(() => undefined)
     loadProductsForSalon(selectedSalonId).catch(() => undefined)
+    loadStocktakeCandidates(selectedSalonId).catch(() => undefined)
   }, [selectedSalonId])
 
   const resetIssueDraft = () => {
@@ -299,6 +434,20 @@ const InventoryPage = () => {
     setDraftSaleCustomerId('')
     setDraftSaleAppointmentId('')
     setDraftSaleLines([{ product: null, quantity: '1', unit: 'PCS', unitPriceGross: '' }])
+  }
+
+  const resetDeltaDraft = () => {
+    const defaultLocation = selectedLocationId === '' ? '' : selectedLocationId
+    setAdjustmentLocationId(defaultLocation)
+    setAdjustmentRemarks('')
+    setDeltaLines([{ product: null, quantity: '', unit: 'PCS' }])
+  }
+
+  const resetStocktakeDraft = () => {
+    const defaultLocation = selectedLocationId === '' ? '' : selectedLocationId
+    setAdjustmentLocationId(defaultLocation)
+    setAdjustmentRemarks('')
+    setStocktakeLines([{ candidate: null, countedUnits: '', measuredGrossWeight: '' }])
   }
 
   const handleCreateLocation = async () => {
@@ -446,6 +595,83 @@ const InventoryPage = () => {
     }
   }
 
+  const handleCreateDeltaAdjustment = async () => {
+    if (selectedSalonId === '' || adjustmentLocationId === '') return
+    const lines = deltaLines
+      .filter((line) => line.product && line.quantity.trim() !== '' && Number(line.quantity) !== 0)
+      .map((line) => ({
+        product_id: line.product!.product_id,
+        delta_quantity: Number(line.quantity),
+        unit: line.unit,
+      }))
+    if (!lines.length) {
+      setError('Dodaj co najmniej jedna linie korekty (+/-).')
+      return
+    }
+    try {
+      await api.post('/inventory/stock-adjustments/delta', {
+        salon_id: selectedSalonId,
+        stock_location_id: adjustmentLocationId,
+        issue_time: new Date().toISOString(),
+        remarks: adjustmentRemarks || 'Korekta stanu (+/-)',
+        lines,
+      })
+      setInfo('Zapisano korekte stanu.')
+      setDeltaDialogOpen(false)
+      resetDeltaDraft()
+      await loadStockLevels()
+      await loadIssues()
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie zapisac korekty.')
+    }
+  }
+
+  const handleCreateStocktakeAdjustment = async () => {
+    if (selectedSalonId === '' || adjustmentLocationId === '') return
+    const lines = stocktakeLines
+      .filter((line) => line.candidate)
+      .map((line) => {
+        const mode = line.candidate!.measurement_mode
+        if (mode === 'WEIGHT') {
+          return {
+            product_id: line.candidate!.product_id,
+            measured_gross_weight: Number(line.measuredGrossWeight),
+            unit: 'G',
+          }
+        }
+        return {
+          product_id: line.candidate!.product_id,
+          counted_units: Number(line.countedUnits),
+          unit: 'PCS',
+        }
+      })
+      .filter((line: any) => {
+        if (line.measured_gross_weight !== undefined) return Number.isFinite(line.measured_gross_weight) && line.measured_gross_weight >= 0
+        if (line.counted_units !== undefined) return Number.isFinite(line.counted_units) && line.counted_units >= 0
+        return false
+      })
+    if (!lines.length) {
+      setError('Dodaj co najmniej jedna linie remanentu.')
+      return
+    }
+    try {
+      await api.post('/inventory/stock-adjustments/stocktake', {
+        salon_id: selectedSalonId,
+        stock_location_id: adjustmentLocationId,
+        issue_time: new Date().toISOString(),
+        remarks: adjustmentRemarks || 'Remanent',
+        lines,
+      })
+      setInfo('Zapisano remanent.')
+      setStocktakeDialogOpen(false)
+      resetStocktakeDraft()
+      await loadStockLevels()
+      await loadIssues()
+    } catch (err: any) {
+      setError(err?.response?.data?.detail || 'Nie udalo sie zapisac remanentu.')
+    }
+  }
+
   const renderStockLocations = () => (
     <Card>
       <CardContent>
@@ -485,35 +711,87 @@ const InventoryPage = () => {
   const renderStockLevels = () => (
     <Card>
       <CardContent>
+        {!canViewActualStock && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Biezace stany sa ukryte dla tej roli. Do remanentu wpisujesz tylko wynik liczenia/wazenia.
+          </Alert>
+        )}
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} sx={{ mb: 2 }}>
-          <FormControl size="small" sx={{ minWidth: 220 }}>
-            <InputLabel>Lokalizacja</InputLabel>
+          <TextField size="small" label="Szukaj kod / nazwa produktu" value={productQuery} onChange={(e) => setProductQuery(e.target.value)} sx={{ minWidth: 320 }} />
+          <FormControl size="small" sx={{ minWidth: 210 }}>
+            <InputLabel>Nieaktywne</InputLabel>
             <Select
-              label="Lokalizacja"
-              value={selectedLocationId}
-              onChange={(e) => setSelectedLocationId(e.target.value === '' ? '' : Number(e.target.value))}
+              label="Nieaktywne"
+              value={showInactiveInStock ? 'show' : 'hide'}
+              onChange={(e) => setShowInactiveInStock(e.target.value === 'show')}
             >
-              <MenuItem value="">Wszystkie</MenuItem>
-              {locationOptions.map((row) => <MenuItem key={row.id} value={row.id}>{row.name}</MenuItem>)}
+              <MenuItem value="hide">Ukryj nieaktywne</MenuItem>
+              <MenuItem value="show">Pokaz nieaktywne</MenuItem>
             </Select>
           </FormControl>
-          <TextField size="small" label="Szukaj produktu" value={productQuery} onChange={(e) => setProductQuery(e.target.value)} sx={{ minWidth: 280 }} />
           <Button startIcon={<Refresh />} onClick={() => safeLoad(loadStockLevels)}>Odswiez</Button>
+          {canWriteInventory && (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                resetDeltaDraft()
+                setDeltaDialogOpen(true)
+              }}
+            >
+              Korekta +/-
+            </Button>
+          )}
+          {canRunStocktake && (
+            <Button
+              variant="contained"
+              onClick={() => {
+                resetStocktakeDraft()
+                if (selectedSalonId !== '') {
+                  const preferredLocation = selectedLocationId === '' ? undefined : selectedLocationId
+                  loadStocktakeCandidates(selectedSalonId, preferredLocation).catch(() => undefined)
+                }
+                setStocktakeDialogOpen(true)
+              }}
+            >
+              Remanent
+            </Button>
+          )}
         </Stack>
+        <Alert severity="info" sx={{ mb: 2 }}>
+          <strong>Legenda stanów:</strong>{' '}
+          <strong>Stan roboczy</strong> = widok operacyjny (opakowania/dozy/sztuki),{' '}
+          <strong>Cel (100%)</strong> = docelowy poziom dla salonu,{' '}
+          <strong>Stan faktyczny</strong> = rzeczywisty stan magazynowy zapisany w systemie.
+        </Alert>
         <Table size="small">
           <TableHead>
             <TableRow>
+              <TableCell>Kod</TableCell>
               <TableCell>Produkt</TableCell>
-              <TableCell>Lokalizacja</TableCell>
-              <TableCell align="right">Stan</TableCell>
+              <TableCell>Marka</TableCell>
+              <TableCell>Rodzina</TableCell>
+              <TableCell align="right">Stan roboczy</TableCell>
+              <TableCell align="right">Cel (100%)</TableCell>
+              <TableCell align="right">{canViewActualStock ? 'Stan faktyczny' : 'Stan faktyczny (ukryty)'}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {visibleStockLevels.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.product_name || row.product_id}</TableCell>
-                <TableCell>{row.stock_location_name || row.stock_location_id}</TableCell>
-                <TableCell align="right">{row.quantity.toFixed(2)} {row.unit}</TableCell>
+              <TableRow key={row.id} sx={row.is_active === false ? { backgroundColor: 'rgba(255, 183, 77, 0.16)' } : undefined}>
+                <TableCell>{row.product_code || '-'}</TableCell>
+                <TableCell>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <span>{row.product_name || row.product_id}</span>
+                    {row.is_active === false && <Chip size="small" color="warning" label="Nieaktywny" />}
+                  </Stack>
+                </TableCell>
+                <TableCell>{row.brand || '-'}</TableCell>
+                <TableCell>{row.family_code || '-'}</TableCell>
+                <TableCell align="right">{formatOperationalStock(row)}</TableCell>
+                <TableCell align="right">{formatTargetStock(row)}</TableCell>
+                <TableCell align="right">
+                  {canViewActualStock ? formatActualStock(row) : '---'}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -554,7 +832,12 @@ const InventoryPage = () => {
           </TableHead>
           <TableBody>
             {issues.map((row) => {
-              const canPost = row.status === 'PLANNED' && row.lines.every((line) => !!line.product_id && (line.quantity_actual ?? 0) > 0)
+              const isAdjustment = !row.appointment_id && !row.service_id && !row.performed_line_id
+              const canPost = row.status === 'PLANNED' && row.lines.every((line) => {
+                if (!line.product_id || line.quantity_actual == null) return false
+                if (isAdjustment) return Number(line.quantity_actual) !== 0
+                return Number(line.quantity_actual) > 0
+              })
               const draft = expandedIssueId === row.id ? issueEditDraft : null
               return (
                 <Fragment key={row.id}>
@@ -570,7 +853,7 @@ const InventoryPage = () => {
                         {row.status === 'PLANNED' && (
                           <Button size="small" variant="outlined" onClick={() => openIssueEditor(row)}>Szczegoly</Button>
                         )}
-                        {row.status === 'PLANNED' && canWriteInventory && (
+                        {row.status === 'PLANNED' && canApproveInventory && (
                           <Button size="small" startIcon={<CheckCircle />} onClick={() => handlePostIssue(row.id)} disabled={!canPost}>Zatwierdz</Button>
                         )}
                       </Stack>
@@ -719,36 +1002,119 @@ const InventoryPage = () => {
     </Card>
   )
 
-  const content =
-    currentTab === '/inventory/stock-locations'
-      ? renderStockLocations()
-      : currentTab === '/inventory/stock-levels'
-        ? renderStockLevels()
-        : currentTab === '/inventory/issues'
-          ? renderIssues()
-          : renderSales()
+  const renderDocuments = () => (
+    <Stack spacing={2}>
+      <Card>
+        <CardContent>
+          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" sx={{ mb: 2 }} spacing={1}>
+            <Typography variant="h6">Zamówienia (PO)</Typography>
+            <Button startIcon={<Refresh />} onClick={() => safeLoad(loadPurchaseOrders)}>Odswiez</Button>
+          </Stack>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Data</TableCell>
+                <TableCell align="right">Pozycje</TableCell>
+                <TableCell align="right">Wartość</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {purchaseOrders.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell><Chip size="small" label={row.status} /></TableCell>
+                  <TableCell>{row.created_at ? new Date(row.created_at).toLocaleString() : '-'}</TableCell>
+                  <TableCell align="right">{row.lines.length}</TableCell>
+                  <TableCell align="right">
+                    {row.lines.reduce((acc, line) => acc + (line.total_cost || 0), 0).toFixed(2)} PLN
+                  </TableCell>
+                </TableRow>
+              ))}
+              {!purchaseOrders.length && (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">Brak dokumentów PO.</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent>
+          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" sx={{ mb: 2 }} spacing={1}>
+            <Typography variant="h6">Przyjęcia (PZ)</Typography>
+            <Button startIcon={<Refresh />} onClick={() => safeLoad(loadGoodsReceipts)}>Odswiez</Button>
+          </Stack>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Data</TableCell>
+                <TableCell align="right">Pozycje</TableCell>
+                <TableCell align="right">Wartość</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {goodsReceipts.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell><Chip size="small" label={row.status} color={row.status === 'POSTED' ? 'success' : 'default'} /></TableCell>
+                  <TableCell>{row.received_at ? new Date(row.received_at).toLocaleString() : '-'}</TableCell>
+                  <TableCell align="right">{row.lines.length}</TableCell>
+                  <TableCell align="right">
+                    {row.lines.reduce((acc, line) => acc + (line.total_cost || 0), 0).toFixed(2)} PLN
+                  </TableCell>
+                </TableRow>
+              ))}
+              {!goodsReceipts.length && (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">Brak dokumentów PZ.</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </Stack>
+  )
+
+  const content = location.pathname.startsWith('/inventory/stock-locations')
+    ? renderStockLocations()
+    : selectedTabValue === '/inventory/stock-levels'
+      ? renderStockLevels()
+      : selectedTabValue === '/inventory/documents'
+        ? renderDocuments()
+      : selectedTabValue === '/inventory/issues'
+        ? renderIssues()
+        : renderSales()
 
   return (
     <Stack spacing={2}>
       <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" spacing={1.5}>
         <Typography variant="h4">Magazyn</Typography>
-        <FormControl size="small" sx={{ minWidth: 260 }}>
-          <InputLabel>Salon</InputLabel>
-          <Select
-            label="Salon"
-            value={selectedSalonId}
-            onChange={(e) => {
-              setSelectedSalonId(e.target.value === '' ? '' : Number(e.target.value))
-              setSelectedLocationId('')
-            }}
-          >
-            {salons.map((row) => <MenuItem key={row.id} value={row.id}>{row.code ? `${row.code} - ` : ''}{row.name}</MenuItem>)}
-          </Select>
-        </FormControl>
+        {!isReceptionist && (
+          <FormControl size="small" sx={{ minWidth: 260 }}>
+            <InputLabel>Salon</InputLabel>
+            <Select
+              label="Salon"
+              value={selectedSalonId}
+              onChange={(e) => {
+                setSelectedSalonId(e.target.value === '' ? '' : Number(e.target.value))
+                setSelectedLocationId('')
+              }}
+            >
+              {sortSalonsPreferred(salons).map((row) => <MenuItem key={row.id} value={row.id}>{row.code ? `${row.code} - ` : ''}{row.name}</MenuItem>)}
+            </Select>
+          </FormControl>
+        )}
       </Stack>
 
-      <Tabs value={currentTab} onChange={(_, value) => navigate(value)} variant="scrollable" scrollButtons="auto">
-        {INVENTORY_TABS.map((item) => <Tab key={item.path} value={item.path} label={item.label} />)}
+      <Tabs value={selectedTabValue} onChange={(_, value) => navigate(value)} variant="scrollable" scrollButtons="auto">
+        {visibleTabs.map((item) => <Tab key={item.path} value={item.path} label={item.label} />)}
       </Tabs>
 
       {error && <Alert severity="error">{error}</Alert>}
@@ -872,8 +1238,168 @@ const InventoryPage = () => {
           <Button variant="contained" onClick={handleCreateSale}>Zapisz</Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog open={deltaDialogOpen} onClose={() => setDeltaDialogOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Korekta stanu (+/-)</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <FormControl fullWidth>
+              <InputLabel>Lokalizacja</InputLabel>
+              <Select label="Lokalizacja" value={adjustmentLocationId} onChange={(e) => setAdjustmentLocationId(e.target.value === '' ? '' : Number(e.target.value))}>
+                {locationOptions.map((row) => <MenuItem key={row.id} value={row.id}>{row.name}</MenuItem>)}
+              </Select>
+            </FormControl>
+            <TextField label="Uwagi" value={adjustmentRemarks} onChange={(e) => setAdjustmentRemarks(e.target.value)} fullWidth />
+            {deltaLines.map((line, index) => (
+              <Stack key={index} direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems="center">
+                <Autocomplete
+                  options={productOptions}
+                  getOptionLabel={(option) => option.product_name}
+                  value={line.product}
+                  onChange={(_, value) => setDeltaLines((prev) => prev.map((item, idx) => idx === index ? { ...item, product: value } : item))}
+                  renderInput={(params) => <TextField {...params} label="Produkt" />}
+                  sx={{ flex: 1 }}
+                />
+                <TextField
+                  label="Delta (+/-)"
+                  value={line.quantity}
+                  onChange={(e) => setDeltaLines((prev) => prev.map((item, idx) => idx === index ? { ...item, quantity: e.target.value } : item))}
+                  sx={{ width: 160 }}
+                  helperText="Np. 5 albo -2"
+                />
+                <FormControl sx={{ width: 120 }}>
+                  <InputLabel>Jedn.</InputLabel>
+                  <Select label="Jedn." value={line.unit} onChange={(e) => setDeltaLines((prev) => prev.map((item, idx) => idx === index ? { ...item, unit: String(e.target.value) } : item))}>
+                    <MenuItem value="PCS">PCS</MenuItem>
+                    <MenuItem value="G">G</MenuItem>
+                    <MenuItem value="ML">ML</MenuItem>
+                  </Select>
+                </FormControl>
+              </Stack>
+            ))}
+            <Button onClick={() => setDeltaLines((prev) => [...prev, { product: null, quantity: '', unit: 'PCS' }])}>Dodaj linie</Button>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeltaDialogOpen(false)}>Anuluj</Button>
+          <Button variant="contained" onClick={handleCreateDeltaAdjustment}>Zapisz korekte</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={stocktakeDialogOpen} onClose={() => setStocktakeDialogOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Remanent (ustaw stan)</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <FormControl fullWidth>
+              <InputLabel>Lokalizacja</InputLabel>
+              <Select
+                label="Lokalizacja"
+                value={adjustmentLocationId}
+                onChange={(e) => {
+                  const value = e.target.value === '' ? '' : Number(e.target.value)
+                  setAdjustmentLocationId(value)
+                  if (selectedSalonId !== '' && value !== '') {
+                    loadStocktakeCandidates(selectedSalonId, value).catch(() => undefined)
+                  }
+                }}
+              >
+                {locationOptions.map((row) => <MenuItem key={row.id} value={row.id}>{row.name}</MenuItem>)}
+              </Select>
+            </FormControl>
+            <TextField label="Uwagi" value={adjustmentRemarks} onChange={(e) => setAdjustmentRemarks(e.target.value)} fullWidth />
+            {stocktakeLines.map((line, index) => (
+              <Stack key={index} direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems="center">
+                <Autocomplete
+                  options={stocktakeCandidates}
+                  getOptionLabel={(option) => `${option.product_code} - ${option.product_name}`}
+                  value={line.candidate}
+                  onChange={(_, value) =>
+                    setStocktakeLines((prev) =>
+                      prev.map((item, idx) =>
+                        idx === index
+                          ? {
+                              ...item,
+                              candidate: value,
+                              countedUnits: value?.measurement_mode === 'PCS' ? item.countedUnits : '',
+                              measuredGrossWeight: value?.measurement_mode === 'WEIGHT' ? item.measuredGrossWeight : '',
+                            }
+                          : item
+                      )
+                    )
+                  }
+                  renderInput={(params) => <TextField {...params} label="Produkt do remanentu" />}
+                  sx={{ flex: 1 }}
+                />
+                {line.candidate?.measurement_mode === 'WEIGHT' ? (
+                  <TextField
+                    label="Waga brutto (g)"
+                    value={line.measuredGrossWeight}
+                    onChange={(e) => setStocktakeLines((prev) => prev.map((item, idx) => idx === index ? { ...item, measuredGrossWeight: e.target.value } : item))}
+                    sx={{ width: 170 }}
+                    helperText={
+                      line.candidate
+                        ? `Tara: ${line.candidate.package_weight ?? '-'} g | Doza: ${line.candidate.dose_weight ?? '-'} g`
+                        : ''
+                    }
+                  />
+                ) : (
+                  <TextField
+                    label="Sztuki policzone"
+                    value={line.countedUnits}
+                    onChange={(e) => setStocktakeLines((prev) => prev.map((item, idx) => idx === index ? { ...item, countedUnits: e.target.value } : item))}
+                    sx={{ width: 170 }}
+                  />
+                )}
+              </Stack>
+            ))}
+            <Button onClick={() => setStocktakeLines((prev) => [...prev, { candidate: null, countedUnits: '', measuredGrossWeight: '' }])}>Dodaj linie</Button>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setStocktakeDialogOpen(false)}>Anuluj</Button>
+          <Button variant="contained" onClick={handleCreateStocktakeAdjustment}>Zapisz remanent</Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   )
 }
 
 export default InventoryPage
+const formatOperationalStock = (row: StockLevelRow) => {
+    const baseQty = Number(row.quantity_base ?? row.quantity ?? 0)
+    const unitCount = Number(row.unit_count ?? 0)
+    const unitBase = (row.unit_base || '').toUpperCase()
+    if (unitBase === 'DOSE') {
+      if (unitCount > 0) {
+        const fullPacks = Math.floor(baseQty / unitCount)
+        const restDoses = baseQty - fullPacks * unitCount
+        return `${fullPacks} opak. + ${restDoses.toFixed(2)} doz`
+      }
+      return `${baseQty.toFixed(2)} doz`
+    }
+    if (unitCount > 1) {
+      const packs = baseQty / unitCount
+      return `${packs.toFixed(2)} opak. (${baseQty.toFixed(2)} szt.)`
+  }
+  return `${baseQty.toFixed(2)} szt.`
+}
+
+const normalizeUnitLabel = (unit?: string | null) => {
+  const value = (unit || '').toUpperCase()
+  if (value === 'PCS') return 'szt.'
+  if (value === 'DOSE') return 'doz.'
+  if (value === 'G') return 'g'
+  if (value === 'ML') return 'ml'
+  return unit || ''
+}
+
+const formatTargetStock = (row: StockLevelRow) => {
+  if (row.target_stock_100 == null) return '-'
+  const unit = normalizeUnitLabel(row.unit_base || 'PCS')
+  return `${row.target_stock_100.toFixed(2)} ${unit}`
+}
+
+const formatActualStock = (row: StockLevelRow) => {
+  const unit = normalizeUnitLabel(row.unit)
+  return `${row.quantity.toFixed(2)} ${unit}`
+}
