@@ -142,3 +142,22 @@ class TenantModuleLicenseResponse(TenantModuleLicensePayload):
 
     class Config:
         from_attributes = True
+
+
+class TenantContextLicense(BaseModel):
+    module_code: str
+    is_enabled: bool
+    monthly_price: float = 0
+    notes: Optional[str] = None
+
+
+class TenantContextResponse(BaseModel):
+    tenant_id: int
+    tenant_code: str
+    tenant_name: str
+    tenant_is_active: bool
+    billing_plan: str
+    billing_cycle: str
+    monthly_base_price: float
+    billing_email: Optional[str] = None
+    licenses: list[TenantContextLicense] = []

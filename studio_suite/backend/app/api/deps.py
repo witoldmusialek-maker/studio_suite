@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.salon_core import Salon, StaffMember, StaffSalonMembership
-from app.models.user import User, UserRole, UserSession
+from app.models.user import Tenant, TenantModuleLicense, User, UserRole, UserSession
 from app.utils.security import decode_access_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
@@ -19,9 +19,14 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 SUPERADMIN_ALLOWED_PREFIXES = (
     "/api/v1/tenants",
     "/api/v1/auth/me",
+    "/api/v1/auth/tenant-context",
     "/api/v1/auth/totp/",
     "/api/v1/auth/change-password",
 )
+MODULE_CODE_BOOKING = "BOOKING"
+MODULE_CODE_INVENTORY = "INVENTORY"
+MODULE_CODE_PAYMENTS = "PAYMENTS"
+MODULE_CODE_REPORTS = "REPORTS"
 
 
 def get_current_user(
@@ -73,6 +78,85 @@ def get_current_user(
             )
     
     return user
+
+
+def _assert_tenant_active(db: Session, tenant_id: int) -> None:
+    tenant = db.query(Tenant.id, Tenant.is_active).filter(Tenant.id == tenant_id).first()
+    if not tenant or not bool(tenant[1]):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Tenant is inactive",
+        )
+
+
+def _assert_tenant_module_enabled(db: Session, tenant_id: int, module_code: str) -> None:
+    code = (module_code or "").strip().upper()
+    if not code:
+        return
+    row = (
+        db.query(TenantModuleLicense.is_enabled)
+        .filter(
+            TenantModuleLicense.tenant_id == tenant_id,
+            TenantModuleLicense.module_code == code,
+        )
+        .first()
+    )
+    # Backward-compatible policy: missing row means module enabled.
+    if row is not None and not bool(row[0]):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Module {code} is disabled for this tenant",
+        )
+
+
+def require_active_tenant(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> User:
+    if bool(getattr(current_user, "is_superadmin", False)):
+        return current_user
+    _assert_tenant_active(db, int(current_user.tenant_id))
+    return current_user
+
+
+def _require_tenant_module(
+    module_code: str,
+    current_user: User,
+    db: Session,
+) -> User:
+    if bool(getattr(current_user, "is_superadmin", False)):
+        return current_user
+    _assert_tenant_active(db, int(current_user.tenant_id))
+    _assert_tenant_module_enabled(db, int(current_user.tenant_id), module_code)
+    return current_user
+
+
+def require_module_booking(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> User:
+    return _require_tenant_module(MODULE_CODE_BOOKING, current_user, db)
+
+
+def require_module_inventory(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> User:
+    return _require_tenant_module(MODULE_CODE_INVENTORY, current_user, db)
+
+
+def require_module_payments(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> User:
+    return _require_tenant_module(MODULE_CODE_PAYMENTS, current_user, db)
+
+
+def require_module_reports(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> User:
+    return _require_tenant_module(MODULE_CODE_REPORTS, current_user, db)
 
 
 def get_current_admin(

@@ -20,7 +20,7 @@ from app.api.deps import get_current_user, require_salon_access
 from app.config import settings
 from app.database import get_db
 from app.models.salon_core import Salon, SmsGatewayDevice, SmsGatewayPairingCode, StaffMember
-from app.models.user import Tenant, User, UserRole, UserSession
+from app.models.user import Tenant, TenantModuleLicense, User, UserRole, UserSession
 from app.schemas.token import Token
 from app.schemas.user import (
     PasswordChangeRequest,
@@ -29,6 +29,8 @@ from app.schemas.user import (
     TotpSetupResponse,
     TotpStatusResponse,
     TotpVerifyRequest,
+    TenantContextLicense,
+    TenantContextResponse,
     UserCreate,
     UserLogin,
     UserResponse,
@@ -261,6 +263,13 @@ async def login(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    if not bool(user.is_superadmin):
+        tenant = db.query(Tenant.id, Tenant.is_active).filter(Tenant.id == user.tenant_id).first()
+        if not tenant or not bool(tenant[1]):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Tenant is inactive",
+            )
 
     if user.role in {UserRole.ADMIN, UserRole.MANAGER, UserRole.MANAGER_MAIN, UserRole.MANAGER_SALON} and user.totp_enabled:
         if not user_credentials.totp_code:
@@ -525,6 +534,41 @@ async def get_me(
     current_user: User = Depends(get_current_user),
 ):
     return _to_user_response(db, current_user)
+
+
+@router.get("/tenant-context", response_model=TenantContextResponse)
+async def get_tenant_context(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    tenant = db.query(Tenant).filter(Tenant.id == current_user.tenant_id).first()
+    if not tenant:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tenant not found")
+    licenses = (
+        db.query(TenantModuleLicense)
+        .filter(TenantModuleLicense.tenant_id == tenant.id)
+        .order_by(TenantModuleLicense.module_code.asc())
+        .all()
+    )
+    return TenantContextResponse(
+        tenant_id=tenant.id,
+        tenant_code=tenant.code,
+        tenant_name=tenant.name,
+        tenant_is_active=bool(tenant.is_active),
+        billing_plan=tenant.billing_plan,
+        billing_cycle=tenant.billing_cycle,
+        monthly_base_price=float(tenant.monthly_base_price or 0),
+        billing_email=tenant.billing_email,
+        licenses=[
+            TenantContextLicense(
+                module_code=row.module_code,
+                is_enabled=bool(row.is_enabled),
+                monthly_price=float(row.monthly_price or 0),
+                notes=row.notes,
+            )
+            for row in licenses
+        ],
+    )
 
 
 @router.post("/sms-test", status_code=status.HTTP_204_NO_CONTENT)
