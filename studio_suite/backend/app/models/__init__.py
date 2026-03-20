@@ -1,7 +1,14 @@
 """
 Modele bazy danych
 """
-from app.models.user import Tenant, TenantModuleLicense, User, UserSession
+from app.models.user import (
+    Tenant,
+    TenantModuleLicense,
+    TenantBillingInvoice,
+    TenantBillingReminderLog,
+    User,
+    UserSession,
+)
 from app.models.salon_core import (
     Salon,
     StaffRole,
@@ -75,6 +82,8 @@ __all__ = [
     "User",
     "Tenant",
     "TenantModuleLicense",
+    "TenantBillingInvoice",
+    "TenantBillingReminderLog",
     "UserSession",
     "Salon",
     "StaffRole",

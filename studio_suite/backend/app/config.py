@@ -61,6 +61,20 @@ class Settings(BaseSettings):
     PUBLIC_BOOKING_RATE_LIMIT_PHONE_PER_15M: int = 5
     PUBLIC_BOOKING_RATE_LIMIT_IP_PER_15M: int = 30
 
+    # SMTP / billing reminders
+    SMTP_HOST: Optional[str] = None
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: Optional[str] = None
+    SMTP_PASSWORD: Optional[str] = None
+    SMTP_FROM_EMAIL: Optional[str] = None
+    SMTP_FROM_NAME: str = "Studio Suite Billing"
+    SMTP_USE_STARTTLS: bool = True
+    SMTP_USE_SSL: bool = False
+    BILLING_CURRENCY: str = "PLN"
+    BILLING_REMINDER_DAYS_BEFORE_DUE: str = "14,7,1"
+    BILLING_REMINDER_DAYS_AFTER_DUE: str = "0,3,7,14"
+    BILLING_REMINDER_POLL_SECONDS: int = 3600
+
     # Legacy SMB sync (Windows XP shares 05/12)
     LEGACY_SMB_HOST: str = "192.168.200.25"
     LEGACY_SMB_PORT: int = 445

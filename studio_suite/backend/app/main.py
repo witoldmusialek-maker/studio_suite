@@ -10,6 +10,7 @@ from app.config import settings
 from app.api.v1 import api_router
 from app.database import Base, engine
 from app import models  # noqa: F401 - ensure model metadata is registered
+from app.services.billing import start_billing_scheduler
 from app.services.notifications import start_notification_scheduler
 from app.utils.security import get_password_hash
 
@@ -87,6 +88,17 @@ def startup() -> None:
             conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_cycle VARCHAR(16) NOT NULL DEFAULT 'monthly'"))
             conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS monthly_base_price NUMERIC(10,2) NOT NULL DEFAULT 0"))
             conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_email VARCHAR(255)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS description TEXT"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS legal_name VARCHAR(255)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS tax_id VARCHAR(64)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_address_line1 VARCHAR(255)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_address_line2 VARCHAR(255)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_postal_code VARCHAR(32)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_city VARCHAR(128)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_country VARCHAR(64) NOT NULL DEFAULT 'PL'"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_contact_name VARCHAR(128)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_contact_phone VARCHAR(64)"))
+            conn.execute(text("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS billing_due_days INTEGER NOT NULL DEFAULT 14"))
             conn.execute(
                 text(
                     "CREATE TABLE IF NOT EXISTS tenant_module_licenses ("
@@ -104,6 +116,57 @@ def startup() -> None:
             conn.execute(text("CREATE INDEX IF NOT EXISTS ix_tenant_module_licenses_tenant_id ON tenant_module_licenses(tenant_id)"))
             conn.execute(text("CREATE INDEX IF NOT EXISTS ix_tenant_module_licenses_module_code ON tenant_module_licenses(module_code)"))
             conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS ix_tenant_module_licenses_tenant_module ON tenant_module_licenses(tenant_id, module_code)"))
+            conn.execute(
+                text(
+                    "CREATE TABLE IF NOT EXISTS tenant_billing_invoices ("
+                    "id SERIAL PRIMARY KEY, "
+                    "tenant_id INTEGER NOT NULL REFERENCES tenants(id), "
+                    "period_year INTEGER NOT NULL, "
+                    "period_month INTEGER NOT NULL, "
+                    "issue_date DATE NOT NULL, "
+                    "due_date DATE NOT NULL, "
+                    "currency VARCHAR(3) NOT NULL DEFAULT 'PLN', "
+                    "base_amount NUMERIC(10,2) NOT NULL DEFAULT 0, "
+                    "modules_amount NUMERIC(10,2) NOT NULL DEFAULT 0, "
+                    "total_amount NUMERIC(10,2) NOT NULL DEFAULT 0, "
+                    "status VARCHAR(24) NOT NULL DEFAULT 'OPEN', "
+                    "line_items_json TEXT, "
+                    "notes VARCHAR(255), "
+                    "sent_at TIMESTAMPTZ NULL, "
+                    "paid_at TIMESTAMPTZ NULL, "
+                    "created_at TIMESTAMPTZ DEFAULT now(), "
+                    "updated_at TIMESTAMPTZ DEFAULT now()"
+                    ")"
+                )
+            )
+            conn.execute(
+                text(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS ix_tenant_billing_invoices_tenant_period "
+                    "ON tenant_billing_invoices(tenant_id, period_year, period_month)"
+                )
+            )
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_tenant_billing_invoices_due_date ON tenant_billing_invoices(due_date)"))
+            conn.execute(
+                text(
+                    "CREATE TABLE IF NOT EXISTS tenant_billing_reminder_logs ("
+                    "id SERIAL PRIMARY KEY, "
+                    "tenant_id INTEGER NOT NULL REFERENCES tenants(id), "
+                    "invoice_id INTEGER NOT NULL REFERENCES tenant_billing_invoices(id), "
+                    "reminder_kind VARCHAR(64) NOT NULL, "
+                    "channel VARCHAR(16) NOT NULL DEFAULT 'EMAIL', "
+                    "recipient VARCHAR(255), "
+                    "status VARCHAR(24) NOT NULL DEFAULT 'SENT', "
+                    "error_message VARCHAR(255), "
+                    "sent_at TIMESTAMPTZ DEFAULT now()"
+                    ")"
+                )
+            )
+            conn.execute(
+                text(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS ix_tenant_billing_reminder_logs_invoice_kind "
+                    "ON tenant_billing_reminder_logs(invoice_id, reminder_kind)"
+                )
+            )
             conn.execute(
                 text(
                     "SELECT setval(pg_get_serial_sequence('tenants','id'), "
@@ -495,6 +558,7 @@ def startup() -> None:
     if engine.dialect.name != "postgresql":
         Base.metadata.create_all(bind=engine)
     start_notification_scheduler()
+    start_billing_scheduler()
 
 
 @app.get("/")

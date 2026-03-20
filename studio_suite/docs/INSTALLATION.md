@@ -32,6 +32,16 @@ pip install -r requirements.txt
 # utworz plik .env z minimum:
 # DATABASE_URL=postgresql://user:password@localhost:5432/studio_suite
 # SECRET_KEY=change-me
+# (opcjonalnie rozliczenia mailowe)
+# SMTP_HOST=smtp.twoja-firma.pl
+# SMTP_PORT=587
+# SMTP_USERNAME=billing@twoja-firma.pl
+# SMTP_PASSWORD=twoje-haslo
+# SMTP_FROM_EMAIL=billing@twoja-firma.pl
+# SMTP_FROM_NAME=Studio Suite Billing
+# SMTP_USE_STARTTLS=true
+# BILLING_REMINDER_DAYS_BEFORE_DUE=14,7,1
+# BILLING_REMINDER_DAYS_AFTER_DUE=0,3,7,14
 uvicorn app.main:app --reload --port 8000
 ```
 

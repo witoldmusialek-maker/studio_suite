@@ -29,6 +29,7 @@ import {
 import { api } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 import { useBooking } from '../contexts/BookingContext'
+import { hasModuleLicense } from '../config/permissions'
 
 type StatsResponse = {
   salons: number
@@ -225,6 +226,7 @@ const DashboardPage = () => {
   const isReceptionist = user?.role === 'receptionist'
   const isManagerRole = ['manager', 'manager_main', 'manager_salon'].includes(user?.role || '')
   const isMainManager = user?.role === 'manager_main'
+  const canAccessInventory = hasModuleLicense(user, 'INVENTORY')
   const today = new Date()
   const tomorrow = new Date(today)
   tomorrow.setDate(today.getDate() + 1)
@@ -271,6 +273,7 @@ const DashboardPage = () => {
           api.get<SalonStaffRow[]>(`/booking/salons/${selectedSalonId}/staff`, { params: { can_take_bookings: true } }),
           sessionRequest,
           isManagerRole
+            && canAccessInventory
             ? api.get<InventoryIssueRow[]>('/inventory/issues', {
                 params: { salon_id: selectedSalonId, status_filter: 'POSTED' },
               })
@@ -311,7 +314,7 @@ const DashboardPage = () => {
       cancelled = true
       if (intervalId) window.clearInterval(intervalId)
     }
-  }, [appointments, isManagerRole, selectedSalonId, user?.role])
+  }, [appointments, canAccessInventory, isManagerRole, selectedSalonId, user?.role])
 
   useEffect(() => {
     if (!canStocktakeFromDashboard || selectedSalonId === '') return
@@ -1199,53 +1202,55 @@ const DashboardPage = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={isMainManager ? 6 : 12}>
-            <Card>
-              <CardContent>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
-                  <Typography variant="h6">Rozchody magazynowe dzis</Typography>
-                  <FormControl size="small" sx={{ minWidth: 190 }}>
-                    <InputLabel>Sortowanie</InputLabel>
-                    <Select
-                      label="Sortowanie"
-                      value={managerOutflowSort}
-                      onChange={(e) => setManagerOutflowSort(e.target.value as 'newest' | 'oldest')}
-                    >
-                      <MenuItem value="newest">Najnowsze na gorze</MenuItem>
-                      <MenuItem value="oldest">Najstarsze na gorze</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Stack>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Godzina</TableCell>
-                      <TableCell align="right">Dokument</TableCell>
-                      <TableCell align="right">Pozycje</TableCell>
-                      <TableCell align="right">Koszt</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {managerOutflowRows.map((row) => (
-                      <TableRow key={`outflow-${row.id}`}>
-                        <TableCell>{new Date(row.issue_time).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</TableCell>
-                        <TableCell align="right">#{row.id}</TableCell>
-                        <TableCell align="right">{row.lines?.length || 0}</TableCell>
-                        <TableCell align="right">
-                          {(row.lines || []).reduce((sum, line) => sum + Number(line.total_cost || 0), 0).toFixed(2)} PLN
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    {!managerOutflowRows.length && (
+          {canAccessInventory && (
+            <Grid item xs={12} md={isMainManager ? 6 : 12}>
+              <Card>
+                <CardContent>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
+                    <Typography variant="h6">Rozchody magazynowe dzis</Typography>
+                    <FormControl size="small" sx={{ minWidth: 190 }}>
+                      <InputLabel>Sortowanie</InputLabel>
+                      <Select
+                        label="Sortowanie"
+                        value={managerOutflowSort}
+                        onChange={(e) => setManagerOutflowSort(e.target.value as 'newest' | 'oldest')}
+                      >
+                        <MenuItem value="newest">Najnowsze na gorze</MenuItem>
+                        <MenuItem value="oldest">Najstarsze na gorze</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Stack>
+                  <Table size="small">
+                    <TableHead>
                       <TableRow>
-                        <TableCell colSpan={4}>Brak rozchodow magazynowych dzis.</TableCell>
+                        <TableCell>Godzina</TableCell>
+                        <TableCell align="right">Dokument</TableCell>
+                        <TableCell align="right">Pozycje</TableCell>
+                        <TableCell align="right">Koszt</TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </Grid>
+                    </TableHead>
+                    <TableBody>
+                      {managerOutflowRows.map((row) => (
+                        <TableRow key={`outflow-${row.id}`}>
+                          <TableCell>{new Date(row.issue_time).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</TableCell>
+                          <TableCell align="right">#{row.id}</TableCell>
+                          <TableCell align="right">{row.lines?.length || 0}</TableCell>
+                          <TableCell align="right">
+                            {(row.lines || []).reduce((sum, line) => sum + Number(line.total_cost || 0), 0).toFixed(2)} PLN
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      {!managerOutflowRows.length && (
+                        <TableRow>
+                          <TableCell colSpan={4}>Brak rozchodow magazynowych dzis.</TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
         </Grid>
       )}
 

@@ -38,6 +38,15 @@ const sectionModules: Partial<Record<AppSection, string[]>> = {
   reports: ['REPORTS'],
 }
 
+export const hasModuleLicense = (user: User | null | undefined, moduleCode: string): boolean => {
+  if (!user) return false
+  if (user.is_superadmin) return true
+  const code = String(moduleCode || '').trim().toUpperCase()
+  if (!code) return true
+  const licensed = new Set((user.licensed_modules || []).map((item) => item.trim().toUpperCase()).filter(Boolean))
+  return licensed.has(code)
+}
+
 export const canAccess = (user: User | null | undefined, section: AppSection): boolean => {
   if (!user) return false
   if (user.is_superadmin) {
@@ -46,8 +55,7 @@ export const canAccess = (user: User | null | undefined, section: AppSection): b
   if (!(roleSections[user.role]?.includes(section) ?? false)) return false
   const requiredModules = sectionModules[section] || []
   if (requiredModules.length === 0) return true
-  const licensed = new Set((user.licensed_modules || []).map((code) => code.trim().toUpperCase()).filter(Boolean))
-  return requiredModules.every((code) => licensed.has(code))
+  return requiredModules.every((code) => hasModuleLicense(user, code))
 }
 
 export const canAccessSection = canAccess
