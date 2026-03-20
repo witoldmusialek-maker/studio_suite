@@ -43,3 +43,4 @@ Serwisy lokalne:
 - `studio_suite/TESTING.md`
 - `studio_suite/docs/INSTALLATION.md`
 - `studio_suite/docs/AGENT_START.md`
+- `studio_suite/docs/RULES.md`
