@@ -235,6 +235,52 @@ def startup() -> None:
                     "END $$;"
                 )
             )
+            conn.execute(text("ALTER TABLE payments ADD COLUMN IF NOT EXISTS tenant_id INTEGER"))
+            conn.execute(
+                text(
+                    "UPDATE payments p "
+                    "SET tenant_id = a.tenant_id "
+                    "FROM appointments a "
+                    "WHERE p.appointment_id = a.id AND p.tenant_id IS NULL"
+                )
+            )
+            conn.execute(text("UPDATE payments SET tenant_id = 1 WHERE tenant_id IS NULL"))
+            conn.execute(text("ALTER TABLE payments ALTER COLUMN tenant_id SET DEFAULT 1"))
+            conn.execute(text("ALTER TABLE payments ALTER COLUMN tenant_id SET NOT NULL"))
+            conn.execute(
+                text(
+                    "DO $$ BEGIN "
+                    "IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_payments_tenant_id') THEN "
+                    "ALTER TABLE payments ADD CONSTRAINT fk_payments_tenant_id "
+                    "FOREIGN KEY (tenant_id) REFERENCES tenants(id); "
+                    "END IF; "
+                    "END $$;"
+                )
+            )
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_payments_tenant_id ON payments(tenant_id)"))
+            conn.execute(text("ALTER TABLE promotions ADD COLUMN IF NOT EXISTS tenant_id INTEGER"))
+            conn.execute(
+                text(
+                    "UPDATE promotions pr "
+                    "SET tenant_id = s.tenant_id "
+                    "FROM salons s "
+                    "WHERE pr.salon_id = s.id AND pr.tenant_id IS NULL"
+                )
+            )
+            conn.execute(text("UPDATE promotions SET tenant_id = 1 WHERE tenant_id IS NULL"))
+            conn.execute(text("ALTER TABLE promotions ALTER COLUMN tenant_id SET DEFAULT 1"))
+            conn.execute(text("ALTER TABLE promotions ALTER COLUMN tenant_id SET NOT NULL"))
+            conn.execute(
+                text(
+                    "DO $$ BEGIN "
+                    "IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_promotions_tenant_id') THEN "
+                    "ALTER TABLE promotions ADD CONSTRAINT fk_promotions_tenant_id "
+                    "FOREIGN KEY (tenant_id) REFERENCES tenants(id); "
+                    "END IF; "
+                    "END $$;"
+                )
+            )
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_promotions_tenant_id ON promotions(tenant_id)"))
             conn.execute(
                 text(
                     "ALTER TABLE legacy_product_catalog_items "

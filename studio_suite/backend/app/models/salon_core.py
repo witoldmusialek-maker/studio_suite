@@ -816,6 +816,7 @@ class Payment(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=False, index=True)
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
     client_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
@@ -875,6 +876,7 @@ class Promotion(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
     name = Column(String(255), nullable=False, index=True)
     promotion_type = Column(String(32), nullable=False, default="fixed_discount")
     value = Column(Numeric(12, 2), nullable=False, default=0)

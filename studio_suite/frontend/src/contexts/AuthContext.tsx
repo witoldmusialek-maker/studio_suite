@@ -40,8 +40,11 @@ const buildMappedUser = (
   fallbackSalonIds: number[],
 ): User => {
   const role = mapRole(payload.role)
+  const isSuperadmin = Boolean(payload.is_superadmin)
   const linkedSalonId = typeof payload.linked_salon_id === 'number' ? payload.linked_salon_id : undefined
-  const effectiveSalonIds = linkedSalonId
+  const effectiveSalonIds = isSuperadmin
+    ? []
+    : linkedSalonId
     ? [linkedSalonId]
     : resolveAssignedSalonIds(role, fallbackSalonIds)
 
@@ -57,7 +60,7 @@ const buildMappedUser = (
     linked_salon_name: payload.linked_salon_name,
     totp_enabled: Boolean(payload.totp_enabled),
     tenant_id: typeof payload.tenant_id === 'number' ? payload.tenant_id : undefined,
-    is_superadmin: Boolean(payload.is_superadmin),
+    is_superadmin: isSuperadmin,
   }
 }
 
@@ -74,9 +77,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       try {
         const me = await api.get('/auth/me')
-        const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
         const payload = me.data
-        const salonIds = (salonsRes.data || []).map((salon) => salon.id)
+        let salonIds: number[] = []
+        if (!payload?.is_superadmin) {
+          const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
+          salonIds = (salonsRes.data || []).map((salon) => salon.id)
+        }
         const mappedUser = buildMappedUser(payload, salonIds)
         localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
         setUser(mappedUser)
@@ -98,9 +104,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem(TOKEN_KEY, token)
 
       const me = await api.get('/auth/me')
-      const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
       const payload = me.data
-      const salonIds = (salonsRes.data || []).map((salon) => salon.id)
+      let salonIds: number[] = []
+      if (!payload?.is_superadmin) {
+        const salonsRes = await api.get<Array<{ id: number }>>('/resources/salons')
+        salonIds = (salonsRes.data || []).map((salon) => salon.id)
+      }
       const mappedUser = buildMappedUser(payload, salonIds)
       localStorage.setItem(USER_KEY, JSON.stringify(mappedUser))
       setUser(mappedUser)

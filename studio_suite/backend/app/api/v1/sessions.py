@@ -25,7 +25,11 @@ async def list_active_sessions(
 
     threshold = datetime.utcnow() - timedelta(minutes=ACTIVE_SESSION_WINDOW_MINUTES)
     query = db.query(UserSession, User, Salon).join(User, User.id == UserSession.user_id).outerjoin(Salon, Salon.id == UserSession.salon_id)
-    query = query.filter(UserSession.last_seen >= threshold)
+    query = query.filter(
+        UserSession.last_seen >= threshold,
+        UserSession.tenant_id == current_user.tenant_id,
+        User.tenant_id == current_user.tenant_id,
+    )
 
     if current_user.role in {UserRole.MANAGER, UserRole.MANAGER_MAIN, UserRole.MANAGER_SALON}:
         staff_member = get_current_staff_member(current_user=current_user, db=db)
@@ -77,6 +81,10 @@ async def list_session_history(
         db.query(UserSession, User, Salon)
         .join(User, User.id == UserSession.user_id)
         .outerjoin(Salon, Salon.id == UserSession.salon_id)
+    )
+    query = query.filter(
+        UserSession.tenant_id == current_user.tenant_id,
+        User.tenant_id == current_user.tenant_id,
     )
     if salon_id is not None:
         query = query.filter(UserSession.salon_id == salon_id)

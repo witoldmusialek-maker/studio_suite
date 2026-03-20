@@ -64,10 +64,11 @@ def _sale_to_read(sale: Sale, lines: list[SaleLine]) -> SaleRead:
     )
 
 
-def _retail_location_for_salon(db: Session, salon_id: int) -> StockLocation | None:
+def _retail_location_for_salon(db: Session, tenant_id: int, salon_id: int) -> StockLocation | None:
     return (
         db.query(StockLocation)
         .filter(
+            StockLocation.tenant_id == tenant_id,
             StockLocation.salon_id == salon_id,
             StockLocation.location_type == "RETAIL",
             StockLocation.is_active.is_(True),
@@ -91,16 +92,23 @@ async def create_sale(
 ):
     _ensure_sale_write_access(db, current_user, payload.salon_id)
 
-    if payload.customer_id is not None and not db.query(Customer.id).filter(Customer.id == payload.customer_id).first():
+    if payload.customer_id is not None and not db.query(Customer.id).filter(
+        Customer.id == payload.customer_id,
+        Customer.tenant_id == current_user.tenant_id,
+    ).first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
     if payload.appointment_id is not None:
-        appointment = db.query(Appointment).filter(Appointment.id == payload.appointment_id).first()
+        appointment = db.query(Appointment).filter(
+            Appointment.id == payload.appointment_id,
+            Appointment.tenant_id == current_user.tenant_id,
+        ).first()
         if not appointment:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Appointment not found")
         if appointment.salon_id != payload.salon_id:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Appointment does not belong to salon")
 
     sale = Sale(
+        tenant_id=current_user.tenant_id,
         salon_id=payload.salon_id,
         customer_id=payload.customer_id,
         appointment_id=payload.appointment_id,
@@ -148,7 +156,7 @@ async def complete_sale(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    sale = db.query(Sale).filter(Sale.id == sale_id).first()
+    sale = db.query(Sale).filter(Sale.id == sale_id, Sale.tenant_id == current_user.tenant_id).first()
     if not sale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sale not found")
 
@@ -156,7 +164,7 @@ async def complete_sale(
     if (sale.status or "").upper() != "OPEN":
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Only OPEN sale can be completed")
 
-    location = _retail_location_for_salon(db, sale.salon_id)
+    location = _retail_location_for_salon(db, current_user.tenant_id, sale.salon_id)
     if not location:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No active RETAIL stock location in salon")
 
@@ -214,7 +222,7 @@ async def list_sales(
     db: Session = Depends(get_db),
 ):
     allowed = _allowed_salons_for_user(db, current_user, current_staff)
-    query = db.query(Sale)
+    query = db.query(Sale).filter(Sale.tenant_id == current_user.tenant_id)
     if salon_id is not None:
         require_salon_access(db, current_user, salon_id)
         query = query.filter(Sale.salon_id == salon_id)

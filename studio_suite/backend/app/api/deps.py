@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.salon_core import StaffMember, StaffSalonMembership
+from app.models.salon_core import Salon, StaffMember, StaffSalonMembership
 from app.models.user import User, UserRole, UserSession
 from app.utils.security import decode_access_token
 
@@ -102,7 +102,14 @@ def get_current_staff_member(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> StaffMember | None:
-    return db.query(StaffMember).filter(StaffMember.user_id == current_user.id).first()
+    return (
+        db.query(StaffMember)
+        .filter(
+            StaffMember.user_id == current_user.id,
+            StaffMember.tenant_id == current_user.tenant_id,
+        )
+        .first()
+    )
 
 
 def get_staff_allowed_salons(db: Session, staff_member: StaffMember | None) -> set[int]:
@@ -124,9 +131,19 @@ def get_staff_allowed_salons(db: Session, staff_member: StaffMember | None) -> s
 
 
 def require_salon_access(db: Session, current_user: User, salon_id: int) -> None:
+    salon = db.query(Salon.id).filter(Salon.id == salon_id, Salon.tenant_id == current_user.tenant_id).first()
+    if not salon:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
     if current_user.role in {UserRole.ADMIN, UserRole.MANAGER, UserRole.MANAGER_MAIN}:
         return
-    staff_member = db.query(StaffMember).filter(StaffMember.user_id == current_user.id).first()
+    staff_member = (
+        db.query(StaffMember)
+        .filter(
+            StaffMember.user_id == current_user.id,
+            StaffMember.tenant_id == current_user.tenant_id,
+        )
+        .first()
+    )
     allowed_salons = get_staff_allowed_salons(db, staff_member)
     if salon_id not in allowed_salons:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No access to this salon")

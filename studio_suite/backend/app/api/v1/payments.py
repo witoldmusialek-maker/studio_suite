@@ -146,11 +146,13 @@ def _normalize_promotion_type(value: str) -> str:
     return normalized
 
 
-def _valid_card(db: Session, client_id: int) -> ClientCard | None:
+def _valid_card(db: Session, tenant_id: int, client_id: int) -> ClientCard | None:
     today = date.today()
     return (
         db.query(ClientCard)
+        .join(Customer, Customer.id == ClientCard.client_id)
         .filter(
+            Customer.tenant_id == tenant_id,
             ClientCard.client_id == client_id,
             ((ClientCard.expiry.is_(None)) | (ClientCard.expiry >= today)),
         )
@@ -158,11 +160,13 @@ def _valid_card(db: Session, client_id: int) -> ClientCard | None:
     )
 
 
-def _valid_invitations(db: Session, client_id: int) -> list[Invitation]:
+def _valid_invitations(db: Session, tenant_id: int, client_id: int) -> list[Invitation]:
     today = date.today()
     return (
         db.query(Invitation)
+        .join(Customer, Customer.id == Invitation.client_id)
         .filter(
+            Customer.tenant_id == tenant_id,
             Invitation.client_id == client_id,
             Invitation.used_on_payment_id.is_(None),
             ((Invitation.expiry.is_(None)) | (Invitation.expiry >= today)),
@@ -172,10 +176,11 @@ def _valid_invitations(db: Session, client_id: int) -> list[Invitation]:
     )
 
 
-def _retail_location_for_salon(db: Session, salon_id: int) -> StockLocation | None:
+def _retail_location_for_salon(db: Session, tenant_id: int, salon_id: int) -> StockLocation | None:
     return (
         db.query(StockLocation)
         .filter(
+            StockLocation.tenant_id == tenant_id,
             StockLocation.salon_id == salon_id,
             StockLocation.location_type == "RETAIL",
             StockLocation.is_active.is_(True),
@@ -215,7 +220,10 @@ async def list_active_promotions(
     linked_service_ids: set[int] = set()
     bundle_id: int | None = None
     if appointment_id is not None:
-        appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
+        appointment = db.query(Appointment).filter(
+            Appointment.id == appointment_id,
+            Appointment.tenant_id == current_user.tenant_id,
+        ).first()
         if not appointment:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Appointment not found")
         if salon_id is not None and appointment.salon_id != salon_id:
@@ -236,6 +244,7 @@ async def list_active_promotions(
     rows = (
         db.query(Promotion)
         .filter(
+            Promotion.tenant_id == current_user.tenant_id,
             Promotion.is_active.is_(True),
             ((Promotion.valid_from.is_(None)) | (Promotion.valid_from <= today)),
             ((Promotion.valid_to.is_(None)) | (Promotion.valid_to >= today)),
@@ -272,6 +281,7 @@ async def create_promotion(
     if payload.valid_from and payload.valid_to and payload.valid_from > payload.valid_to:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="valid_from cannot be after valid_to")
     row = Promotion(
+        tenant_id=current_user.tenant_id,
         name=payload.name.strip(),
         promotion_type=_normalize_promotion_type(payload.promotion_type),
         value=_money(payload.value),
@@ -297,7 +307,10 @@ async def update_promotion(
     db: Session = Depends(get_db),
 ):
     _ensure_promotion_admin_access(current_user)
-    row = db.query(Promotion).filter(Promotion.id == promotion_id).first()
+    row = db.query(Promotion).filter(
+        Promotion.id == promotion_id,
+        Promotion.tenant_id == current_user.tenant_id,
+    ).first()
     if not row:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Promotion not found")
     target_salon_id = payload.salon_id if payload.salon_id is not None else row.salon_id
@@ -331,7 +344,10 @@ async def delete_promotion(
     db: Session = Depends(get_db),
 ):
     _ensure_promotion_admin_access(current_user)
-    row = db.query(Promotion).filter(Promotion.id == promotion_id).first()
+    row = db.query(Promotion).filter(
+        Promotion.id == promotion_id,
+        Promotion.tenant_id == current_user.tenant_id,
+    ).first()
     if not row:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Promotion not found")
     if row.salon_id is not None:
@@ -400,8 +416,8 @@ def _build_invoice(
     retail_items: list[dict] | None = None,
 ) -> tuple[dict, list[dict], ClientCard | None, list[Invitation]]:
     service_items = _collect_invoice_items(db, appointment)
-    valid_card = _valid_card(db, appointment.client_id)
-    available_invitations = _valid_invitations(db, appointment.client_id)
+    valid_card = _valid_card(db, appointment.tenant_id, appointment.client_id)
+    available_invitations = _valid_invitations(db, appointment.tenant_id, appointment.client_id)
     available_by_id = {row.id: row for row in available_invitations}
     selected_invitations: list[Invitation] = []
     used_service_slots: set[int] = set()
@@ -537,7 +553,9 @@ async def get_client_card(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    del current_user
+    customer = db.query(Customer).filter(Customer.id == client_id, Customer.tenant_id == current_user.tenant_id).first()
+    if not customer:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
     row = db.query(ClientCard).filter(ClientCard.client_id == client_id).first()
     return _client_card_to_read(row) if row else None
 
@@ -549,8 +567,7 @@ async def upsert_client_card(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    del current_user
-    if not db.query(Customer.id).filter(Customer.id == client_id).first():
+    if not db.query(Customer.id).filter(Customer.id == client_id, Customer.tenant_id == current_user.tenant_id).first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
     row = db.query(ClientCard).filter(ClientCard.client_id == client_id).first()
     if not row:
@@ -569,8 +586,9 @@ async def list_invitations(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    del current_user
-    return [_invitation_to_read(row) for row in _valid_invitations(db, client_id)]
+    if not db.query(Customer.id).filter(Customer.id == client_id, Customer.tenant_id == current_user.tenant_id).first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
+    return [_invitation_to_read(row) for row in _valid_invitations(db, current_user.tenant_id, client_id)]
 
 
 @router.post("/clients/{client_id}/invitations", response_model=InvitationRead, status_code=status.HTTP_201_CREATED)
@@ -580,8 +598,7 @@ async def create_invitation(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    del current_user
-    if not db.query(Customer.id).filter(Customer.id == client_id).first():
+    if not db.query(Customer.id).filter(Customer.id == client_id, Customer.tenant_id == current_user.tenant_id).first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
     invitation = Invitation(client_id=client_id, service_id=payload.service_id, expiry=payload.expiry)
     db.add(invitation)
@@ -598,7 +615,10 @@ async def get_invoice_preview(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
+    appointment = db.query(Appointment).filter(
+        Appointment.id == appointment_id,
+        Appointment.tenant_id == current_user.tenant_id,
+    ).first()
     if not appointment:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Appointment not found")
     _require_payment_access(db, current_user, appointment.salon_id)
@@ -620,7 +640,10 @@ async def create_payment(
     db: Session = Depends(get_db),
 ):
     del current_staff
-    appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
+    appointment = db.query(Appointment).filter(
+        Appointment.id == appointment_id,
+        Appointment.tenant_id == current_user.tenant_id,
+    ).first()
     if not appointment:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Appointment not found")
     _require_payment_access(db, current_user, appointment.salon_id)
@@ -666,7 +689,11 @@ async def create_payment(
 
     promotion: Promotion | None = None
     if payload.promotion_id is not None:
-        promotion = db.query(Promotion).filter(Promotion.id == payload.promotion_id, Promotion.is_active.is_(True)).first()
+        promotion = db.query(Promotion).filter(
+            Promotion.id == payload.promotion_id,
+            Promotion.tenant_id == current_user.tenant_id,
+            Promotion.is_active.is_(True),
+        ).first()
         if not promotion:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Promotion not found")
         if promotion.salon_id is not None and promotion.salon_id != appointment.salon_id:
@@ -688,6 +715,7 @@ async def create_payment(
     retail_rows = [row for row in rows if row["kind"] == "retail"]
     if retail_rows:
         sale = Sale(
+            tenant_id=current_user.tenant_id,
             salon_id=appointment.salon_id,
             customer_id=appointment.client_id,
             appointment_id=appointment.id,
@@ -698,7 +726,7 @@ async def create_payment(
         )
         db.add(sale)
         db.flush()
-        location = _retail_location_for_salon(db, appointment.salon_id)
+        location = _retail_location_for_salon(db, current_user.tenant_id, appointment.salon_id)
         for retail in retail_rows:
             product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == retail["product_id"]).first()
             sale_line = SaleLine(
@@ -726,6 +754,7 @@ async def create_payment(
                 level.quantity = Decimal(str(level.quantity)) - _money(retail["quantity"])
 
     payment = Payment(
+        tenant_id=current_user.tenant_id,
         appointment_id=appointment.id,
         salon_id=appointment.salon_id,
         client_id=appointment.client_id,
@@ -813,7 +842,10 @@ async def payment_pdf(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    payment = db.query(Payment).filter(Payment.id == payment_id).first()
+    payment = db.query(Payment).filter(
+        Payment.id == payment_id,
+        Payment.tenant_id == current_user.tenant_id,
+    ).first()
     if not payment:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Payment not found")
     _require_payment_access(db, current_user, payment.salon_id)
