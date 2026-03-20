@@ -31,6 +31,7 @@ from app.models.salon_core import (
     StaffMonthlySchedule,
     StaffWeeklySchedule,
 )
+from app.models.user import TenantModuleLicense
 from app.schemas.public_booking import (
     PublicAppointmentCreate,
     PublicAppointmentRead,
@@ -51,6 +52,29 @@ router = APIRouter(prefix="/public", tags=["public-booking"])
 DEFAULT_START_HOUR = 8
 DEFAULT_END_HOUR = 22
 DEFAULT_SLOT_MINUTES = 30
+MODULE_CODE_PUBLIC_BOOKING = "PUBLIC_BOOKING"
+
+
+def _is_public_booking_enabled_for_tenant(db: Session, tenant_id: int) -> bool:
+    row = (
+        db.query(TenantModuleLicense.is_enabled)
+        .filter(
+            TenantModuleLicense.tenant_id == tenant_id,
+            TenantModuleLicense.module_code == MODULE_CODE_PUBLIC_BOOKING,
+        )
+        .first()
+    )
+    # Backward-compatible: missing row means enabled.
+    return True if row is None else bool(row[0])
+
+
+def _assert_public_booking_enabled_for_salon(db: Session, salon_id: int) -> Salon:
+    salon = db.query(Salon).filter(Salon.id == salon_id, Salon.is_active.is_(True)).first()
+    if not salon:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    if not _is_public_booking_enabled_for_tenant(db, int(salon.tenant_id)):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Public booking is disabled for this salon")
+    return salon
 
 
 def _hash_otp(challenge_id: int, phone: str, code: str) -> str:
@@ -244,9 +268,7 @@ def _validate_public_offer_payload(
 ) -> tuple[ServiceCatalogItem | None, BundleCatalog | None, int, float]:
     if bool(service_id) == bool(bundle_id):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Wybierz dokładnie: usługę albo forfet.")
-    salon = db.query(Salon).filter(Salon.id == salon_id, Salon.is_active.is_(True)).first()
-    if not salon:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    salon = _assert_public_booking_enabled_for_salon(db, salon_id)
     staff_allowed = {row.id for row in _staff_in_salon(db, salon_id, preferred_staff_id=staff_id)}
     if staff_id not in staff_allowed:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Staff does not belong to this salon")
@@ -305,7 +327,12 @@ async def public_bootstrap(
     staff_id: int | None = None,
     db: Session = Depends(get_db),
 ):
-    salons = db.query(Salon).filter(Salon.is_active.is_(True)).order_by(Salon.name.asc()).all()
+    salons_all = db.query(Salon).filter(Salon.is_active.is_(True)).order_by(Salon.name.asc()).all()
+    salons = [row for row in salons_all if _is_public_booking_enabled_for_tenant(db, int(row.tenant_id))]
+    if salon_id is not None:
+        selected_salon = next((row for row in salons if row.id == salon_id), None)
+        if selected_salon is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
     selected_salon_id = salon_id or (salons[0].id if salons else None)
     services_query = (
         db.query(ServiceCatalogItem)
@@ -392,6 +419,7 @@ async def public_staff_photo(
     salon_id: int,
     db: Session = Depends(get_db),
 ):
+    _assert_public_booking_enabled_for_salon(db, salon_id)
     row = (
         db.query(StaffMember)
         .outerjoin(
@@ -425,9 +453,7 @@ async def public_calendar(
     days: int = Query(default=7, ge=1, le=14),
     db: Session = Depends(get_db),
 ):
-    salon = db.query(Salon).filter(Salon.id == salon_id, Salon.is_active.is_(True)).first()
-    if not salon:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    salon = _assert_public_booking_enabled_for_salon(db, salon_id)
 
     if bool(service_id) and bool(bundle_id):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Wybierz usługę albo forfet.")
@@ -498,9 +524,7 @@ async def request_public_booking_otp(
         staff_id=payload.staff_id,
         slot=payload.slot,
     )
-    salon = db.query(Salon).filter(Salon.id == payload.salon_id).first()
-    if not salon:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    salon = _assert_public_booking_enabled_for_salon(db, payload.salon_id)
     request_ip = request.client.host if request.client else None
     _assert_public_rate_limits(db, phone=normalized_phone, request_ip=request_ip)
 
@@ -571,9 +595,7 @@ async def public_create_appointment(
         staff_id=payload.staff_id,
         slot=payload.slot,
     )
-    salon = db.query(Salon).filter(Salon.id == payload.salon_id, Salon.is_active.is_(True)).first()
-    if not salon:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Salon not found")
+    salon = _assert_public_booking_enabled_for_salon(db, payload.salon_id)
 
     start_at = payload.slot.replace(second=0, microsecond=0)
     end_at = start_at + timedelta(minutes=duration_minutes)
