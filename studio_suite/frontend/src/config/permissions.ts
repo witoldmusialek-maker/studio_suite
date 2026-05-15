@@ -3,6 +3,7 @@ import { User } from '../types'
 export type AppSection =
   | 'tenants'
   | 'stocktake_legacy'
+  | 'legacy_caisse'
   | 'help'
   | 'dashboard'
   | 'calendar'
@@ -16,12 +17,12 @@ export type AppSection =
   | 'users'
 
 const roleSections: Record<User['role'], AppSection[]> = {
-  admin: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'help'],
-  manager: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'help'],
-  manager_main: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'help'],
-  manager_salon: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'help'],
-  employee: ['dashboard', 'inventory', 'help'],
-  receptionist: ['dashboard', 'calendar', 'clients', 'stocktake_legacy', 'help'],
+  admin: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'legacy_caisse', 'help'],
+  manager: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'legacy_caisse', 'help'],
+  manager_main: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'bundles', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'legacy_caisse', 'help'],
+  manager_salon: ['dashboard', 'calendar', 'clients', 'resources', 'services', 'colors', 'inventory', 'reports', 'users', 'stocktake_legacy', 'legacy_caisse', 'help'],
+  employee: ['dashboard', 'inventory', 'legacy_caisse', 'help'],
+  receptionist: ['dashboard', 'calendar', 'clients', 'stocktake_legacy', 'legacy_caisse', 'help'],
 }
 
 const sectionModules: Partial<Record<AppSection, string[]>> = {
@@ -35,6 +36,7 @@ const sectionModules: Partial<Record<AppSection, string[]>> = {
   colors: ['INVENTORY'],
   inventory: ['INVENTORY'],
   stocktake_legacy: ['INVENTORY'],
+  legacy_caisse: ['LEGACY_CAISSE'],
   reports: ['REPORTS'],
 }
 

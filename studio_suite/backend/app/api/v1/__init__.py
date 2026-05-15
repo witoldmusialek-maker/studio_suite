@@ -9,6 +9,7 @@ from app.api.deps import (
     require_module_inventory,
     require_module_payments,
     require_module_reports,
+    require_module_legacy_caisse,
 )
 from app.api.v1 import (
     auth,
@@ -17,6 +18,7 @@ from app.api.v1 import (
     inventory,
     legacy_reports,
     legacy_catalog,
+    legacy_caisse,
     payments,
     public_booking,
     recipe,
@@ -35,6 +37,7 @@ api_router.include_router(colors.router, dependencies=[Depends(require_module_in
 api_router.include_router(inventory.router, dependencies=[Depends(require_module_inventory)])
 api_router.include_router(legacy_reports.router, dependencies=[Depends(require_active_tenant)])
 api_router.include_router(legacy_catalog.router, dependencies=[Depends(require_active_tenant)])
+api_router.include_router(legacy_caisse.router, dependencies=[Depends(require_module_legacy_caisse)])
 api_router.include_router(payments.router, dependencies=[Depends(require_module_payments)])
 api_router.include_router(public_booking.router)
 api_router.include_router(recipe.router, dependencies=[Depends(require_module_inventory)])

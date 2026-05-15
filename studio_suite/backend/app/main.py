@@ -14,7 +14,7 @@ from app.services.billing import start_billing_scheduler
 from app.services.notifications import start_notification_scheduler
 from app.utils.security import get_password_hash
 
-APP_VERSION = "v1.0.0-beta.2026-03-14.T30"
+APP_VERSION = "v1.0.0-beta.2026-05-15.T01"
 
 # Utworzenie aplikacji
 app = FastAPI(
