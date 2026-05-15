@@ -163,7 +163,15 @@ def require_module_legacy_caisse(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> User:
-    return _require_tenant_module(MODULE_CODE_LEGACY_CAISSE, current_user, db)
+    user = _require_tenant_module(MODULE_CODE_LEGACY_CAISSE, current_user, db)
+    if user.role in {UserRole.ADMIN, UserRole.MANAGER, UserRole.MANAGER_MAIN}:
+        return user
+    if bool(getattr(user, "legacy_caisse_enabled", False)):
+        return user
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Legacy CAISSE access is not enabled for this user",
+    )
 
 
 def get_current_admin(

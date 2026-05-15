@@ -18,6 +18,7 @@ export interface User {
   tenant_id?: number
   is_superadmin?: boolean
   licensed_modules?: string[]
+  legacy_caisse_enabled?: boolean
 }
 
 export interface Salon {

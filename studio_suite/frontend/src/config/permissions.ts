@@ -57,7 +57,11 @@ export const canAccess = (user: User | null | undefined, section: AppSection): b
   if (!(roleSections[user.role]?.includes(section) ?? false)) return false
   const requiredModules = sectionModules[section] || []
   if (requiredModules.length === 0) return true
-  return requiredModules.every((code) => hasModuleLicense(user, code))
+  if (!requiredModules.every((code) => hasModuleLicense(user, code))) return false
+  if (section === 'legacy_caisse' && !['admin', 'manager', 'manager_main'].includes(user.role)) {
+    return Boolean(user.legacy_caisse_enabled)
+  }
+  return true
 }
 
 export const canAccessSection = canAccess
