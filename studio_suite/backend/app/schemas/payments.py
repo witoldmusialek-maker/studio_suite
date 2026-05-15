@@ -124,9 +124,9 @@ class PaymentLineRead(BaseModel):
 
 class PaymentRead(BaseModel):
     id: int
-    appointment_id: int
+    appointment_id: int | None = None
     salon_id: int
-    client_id: int
+    client_id: int | None = None
     created_by_user_id: int
     sale_id: int | None = None
     client_card_id: int | None = None

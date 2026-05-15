@@ -21,7 +21,7 @@ class SaleCreate(BaseModel):
 
 class SaleLineRead(BaseModel):
     id: int
-    product_id: int
+    product_id: int | None = None
     quantity: float
     unit: str
     unit_price_gross: float
