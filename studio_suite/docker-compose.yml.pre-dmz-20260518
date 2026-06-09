@@ -31,7 +31,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "192.168.50.20:8003:8000"
+      - "8003:8000"
     volumes:
       - ./backend:/app
     networks:
@@ -56,7 +56,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "192.168.50.20:8004:8000"
+      - "8004:8000"
     volumes:
       - ./backend:/app
     networks:
@@ -76,7 +76,7 @@ services:
         VITE_API_URL: /api/v1
     restart: unless-stopped
     ports:
-      - "192.168.50.20:8082:80"
+      - "8082:80"
     networks:
       - studio_suite_net
     depends_on:
@@ -91,7 +91,7 @@ services:
         VITE_API_URL: /api/v1
     restart: unless-stopped
     ports:
-      - "192.168.50.20:8084:80"
+      - "8084:80"
     networks:
       - studio_suite_net
     depends_on:
