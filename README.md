@@ -22,6 +22,19 @@ studio_suite/
   scripts/   deploy/smoke/setup
 ```
 
+## Repozytorium GitHub
+
+Projekt jest hostowany na GitHub: https://github.com/witoldmusialek-maker/studio_suite
+
+Remote skonfigurowany dla deploy key z dev1 (2026-06-09):
+```bash
+git remote -v
+# origin  git@github.com:witoldmusialek-maker/studio_suite.git (fetch)
+# origin  git@github.com:witoldmusialek-maker/studio_suite.git (push)
+```
+
+Branche: `master`, `feature/legacy-caisse-flow`
+
 ## Szybki start
 
 ```powershell
