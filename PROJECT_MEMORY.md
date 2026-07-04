@@ -112,15 +112,20 @@ Default rule from AIOS Cross-Project Onboarding Practice:
 Current authority state:
 
 ```text
-Default Project Authority: Sponsor
-Explicit Project Authority: UNRESOLVED
-Acceptance Authority: UNRESOLVED
-Deployment Authority: UNRESOLVED
-AIOS PM role: onboarding and recommendation only
+Project Authority: Sponsor
+Acceptance Authority: Sponsor
+Deployment Authority: UNRESOLVED until operational responsibilities are formally assigned
+AIOS PM role: onboarding, recommendation, Objective Proposal preparation
 Implementation authority: not authorized
 Delegation authority: not authorized
-Delivery authority: not authorized
+Delivery authority: not authorized until Objective approval
 ```
+
+Sponsor decision update:
+
+- evidence phase is complete;
+- branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
+- PM is authorized to prepare the first Objective Proposal focused on restoring predictable operational readiness.
 
 PM must not infer authority from:
 
