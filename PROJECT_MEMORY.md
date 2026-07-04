@@ -51,10 +51,10 @@ Current AIOS status:
 - onboarding evidence boundary: reached;
 - further evidence collection is not expected to materially improve readiness without authority decisions;
 - Project Memory creation authorized by Sponsor and completed;
-- AIOS-OBJ-SS-001 executed; PM verdict: `Not ready — further operational cleanup required`;
+- AIOS-OBJ-SS-001 accepted by Sponsor; PM verdict: `Not ready — further operational cleanup required`;
 - delivery not authorized beyond operational-readiness assessment;
 - first feature/delivery Objective not authorized;
-- recommended next step: bounded Operational Cleanup Objective before feature delivery.
+- recommended next step accepted: bounded Operational Cleanup Objective before feature delivery.
 
 ## 3. Current Active State
 
