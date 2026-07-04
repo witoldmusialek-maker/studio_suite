@@ -54,7 +54,9 @@ Current AIOS status:
 - AIOS-OBJ-SS-001 accepted by Sponsor; PM verdict: `Not ready — further operational cleanup required`;
 - delivery not authorized beyond operational-readiness assessment;
 - first feature/delivery Objective not authorized;
-- AIOS-OBJ-SS-002 executed; PM verdict: `Ready after Sponsor authority decision`.
+- AIOS-OBJ-SS-002 accepted by Sponsor; PM verdict: `Ready after Sponsor authority decision`.
+- operational branch accepted for first feature/delivery Objective planning: `feature/legacy-caisse-flow`;
+- merge to `master` deferred until after one successful delivery or separate branch-policy decision.
 
 ## 3. Current Active State
 
