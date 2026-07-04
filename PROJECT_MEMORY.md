@@ -50,9 +50,10 @@ Current AIOS status:
 - Minimum Viable Understanding: achieved;
 - onboarding evidence boundary: reached;
 - further evidence collection is not expected to materially improve readiness without authority decisions;
-- Project Memory creation authorized by Sponsor;
-- delivery not authorized;
-- Objective creation not authorized.
+- Project Memory creation authorized by Sponsor and completed;
+- AIOS-OBJ-SS-001 approved as first operational Objective;
+- delivery not authorized beyond operational-readiness assessment;
+- first feature/delivery Objective not authorized.
 
 ## 3. Current Active State
 
