@@ -6,14 +6,15 @@ Szybkie uruchomienie pracy na nowym komputerze Windows 10, gdzie kod edytujesz z
 ## Aktualny stan projektu
 - Projekt: `studio_suite` (domena salonowa)
 - Brak modulow Digital Signage (wyswietlacze, dzwonki, klienci urzadzen)
-- Runtime: `db`, `backend`, `frontend` (docker compose)
-- Glowna galaz: `master`
+- Runtime: `db`, `backend`, `frontend`, `backend_public`, `frontend_public` (docker compose)
+- Operacyjna galaz runtime: `feature/legacy-caisse-flow`
+- `master` pozostaje remote default, ale jest starszy od aktualnego baseline runtime.
 
 ## Wymagania na nowym komputerze (Windows 10)
 - VS Code
 - OpenSSH client (`ssh` w terminalu)
 - Git
-- Dostep SSH do hosta dev (`dev1`)
+- Dostep SSH do hosta operacyjnego (`192.168.50.20`)
 - Dostep do repo (push/pull)
 
 ## Rozszerzenia VS Code
@@ -25,8 +26,8 @@ Szybkie uruchomienie pracy na nowym komputerze Windows 10, gdzie kod edytujesz z
 Plik: `%USERPROFILE%\\.ssh\\config`
 
 ```sshconfig
-Host dev1
-    HostName 192.168.200.116
+Host studio-suite-dev
+    HostName 192.168.50.20
     User witold
     IdentityFile ~/.ssh/id_rsa
     ServerAliveInterval 30
@@ -36,11 +37,11 @@ Host dev1
 Po konfiguracji sprawdz:
 
 ```powershell
-ssh dev1 "hostname && whoami"
+ssh studio-suite-dev "hostname && whoami"
 ```
 
 ## Otwieranie workspace przez SSH
-1. VS Code -> `Remote-SSH: Connect to Host...` -> `dev1`
+1. VS Code -> `Remote-SSH: Connect to Host...` -> `studio-suite-dev`
 2. `File -> Open Folder...`
 3. Otworz folder:
    - `~/projects/projekt2_repo`
@@ -52,7 +53,7 @@ ssh dev1 "hostname && whoami"
 - Backend: `~/projects/projekt2_repo/studio_suite/backend`
 - Frontend: `~/projects/projekt2_repo/studio_suite/frontend`
 
-## Podstawowe komendy operacyjne (na dev1)
+## Podstawowe komendy operacyjne (na hoscie operacyjnym)
 ```bash
 cd ~/projects/projekt2_repo/studio_suite
 docker compose ps
@@ -68,26 +69,26 @@ docker compose up -d --build --remove-orphans
 
 ## Smoke test
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\smoke-test.ps1 -BaseUrl http://192.168.200.116:8003
+powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\smoke-test.ps1 -BaseUrl http://192.168.50.20:8003 -HealthOnly
 ```
 
 Opcjonalnie publiczny:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\smoke-test.ps1 -BaseUrl https://dev2.witold.ovh
+powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\smoke-test.ps1 -BaseUrl https://dev2.witold.ovh -HealthOnly
 ```
 
 Alias kompatybilnosci: `studio_suite/scripts/smoke_test.ps1` (deleguje do `smoke-test.ps1`).
 
 ## Standardowy flow pracy
-1. `git checkout master`
-2. `git pull origin master`
+1. `git checkout feature/legacy-caisse-flow`
+2. `git pull origin feature/legacy-caisse-flow`
 3. Zmiany kodu
 4. Szybka walidacja:
    - frontend: `cd studio_suite/frontend && npm run build`
-   - backend: `cd studio_suite/backend && python -m compileall app`
+   - backend: AST syntax check from repo root (no pyc writes)
 5. `git add -A && git commit -m "..."`
-6. `git push origin master`
+6. `git push origin feature/legacy-caisse-flow`
 7. Deploy:
    - `powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\deploy-dev2.ps1`
 

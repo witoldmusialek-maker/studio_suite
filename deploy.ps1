@@ -1,27 +1,27 @@
-﻿# Skrypt deploy na maszynÄ™ dev1
+﻿# Legacy partial deploy script for the current operational host
 # UĹĽycie: .\deploy.ps1
 
-$DEV_HOST = "192.168.200.116"
+$DEV_HOST = "192.168.50.20"
 $DEV_USER = "witold"
 $DEV_PATH = "/home/witold/projects/studio_suite_repo/studio_suite"  # ZmieĹ„ jeĹ›li Ĺ›cieĹĽka jest inna
 $LOCAL_PATH = "c:\Users\Wit\projekty\cline\projekt2\studio_suite"
 
-Write-Host "=== Deploy Studio Suite na dev1 ===" -ForegroundColor Cyan
+Write-Host "=== Deploy Studio Suite na current operational host ===" -ForegroundColor Cyan
 Write-Host ""
 
 # 1. Sprawdzenie poĹ‚Ä…czenia
 Write-Host "1. Sprawdzanie poĹ‚Ä…czenia SSH..." -ForegroundColor Yellow
 ssh -o ConnectTimeout=5 "$DEV_USER@$DEV_HOST" "echo 'PoĹ‚Ä…czenie OK'"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "BĹÄ„D: Nie moĹĽna poĹ‚Ä…czyÄ‡ siÄ™ z serwerem dev1" -ForegroundColor Red
+    Write-Host "BĹÄ„D: Nie moĹĽna poĹ‚Ä…czyÄ‡ siÄ™ z hostem operacyjnym" -ForegroundColor Red
     Write-Host "SprawdĹş hasĹ‚o i poĹ‚Ä…czenie sieciowe" -ForegroundColor Red
     exit 1
 }
 Write-Host "âś“ PoĹ‚Ä…czenie dziaĹ‚a" -ForegroundColor Green
 Write-Host ""
 
-# 2. Sprawdzenie czy istnieje katalog projektu na dev1
-Write-Host "2. Sprawdzanie struktury projektu na dev1..." -ForegroundColor Yellow
+# 2. Sprawdzenie czy istnieje katalog projektu na hoscie operacyjnym
+Write-Host "2. Sprawdzanie struktury projektu na hoscie operacyjnym..." -ForegroundColor Yellow
 ssh "$DEV_USER@$DEV_HOST" "ls -la $DEV_PATH/backend/app/api/v1/content.py 2>/dev/null"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "BĹÄ„D: Nie znaleziono projektu w $DEV_PATH" -ForegroundColor Red
@@ -67,12 +67,12 @@ if ($LASTEXITCODE -eq 0) {
         if ($LASTEXITCODE -eq 0) {
             Write-Host "âś“ Wykryto proces uvicorn" -ForegroundColor Green
             Write-Host "UWAGA: Musisz rÄ™cznie zrestartowaÄ‡ backend!" -ForegroundColor Yellow
-            Write-Host "Wykonaj na dev1:" -ForegroundColor Cyan
+            Write-Host "Wykonaj na hoscie operacyjnym:" -ForegroundColor Cyan
             Write-Host "  pkill -f uvicorn" -ForegroundColor White
             Write-Host "  cd $DEV_PATH/backend && uvicorn app.main:app --reload &" -ForegroundColor White
         } else {
             Write-Host "âš  Nie wykryto metody uruchomienia" -ForegroundColor Yellow
-            Write-Host "Musisz rÄ™cznie zrestartowaÄ‡ backend na dev1" -ForegroundColor Yellow
+            Write-Host "Musisz rÄ™cznie zrestartowaÄ‡ backend na hoscie operacyjnym" -ForegroundColor Yellow
         }
     }
 }
@@ -80,5 +80,4 @@ if ($LASTEXITCODE -eq 0) {
 Write-Host ""
 Write-Host "=== Deploy zakoĹ„czony ===" -ForegroundColor Cyan
 Write-Host "SprawdĹş aplikacjÄ™: http://$DEV_HOST:8000/docs" -ForegroundColor Green
-
 

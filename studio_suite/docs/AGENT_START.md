@@ -26,8 +26,8 @@ Szybki start pracy nad aktualnym projektem salonowym (bez modulow Digital Signag
 - Szybkie czyszczenie:
   - `rm -rf studio_suite/android/sms_bridge/.gradle studio_suite/android/sms_bridge/app/build`
 
-## Szybka diagnostyka dev1
-- `ssh dev1`
+## Szybka diagnostyka hosta operacyjnego
+- `ssh studio-suite-dev` albo `ssh 192.168.50.20`
 - `cd ~/projects/projekt2_repo/studio_suite`
 - `docker compose ps`
 - `docker compose logs backend --tail 80`
@@ -36,6 +36,7 @@ Szybki start pracy nad aktualnym projektem salonowym (bez modulow Digital Signag
 - `docker compose logs frontend_public --tail 80`
 
 ## Definition of done (deploy)
-1. `git push origin master`
+1. `git push origin feature/legacy-caisse-flow`
 2. `powershell -ExecutionPolicy Bypass -File .\studio_suite\scripts\deploy-dev2.ps1`
-3. smoke direct i public przechodza
+3. health smoke direct i public przechodza (`-HealthOnly`)
+4. authenticated smoke wymaga jawnie zatwierdzonych credentials/TOTP flow; nie commituj sekretow.

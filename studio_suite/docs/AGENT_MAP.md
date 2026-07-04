@@ -44,10 +44,11 @@ Poza zakresem:
 - Compose: `docker-compose.yml`
 
 ## Deploy flow
-1. commit/push `master`
+1. commit/push `feature/legacy-caisse-flow` (current operational branch)
 2. `studio_suite/scripts/deploy-dev2.ps1`
 3. ewentualne sprzatanie orphanow: `docker compose up -d --remove-orphans`
-4. smoke: `studio_suite/scripts/smoke-test.ps1` (alias kompatybilnosci: `smoke_test.ps1`)
+4. health smoke: `studio_suite/scripts/smoke-test.ps1 -HealthOnly` (alias kompatybilnosci: `smoke_test.ps1`)
+5. authenticated smoke requires approved credentials/TOTP handling; do not commit secrets.
 
 ## Hygiena worktree
 - cache Android: `android/sms_bridge/.gradle/`, `android/sms_bridge/app/build/` sa lokalne i ignorowane

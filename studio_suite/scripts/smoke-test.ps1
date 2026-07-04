@@ -1,7 +1,8 @@
 param(
     [string]$BaseUrl = "http://localhost:8000",
-    [string]$Username = "admin",
-    [string]$Password = "password123"
+    [string]$Username = $env:STUDIO_SUITE_SMOKE_USERNAME,
+    [string]$Password = $env:STUDIO_SUITE_SMOKE_PASSWORD,
+    [switch]$HealthOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -20,10 +21,23 @@ Step "Checking health endpoint"
 $health = Invoke-RestMethod -Uri "$BaseUrl/health" -Method Get
 Ensure ($health.status -eq "ok") "Health check failed"
 
+if ($HealthOnly) {
+    Write-Host "SMOKE HEALTH PASSED" -ForegroundColor Green
+    return
+}
+
+if ([string]::IsNullOrWhiteSpace($Username) -or [string]::IsNullOrWhiteSpace($Password)) {
+    throw "Authenticated smoke requires credentials. Set STUDIO_SUITE_SMOKE_USERNAME/STUDIO_SUITE_SMOKE_PASSWORD or pass -Username/-Password. Use -HealthOnly for non-secret runtime health. If the account requires TOTP, use a smoke account without TOTP or update this script with an approved TOTP flow."
+}
+
 Step "Logging in as $Username"
 $loginBody = @{ username = $Username; password = $Password } | ConvertTo-Json
-$tokenResponse = Invoke-RestMethod -Uri "$BaseUrl/api/v1/auth/login" -Method Post -ContentType "application/json" -Body $loginBody
-Ensure (-not [string]::IsNullOrWhiteSpace($tokenResponse.access_token)) "Login did not return access_token"
+try {
+    $tokenResponse = Invoke-RestMethod -Uri "$BaseUrl/api/v1/auth/login" -Method Post -ContentType "application/json" -Body $loginBody
+} catch {
+    throw "Login failed. Check smoke credentials and TOTP requirements. Original error: $($_.Exception.Message)"
+}
+Ensure (-not [string]::IsNullOrWhiteSpace($tokenResponse.access_token)) "Login did not return access_token; account may require TOTP or credentials may be invalid"
 $headers = @{ Authorization = "Bearer $($tokenResponse.access_token)" }
 
 Step "Validating auth/me"

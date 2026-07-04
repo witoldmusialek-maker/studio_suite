@@ -54,7 +54,7 @@ Current AIOS status:
 - AIOS-OBJ-SS-001 accepted by Sponsor; PM verdict: `Not ready — further operational cleanup required`;
 - delivery not authorized beyond operational-readiness assessment;
 - first feature/delivery Objective not authorized;
-- AIOS-OBJ-SS-002 approved as bounded Operational Cleanup Objective before feature delivery.
+- AIOS-OBJ-SS-002 executed; PM verdict: `Ready after Sponsor authority decision`.
 
 ## 3. Current Active State
 

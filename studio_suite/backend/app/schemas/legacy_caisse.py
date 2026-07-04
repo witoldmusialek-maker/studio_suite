@@ -1,4 +1,4 @@
-﻿"""Schemas for transitional Legacy CAISSE cashier flow."""
+"""Schemas for transitional Legacy CAISSE cashier flow."""
 from datetime import date, datetime
 
 from pydantic import BaseModel, Field

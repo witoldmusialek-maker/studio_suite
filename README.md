@@ -26,7 +26,7 @@ studio_suite/
 
 Projekt jest hostowany na GitHub: https://github.com/witoldmusialek-maker/studio_suite
 
-Remote skonfigurowany dla deploy key z dev1 (2026-06-09):
+Remote skonfigurowany dla deploy key na historycznym hoscie dev1 (2026-06-09); aktualny runtime operacyjny dziala na `192.168.50.20`:
 ```bash
 git remote -v
 # origin  git@github.com:witoldmusialek-maker/studio_suite.git (fetch)
@@ -34,6 +34,9 @@ git remote -v
 ```
 
 Branche: `master`, `feature/legacy-caisse-flow`
+
+Current operational branch: `feature/legacy-caisse-flow`.
+`master` remains the remote default but is older than the current operational baseline.
 
 ## Szybki start
 
@@ -43,12 +46,12 @@ docker compose up -d --build
 docker compose exec -T backend python scripts/create_admin.py admin password123
 ```
 
-Serwisy lokalne:
-- Frontend: http://localhost:8082
-- Backend API: http://localhost:8003/api/v1
-- Swagger: http://localhost:8003/docs
-- Frontend public: http://localhost:8084
-- Backend public: http://localhost:8004/api/v1
+Serwisy operacyjne:
+- Frontend: http://192.168.50.20:8082
+- Backend API: http://192.168.50.20:8003/api/v1
+- Swagger: http://192.168.50.20:8003/docs
+- Frontend public: http://192.168.50.20:8084
+- Backend public: http://192.168.50.20:8004/api/v1
 
 ## Dokumentacja
 
