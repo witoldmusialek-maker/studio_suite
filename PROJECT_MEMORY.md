@@ -81,19 +81,27 @@ Local compose state:
   - frontend_public running
 ```
 
-Conflicting evidence:
+Architecture Discovery update:
 
-- docs and deploy scripts describe `master` as standard branch, but current checkout is `feature/legacy-caisse-flow`;
-- `origin/HEAD` points to `origin/master`, but `feature/legacy-caisse-flow` is newer and remote-backed;
-- runtime and dirty deploy scripts point to `192.168.50.20`, while some docs/gateway config still reference `192.168.200.116`;
-- live public health works, but repo gateway config may be stale relative to live gateway state.
+- operational canonical branch for the current runtime is `feature/legacy-caisse-flow`;
+- `master` remains the remote default branch but is stale for the current runtime shape;
+- `master` is an ancestor of `feature/legacy-caisse-flow`; the feature branch is ahead and contains the legacy CAISSE/runtime binding changes;
+- active deployment target is `192.168.50.20` for the live compose runtime;
+- `192.168.200.116` references in docs/gateway files are historical/stale unless a future authority decision revives them;
+- live containers were built from `/home/witold/projects/projekt2_repo/studio_suite/docker-compose.yml` and publish on `192.168.50.20`;
+- live public health at `https://dev2.witold.ovh/health` works, but repo gateway config is not reliable as current gateway truth.
 
-Authority decisions required:
+Deployment script assessment:
 
-- canonical branch for future AIOS work;
-- accepted deployment target;
-- whether dirty deploy script changes are accepted;
-- whether `feature/legacy-caisse-flow` is current product priority or only a feature branch.
+- dirty deploy-script changes from `192.168.200.116` to `192.168.50.20` align with the live runtime target;
+- scripts still contain stale naming/assumptions (`dev1`, `master`) and should not be treated as authoritative deployment policy without cleanup;
+- deployment scripts are operational evidence, not authority.
+
+Authority decisions still required:
+
+- whether to make `feature/legacy-caisse-flow` the official branch for future AIOS work, merge it to `master`, or define another branch policy;
+- whether to commit/accept the dirty deployment-script changes;
+- who owns Deployment Authority and Acceptance Authority.
 
 ## 4. Authority Snapshot
 
@@ -173,6 +181,14 @@ Known active/implemented areas from README, docs, route registration, and UI rou
 - Android/local SMS bridge;
 - legacy CAISSE transition flow.
 
+Legacy architecture context:
+
+- the project contains legacy salon-system material from a WinDev-era application as reverse-engineering evidence;
+- legacy data/source material is present under `studio_suite/backend/tmp/legacy_05` and `studio_suite/backend/tmp/legacy_12` as `.FIC` / `.NDX` files;
+- import/reverse-engineering tools exist under `studio_suite/tools/legacy_import`;
+- the target direction is not to keep WinDev as runtime, but to build a server-side Salon Module with equivalent business capabilities;
+- `legacy_caisse` is therefore an active architectural transition area, not merely historical documentation.
+
 UNRESOLVED:
 
 - which modules are production-active, pilot-active, or only technically present;
@@ -225,9 +241,9 @@ UNRESOLVED:
 | Architecture/security rules | `studio_suite/docs/RULES.md` | usable |
 | Runtime shape | `studio_suite/docker-compose.yml` | usable |
 | Testing/smoke | `studio_suite/TESTING.md`, `studio_suite/scripts/smoke-test.ps1` | usable |
-| Remote/dev workflow | `studio_suite/docs/AGENT_REMOTE_SETUP.md` | partially stale |
-| Deployment scripts | `studio_suite/scripts/deploy-dev2.ps1`, `deploy.ps1` | conflicting/dirty |
-| Gateway config | `studio_suite/nginx/*.conf` | may be stale vs live gateway |
+| Remote/dev workflow | `studio_suite/docs/AGENT_REMOTE_SETUP.md` | stale for current target; useful historically |
+| Deployment scripts | `studio_suite/scripts/deploy-dev2.ps1`, `deploy.ps1` | dirty; directionally aligned to `192.168.50.20` but not policy |
+| Gateway config | `studio_suite/nginx/*.conf` | stale vs live public health unless verified on gateway |
 | Legacy CAISSE scope | `studio_suite/docs/legacy-caisse-transition-plan.md` | usable |
 | SMS bridge | `studio_suite/android/sms_bridge/README.md` | usable |
 | Authority | Sponsor / explicit Program decision | unresolved beyond Sponsor default |
@@ -236,8 +252,8 @@ UNRESOLVED:
 
 High-priority risks before delivery:
 
-1. Branch ambiguity: `master` vs `feature/legacy-caisse-flow`.
-2. Deployment target ambiguity: `192.168.50.20` vs stale `192.168.200.116` references.
+1. Branch policy ambiguity: operational runtime aligns with `feature/legacy-caisse-flow`, while remote default remains `master`.
+2. Stale deployment documentation/config: live target is `192.168.50.20`, while historical `192.168.200.116` references remain.
 3. Dirty deploy scripts not accepted by authority.
 4. Project/Acceptance/Deployment Authority unresolved.
 5. Tenant isolation and public/private split are critical and must not be weakened.
@@ -248,15 +264,15 @@ High-priority risks before delivery:
 
 UNRESOLVED facts that require Sponsor or designated Project Authority before delivery:
 
-- canonical branch;
-- accepted deployment target;
+- official branch policy for future work;
+- whether `192.168.50.20` is formally accepted as deployment target;
 - acceptance of dirty deploy script changes;
 - explicit Project Authority;
 - Acceptance Authority;
 - Deployment Authority;
 - permission for first Objective;
 - permission for delivery/delegation;
-- current product/delivery priority;
+- current product/delivery priority after legacy CAISSE work;
 - production/pilot status of public booking, payments, billing, SMS, and legacy CAISSE.
 
 ## 12. PM Readiness
@@ -282,6 +298,6 @@ This Project Memory does not authorize:
 - delegation;
 - deployment;
 - accepting dirty worktree changes;
-- choosing canonical branch;
+- making branch-policy decisions beyond recording operational evidence;
 - changing governance;
 - promoting Cross-Project Onboarding to AIOS Core.
