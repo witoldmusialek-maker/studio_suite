@@ -1,6 +1,6 @@
 # T-003 — Legacy CAISSE Minimal Flow
 
-Status: ready-for-review
+Status: accepted
 Project Objective: AIOS-OBJ-SS-003 — Legacy CAISSE Minimal Flow
 Authority: Sponsor
 Branch: `feature/legacy-caisse-flow`

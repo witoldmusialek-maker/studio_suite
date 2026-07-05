@@ -2,9 +2,9 @@
 
 Status: AIOS-onboarded project
 AIOS onboarding state: Minimum Viable Understanding achieved
-Delivery readiness: not yet delivery-ready
+Delivery readiness: first bounded delivery accepted
 Project Memory purpose: entry point, not archive
-Last updated: 2026-07-04
+Last updated: 2026-07-05
 
 ## 1. Project Identity
 
@@ -56,7 +56,8 @@ Current AIOS status:
 - operational branch accepted for first feature/delivery Objective planning: `feature/legacy-caisse-flow`;
 - merge to `master` deferred until after one successful delivery or separate branch-policy decision;
 - first feature/delivery Objective approved: AIOS-OBJ-SS-003 — Legacy CAISSE Minimal Flow;
-- T-003 preparation package created for implementation handoff.
+- T-003 accepted by Sponsor as first bounded Legacy CAISSE delivery slice;
+- production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
 
@@ -65,11 +66,9 @@ Resolved facts:
 ```text
 Current local branch: feature/legacy-caisse-flow
 Remote default branch: origin/master
-Current dirty files:
-  - deploy.ps1
-  - studio_suite/scripts/deploy-dev2.ps1
-Dirty change meaning:
-  - deployment host references changed from 192.168.200.116 to 192.168.50.20
+Current dirty files: none
+Last accepted delivery commit:
+  - d715404 impl(t003): harden legacy caisse minimal flow
 Live direct runtime:
   - http://192.168.50.20:8003/health -> 200
   - http://192.168.50.20:8004/health -> 200
@@ -103,9 +102,9 @@ Deployment script assessment:
 
 Authority decisions still required:
 
-- whether to make `feature/legacy-caisse-flow` the official branch for future AIOS work, merge it to `master`, or define another branch policy;
-- whether to commit/accept the dirty deployment-script changes;
-- who owns Deployment Authority and Acceptance Authority.
+- whether to make `feature/legacy-caisse-flow` the official long-term branch for future AIOS work, merge it to `master`, or define another branch policy;
+- whether/when to deploy accepted T-003 beyond the current runtime baseline;
+- who owns Deployment Authority.
 
 ## 4. Authority Snapshot
 
@@ -119,17 +118,17 @@ Current authority state:
 Project Authority: Sponsor
 Acceptance Authority: Sponsor
 Deployment Authority: UNRESOLVED until operational responsibilities are formally assigned
-AIOS PM role: onboarding, recommendation, Objective Proposal preparation
-Implementation authority: not authorized
-Delegation authority: not authorized
-Delivery authority: not authorized until Objective approval
+AIOS PM role: onboarding, recommendation, Objective Proposal preparation, delivery review
+Implementation authority: bounded to explicitly approved Objectives only
+Delegation authority: bounded to explicitly approved Objectives only
+Delivery authority: T-003 accepted; future delivery requires next Objective approval
 ```
 
 Sponsor decision update:
 
 - evidence phase is complete;
 - branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
-- PM is authorized to prepare the first Objective Proposal focused on restoring predictable operational readiness.
+- first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow.
 
 PM must not infer authority from:
 
@@ -262,27 +261,21 @@ UNRESOLVED:
 High-priority risks before delivery:
 
 1. Branch policy ambiguity: operational runtime aligns with `feature/legacy-caisse-flow`, while remote default remains `master`.
-2. Stale deployment documentation/config: live target is `192.168.50.20`, while historical `192.168.200.116` references remain.
-3. Dirty deploy scripts not accepted by authority.
-4. Project/Acceptance/Deployment Authority unresolved.
-5. Tenant isolation and public/private split are critical and must not be weakened.
-6. Privacy/security surface is significant: clients, appointments, billing, payments, SMS, tenant data.
-7. Some documentation is stale relative to live runtime.
+2. Deployment Authority unresolved.
+3. Tenant isolation and public/private split are critical and must not be weakened.
+4. Privacy/security surface is significant: clients, appointments, billing, payments, SMS, tenant data.
+5. Some documentation may still be stale relative to live runtime.
 
 ## 11. Unknown Facts
 
 UNRESOLVED facts that require Sponsor or designated Project Authority before delivery:
 
 - official branch policy for future work;
-- whether `192.168.50.20` is formally accepted as deployment target;
-- acceptance of dirty deploy script changes;
-- explicit Project Authority;
-- Acceptance Authority;
+- whether/when accepted T-003 should be deployed beyond the current runtime baseline;
+- explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- permission for first Objective;
-- permission for delivery/delegation;
-- current product/delivery priority after legacy CAISSE work;
-- production/pilot status of public booking, payments, billing, SMS, and legacy CAISSE.
+- next product/delivery priority after accepted Legacy CAISSE minimal flow;
+- production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
 
@@ -292,10 +285,10 @@ Current PM readiness:
 |---|---|
 | Discuss project | YES |
 | Evaluate Decision Proposals | YES, bounded by unresolved authority |
-| Plan candidate Objective | PARTIAL |
-| Delegate implementation | NO |
-| Review implementation | PARTIAL / no final acceptance |
-| Start delivery | NO |
+| Plan next candidate Objective | YES |
+| Delegate implementation | YES, only after explicit Objective approval |
+| Review implementation | YES / final acceptance remains Sponsor |
+| Start next delivery | NO, requires next Objective approval |
 
 ## 13. Scope Guard
 
