@@ -2,8 +2,8 @@
   "task_id": "T-004",
   "objective": "AIOS-OBJ-SS-004",
   "title": "Cash Session Lifecycle and Daily Summary",
-  "status": "ready-for-implementation",
-  "execution_status": "not_started",
+  "status": "ready-for-review",
+  "execution_status": "completed_pending_review",
   "authority": {
     "project_authority": "Sponsor",
     "acceptance_authority": "Sponsor",
@@ -39,6 +39,12 @@
     "cd studio_suite/frontend && npm run build -- --outDir /tmp/studio-suite-vite-build --emptyOutDir",
     "runtime health backend/backend_public/public health when environment is available"
   ],
+  "check_results": {
+    "targeted_pytest": "PASS: 5 passed, 7 warnings",
+    "backend_compileall": "PASS",
+    "frontend_build": "PASS: built in 25.31s",
+    "runtime_health": "PASS: backend 200, backend_public 200, public 200"
+  },
   "must_preserve": [
     "tenant isolation",
     "salon access validation",
@@ -48,5 +54,6 @@
     "no production deployment",
     "no merge to master",
     "no broad WinDev/Bureau reconstruction"
-  ]
+  ],
+  "execution_commit": "containing_commit"
 }

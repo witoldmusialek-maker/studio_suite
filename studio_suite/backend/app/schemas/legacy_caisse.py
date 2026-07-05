@@ -55,6 +55,22 @@ class LegacyCaisseCashSessionRead(BaseModel):
     status: str = "OPEN"
 
 
+class LegacyCaisseDailySummaryRead(BaseModel):
+    salon_id: int
+    business_date: date
+    cash_session: LegacyCaisseCashSessionRead | None = None
+    opening_cash: float = 0
+    service_gross: float = 0
+    retail_gross: float = 0
+    discount_total: float = 0
+    payments_by_method: dict[str, float] = Field(default_factory=dict)
+    cash_payments: float = 0
+    expenses_total: float = 0
+    expected_cash: float = 0
+    closing_cash: float | None = None
+    cash_difference: float | None = None
+
+
 class LegacyCaisseContextResponse(BaseModel):
     salon_id: int
     business_date: date

@@ -5,7 +5,7 @@ from datetime import date, datetime, time
 from decimal import Decimal, ROUND_HALF_UP
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import extract
+from sqlalchemy import extract, func
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, require_salon_access
@@ -39,6 +39,7 @@ from app.schemas.legacy_caisse import (
     LegacyCaisseCashSessionRead,
     LegacyCaisseCashSessionWrite,
     LegacyCaisseContextResponse,
+    LegacyCaisseDailySummaryRead,
     LegacyCaisseExpenseRead,
     LegacyCaisseExpenseWrite,
     LegacyCaisseFicheCreate,
@@ -132,6 +133,76 @@ def _load_cash_session(db: Session, tenant_id: int, salon_id: int, business_date
             CashierCashSession.business_date == business_date,
         )
         .first()
+    )
+
+
+def _day_bounds(business_date: date) -> tuple[datetime, datetime]:
+    start = datetime.combine(business_date, time.min)
+    end = datetime.combine(business_date, time.max)
+    return start, end
+
+
+def _daily_summary_to_read(db: Session, tenant_id: int, salon_id: int, business_date: date) -> LegacyCaisseDailySummaryRead:
+    session = _load_cash_session(db, tenant_id, salon_id, business_date)
+    day_start, day_end = _day_bounds(business_date)
+
+    payment_rows = (
+        db.query(Payment)
+        .filter(
+            Payment.tenant_id == tenant_id,
+            Payment.salon_id == salon_id,
+            Payment.paid_at >= day_start,
+            Payment.paid_at <= day_end,
+            Payment.status == "completed",
+        )
+        .all()
+    )
+    payment_ids = [row.id for row in payment_rows]
+    service_gross = sum((_money(row.service_gross) for row in payment_rows), Decimal("0"))
+    retail_gross = sum((_money(row.retail_gross) for row in payment_rows), Decimal("0"))
+    discount_total = sum((_money(row.discount_total) for row in payment_rows), Decimal("0"))
+
+    payments_by_method: dict[str, Decimal] = {}
+    if payment_ids:
+        allocation_rows = db.query(PaymentAllocation).filter(PaymentAllocation.payment_id.in_(payment_ids)).all()
+        allocated_payment_ids = {row.payment_id for row in allocation_rows}
+        for row in allocation_rows:
+            method = (row.method or "unknown").strip().lower()
+            payments_by_method[method] = payments_by_method.get(method, Decimal("0")) + _money(row.amount)
+        for row in payment_rows:
+            if row.id not in allocated_payment_ids:
+                method = (row.method or "unknown").strip().lower()
+                payments_by_method[method] = payments_by_method.get(method, Decimal("0")) + _money(row.amount)
+
+    expenses_total = _money(
+        db.query(func.coalesce(func.sum(CashierExpense.amount_gross), 0))
+        .filter(
+            CashierExpense.tenant_id == tenant_id,
+            CashierExpense.salon_id == salon_id,
+            CashierExpense.expense_date == business_date,
+        )
+        .scalar()
+    )
+    opening_cash = _money(session.opening_cash if session else 0)
+    closing_cash = _money(session.closing_cash) if session and session.closing_cash is not None else None
+    cash_payments = _money(payments_by_method.get("cash", Decimal("0")))
+    expected_cash = _money(opening_cash + cash_payments - expenses_total)
+    cash_difference = _money(closing_cash - expected_cash) if closing_cash is not None else None
+
+    return LegacyCaisseDailySummaryRead(
+        salon_id=salon_id,
+        business_date=business_date,
+        cash_session=_cash_session_to_read(session, salon_id, business_date),
+        opening_cash=float(opening_cash),
+        service_gross=float(_money(service_gross)),
+        retail_gross=float(_money(retail_gross)),
+        discount_total=float(_money(discount_total)),
+        payments_by_method={method: float(_money(amount)) for method, amount in sorted(payments_by_method.items())},
+        cash_payments=float(cash_payments),
+        expenses_total=float(expenses_total),
+        expected_cash=float(expected_cash),
+        closing_cash=float(closing_cash) if closing_cash is not None else None,
+        cash_difference=float(cash_difference) if cash_difference is not None else None,
     )
 
 
@@ -504,6 +575,18 @@ async def get_cash_session(
     return _cash_session_to_read(_load_cash_session(db, current_user.tenant_id, salon_id, business_date), salon_id, business_date)
 
 
+@router.get("/cash-session/summary", response_model=LegacyCaisseDailySummaryRead)
+async def get_daily_summary(
+    salon_id: int = Query(...),
+    business_date: date | None = Query(default=None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _ensure_access(db, current_user, salon_id)
+    business_date = business_date or _today()
+    return _daily_summary_to_read(db, current_user.tenant_id, salon_id, business_date)
+
+
 @router.post("/cash-session", response_model=LegacyCaisseCashSessionRead)
 async def upsert_cash_session(
     payload: LegacyCaisseCashSessionWrite,
@@ -512,8 +595,13 @@ async def upsert_cash_session(
 ):
     _ensure_access(db, current_user, payload.salon_id)
     business_date = payload.business_date or _today()
+    requested_status = payload.status.upper()
+    if requested_status not in {"OPEN", "CLOSED"}:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid cash session status")
     row = _load_cash_session(db, current_user.tenant_id, payload.salon_id, business_date)
     if not row:
+        if requested_status == "CLOSED":
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cash session must be opened before it can be closed")
         row = CashierCashSession(
             tenant_id=current_user.tenant_id,
             salon_id=payload.salon_id,
@@ -521,10 +609,16 @@ async def upsert_cash_session(
             opened_by_user_id=current_user.id,
         )
         db.add(row)
-    row.opening_cash = _money(payload.opening_cash)
-    row.closing_cash = _money(payload.closing_cash) if payload.closing_cash is not None else None
-    row.status = payload.status.upper()
-    if row.status == "CLOSED" and row.closed_at is None:
+    elif row.status == "CLOSED":
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Cash session is already closed")
+
+    if requested_status == "OPEN":
+        row.opening_cash = _money(payload.opening_cash)
+        row.closing_cash = None
+        row.status = "OPEN"
+    else:
+        row.closing_cash = _money(payload.closing_cash)
+        row.status = "CLOSED"
         row.closed_at = datetime.utcnow()
         row.closed_by_user_id = current_user.id
     db.commit()

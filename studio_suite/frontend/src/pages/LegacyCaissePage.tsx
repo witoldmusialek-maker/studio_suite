@@ -37,6 +37,21 @@ type BundleRow = {
 }
 type ProductRow = { product_id: number; product_code: string; product_name: string; price: number; fiscal_code?: string }
 type CashSession = { id?: number; salon_id: number; business_date: string; opening_cash: number; closing_cash?: number; status: string }
+type DailySummary = {
+  salon_id: number
+  business_date: string
+  cash_session?: CashSession
+  opening_cash: number
+  service_gross: number
+  retail_gross: number
+  discount_total: number
+  payments_by_method: Record<string, number>
+  cash_payments: number
+  expenses_total: number
+  expected_cash: number
+  closing_cash?: number
+  cash_difference?: number
+}
 type ContextResponse = {
   salon_id: number
   business_date: string
@@ -108,6 +123,7 @@ const LegacyCaissePage = () => {
   const [fiches, setFiches] = useState<FicheRead[]>([])
   const [expenses, setExpenses] = useState<ExpenseRead[]>([])
   const [presence, setPresence] = useState<PresenceRead[]>([])
+  const [summary, setSummary] = useState<DailySummary | null>(null)
   const [expenseLabel, setExpenseLabel] = useState('')
   const [expenseAmount, setExpenseAmount] = useState('')
   const [openingCash, setOpeningCash] = useState('0')
@@ -140,7 +156,12 @@ const LegacyCaissePage = () => {
     setPresence(res.data || [])
   }, [salonId])
 
-  useEffect(() => { void loadContext(); void loadFiches() }, [loadContext, loadFiches])
+  const loadSummary = useCallback(async () => {
+    const res = await api.get<DailySummary>('/legacy/caisse/cash-session/summary', { params: { salon_id: salonId, business_date: todayDate() } })
+    setSummary(res.data)
+  }, [salonId])
+
+  useEffect(() => { void loadContext(); void loadFiches(); void loadSummary() }, [loadContext, loadFiches, loadSummary])
   useEffect(() => { firstInputRef.current?.focus() }, [ctx?.salon_id])
 
   const setLine = (index: number, patch: Partial<FicheLine>) => {
@@ -326,6 +347,7 @@ const LegacyCaissePage = () => {
     setModal(null)
     setMessage('Fiszka zapisana / Fiche enregistree')
     await loadFiches()
+    await loadSummary()
     window.setTimeout(() => firstInputRef.current?.focus(), 0)
   }
 
@@ -336,6 +358,7 @@ const LegacyCaissePage = () => {
     setExpenseLabel('')
     setExpenseAmount('')
     await loadExpenses()
+    await loadSummary()
   }
 
   const togglePresence = async (staff: StaffRow) => {
@@ -352,6 +375,7 @@ const LegacyCaissePage = () => {
       status,
     })
     await loadContext()
+    await loadSummary()
     setMessage(status === 'CLOSED' ? 'Dzien zamkniety / Journee fermee' : 'Kasa otwarta / Caisse ouverte')
   }
 
@@ -494,6 +518,16 @@ const LegacyCaissePage = () => {
         <Paper sx={{ p: 1.5 }}>
           <Typography sx={{ fontWeight: 900 }}>PLN</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}><span>Sous-total</span><b>{money(total)}</b></Box>
+          {summary && (
+            <Box sx={{ mt: 1, pt: 1, borderTop: '1px solid #d6e1ee', fontSize: 13 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Fond</span><b>{money(summary.opening_cash)}</b></Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Especes</span><b>{money(summary.cash_payments)}</b></Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Depenses</span><b>{money(summary.expenses_total)}</b></Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Theorique</span><b>{money(summary.expected_cash)}</b></Box>
+              {summary.closing_cash !== undefined && <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Final</span><b>{money(summary.closing_cash)}</b></Box>}
+              {summary.cash_difference !== undefined && <Box sx={{ display: 'flex', justifyContent: 'space-between', color: summary.cash_difference === 0 ? 'success.main' : 'error.main' }}><span>Ecart</span><b>{money(summary.cash_difference)}</b></Box>}
+            </Box>
+          )}
           <Button fullWidth variant="contained" sx={{ mt: 1 }} onClick={() => openModal('payment')}>Platnosc / Reglement</Button>
           <Button fullWidth sx={{ mt: 1 }} onClick={() => setLines([makeEmptyLine()])}>Nowa fiszka</Button>
         </Paper>
@@ -569,7 +603,20 @@ const LegacyCaissePage = () => {
 
       <Dialog open={modal === 'closing'} onClose={() => setModal(null)} maxWidth="xs" fullWidth>
         <DialogTitle>Zamkniecie dnia <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Fermeture</Typography></DialogTitle>
-        <DialogContent><TextField fullWidth label="Fond de caisse" value={openingCash} onChange={(e) => setOpeningCash(e.target.value)} size="small" sx={{ mb: 1 }} /><TextField fullWidth label="Cash final" value={closingCash} onChange={(e) => setClosingCash(e.target.value)} size="small" /></DialogContent>
+        <DialogContent>
+          <TextField fullWidth label="Fond de caisse" value={openingCash} onChange={(e) => setOpeningCash(e.target.value)} size="small" sx={{ mb: 1 }} />
+          <TextField fullWidth label="Cash final" value={closingCash} onChange={(e) => setClosingCash(e.target.value)} size="small" />
+          {summary && (
+            <Box sx={{ mt: 2, p: 1, bgcolor: '#eef6ff', borderRadius: 1 }}>
+              <Typography sx={{ fontWeight: 900, mb: 0.5 }}>Resume journee</Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Services</span><b>{money(summary.service_gross)}</b></Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Ventes</span><b>{money(summary.retail_gross)}</b></Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Remises</span><b>{money(summary.discount_total)}</b></Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Theorique caisse</span><b>{money(summary.expected_cash)}</b></Box>
+              {summary.cash_difference !== undefined && <Box sx={{ display: 'flex', justifyContent: 'space-between' }}><span>Ecart</span><b>{money(summary.cash_difference)}</b></Box>}
+            </Box>
+          )}
+        </DialogContent>
         <DialogActions><Button onClick={() => saveCashSession('OPEN')}>Otworz</Button><Button variant="contained" onClick={() => saveCashSession('CLOSED')}>Zamknij</Button></DialogActions>
       </Dialog>
     </Box>
