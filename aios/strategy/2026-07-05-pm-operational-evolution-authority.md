@@ -26,16 +26,18 @@ strategic product direction is involved
 
 Within an already approved Objective, PM may manage normal operational evolution without returning to Sponsor for every implementation-step recommendation.
 
-This includes, when already within approved Objective scope:
+Sponsor explicitly authorizes PM, within an approved Objective and existing AIOS governance, to:
 
-- preparing or refining implementation packages;
-- dispatching bounded implementation work;
-- coordinating execution;
-- validating evidence;
-- requesting fixes inside scope;
-- preparing handoff/postmortem/flag updates;
-- moving work to review state;
-- issuing acceptance recommendation after evidence review.
+- plan implementation work;
+- delegate bounded implementation work;
+- supervise execution;
+- validate evidence;
+- request fixes inside scope;
+- prepare handoff/postmortem/flag updates;
+- move work through review state;
+- accept implementation work operationally when evidence satisfies the approved Objective.
+
+This applies only while all activities remain within the approved scope and existing AIOS governance.
 
 ## Recommendation boundary
 

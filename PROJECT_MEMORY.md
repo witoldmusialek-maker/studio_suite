@@ -62,7 +62,7 @@ Current AIOS status:
 - Sponsor granted PM mandate to prepare strategic recommendations for further application development;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
 - PM authorized to prepare T-006 after T-005 acceptance; T-006 preparation package created;
-- PM authorized to manage operational evolution within approved Objectives and existing AIOS governance;
+- PM authorized to plan, delegate, supervise, and accept implementation work within approved Objectives and existing AIOS governance;
 - Sponsor expects recommendations only for authority decisions or strategic product direction;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
@@ -127,7 +127,7 @@ Current authority state:
 Project Authority: Sponsor
 Acceptance Authority: Sponsor
 Deployment Authority: UNRESOLVED until operational responsibilities are formally assigned
-AIOS PM role: onboarding, operational evolution management within approved Objectives, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
+AIOS PM role: onboarding, operational evolution management within approved Objectives, planning/delegation/supervision/operational acceptance of implementation work, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
 Implementation authority: bounded to approved Objectives under existing AIOS governance
 Delegation authority: bounded to approved Objectives under existing AIOS governance
 Delivery authority: T-003, T-004, and T-005 accepted; T-006 prepared for operational execution within approved Objective scope
@@ -142,7 +142,7 @@ Sponsor decision update:
 - third bounded delivery evidence exists: T-005 accepted as Legacy CAISSE correction/void guard flow;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-006 audit trail / T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
 - PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and preparation package created;
-- PM may manage operational evolution within approved Objectives; recommendations are expected only for authority decisions or strategic product direction.
+- PM may plan, delegate, supervise, and accept implementation work within approved Objectives; recommendations are expected only for authority decisions or strategic product direction.
 
 PM must not infer authority from:
 
