@@ -37,11 +37,13 @@ Sponsor explicitly authorizes PM, within an approved Objective and existing AIOS
 - move work through review state;
 - accept implementation work operationally when evidence satisfies the approved Objective.
 
+Operational acceptance by the PM concludes implementation work within an approved Objective.
+
 This applies only while all activities remain within the approved scope and existing AIOS governance.
 
 ## Recommendation boundary
 
-PM should still bring a recommendation to Sponsor for:
+PM should still bring a recommendation to Sponsor only where AIOS governance explicitly reserves authority to the Sponsor, including:
 
 - new Objective approval;
 - strategic product direction;

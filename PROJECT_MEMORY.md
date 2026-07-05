@@ -63,8 +63,9 @@ Current AIOS status:
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
 - PM authorized to prepare T-006 after T-005 acceptance; T-006 preparation package created;
 - PM authorized to plan, delegate, supervise, and accept implementation work within approved Objectives and existing AIOS governance;
+- PM operational acceptance concludes implementation work within an approved Objective;
+- Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor;
 - T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
-- Sponsor expects recommendations only for authority decisions or strategic product direction;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -145,7 +146,7 @@ Sponsor decision update:
 - fourth bounded delivery evidence exists: T-006 accepted as Legacy CAISSE correction reason / audit trail flow;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
 - PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and T-006 accepted;
-- PM may plan, delegate, supervise, and accept implementation work within approved Objectives; recommendations are expected only for authority decisions or strategic product direction.
+- PM may plan, delegate, supervise, and accept implementation work within approved Objectives; PM operational acceptance concludes implementation work; Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor.
 
 PM must not infer authority from:
 
@@ -304,12 +305,12 @@ Current PM readiness:
 | Evaluate Decision Proposals | YES, bounded by unresolved authority |
 | Plan next candidate Objective | YES |
 | Delegate implementation | YES, within approved Objectives under existing AIOS governance |
-| Review/accept implementation | YES within approved Objectives / Sponsor retains authority decisions |
-| Start next delivery | YES within approved/prepared Objectives; prepare T-007 before execution unless Sponsor gives direct operational continuation |
+| Review/accept implementation | YES; PM operational acceptance concludes implementation work inside approved Objectives |
+| Start next delivery | YES within approved/prepared Objectives; escalate only where AIOS governance reserves Sponsor authority |
 
 ## 13. Scope Guard
 
-This Project Memory does not authorize work outside approved Objectives. Within approved Objectives, PM may manage operational evolution under existing AIOS governance.
+This Project Memory does not authorize work outside approved Objectives. Within approved Objectives, PM may manage operational evolution and conclude implementation work through operational acceptance under existing AIOS governance.
 
 This Project Memory does not authorize:
 
