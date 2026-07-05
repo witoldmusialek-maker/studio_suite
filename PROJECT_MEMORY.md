@@ -67,6 +67,7 @@ Current AIOS status:
 - Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor;
 - T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
 - single controlled deployment to current development environment authorized by Sponsor under AIOS-OBJ-SS-001; authorization expires after completion;
+- next Objective must optimize execution strategy by using appropriate delegation where it reduces cost, execution time, or scarce execution-resource usage; PM remains responsible for outcome;
 - production deployment, merge to `master`, long-term Deployment Authority, and branch policy remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -133,7 +134,7 @@ Acceptance Authority: Sponsor
 Deployment Authority: UNRESOLVED long-term; PM has one-time Sponsor authorization for controlled development deployment only
 AIOS PM role: onboarding, operational evolution management within approved Objectives, planning/delegation/supervision/operational acceptance of implementation work, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
 Implementation authority: bounded to approved Objectives under existing AIOS governance
-Delegation authority: bounded to approved Objectives under existing AIOS governance
+Delegation authority: bounded to approved Objectives under existing AIOS governance; next Objective should use appropriate delegation where it reduces cost/time/resource pressure while PM retains outcome responsibility
 Delivery authority: T-003, T-004, T-005, and T-006 accepted; future delivery requires next Objective approval/preparation within accepted track
 ```
 
@@ -307,7 +308,7 @@ Current PM readiness:
 | Plan next candidate Objective | YES |
 | Delegate implementation | YES, within approved Objectives under existing AIOS governance |
 | Review/accept implementation | YES; PM operational acceptance concludes implementation work inside approved Objectives |
-| Start next delivery | YES within approved/prepared Objectives; escalate only where AIOS governance reserves Sponsor authority |
+| Start next delivery | YES within approved/prepared Objectives; next Objective should include delegation strategy; escalate only where AIOS governance reserves Sponsor authority |
 
 ## 13. Scope Guard
 
