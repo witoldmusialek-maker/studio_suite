@@ -1,6 +1,6 @@
 # T-004 — Cash Session Lifecycle and Daily Summary
 
-Status: ready-for-review
+Status: accepted
 Project Objective: AIOS-OBJ-SS-004 — Legacy CAISSE Daily Cash Session
 Authority: Sponsor
 Branch: `feature/legacy-caisse-flow`

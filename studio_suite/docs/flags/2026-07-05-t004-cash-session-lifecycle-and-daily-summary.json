@@ -2,8 +2,8 @@
   "task_id": "T-004",
   "objective": "AIOS-OBJ-SS-004",
   "title": "Cash Session Lifecycle and Daily Summary",
-  "status": "ready-for-review",
-  "execution_status": "completed_pending_review",
+  "status": "accepted",
+  "execution_status": "accepted",
   "authority": {
     "project_authority": "Sponsor",
     "acceptance_authority": "Sponsor",
