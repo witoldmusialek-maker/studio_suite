@@ -52,11 +52,11 @@ Current AIOS status:
 - further evidence collection is not expected to materially improve readiness without authority decisions;
 - Project Memory creation authorized by Sponsor and completed;
 - AIOS-OBJ-SS-001 accepted by Sponsor; PM verdict: `Not ready — further operational cleanup required`;
-- delivery not authorized beyond operational-readiness assessment;
-- first feature/delivery Objective not authorized;
-- AIOS-OBJ-SS-002 accepted by Sponsor; PM verdict: `Ready after Sponsor authority decision`.
+- AIOS-OBJ-SS-002 accepted by Sponsor; PM verdict: `Ready after Sponsor authority decision`;
 - operational branch accepted for first feature/delivery Objective planning: `feature/legacy-caisse-flow`;
-- merge to `master` deferred until after one successful delivery or separate branch-policy decision.
+- merge to `master` deferred until after one successful delivery or separate branch-policy decision;
+- first feature/delivery Objective approved: AIOS-OBJ-SS-003 — Legacy CAISSE Minimal Flow;
+- T-003 preparation package created for implementation handoff.
 
 ## 3. Current Active State
 
