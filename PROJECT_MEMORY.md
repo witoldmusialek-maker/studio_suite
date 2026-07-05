@@ -66,7 +66,7 @@ Current AIOS status:
 - PM operational acceptance concludes implementation work within an approved Objective;
 - Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor;
 - T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
-- single controlled deployment to current development environment authorized by Sponsor under AIOS-OBJ-SS-001; authorization expires after completion;
+- AIOS-OBJ-SS-001 controlled deployment to current development environment accepted by Sponsor as completed; authorization expired after completion; HTTP smoke completed by PM operationally; Sponsor review of running dev environment active;
 - next Objective must optimize execution strategy by using appropriate delegation where it reduces cost, execution time, or scarce execution-resource usage; PM remains responsible for outcome;
 - production deployment, merge to `master`, long-term Deployment Authority, and branch policy remain unresolved/separate decisions.
 
@@ -77,7 +77,9 @@ Resolved facts:
 ```text
 Current local branch: feature/legacy-caisse-flow
 Remote default branch: origin/master
-Current dirty files: none
+Current dirty files: none after deployment acceptance recording
+Last deployment commit:
+  - e90af33 docs(strategy): record execution delegation mandate
 Last accepted delivery commits:
   - d715404 impl(t003): harden legacy caisse minimal flow
   - fdf9172 impl(t004): add legacy caisse cash day summary
@@ -117,7 +119,7 @@ Deployment script assessment:
 Authority decisions still required:
 
 - whether to make `feature/legacy-caisse-flow` the official long-term branch for future AIOS work, merge it to `master`, or define another branch policy;
-- long-term deployment policy after the one-time controlled development deployment;
+- long-term deployment policy after accepted one-time controlled development deployment;
 - who owns long-term Deployment Authority.
 
 ## 4. Authority Snapshot
@@ -131,7 +133,7 @@ Current authority state:
 ```text
 Project Authority: Sponsor
 Acceptance Authority: Sponsor
-Deployment Authority: UNRESOLVED long-term; PM has one-time Sponsor authorization for controlled development deployment only
+Deployment Authority: UNRESOLVED long-term; one-time controlled development deployment authorization completed and expired
 AIOS PM role: onboarding, operational evolution management within approved Objectives, planning/delegation/supervision/operational acceptance of implementation work, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
 Implementation authority: bounded to approved Objectives under existing AIOS governance
 Delegation authority: bounded to approved Objectives under existing AIOS governance; next Objective should use appropriate delegation where it reduces cost/time/resource pressure while PM retains outcome responsibility
@@ -291,7 +293,7 @@ High-priority risks before delivery:
 UNRESOLVED facts that require Sponsor or designated Project Authority before delivery:
 
 - official branch policy for future work;
-- whether/when accepted T-003 should be deployed beyond the current runtime baseline;
+- whether/when accepted development deployment should be promoted beyond the current development environment;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
 - execution of future Objectives beyond T-006 / preparation of T-007;

@@ -1,12 +1,12 @@
 # Studio Suite Decision — Development Deployment Authorization
 
 Date: 2026-07-05
-Status: AUTHORIZED
+Status: ACCEPTED / COMPLETED
 Project: Studio Suite
 Authority: Sponsor
 Active Objective: AIOS-OBJ-SS-001
 Authorization type: single controlled development deployment
-Expires: after completion of this deployment
+Expired: after completion of this deployment on 2026-07-05
 
 ## Sponsor decision
 
