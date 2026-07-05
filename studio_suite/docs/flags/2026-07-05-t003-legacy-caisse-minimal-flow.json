@@ -2,8 +2,8 @@
   "task_id": "T-003",
   "objective": "AIOS-OBJ-SS-003",
   "title": "Legacy CAISSE Minimal Flow",
-  "status": "ready-for-implementation",
-  "execution_status": "not_started",
+  "status": "ready-for-review",
+  "execution_status": "committed",
   "authority": {
     "project_authority": "Sponsor",
     "acceptance_authority": "Sponsor",
@@ -31,10 +31,17 @@
   ],
   "required_checks": [
     "git status --short",
-    "cd studio_suite/backend && python -m compileall app",
+    "cd studio_suite/backend && .venv/bin/python -m pytest tests/test_legacy_caisse_minimal_flow.py -q",
+    "cd studio_suite/backend && .venv/bin/python -m compileall app",
     "cd studio_suite/frontend && npm run build -- --outDir /tmp/studio-suite-vite-build --emptyOutDir",
-    "runtime health backend/backend_public/public health when environment is available"
+    "runtime health backend/backend_public/public health"
   ],
+  "check_results": {
+    "targeted_pytest": "PASS: 3 passed, 7 warnings",
+    "backend_compileall": "PASS",
+    "frontend_build": "PASS: built in 26.46s",
+    "runtime_health": "PASS: backend 200, backend_public 200, public 200"
+  },
   "must_preserve": [
     "tenant isolation",
     "salon access validation",
@@ -43,5 +50,6 @@
     "no committed secrets",
     "no production deployment",
     "no merge to master"
-  ]
+  ],
+  "execution_commit": "containing_commit"
 }

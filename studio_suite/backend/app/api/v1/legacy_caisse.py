@@ -30,6 +30,7 @@ from app.models.salon_core import (
     StaffMember,
     StaffPresenceEntry,
     StaffRole,
+    StaffSalonMembership,
 )
 from app.models.user import User, UserRole
 from app.schemas.legacy_caisse import (
@@ -132,6 +133,59 @@ def _load_cash_session(db: Session, tenant_id: int, salon_id: int, business_date
         )
         .first()
     )
+
+
+def _staff_has_salon_access(db: Session, staff: StaffMember, salon_id: int) -> bool:
+    if staff.salon_id == salon_id:
+        return True
+    return bool(
+        db.query(StaffSalonMembership.id)
+        .filter(
+            StaffSalonMembership.staff_id == staff.id,
+            StaffSalonMembership.salon_id == salon_id,
+            StaffSalonMembership.is_active.is_(True),
+        )
+        .first()
+    )
+
+
+def _validate_fiche_line(db: Session, tenant_id: int, salon_id: int, item) -> StaffMember:
+    staff = db.query(StaffMember).filter(StaffMember.id == item.staff_id, StaffMember.tenant_id == tenant_id).first()
+    if not staff:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Staff not found: {item.staff_id}")
+    if not _staff_has_salon_access(db, staff, salon_id):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Staff does not belong to salon")
+
+    line_kind = (item.line_kind or "service").strip().lower()
+    if line_kind not in {"service", "product", "bundle"}:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid line_kind")
+    if line_kind == "service":
+        if item.service_id is None:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="service_id is required")
+        service = db.query(ServiceCatalogItem).filter(ServiceCatalogItem.id == item.service_id, ServiceCatalogItem.is_active.is_(True)).first()
+        if not service:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found or inactive")
+    if line_kind == "product":
+        if item.product_id is None:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="product_id is required")
+        product_link = (
+            db.query(SalonProductCatalogItem.id)
+            .filter(
+                SalonProductCatalogItem.salon_id == salon_id,
+                SalonProductCatalogItem.product_id == item.product_id,
+                SalonProductCatalogItem.is_active.is_(True),
+            )
+            .first()
+        )
+        if not product_link:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not available for salon")
+    if line_kind == "bundle":
+        if item.bundle_id is None:
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="bundle_id is required")
+        bundle = db.query(BundleCatalog).filter(BundleCatalog.id == item.bundle_id, BundleCatalog.is_active.is_(True)).first()
+        if not bundle:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bundle not found or inactive")
+    return staff
 
 
 def _sale_to_read(db: Session, sale: Sale) -> LegacyCaisseFicheRead:
@@ -324,6 +378,9 @@ async def create_fiche(
         if appt.salon_id != payload.salon_id:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Appointment does not belong to salon")
 
+    for item in payload.lines:
+        _validate_fiche_line(db, current_user.tenant_id, payload.salon_id, item)
+
     sale = Sale(
         tenant_id=current_user.tenant_id,
         salon_id=payload.salon_id,
@@ -341,16 +398,7 @@ async def create_fiche(
     retail_gross = Decimal("0")
     discount_total = Decimal("0")
     for item in payload.lines:
-        staff = db.query(StaffMember).filter(StaffMember.id == item.staff_id, StaffMember.tenant_id == current_user.tenant_id).first()
-        if not staff:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Staff not found: {item.staff_id}")
         line_kind = (item.line_kind or "service").strip().lower()
-        if line_kind not in {"service", "product", "bundle"}:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Invalid line_kind")
-        if line_kind == "service" and item.service_id is None:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="service_id is required")
-        if line_kind == "product" and item.product_id is None:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="product_id is required")
         quantity = _money(item.quantity)
         unit_price = _money(item.unit_price)
         discount = _money(item.discount_amount)
