@@ -66,9 +66,10 @@ Current AIOS status:
 - PM operational acceptance concludes implementation work within an approved Objective;
 - Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor;
 - T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
-- AIOS-OBJ-SS-001 controlled deployment to current development environment accepted by Sponsor as completed; authorization expired after completion; HTTP smoke completed by PM operationally; Sponsor review of running dev environment active;
+- AIOS-OBJ-SS-001 controlled deployment to current development environment accepted by Sponsor as completed; authorization expired after completion; HTTP smoke completed by PM operationally; Objective closure completed;
+- PM evaluated `feature/legacy-caisse-flow` as ready for Sponsor promotion decision; Merge Recommendation prepared;
 - next Objective must optimize execution strategy by using appropriate delegation where it reduces cost, execution time, or scarce execution-resource usage; PM remains responsible for outcome;
-- production deployment, merge to `master`, long-term Deployment Authority, and branch policy remain unresolved/separate decisions.
+- production deployment, merge to `master`, long-term Deployment Authority, and branch policy remain unresolved/separate decisions pending Sponsor decision.
 
 ## 3. Current Active State
 
@@ -77,9 +78,10 @@ Resolved facts:
 ```text
 Current local branch: feature/legacy-caisse-flow
 Remote default branch: origin/master
-Current dirty files: none after deployment acceptance recording
-Last deployment commit:
-  - e90af33 docs(strategy): record execution delegation mandate
+Current dirty files: none after Objective closure commit
+Last closure/recommendation artifacts:
+  - aios/objectives/AIOS-OBJ-SS-001-final-closure.md
+  - aios/strategy/2026-07-05-merge-recommendation-feature-legacy-caisse-flow.md
 Last accepted delivery commits:
   - d715404 impl(t003): harden legacy caisse minimal flow
   - fdf9172 impl(t004): add legacy caisse cash day summary
@@ -118,7 +120,7 @@ Deployment script assessment:
 
 Authority decisions still required:
 
-- whether to make `feature/legacy-caisse-flow` the official long-term branch for future AIOS work, merge it to `master`, or define another branch policy;
+- Sponsor decision whether to promote `feature/legacy-caisse-flow` to `master` based on prepared Merge Recommendation;
 - long-term deployment policy after accepted one-time controlled development deployment;
 - who owns long-term Deployment Authority.
 
