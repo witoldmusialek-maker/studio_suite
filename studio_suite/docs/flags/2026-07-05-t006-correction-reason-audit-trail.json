@@ -1,0 +1,58 @@
+{
+  "task_id": "T-006",
+  "objective": "AIOS-OBJ-SS-006",
+  "title": "Correction Reason / Audit Trail",
+  "status": "accepted",
+  "execution_status": "accepted",
+  "authority": {
+    "project_authority": "Sponsor",
+    "acceptance_authority": "Sponsor / PM operational acceptance within approved Objective",
+    "deployment_authority": "UNRESOLVED"
+  },
+  "branch": "feature/legacy-caisse-flow",
+  "scope_paths": [
+    "studio_suite/backend/app/models/salon_core.py",
+    "studio_suite/backend/app/api/v1/legacy_caisse.py",
+    "studio_suite/backend/app/schemas/legacy_caisse.py",
+    "studio_suite/backend/tests/test_legacy_caisse_correction_audit.py",
+    "studio_suite/backend/tests/test_legacy_caisse_fiche_correction.py",
+    "studio_suite/frontend/src/pages/LegacyCaissePage.tsx",
+    "studio_suite/docs/handoffs/2026-07-05-t006-correction-reason-audit-trail.md",
+    "studio_suite/docs/postmortems/2026-07-05-t006-correction-reason-audit-trail.md"
+  ],
+  "forbidden_paths": [
+    "studio_suite/backend/app/public_main.py",
+    "studio_suite/backend/app/api/v1/public_*",
+    "studio_suite/frontend_public/",
+    "studio_suite/scripts/",
+    "studio_suite/nginx/",
+    "secrets/env files"
+  ],
+  "checks": {
+    "backend_tests": "11 passed, 7 warnings",
+    "backend_compileall": "PASS",
+    "frontend_build": "PASS, built in 25.45s",
+    "health_backend": 200,
+    "health_backend_public": 200,
+    "health_public": 200
+  },
+  "delivered": [
+    "void reason required",
+    "correction audit model persisted",
+    "fiche audit read endpoint added",
+    "closed-day void still blocked with no success audit",
+    "voided payments remain excluded from daily summary",
+    "frontend prompts for reason and displays audit history"
+  ],
+  "out_of_scope_retained": [
+    "production deployment",
+    "merge to master",
+    "branch-policy decision",
+    "Deployment Authority assignment",
+    "public booking changes",
+    "full accounting correction journal",
+    "fiscal/invoice correction semantics",
+    "receipt/fiscal printing"
+  ],
+  "updated_at": "2026-07-05"
+}

@@ -23,6 +23,7 @@ import {
   Groups,
   Business,
   Inventory2,
+  PointOfSale,
   LocalOffer,
   Logout,
   Palette,
@@ -57,6 +58,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: 'Tenanty', path: '/tenants', section: 'tenants', icon: <Business /> },
   { label: 'Dashboard', path: '/dashboard', section: 'dashboard', icon: <Speed /> },
+  { label: 'Legacy CAISSE', path: '/legacy-caisse', section: 'legacy_caisse', icon: <PointOfSale /> },
   { label: 'Kalendarz wizyt', path: '/calendar', section: 'calendar', icon: <CalendarMonth /> },
   { label: 'Cennik uslug', path: '/services', section: 'services', icon: <LocalOffer /> },
   { label: 'Pakiety (forfety)', path: '/bundles', section: 'bundles', icon: <ViewKanban /> },

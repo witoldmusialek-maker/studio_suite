@@ -152,6 +152,18 @@ def _can_manage(current_user: User, target_role: str) -> bool:
     return target_role in MANAGEABLE_ROLES.get(current_user.role.value, set())
 
 
+def _tenant_has_module(db: Session, tenant_id: int, module_code: str) -> bool:
+    row = (
+        db.query(TenantModuleLicense.is_enabled)
+        .filter(
+            TenantModuleLicense.tenant_id == tenant_id,
+            TenantModuleLicense.module_code == module_code.strip().upper(),
+        )
+        .first()
+    )
+    return bool(row and row[0])
+
+
 def _require_manager_user(user: User) -> None:
     if user.role not in {UserRole.ADMIN, UserRole.MANAGER, UserRole.MANAGER_MAIN, UserRole.MANAGER_SALON}:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
@@ -228,6 +240,7 @@ def _to_user_response(db: Session, user: User) -> UserResponse:
         linked_salon_name=linked_salon_name,
         is_superadmin=bool(user.is_superadmin),
         totp_enabled=bool(user.totp_enabled),
+        legacy_caisse_enabled=bool(getattr(user, "legacy_caisse_enabled", False)),
     )
 
 
@@ -349,6 +362,8 @@ async def register(
         username=username,
         password_hash=get_password_hash(user_data.password),
         role=user_data.role,
+        legacy_caisse_enabled=bool(user_data.legacy_caisse_enabled)
+        and _tenant_has_module(db, int(current_user.tenant_id), "LEGACY_CAISSE"),
     )
     db.add(db_user)
     db.commit()
@@ -444,9 +459,11 @@ async def update_user(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     if not _can_manage(current_user, user.role.value):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-    if not _can_manage(current_user, payload.role.value):
+    if payload.role is not None and not _can_manage(current_user, payload.role.value):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions for selected role")
     if (
+        payload.role is not None
+        and
         current_user.id == user.id
         and current_user.role == UserRole.ADMIN
         and payload.role != UserRole.ADMIN
@@ -456,7 +473,16 @@ async def update_user(
             detail="Admin cannot remove own admin role",
         )
 
-    user.role = payload.role
+    if payload.role is not None:
+        user.role = payload.role
+    if payload.legacy_caisse_enabled is not None:
+        if current_user.role != UserRole.ADMIN:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only admin can manage Legacy CAISSE access")
+        if not _tenant_has_module(db, int(current_user.tenant_id), "LEGACY_CAISSE"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Module LEGACY_CAISSE is not licensed for this tenant")
+        if user.role == UserRole.ADMIN and current_user.id == user.id and payload.legacy_caisse_enabled is False:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Admin cannot disable own Legacy CAISSE access")
+        user.legacy_caisse_enabled = bool(payload.legacy_caisse_enabled)
     db.commit()
     db.refresh(user)
     return _to_user_response(db, user)

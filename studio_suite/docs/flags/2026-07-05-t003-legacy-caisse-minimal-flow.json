@@ -1,0 +1,55 @@
+{
+  "task_id": "T-003",
+  "objective": "AIOS-OBJ-SS-003",
+  "title": "Legacy CAISSE Minimal Flow",
+  "status": "accepted",
+  "execution_status": "committed",
+  "authority": {
+    "project_authority": "Sponsor",
+    "acceptance_authority": "Sponsor",
+    "deployment_authority": "unresolved"
+  },
+  "branch": "feature/legacy-caisse-flow",
+  "scope_paths": [
+    "studio_suite/backend/app/api/v1/legacy_caisse.py",
+    "studio_suite/backend/app/schemas/legacy_caisse.py",
+    "studio_suite/backend/app/models/",
+    "studio_suite/backend/app/services/",
+    "studio_suite/frontend/src/",
+    "studio_suite/docs/handoffs/",
+    "studio_suite/docs/postmortems/"
+  ],
+  "forbidden_paths": [
+    "studio_suite/backend/app/public_main.py",
+    "studio_suite/backend/app/api/v1/public_*",
+    "studio_suite/frontend_public/",
+    "studio_suite/scripts/",
+    "studio_suite/nginx/",
+    ".env",
+    "**/.env",
+    "**/*secret*"
+  ],
+  "required_checks": [
+    "git status --short",
+    "cd studio_suite/backend && .venv/bin/python -m pytest tests/test_legacy_caisse_minimal_flow.py -q",
+    "cd studio_suite/backend && .venv/bin/python -m compileall app",
+    "cd studio_suite/frontend && npm run build -- --outDir /tmp/studio-suite-vite-build --emptyOutDir",
+    "runtime health backend/backend_public/public health"
+  ],
+  "check_results": {
+    "targeted_pytest": "PASS: 3 passed, 7 warnings",
+    "backend_compileall": "PASS",
+    "frontend_build": "PASS: built in 26.46s",
+    "runtime_health": "PASS: backend 200, backend_public 200, public 200"
+  },
+  "must_preserve": [
+    "tenant isolation",
+    "salon access validation",
+    "LEGACY_CAISSE module/license boundary where currently supported",
+    "public/private separation",
+    "no committed secrets",
+    "no production deployment",
+    "no merge to master"
+  ],
+  "execution_commit": "containing_commit"
+}

@@ -16,6 +16,7 @@ import {
   Select,
   Snackbar,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -103,6 +104,11 @@ const AdminUsersPage = () => {
     }
   }
 
+  const tenantHasLegacyCaisse = useMemo(
+    () => Boolean(currentUser?.licensed_modules?.some((code) => code.trim().toUpperCase() === 'LEGACY_CAISSE')),
+    [currentUser?.licensed_modules],
+  )
+
   useEffect(() => {
     fetchUsers()
   }, [currentUser?.is_superadmin])
@@ -159,6 +165,16 @@ const AdminUsersPage = () => {
       await fetchUsers()
     } catch {
       setSnack({ message: 'Nie udalo sie zaktualizowac roli', severity: 'error' })
+    }
+  }
+
+  const handleLegacyCaisseAccessChange = async (target: User, enabled: boolean) => {
+    try {
+      await api.patch(`/auth/users/${target.id}`, { legacy_caisse_enabled: enabled })
+      setSnack({ message: enabled ? 'Dostep do Legacy CAISSE wlaczony' : 'Dostep do Legacy CAISSE wylaczony', severity: 'success' })
+      await fetchUsers()
+    } catch (err: any) {
+      setSnack({ message: err?.response?.data?.detail || 'Nie udalo sie zmienic dostepu do Legacy CAISSE', severity: 'error' })
     }
   }
 
@@ -347,6 +363,7 @@ const AdminUsersPage = () => {
                   <TableCell>Login</TableCell>
                   <TableCell>Rola systemowa</TableCell>
                   <TableCell>Powiazanie</TableCell>
+                  <TableCell>Legacy CAISSE</TableCell>
                   <TableCell>Akcje</TableCell>
                 </TableRow>
               </TableHead>
@@ -389,6 +406,29 @@ const AdminUsersPage = () => {
                       )}
                     </TableCell>
                     <TableCell>
+                      <Stack spacing={0.5}>
+                        <Switch
+                          size="small"
+                          checked={Boolean(user.legacy_caisse_enabled) || ['admin', 'manager', 'manager_main'].includes(user.role)}
+                          disabled={
+                            !tenantHasLegacyCaisse ||
+                            currentUser?.role !== 'admin' ||
+                            ['admin', 'manager', 'manager_main'].includes(user.role)
+                          }
+                          onChange={(e) => handleLegacyCaisseAccessChange(user, e.target.checked)}
+                        />
+                        <Typography variant="caption" color="text.secondary">
+                          {!tenantHasLegacyCaisse
+                            ? 'Brak licencji tenantowej'
+                            : ['admin', 'manager', 'manager_main'].includes(user.role)
+                            ? 'Dostep administracyjny'
+                            : user.legacy_caisse_enabled
+                            ? 'Wlaczony dla pracownika'
+                            : 'Wylaczony'}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>
                       <Stack direction="row" spacing={1}>
                         <IconButton
                           size="small"
@@ -410,7 +450,7 @@ const AdminUsersPage = () => {
                 ))}
                 {!users.length && !loading && (
                   <TableRow>
-                    <TableCell colSpan={4}>Brak uzytkownikow</TableCell>
+                    <TableCell colSpan={5}>Brak uzytkownikow</TableCell>
                   </TableRow>
                 )}
               </TableBody>

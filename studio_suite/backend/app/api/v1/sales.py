@@ -173,6 +173,8 @@ async def complete_sale(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Sale has no lines")
 
     for line in lines:
+        if not line.product_id:
+            continue
         product = db.query(LegacyProductCatalogItem).filter(LegacyProductCatalogItem.id == line.product_id).first()
         if not product:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Product not found: {line.product_id}")

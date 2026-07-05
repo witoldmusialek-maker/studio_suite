@@ -27,6 +27,7 @@ MODULE_CODE_BOOKING = "BOOKING"
 MODULE_CODE_INVENTORY = "INVENTORY"
 MODULE_CODE_PAYMENTS = "PAYMENTS"
 MODULE_CODE_REPORTS = "REPORTS"
+MODULE_CODE_LEGACY_CAISSE = "LEGACY_CAISSE"
 
 
 def get_current_user(
@@ -156,6 +157,21 @@ def require_module_reports(
     db: Session = Depends(get_db),
 ) -> User:
     return _require_tenant_module(MODULE_CODE_REPORTS, current_user, db)
+
+
+def require_module_legacy_caisse(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> User:
+    user = _require_tenant_module(MODULE_CODE_LEGACY_CAISSE, current_user, db)
+    if user.role in {UserRole.ADMIN, UserRole.MANAGER, UserRole.MANAGER_MAIN}:
+        return user
+    if bool(getattr(user, "legacy_caisse_enabled", False)):
+        return user
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Legacy CAISSE access is not enabled for this user",
+    )
 
 
 def get_current_admin(

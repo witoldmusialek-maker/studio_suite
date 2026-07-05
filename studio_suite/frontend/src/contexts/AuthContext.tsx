@@ -70,6 +70,7 @@ const buildMappedUser = (
     tenant_id: typeof payload.tenant_id === 'number' ? payload.tenant_id : undefined,
     is_superadmin: isSuperadmin,
     licensed_modules: licensedModules,
+    legacy_caisse_enabled: Boolean(payload.legacy_caisse_enabled),
   }
 }
 

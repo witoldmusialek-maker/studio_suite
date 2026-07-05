@@ -799,7 +799,16 @@ class SaleLine(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     sale_id = Column(Integer, ForeignKey("sales.id"), nullable=False, index=True)
-    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=False, index=True)
+    product_id = Column(Integer, ForeignKey("legacy_product_catalog_items.id"), nullable=True, index=True)
+    service_id = Column(Integer, ForeignKey("service_catalog_items.id"), nullable=True, index=True)
+    staff_id = Column(Integer, ForeignKey("staff_members.id"), nullable=True, index=True)
+    line_kind = Column(String(24), nullable=False, default="product")
+    legacy_worker_code_snapshot = Column(String(16), nullable=True)
+    legacy_service_code_snapshot = Column(String(32), nullable=True)
+    label_snapshot = Column(String(255), nullable=True)
+    bundle_id = Column(Integer, ForeignKey("bundle_catalog.id"), nullable=True, index=True)
+    bundle_code_snapshot = Column(String(16), nullable=True)
+    discount_amount = Column(Numeric(12, 2), nullable=False, default=0)
     quantity = Column(Numeric(14, 4), nullable=False, default=1)
     unit = Column(String(8), nullable=False, default="PCS")
     unit_price_gross = Column(Numeric(12, 2), nullable=False, default=0)
@@ -817,9 +826,9 @@ class Payment(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
-    appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=False, index=True)
+    appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=True, index=True)
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
-    client_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
+    client_id = Column(Integer, ForeignKey("customers.id"), nullable=True, index=True)
     created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     sale_id = Column(Integer, ForeignKey("sales.id"), nullable=True, index=True)
     client_card_id = Column(Integer, ForeignKey("client_cards.id"), nullable=True, index=True)
@@ -867,6 +876,88 @@ class PaymentLine(Base):
     unit_price = Column(Numeric(12, 2), nullable=False, default=0)
     total_gross = Column(Numeric(12, 2), nullable=False, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+
+
+class CashierCashSession(Base):
+    __tablename__ = "cashier_cash_sessions"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "salon_id", "business_date", name="uq_cashier_cash_sessions_tenant_salon_date"),
+        Index("ix_cashier_cash_sessions_salon_date", "salon_id", "business_date"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    business_date = Column(Date, nullable=False, index=True)
+    opening_cash = Column(Numeric(12, 2), nullable=False, default=0)
+    closing_cash = Column(Numeric(12, 2), nullable=True)
+    status = Column(String(16), nullable=False, default="OPEN")
+    opened_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    closed_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    opened_at = Column(DateTime(timezone=True), server_default=func.now())
+    closed_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class CashierExpense(Base):
+    __tablename__ = "cashier_expenses"
+    __table_args__ = (
+        Index("ix_cashier_expenses_salon_date", "salon_id", "expense_date"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    expense_date = Column(Date, nullable=False, index=True)
+    staff_id = Column(Integer, ForeignKey("staff_members.id"), nullable=True, index=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    expense_type = Column(String(32), nullable=False, default="misc")
+    family = Column(String(128), nullable=True)
+    label = Column(String(255), nullable=False)
+    amount_gross = Column(Numeric(12, 2), nullable=False, default=0)
+    vat_amount = Column(Numeric(12, 2), nullable=False, default=0)
+    amount_net = Column(Numeric(12, 2), nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class CashierCorrectionAudit(Base):
+    __tablename__ = "cashier_correction_audits"
+    __table_args__ = (
+        Index("ix_cashier_correction_audits_sale", "sale_id", "created_at"),
+        Index("ix_cashier_correction_audits_salon", "tenant_id", "salon_id", "created_at"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    sale_id = Column(Integer, ForeignKey("sales.id"), nullable=False, index=True)
+    actor_user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    action_type = Column(String(24), nullable=False, default="VOID", index=True)
+    reason = Column(String(512), nullable=False)
+    previous_status = Column(String(16), nullable=False)
+    new_status = Column(String(16), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+
+class StaffPresenceEntry(Base):
+    __tablename__ = "staff_presence_entries"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "salon_id", "staff_id", "presence_date", name="uq_staff_presence_tenant_salon_staff_date"),
+        Index("ix_staff_presence_salon_date", "salon_id", "presence_date"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    staff_id = Column(Integer, ForeignKey("staff_members.id"), nullable=False, index=True)
+    presence_date = Column(Date, nullable=False, index=True)
+    status = Column(String(24), nullable=False, default="PRESENT")
+    time_from = Column(Time, nullable=True)
+    time_to = Column(Time, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 class Promotion(Base):

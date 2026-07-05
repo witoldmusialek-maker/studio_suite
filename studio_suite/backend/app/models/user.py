@@ -76,6 +76,7 @@ class User(Base):
     is_superadmin = Column(Boolean, nullable=False, default=False, server_default="false", index=True)
     totp_secret = Column(String(64), nullable=True)
     totp_enabled = Column(Boolean, nullable=False, default=False, server_default="false")
+    legacy_caisse_enabled = Column(Boolean, nullable=False, default=False, server_default="false")
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, role={self.role})>"

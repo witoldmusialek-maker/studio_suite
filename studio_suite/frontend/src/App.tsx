@@ -19,6 +19,7 @@ import HelpPage from './pages/HelpPage'
 const ReportsPage = lazy(() => import('./pages/ReportsPage'))
 const InventoryPage = lazy(() => import('./pages/InventoryPage'))
 const StocktakeLegacyPage = lazy(() => import('./pages/StocktakeLegacyPage'))
+const LegacyCaissePage = lazy(() => import('./pages/LegacyCaissePage'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -61,6 +62,7 @@ function App() {
         <Route path="/bundles" element={<RoleRoute section="bundles"><SoundsPage /></RoleRoute>} />
         <Route path="/colors" element={<RoleRoute section="colors"><AlertsPage /></RoleRoute>} />
         <Route path="/inventory/stocktake-legacy" element={<RoleRoute section="stocktake_legacy"><StocktakeLegacyPage /></RoleRoute>} />
+        <Route path="/legacy-caisse" element={<RoleRoute section="legacy_caisse"><LegacyCaissePage /></RoleRoute>} />
         <Route path="/inventory/*" element={<RoleRoute section="inventory"><InventoryPage /></RoleRoute>} />
         <Route path="/reports" element={<RoleRoute section="reports"><ReportsPage /></RoleRoute>} />
         <Route path="/users" element={<RoleRoute section="users"><AdminUsersPage /></RoleRoute>} />

@@ -16,6 +16,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=128)
+    legacy_caisse_enabled: bool = False
 
 
 class UserLogin(BaseModel):
@@ -35,13 +36,15 @@ class UserResponse(UserBase):
     linked_salon_name: Optional[str] = None
     is_superadmin: bool = False
     totp_enabled: bool = False
+    legacy_caisse_enabled: bool = False
 
     class Config:
         from_attributes = True
 
 
 class UserUpdate(BaseModel):
-    role: UserRole
+    role: UserRole | None = None
+    legacy_caisse_enabled: bool | None = None
 
 
 class PasswordChangeRequest(BaseModel):
