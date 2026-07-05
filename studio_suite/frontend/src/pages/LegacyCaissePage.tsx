@@ -90,7 +90,8 @@ type FicheAuditRead = {
 type ExpenseRead = { id: number; expense_date: string; label: string; amount_gross: number; expense_type: string }
 type PresenceRead = { id: number; staff_id: number; presence_date: string; status: string; time_from?: string; time_to?: string }
 
-type ModalKind = 'service' | 'bundle' | 'discount' | 'payment' | 'product' | 'expenses' | 'presence' | 'closing' | 'fiches' | null
+type ModalKind = 'service' | 'bundle' | 'discount' | 'payment' | 'product' | 'expenses' | 'presence' | 'closing' | 'fiches' | 'void' | null
+type BusyAction = 'save-fiche' | 'save-expense' | 'presence' | 'void-fiche' | 'cash-session' | null
 
 const staffPad = (value: string) => value.trim().replace(/\D/g, '').padStart(2, '0')
 const codePad = (value: string) => value.trim().replace(/\D/g, '').padStart(4, '0')
@@ -126,6 +127,9 @@ const LegacyCaissePage = () => {
   const [filter, setFilter] = useState('')
   const [activeRow, setActiveRow] = useState(0)
   const [message, setMessage] = useState<string | null>(null)
+  const [messageSeverity, setMessageSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info')
+  const [busyAction, setBusyAction] = useState<BusyAction>(null)
+  const busyActionRef = useRef<BusyAction>(null)
   const [paymentMethod, setPaymentMethod] = useState('cash')
   const [paymentAmount, setPaymentAmount] = useState('0')
   const [discountMode, setDiscountMode] = useState<'percent' | 'amount'>('percent')
@@ -140,11 +144,45 @@ const LegacyCaissePage = () => {
   const [expenseAmount, setExpenseAmount] = useState('')
   const [openingCash, setOpeningCash] = useState('0')
   const [closingCash, setClosingCash] = useState('0')
+  const [voidReason, setVoidReason] = useState('')
+  const [voidCandidate, setVoidCandidate] = useState<FicheRead | null>(null)
   const firstInputRef = useRef<HTMLInputElement | null>(null)
 
   const total = useMemo(() => lines.reduce((sum, row) => sum + Math.max(row.price - row.discount, 0), 0), [lines])
   const completedLines = useMemo(() => lines.filter((row) => row.staffId && (row.serviceId || row.productId || row.bundleId) && row.serviceName), [lines])
   const workingLines = useMemo(() => lines.filter((row) => row.staffId || row.serviceId || row.productId || row.bundleId || row.staffCode || row.serviceCode), [lines])
+  const paymentAmountValue = Number(paymentAmount.replace(',', '.')) || total
+  const canSaveFiche = completedLines.length > 0 && paymentAmountValue > 0 && busyAction === null
+  const canSaveExpense = expenseLabel.trim().length > 0 && (Number(expenseAmount.replace(',', '.')) || 0) > 0 && busyAction === null
+  const canVoidFiche = Boolean(voidCandidate && voidReason.trim() && busyAction === null)
+
+  const showMessage = (text: string, severity: 'info' | 'success' | 'error' | 'warning' = 'info') => {
+    setMessageSeverity(severity)
+    setMessage(text)
+  }
+
+  const actionErrorMessage = (error: unknown) => {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const response = (error as { response?: { data?: { detail?: unknown } } }).response
+      const detail = response?.data?.detail
+      if (typeof detail === 'string') return detail
+    }
+    return 'Operacja nie powiodla sie / Operation echouee'
+  }
+
+  const runBusyAction = async (action: Exclude<BusyAction, null>, work: () => Promise<void>) => {
+    if (busyActionRef.current !== null) return
+    busyActionRef.current = action
+    setBusyAction(action)
+    try {
+      await work()
+    } catch (error) {
+      showMessage(actionErrorMessage(error), 'error')
+    } finally {
+      busyActionRef.current = null
+      setBusyAction(null)
+    }
+  }
 
   const loadContext = useCallback(async () => {
     const res = await api.get<ContextResponse>('/legacy/caisse/context', { params: { salon_id: salonId } })
@@ -200,7 +238,7 @@ const LegacyCaissePage = () => {
     const normalized = staffPad(raw)
     const row = ctx.staff.find((item) => staffPad(item.staff_code) === normalized)
     if (!row) {
-      setMessage(`Nie znaleziono pracownika / Collaborateur: ${normalized}`)
+      showMessage(`Nie znaleziono pracownika / Collaborateur: ${normalized}`, 'warning')
       return false
     }
     setLine(index, { staffCode: row.staff_code, staffName: row.staff_name, staffId: row.staff_id })
@@ -210,7 +248,7 @@ const LegacyCaissePage = () => {
 
   const addCompletedService = (index: number, service: ServiceRow, staffLine = lines[index]) => {
     if (!staffLine?.staffId) {
-      setMessage('Najpierw wpisz kod pracownika / Collaborateur')
+      showMessage('Najpierw wpisz kod pracownika / Collaborateur', 'warning')
       focusField(index, 'staff')
       return
     }
@@ -272,7 +310,7 @@ const LegacyCaissePage = () => {
   const addBundle = (bundle: BundleRow) => {
     const source = lines[activeRow]
     if (!source?.staffId) {
-      setMessage('Najpierw wpisz kod pracownika / Collaborateur')
+      showMessage('Najpierw wpisz kod pracownika / Collaborateur', 'warning')
       setModal(null)
       return
     }
@@ -337,83 +375,108 @@ const LegacyCaissePage = () => {
 
   const saveFiche = async () => {
     if (completedLines.length === 0) {
-      setMessage('Brak linii fiszki / Aucune fiche')
+      showMessage('Brak linii fiszki / Aucune fiche', 'warning')
       return
     }
-    const amount = Number(paymentAmount.replace(',', '.')) || total
-    await api.post('/legacy/caisse/fiches', {
-      salon_id: salonId,
-      sale_time: new Date().toISOString(),
-      payment_method: paymentMethod,
-      status: paymentMethod === 'credit' || paymentMethod === 'attente' ? 'PENDING' : 'COMPLETED',
-      lines: completedLines.map((row) => ({
-        line_kind: row.lineKind,
-        staff_id: row.staffId,
-        service_id: row.serviceId,
-        product_id: row.productId,
-        bundle_id: row.bundleId,
-        legacy_worker_code: row.staffCode,
-        legacy_service_code: row.serviceCode,
-        label: row.serviceName,
-        quantity: 1,
-        unit_price: row.price,
-        discount_amount: row.discount,
-      })),
-      allocations: [{ method: paymentMethod, amount }],
+    await runBusyAction('save-fiche', async () => {
+      const amount = Number(paymentAmount.replace(',', '.')) || total
+      await api.post('/legacy/caisse/fiches', {
+        salon_id: salonId,
+        sale_time: new Date().toISOString(),
+        payment_method: paymentMethod,
+        status: paymentMethod === 'credit' || paymentMethod === 'attente' ? 'PENDING' : 'COMPLETED',
+        lines: completedLines.map((row) => ({
+          line_kind: row.lineKind,
+          staff_id: row.staffId,
+          service_id: row.serviceId,
+          product_id: row.productId,
+          bundle_id: row.bundleId,
+          legacy_worker_code: row.staffCode,
+          legacy_service_code: row.serviceCode,
+          label: row.serviceName,
+          quantity: 1,
+          unit_price: row.price,
+          discount_amount: row.discount,
+        })),
+        allocations: [{ method: paymentMethod, amount }],
+      })
+      setLines([makeEmptyLine()])
+      setModal(null)
+      showMessage('Fiszka zapisana / Fiche enregistree', 'success')
+      await loadFiches()
+      await loadSummary()
+      window.setTimeout(() => firstInputRef.current?.focus(), 0)
     })
-    setLines([makeEmptyLine()])
-    setModal(null)
-    setMessage('Fiszka zapisana / Fiche enregistree')
-    await loadFiches()
-    await loadSummary()
-    window.setTimeout(() => firstInputRef.current?.focus(), 0)
   }
 
   const saveExpense = async () => {
     const amount = Number(expenseAmount.replace(',', '.')) || 0
-    if (!expenseLabel.trim() || amount <= 0) return
-    await api.post('/legacy/caisse/expenses', { salon_id: salonId, label: expenseLabel, amount_gross: amount, vat_amount: 0, expense_type: 'misc' })
-    setExpenseLabel('')
-    setExpenseAmount('')
-    await loadExpenses()
-    await loadSummary()
+    if (!expenseLabel.trim() || amount <= 0) {
+      showMessage('Opis i dodatnia kwota sa wymagane / Libelle et montant positif obligatoires', 'warning')
+      return
+    }
+    await runBusyAction('save-expense', async () => {
+      await api.post('/legacy/caisse/expenses', { salon_id: salonId, label: expenseLabel, amount_gross: amount, vat_amount: 0, expense_type: 'misc' })
+      setExpenseLabel('')
+      setExpenseAmount('')
+      showMessage('Wydatek dodany / Depense ajoutee', 'success')
+      await loadExpenses()
+      await loadSummary()
+    })
   }
 
   const togglePresence = async (staff: StaffRow) => {
-    await api.post('/legacy/caisse/presence', { salon_id: salonId, staff_id: staff.staff_id, status: 'PRESENT', presence_date: todayDate() })
-    await loadPresence()
+    await runBusyAction('presence', async () => {
+      await api.post('/legacy/caisse/presence', { salon_id: salonId, staff_id: staff.staff_id, status: 'PRESENT', presence_date: todayDate() })
+      showMessage(`Obecnosc zapisana / Presence: ${staff.staff_name}`, 'success')
+      await loadPresence()
+    })
   }
 
-  const voidFiche = async (fiche: FicheRead) => {
+  const requestVoidFiche = async (fiche: FicheRead) => {
     setActiveFicheId(fiche.sale_id)
     if (fiche.status === 'VOID') {
       await loadFicheAudit(fiche.sale_id)
-      setMessage('Fiszka juz anulowana / Fiche deja annulee')
+      showMessage('Fiszka juz anulowana / Fiche deja annulee', 'info')
       return
     }
-    const reason = window.prompt(`Powod anulowania fiszki #${fiche.sale_id} / Motif d'annulation`, '')?.trim()
+    setVoidCandidate(fiche)
+    setVoidReason('')
+    setModal('void')
+  }
+
+  const confirmVoidFiche = async () => {
+    if (!voidCandidate) return
+    const reason = voidReason.trim()
     if (!reason) {
-      setMessage('Powod anulowania jest wymagany / Motif obligatoire')
+      showMessage('Powod anulowania jest wymagany / Motif obligatoire', 'warning')
       return
     }
-    await api.post(`/legacy/caisse/fiches/${fiche.sale_id}/void`, { reason })
-    await loadFiches()
-    await loadSummary()
-    await loadFicheAudit(fiche.sale_id)
-    setMessage('Fiszka anulowana z historia korekty / Fiche annulee avec historique')
+    await runBusyAction('void-fiche', async () => {
+      await api.post(`/legacy/caisse/fiches/${voidCandidate.sale_id}/void`, { reason })
+      await loadFiches()
+      await loadSummary()
+      await loadFicheAudit(voidCandidate.sale_id)
+      showMessage('Fiszka anulowana z historia korekty / Fiche annulee avec historique', 'success')
+      setVoidCandidate(null)
+      setVoidReason('')
+      setModal('fiches')
+    })
   }
 
   const saveCashSession = async (status: 'OPEN' | 'CLOSED') => {
-    await api.post('/legacy/caisse/cash-session', {
-      salon_id: salonId,
-      business_date: todayDate(),
-      opening_cash: Number(openingCash.replace(',', '.')) || 0,
-      closing_cash: status === 'CLOSED' ? Number(closingCash.replace(',', '.')) || 0 : undefined,
-      status,
+    await runBusyAction('cash-session', async () => {
+      await api.post('/legacy/caisse/cash-session', {
+        salon_id: salonId,
+        business_date: todayDate(),
+        opening_cash: Number(openingCash.replace(',', '.')) || 0,
+        closing_cash: status === 'CLOSED' ? Number(closingCash.replace(',', '.')) || 0 : undefined,
+        status,
+      })
+      await loadContext()
+      await loadSummary()
+      showMessage(status === 'CLOSED' ? 'Dzien zamkniety / Journee fermee' : 'Kasa otwarta / Caisse ouverte', 'success')
     })
-    await loadContext()
-    await loadSummary()
-    setMessage(status === 'CLOSED' ? 'Dzien zamkniety / Journee fermee' : 'Kasa otwarta / Caisse ouverte')
   }
 
   const serviceRows = useMemo(() => {
@@ -453,7 +516,7 @@ const LegacyCaissePage = () => {
   return (
     <Box onKeyDown={keyShortcut} sx={{ maxWidth: 1180, mx: 'auto', color: '#071427' }}>
       <Typography variant="h4" sx={{ fontWeight: 900, mb: 1 }}>Legacy CAISSE8</Typography>
-      {message && <Alert severity="info" onClose={() => setMessage(null)} sx={{ mb: 1 }}>{message}</Alert>}
+      {message && <Alert severity={messageSeverity} onClose={() => setMessage(null)} sx={{ mb: 1 }}>{message}</Alert>}
 
       <Paper sx={{ overflow: 'hidden', borderRadius: 2, border: '1px solid #1d4e7d', mb: 1 }}>
         <Box sx={{ bgcolor: '#1169d8', color: 'white', px: 1.5, py: 0.5, fontWeight: 900 }}>CAISSE</Box>
@@ -521,17 +584,17 @@ const LegacyCaissePage = () => {
 
         <Stack spacing={0} sx={{ bgcolor: '#61afe2', borderRadius: 2, overflow: 'hidden', border: '1px solid #5c95bd' }}>
           {[
-            ['Pomoc', 'Aide', () => setMessage('F2 fiszki, F4 forfait, F6 platnosc, F9 rabat')],
+            ['Pomoc', 'Aide', () => showMessage('F2 fiszki, F4 forfait, F6 platnosc, F9 rabat')],
             ['Fiszki', 'Fiches', () => openModal('fiches')],
-            ['Klienci', 'Clients', () => setMessage('Klienci sa w nowej kartotece aplikacji')],
+            ['Klienci', 'Clients', () => showMessage('Klienci sa w nowej kartotece aplikacji')],
             ['Forfaits', 'Forfaits', () => openModal('bundle')],
-            ['Rendez-vous', 'Rendez-vous', () => setMessage('Wizyty pozostaja w nowym kalendarzu')],
+            ['Rendez-vous', 'Rendez-vous', () => showMessage('Wizyty pozostaja w nowym kalendarzu')],
             ['Sous-Total', 'Sous-Total', () => openModal('payment')],
-            ['Fiche Suiveuse', 'Fiche Suiveuse', () => setMessage('Opcja wydruku bedzie podlaczona po fiskalizacji')],
+            ['Fiche Suiveuse', 'Fiche Suiveuse', () => showMessage('Opcja wydruku bedzie podlaczona po fiskalizacji')],
             ['Kalkulator', 'Calculatrice', () => window.alert(String(total.toFixed(2)))],
             ['Rabaty', 'Remises', () => openModal('discount')],
-            ['Abonament', 'Abonnement', () => setMessage('Abonamenty beda osobnym krokiem')],
-            ['Devis', 'Devis', () => setMessage('Devis beda osobnym krokiem')],
+            ['Abonament', 'Abonnement', () => showMessage('Abonamenty beda osobnym krokiem')],
+            ['Devis', 'Devis', () => showMessage('Devis beda osobnym krokiem')],
             ['Kredyt/Attente', 'Credits/Attente', () => { setPaymentMethod('credit'); openModal('payment') }],
           ].map(([pl, fr, action], idx) => (
             <Button key={String(pl)} onClick={action as () => void} sx={{ minHeight: 51, borderRadius: 0, borderBottom: '1px solid #4385ad', color: '#06131e' }}>
@@ -615,13 +678,14 @@ const LegacyCaissePage = () => {
           </Select>
           <TextField fullWidth label="Otrzymano / Recu" value={paymentAmount} onChange={(e) => setPaymentAmount(e.target.value)} size="small" />
         </DialogContent>
-        <DialogActions><Button onClick={() => setModal(null)}>Anuluj</Button><Button variant="contained" onClick={saveFiche}>OK [F12]</Button></DialogActions>
+        <DialogActions><Button onClick={() => setModal(null)} disabled={busyAction === 'save-fiche'}>Anuluj</Button><Button variant="contained" onClick={saveFiche} disabled={!canSaveFiche}>{busyAction === 'save-fiche' ? 'Zapisywanie...' : 'Zapisz fiszke [F12]'}</Button></DialogActions>
       </Dialog>
 
       <Dialog open={modal === 'fiches'} onClose={() => setModal(null)} maxWidth="md" fullWidth>
-        <DialogTitle>Lista fiszek <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Liste des fiches — kliknij fiszke aby anulowac/pokazac historie</Typography></DialogTitle>
+        <DialogTitle>Lista fiszek <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Liste des fiches — kliknij fiszke, potwierdz anulowanie w nastepnym oknie</Typography></DialogTitle>
         <DialogContent sx={{ height: 500 }}>
-          <LegacyTable rows={fiches} columns={['Data', 'Total', 'Reglement', 'Status']} render={(row: FicheRead) => [row.sale_time.slice(0, 10), money(row.total_gross), row.payment_method || '-', row.status]} onPick={voidFiche} />
+          <Alert severity="warning" sx={{ mb: 1 }}>Anulowanie wymaga podania powodu. Nie klikaj fiszki, jesli nie chcesz rozpoczac korekty.</Alert>
+          <LegacyTable rows={fiches} columns={['Data', 'Total', 'Reglement', 'Status']} render={(row: FicheRead) => [row.sale_time.slice(0, 10), money(row.total_gross), row.payment_method || '-', row.status]} onPick={requestVoidFiche} />
           {activeFicheId && (ficheAudit[activeFicheId] || []).length > 0 && (
             <Box sx={{ mt: 1, p: 1, bgcolor: '#eef6ff', borderRadius: 1 }}>
               <Typography sx={{ fontWeight: 900 }}>Historia korekt / Historique #{activeFicheId}</Typography>
@@ -635,10 +699,20 @@ const LegacyCaissePage = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={modal === 'void'} onClose={() => busyAction === null && setModal('fiches')} maxWidth="xs" fullWidth>
+        <DialogTitle>Anulowanie fiszki <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Annulation fiche #{voidCandidate?.sale_id}</Typography></DialogTitle>
+        <DialogContent>
+          <Alert severity="warning" sx={{ mb: 1 }}>To zapisze korekte w historii. Powod jest wymagany.</Alert>
+          <Typography sx={{ mb: 1 }}>Fiszka #{voidCandidate?.sale_id}: <b>{money(voidCandidate?.total_gross || 0)}</b></Typography>
+          <TextField autoFocus fullWidth multiline minRows={3} label="Powod anulowania / Motif obligatoire" value={voidReason} onChange={(e) => setVoidReason(e.target.value)} size="small" />
+        </DialogContent>
+        <DialogActions><Button onClick={() => setModal('fiches')} disabled={busyAction === 'void-fiche'}>Wroc</Button><Button color="error" variant="contained" onClick={confirmVoidFiche} disabled={!canVoidFiche}>{busyAction === 'void-fiche' ? 'Anulowanie...' : 'Anuluj fiszke'}</Button></DialogActions>
+      </Dialog>
+
       <Dialog open={modal === 'expenses'} onClose={() => setModal(null)} maxWidth="md" fullWidth>
         <DialogTitle>Wydatki <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Depenses</Typography></DialogTitle>
         <DialogContent sx={{ height: 500 }}>
-          <Stack direction="row" spacing={1} sx={{ mb: 1 }}><TextField label="Opis" value={expenseLabel} onChange={(e) => setExpenseLabel(e.target.value)} size="small" /><TextField label="Kwota" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} size="small" /><Button variant="contained" onClick={saveExpense}>Dodaj</Button></Stack>
+          <Stack direction="row" spacing={1} sx={{ mb: 1 }}><TextField label="Opis" value={expenseLabel} onChange={(e) => setExpenseLabel(e.target.value)} size="small" /><TextField label="Kwota" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} size="small" /><Button variant="contained" onClick={saveExpense} disabled={!canSaveExpense}>{busyAction === 'save-expense' ? 'Dodawanie...' : 'Dodaj'}</Button></Stack>
           <LegacyTable rows={expenses} columns={['Data', 'Opis', 'Typ', 'Kwota']} render={(row: ExpenseRead) => [row.expense_date, row.label, row.expense_type, money(row.amount_gross)]} onPick={() => undefined} />
         </DialogContent>
       </Dialog>
@@ -666,7 +740,7 @@ const LegacyCaissePage = () => {
             </Box>
           )}
         </DialogContent>
-        <DialogActions><Button onClick={() => saveCashSession('OPEN')}>Otworz</Button><Button variant="contained" onClick={() => saveCashSession('CLOSED')}>Zamknij</Button></DialogActions>
+        <DialogActions><Button onClick={() => saveCashSession('OPEN')} disabled={busyAction === 'cash-session'}>{busyAction === 'cash-session' ? 'Zapisywanie...' : 'Otworz'}</Button><Button variant="contained" onClick={() => saveCashSession('CLOSED')} disabled={busyAction === 'cash-session'}>{busyAction === 'cash-session' ? 'Zapisywanie...' : 'Zamknij'}</Button></DialogActions>
       </Dialog>
     </Box>
   )
