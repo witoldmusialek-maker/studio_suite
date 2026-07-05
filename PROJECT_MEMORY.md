@@ -58,6 +58,7 @@ Current AIOS status:
 - first feature/delivery Objective approved: AIOS-OBJ-SS-003 — Legacy CAISSE Minimal Flow;
 - T-003 accepted by Sponsor as first bounded Legacy CAISSE delivery slice;
 - T-004 accepted by Sponsor as first usable Legacy CAISSE day-cycle slice;
+- AIOS-OBJ-SS-005 / T-005 approved for preparation: Legacy CAISSE Fiche Correction / Void / Status Flow;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -131,7 +132,8 @@ Sponsor decision update:
 - evidence phase is complete;
 - branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
 - first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow;
-- second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow.
+- second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
+- next approved preparation package: T-005 Fiche Correction / Void / Status Flow.
 
 PM must not infer authority from:
 
@@ -277,7 +279,7 @@ UNRESOLVED facts that require Sponsor or designated Project Authority before del
 - whether/when accepted T-003 should be deployed beyond the current runtime baseline;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- whether to prepare/execute T-005 Fiche correction / void / status flow;
+- whether to execute T-005 Fiche correction / void / status flow after prepared package review;
 - production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
