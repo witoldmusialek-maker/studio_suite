@@ -2,7 +2,7 @@
 
 Status: AIOS-onboarded project
 AIOS onboarding state: Minimum Viable Understanding achieved
-Delivery readiness: three bounded Legacy CAISSE deliveries accepted
+Delivery readiness: four bounded Legacy CAISSE deliveries accepted
 Project Memory purpose: entry point, not archive
 Last updated: 2026-07-05
 
@@ -63,6 +63,7 @@ Current AIOS status:
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
 - PM authorized to prepare T-006 after T-005 acceptance; T-006 preparation package created;
 - PM authorized to plan, delegate, supervise, and accept implementation work within approved Objectives and existing AIOS governance;
+- T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
 - Sponsor expects recommendations only for authority decisions or strategic product direction;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
@@ -78,6 +79,7 @@ Last accepted delivery commits:
   - d715404 impl(t003): harden legacy caisse minimal flow
   - fdf9172 impl(t004): add legacy caisse cash day summary
   - 38183b9 impl(t005): protect legacy caisse fiche void flow
+  - 0d04411 impl(t006): add legacy caisse correction audit trail
 Live direct runtime:
   - http://192.168.50.20:8003/health -> 200
   - http://192.168.50.20:8004/health -> 200
@@ -130,7 +132,7 @@ Deployment Authority: UNRESOLVED until operational responsibilities are formally
 AIOS PM role: onboarding, operational evolution management within approved Objectives, planning/delegation/supervision/operational acceptance of implementation work, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
 Implementation authority: bounded to approved Objectives under existing AIOS governance
 Delegation authority: bounded to approved Objectives under existing AIOS governance
-Delivery authority: T-003, T-004, and T-005 accepted; T-006 prepared for operational execution within approved Objective scope
+Delivery authority: T-003, T-004, T-005, and T-006 accepted; future delivery requires next Objective approval/preparation within accepted track
 ```
 
 Sponsor decision update:
@@ -140,8 +142,9 @@ Sponsor decision update:
 - first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow;
 - second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
 - third bounded delivery evidence exists: T-005 accepted as Legacy CAISSE correction/void guard flow;
-- strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-006 audit trail / T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
-- PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and preparation package created;
+- fourth bounded delivery evidence exists: T-006 accepted as Legacy CAISSE correction reason / audit trail flow;
+- strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
+- PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and T-006 accepted;
 - PM may plan, delegate, supervise, and accept implementation work within approved Objectives; recommendations are expected only for authority decisions or strategic product direction.
 
 PM must not infer authority from:
@@ -288,7 +291,7 @@ UNRESOLVED facts that require Sponsor or designated Project Authority before del
 - whether/when accepted T-003 should be deployed beyond the current runtime baseline;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- execution of future Objectives beyond T-006;
+- execution of future Objectives beyond T-006 / preparation of T-007;
 - production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
@@ -301,8 +304,8 @@ Current PM readiness:
 | Evaluate Decision Proposals | YES, bounded by unresolved authority |
 | Plan next candidate Objective | YES |
 | Delegate implementation | YES, within approved Objectives under existing AIOS governance |
-| Review implementation | YES / final acceptance remains Sponsor |
-| Start next delivery | YES for approved T-006; recommendations only if authority/strategy/scope changes |
+| Review/accept implementation | YES within approved Objectives / Sponsor retains authority decisions |
+| Start next delivery | YES within approved/prepared Objectives; prepare T-007 before execution unless Sponsor gives direct operational continuation |
 
 ## 13. Scope Guard
 
