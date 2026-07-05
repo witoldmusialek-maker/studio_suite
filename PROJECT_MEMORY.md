@@ -59,6 +59,8 @@ Current AIOS status:
 - T-003 accepted by Sponsor as first bounded Legacy CAISSE delivery slice;
 - T-004 accepted by Sponsor as first usable Legacy CAISSE day-cycle slice;
 - AIOS-OBJ-SS-005 / T-005 approved for preparation: Legacy CAISSE Fiche Correction / Void / Status Flow;
+- Sponsor granted PM mandate to prepare strategic recommendations for further application development;
+- strategic recommendation prepared: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -133,7 +135,8 @@ Sponsor decision update:
 - branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
 - first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow;
 - second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
-- next approved preparation package: T-005 Fiche Correction / Void / Status Flow.
+- next approved preparation package: T-005 Fiche Correction / Void / Status Flow;
+- strategic recommendation prepared: Controlled Pilot Track, with T-006 audit trail / T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence.
 
 PM must not infer authority from:
 
