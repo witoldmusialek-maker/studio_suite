@@ -2,7 +2,7 @@
 
 Status: AIOS-onboarded project
 AIOS onboarding state: Minimum Viable Understanding achieved
-Delivery readiness: two bounded Legacy CAISSE deliveries accepted
+Delivery readiness: three bounded Legacy CAISSE deliveries accepted
 Project Memory purpose: entry point, not archive
 Last updated: 2026-07-05
 
@@ -58,7 +58,7 @@ Current AIOS status:
 - first feature/delivery Objective approved: AIOS-OBJ-SS-003 — Legacy CAISSE Minimal Flow;
 - T-003 accepted by Sponsor as first bounded Legacy CAISSE delivery slice;
 - T-004 accepted by Sponsor as first usable Legacy CAISSE day-cycle slice;
-- AIOS-OBJ-SS-005 / T-005 approved for preparation: Legacy CAISSE Fiche Correction / Void / Status Flow;
+- T-005 accepted by Sponsor as safe correction/void guard slice;
 - Sponsor granted PM mandate to prepare strategic recommendations for further application development;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
 - PM authorized to prepare T-006 after T-005 acceptance;
@@ -75,6 +75,7 @@ Current dirty files: none
 Last accepted delivery commits:
   - d715404 impl(t003): harden legacy caisse minimal flow
   - fdf9172 impl(t004): add legacy caisse cash day summary
+  - 38183b9 impl(t005): protect legacy caisse fiche void flow
 Live direct runtime:
   - http://192.168.50.20:8003/health -> 200
   - http://192.168.50.20:8004/health -> 200
@@ -127,7 +128,7 @@ Deployment Authority: UNRESOLVED until operational responsibilities are formally
 AIOS PM role: onboarding, recommendation, Objective Proposal preparation, delivery review
 Implementation authority: bounded to explicitly approved Objectives only
 Delegation authority: bounded to explicitly approved Objectives only
-Delivery authority: T-003 and T-004 accepted; future delivery requires next Objective approval
+Delivery authority: T-003, T-004, and T-005 accepted; future delivery requires next Objective approval
 ```
 
 Sponsor decision update:
@@ -136,9 +137,9 @@ Sponsor decision update:
 - branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
 - first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow;
 - second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
-- next approved preparation package: T-005 Fiche Correction / Void / Status Flow;
+- third bounded delivery evidence exists: T-005 accepted as Legacy CAISSE correction/void guard flow;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-006 audit trail / T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
-- PM authorized to prepare T-006 after T-005 acceptance.
+- PM authorized to prepare T-006 after T-005 acceptance; condition now satisfied.
 
 PM must not infer authority from:
 
@@ -284,7 +285,7 @@ UNRESOLVED facts that require Sponsor or designated Project Authority before del
 - whether/when accepted T-003 should be deployed beyond the current runtime baseline;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- whether to execute T-005 Fiche correction / void / status flow after prepared package review;
+- whether to execute future T-006 after prepared implementation package review;
 - production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
@@ -298,7 +299,7 @@ Current PM readiness:
 | Plan next candidate Objective | YES |
 | Delegate implementation | YES, only after explicit Objective approval |
 | Review implementation | YES / final acceptance remains Sponsor |
-| Start next delivery | NO, requires next Objective approval |
+| Start next delivery | NO, requires prepared T-006 Objective and explicit execution approval |
 
 ## 13. Scope Guard
 

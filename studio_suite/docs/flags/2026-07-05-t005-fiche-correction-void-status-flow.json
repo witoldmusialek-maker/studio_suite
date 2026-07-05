@@ -2,8 +2,8 @@
   "task_id": "T-005",
   "objective": "AIOS-OBJ-SS-005",
   "title": "Fiche Correction / Void / Status Flow",
-  "status": "ready-for-review",
-  "execution_status": "completed_pending_review",
+  "status": "accepted",
+  "execution_status": "accepted",
   "authority": {
     "project_authority": "Sponsor",
     "acceptance_authority": "Sponsor",
