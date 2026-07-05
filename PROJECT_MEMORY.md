@@ -62,6 +62,8 @@ Current AIOS status:
 - Sponsor granted PM mandate to prepare strategic recommendations for further application development;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
 - PM authorized to prepare T-006 after T-005 acceptance; T-006 preparation package created;
+- PM authorized to manage operational evolution within approved Objectives and existing AIOS governance;
+- Sponsor expects recommendations only for authority decisions or strategic product direction;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -125,10 +127,10 @@ Current authority state:
 Project Authority: Sponsor
 Acceptance Authority: Sponsor
 Deployment Authority: UNRESOLVED until operational responsibilities are formally assigned
-AIOS PM role: onboarding, recommendation, Objective Proposal preparation, delivery review
-Implementation authority: bounded to explicitly approved Objectives only
-Delegation authority: bounded to explicitly approved Objectives only
-Delivery authority: T-003, T-004, and T-005 accepted; future delivery requires next Objective approval
+AIOS PM role: onboarding, operational evolution management within approved Objectives, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
+Implementation authority: bounded to approved Objectives under existing AIOS governance
+Delegation authority: bounded to approved Objectives under existing AIOS governance
+Delivery authority: T-003, T-004, and T-005 accepted; T-006 prepared for operational execution within approved Objective scope
 ```
 
 Sponsor decision update:
@@ -139,7 +141,8 @@ Sponsor decision update:
 - second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
 - third bounded delivery evidence exists: T-005 accepted as Legacy CAISSE correction/void guard flow;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-006 audit trail / T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
-- PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and preparation package created.
+- PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and preparation package created;
+- PM may manage operational evolution within approved Objectives; recommendations are expected only for authority decisions or strategic product direction.
 
 PM must not infer authority from:
 
@@ -285,7 +288,7 @@ UNRESOLVED facts that require Sponsor or designated Project Authority before del
 - whether/when accepted T-003 should be deployed beyond the current runtime baseline;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- whether to execute T-006 Correction Reason / Audit Trail after prepared implementation package review;
+- execution of future Objectives beyond T-006;
 - production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
@@ -297,18 +300,19 @@ Current PM readiness:
 | Discuss project | YES |
 | Evaluate Decision Proposals | YES, bounded by unresolved authority |
 | Plan next candidate Objective | YES |
-| Delegate implementation | YES, only after explicit Objective approval |
+| Delegate implementation | YES, within approved Objectives under existing AIOS governance |
 | Review implementation | YES / final acceptance remains Sponsor |
-| Start next delivery | NO, requires explicit T-006 execution approval |
+| Start next delivery | YES for approved T-006; recommendations only if authority/strategy/scope changes |
 
 ## 13. Scope Guard
+
+This Project Memory does not authorize work outside approved Objectives. Within approved Objectives, PM may manage operational evolution under existing AIOS governance.
 
 This Project Memory does not authorize:
 
 - Objective creation;
 - Value Delivery;
-- implementation;
-- delegation;
+- implementation or delegation outside approved Objectives;
 - deployment;
 - accepting dirty worktree changes;
 - making branch-policy decisions beyond recording operational evidence;
