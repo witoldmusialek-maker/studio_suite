@@ -366,6 +366,18 @@ const LegacyCaissePage = () => {
     await loadPresence()
   }
 
+  const voidFiche = async (fiche: FicheRead) => {
+    if (fiche.status === 'VOID') {
+      setMessage('Fiszka juz anulowana / Fiche deja annulee')
+      return
+    }
+    if (!window.confirm(`Anulowac fiszke #${fiche.sale_id}? / Annuler la fiche?`)) return
+    await api.post(`/legacy/caisse/fiches/${fiche.sale_id}/void`)
+    await loadFiches()
+    await loadSummary()
+    setMessage('Fiszka anulowana / Fiche annulee')
+  }
+
   const saveCashSession = async (status: 'OPEN' | 'CLOSED') => {
     await api.post('/legacy/caisse/cash-session', {
       salon_id: salonId,
@@ -582,8 +594,8 @@ const LegacyCaissePage = () => {
       </Dialog>
 
       <Dialog open={modal === 'fiches'} onClose={() => setModal(null)} maxWidth="md" fullWidth>
-        <DialogTitle>Lista fiszek <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Liste des fiches</Typography></DialogTitle>
-        <DialogContent sx={{ height: 500 }}><LegacyTable rows={fiches} columns={['Data', 'Total', 'Reglement', 'Status']} render={(row: FicheRead) => [row.sale_time.slice(0, 10), money(row.total_gross), row.payment_method || '-', row.status]} onPick={() => undefined} /></DialogContent>
+        <DialogTitle>Lista fiszek <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Liste des fiches — kliknij fiszke aby anulowac</Typography></DialogTitle>
+        <DialogContent sx={{ height: 500 }}><LegacyTable rows={fiches} columns={['Data', 'Total', 'Reglement', 'Status']} render={(row: FicheRead) => [row.sale_time.slice(0, 10), money(row.total_gross), row.payment_method || '-', row.status]} onPick={voidFiche} /></DialogContent>
       </Dialog>
 
       <Dialog open={modal === 'expenses'} onClose={() => setModal(null)} maxWidth="md" fullWidth>

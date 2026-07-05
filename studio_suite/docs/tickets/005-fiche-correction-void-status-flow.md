@@ -1,6 +1,6 @@
 # T-005 — Fiche Correction / Void / Status Flow
 
-Status: ready-for-implementation
+Status: ready-for-review
 Project Objective: AIOS-OBJ-SS-005 — Legacy CAISSE Fiche Correction / Void / Status Flow
 Authority: Sponsor
 Branch: `feature/legacy-caisse-flow`

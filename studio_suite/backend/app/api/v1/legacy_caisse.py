@@ -557,6 +557,14 @@ async def void_fiche(
     if not sale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Fiche not found")
     _ensure_access(db, current_user, sale.salon_id)
+    if sale.status == "VOID":
+        return LegacyCaisseVoidResponse(sale_id=sale.id, status=sale.status)
+
+    business_date = sale.sale_time.date()
+    cash_session = _load_cash_session(db, current_user.tenant_id, sale.salon_id, business_date)
+    if cash_session and cash_session.status == "CLOSED":
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Cannot void fiche after cash session is closed")
+
     sale.status = "VOID"
     db.query(Payment).filter(Payment.sale_id == sale.id).update({"status": "void"})
     db.commit()
