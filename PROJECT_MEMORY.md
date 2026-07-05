@@ -57,6 +57,7 @@ Current AIOS status:
 - merge to `master` deferred until after one successful delivery or separate branch-policy decision;
 - first feature/delivery Objective approved: AIOS-OBJ-SS-003 — Legacy CAISSE Minimal Flow;
 - T-003 accepted by Sponsor as first bounded Legacy CAISSE delivery slice;
+- AIOS-OBJ-SS-004 / T-004 approved for preparation: Legacy CAISSE Cash Session Lifecycle and Daily Summary;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -128,7 +129,8 @@ Sponsor decision update:
 
 - evidence phase is complete;
 - branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
-- first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow.
+- first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow;
+- next approved preparation package: T-004 Cash Session Lifecycle and Daily Summary.
 
 PM must not infer authority from:
 
@@ -274,7 +276,7 @@ UNRESOLVED facts that require Sponsor or designated Project Authority before del
 - whether/when accepted T-003 should be deployed beyond the current runtime baseline;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- next product/delivery priority after accepted Legacy CAISSE minimal flow;
+- whether to execute T-004 after prepared implementation package review;
 - production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
