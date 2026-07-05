@@ -61,7 +61,7 @@ Current AIOS status:
 - T-005 accepted by Sponsor as safe correction/void guard slice;
 - Sponsor granted PM mandate to prepare strategic recommendations for further application development;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track for Studio Suite / Legacy CAISSE;
-- PM authorized to prepare T-006 after T-005 acceptance;
+- PM authorized to prepare T-006 after T-005 acceptance; T-006 preparation package created;
 - production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
 
 ## 3. Current Active State
@@ -139,7 +139,7 @@ Sponsor decision update:
 - second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
 - third bounded delivery evidence exists: T-005 accepted as Legacy CAISSE correction/void guard flow;
 - strategic recommendation accepted by Sponsor: Controlled Pilot Track, with T-006 audit trail / T-007 UX hardening / T-008 daily close report / T-009 pilot readiness review as candidate sequence;
-- PM authorized to prepare T-006 after T-005 acceptance; condition now satisfied.
+- PM authorized to prepare T-006 after T-005 acceptance; condition satisfied and preparation package created.
 
 PM must not infer authority from:
 
@@ -285,7 +285,7 @@ UNRESOLVED facts that require Sponsor or designated Project Authority before del
 - whether/when accepted T-003 should be deployed beyond the current runtime baseline;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
-- whether to execute future T-006 after prepared implementation package review;
+- whether to execute T-006 Correction Reason / Audit Trail after prepared implementation package review;
 - production/pilot status of public booking, payments, billing, SMS, and broader legacy CAISSE.
 
 ## 12. PM Readiness
@@ -299,7 +299,7 @@ Current PM readiness:
 | Plan next candidate Objective | YES |
 | Delegate implementation | YES, only after explicit Objective approval |
 | Review implementation | YES / final acceptance remains Sponsor |
-| Start next delivery | NO, requires prepared T-006 Objective and explicit execution approval |
+| Start next delivery | NO, requires explicit T-006 execution approval |
 
 ## 13. Scope Guard
 
