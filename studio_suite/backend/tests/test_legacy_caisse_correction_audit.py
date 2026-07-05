@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.api.v1.legacy_caisse import create_fiche, get_daily_summary, upsert_cash_session, void_fiche
+from app.api.v1.legacy_caisse import create_fiche, get_daily_summary, get_fiche_audit, upsert_cash_session, void_fiche
 from app.database import Base
 from app.models import Tenant, User
 from app.models.salon_core import (
@@ -27,7 +27,13 @@ from app.models.salon_core import (
     StaffSalonMembership,
 )
 from app.models.user import UserRole
-from app.schemas.legacy_caisse import LegacyCaisseCashSessionWrite, LegacyCaisseFicheCreate, LegacyCaisseLineWrite, LegacyCaissePaymentAllocationWrite, LegacyCaisseVoidWrite
+from app.schemas.legacy_caisse import (
+    LegacyCaisseCashSessionWrite,
+    LegacyCaisseFicheCreate,
+    LegacyCaisseLineWrite,
+    LegacyCaissePaymentAllocationWrite,
+    LegacyCaisseVoidWrite,
+)
 
 
 @pytest.fixture()
@@ -133,48 +139,53 @@ def create_sample_fiche(user, salon, staff, service, db_session):
     return asyncio.run(create_fiche(fiche_payload(salon_id=salon.id, staff_id=staff.id, service_id=service.id), user, db_session))
 
 
-def test_void_fiche_marks_sale_and_payment_void_and_excludes_daily_summary(db_session):
+def test_void_fiche_requires_reason_and_records_audit_history(db_session):
     user, salon, staff, service = seed_data(db_session)
     open_cash_day(user, salon, db_session)
     created = create_sample_fiche(user, salon, staff, service, db_session)
 
-    before = asyncio.run(get_daily_summary(salon_id=salon.id, business_date=date(2026, 7, 5), current_user=user, db=db_session))
-    result = asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Wrong fiche"), user, db_session))
-    after = asyncio.run(get_daily_summary(salon_id=salon.id, business_date=date(2026, 7, 5), current_user=user, db=db_session))
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="   "), user, db_session))
+    assert exc.value.status_code == 422
+
+    result = asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Client changed service"), user, db_session))
+    history = asyncio.run(get_fiche_audit(created.sale_id, user, db_session))
 
     assert result.status == "VOID"
-    assert db_session.query(Sale).filter(Sale.id == created.sale_id).one().status == "VOID"
-    assert db_session.query(Payment).filter(Payment.sale_id == created.sale_id).one().status == "void"
-    assert before.service_gross == 100.0
-    assert before.cash_payments == 70.0
-    assert after.service_gross == 0.0
-    assert after.cash_payments == 0.0
-    assert after.expected_cash == 100.0
+    assert result.reason == "Client changed service"
+    assert len(history) == 1
+    audit = history[0]
+    assert audit.tenant_id == user.tenant_id
+    assert audit.salon_id == salon.id
+    assert audit.sale_id == created.sale_id
+    assert audit.actor_user_id == user.id
+    assert audit.action_type == "VOID"
+    assert audit.reason == "Client changed service"
+    assert audit.previous_status == "COMPLETED"
+    assert audit.new_status == "VOID"
 
 
-def test_duplicate_void_is_idempotent(db_session):
-    user, salon, staff, service = seed_data(db_session)
-    open_cash_day(user, salon, db_session)
-    created = create_sample_fiche(user, salon, staff, service, db_session)
-
-    first = asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Wrong fiche"), user, db_session))
-    second = asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Wrong fiche"), user, db_session))
-
-    assert first.status == "VOID"
-    assert second.status == "VOID"
-    assert db_session.query(Payment).filter(Payment.sale_id == created.sale_id).one().status == "void"
-
-
-def test_void_fiche_is_blocked_after_cash_session_is_closed(db_session):
+def test_closed_day_void_does_not_create_audit_success_record(db_session):
     user, salon, staff, service = seed_data(db_session)
     open_cash_day(user, salon, db_session)
     created = create_sample_fiche(user, salon, staff, service, db_session)
     close_cash_day(user, salon, db_session)
 
     with pytest.raises(HTTPException) as exc:
-        asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Wrong fiche"), user, db_session))
+        asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Late correction"), user, db_session))
 
     assert exc.value.status_code == 409
-    assert "closed" in str(exc.value.detail).lower()
-    assert db_session.query(Sale).filter(Sale.id == created.sale_id).one().status == "COMPLETED"
-    assert db_session.query(Payment).filter(Payment.sale_id == created.sale_id).one().status == "completed"
+    assert db_session.query(CashierCorrectionAudit).count() == 0
+
+
+def test_void_reason_keeps_daily_summary_exclusion_regression(db_session):
+    user, salon, staff, service = seed_data(db_session)
+    open_cash_day(user, salon, db_session)
+    created = create_sample_fiche(user, salon, staff, service, db_session)
+
+    asyncio.run(void_fiche(created.sale_id, LegacyCaisseVoidWrite(reason="Wrong service"), user, db_session))
+    summary = asyncio.run(get_daily_summary(salon_id=salon.id, business_date=date(2026, 7, 5), current_user=user, db=db_session))
+
+    assert summary.service_gross == 0.0
+    assert summary.cash_payments == 0.0
+    assert summary.expected_cash == 100.0

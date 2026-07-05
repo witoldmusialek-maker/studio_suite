@@ -77,6 +77,16 @@ type FicheLine = {
   discount: number
 }
 type FicheRead = { sale_id: number; sale_time: string; status: string; total_gross: number; payment_method?: string }
+type FicheAuditRead = {
+  id: number
+  sale_id: number
+  actor_user_id: number
+  action_type: string
+  reason: string
+  previous_status: string
+  new_status: string
+  created_at: string
+}
 type ExpenseRead = { id: number; expense_date: string; label: string; amount_gross: number; expense_type: string }
 type PresenceRead = { id: number; staff_id: number; presence_date: string; status: string; time_from?: string; time_to?: string }
 
@@ -121,6 +131,8 @@ const LegacyCaissePage = () => {
   const [discountMode, setDiscountMode] = useState<'percent' | 'amount'>('percent')
   const [discountValue, setDiscountValue] = useState('')
   const [fiches, setFiches] = useState<FicheRead[]>([])
+  const [ficheAudit, setFicheAudit] = useState<Record<number, FicheAuditRead[]>>({})
+  const [activeFicheId, setActiveFicheId] = useState<number | null>(null)
   const [expenses, setExpenses] = useState<ExpenseRead[]>([])
   const [presence, setPresence] = useState<PresenceRead[]>([])
   const [summary, setSummary] = useState<DailySummary | null>(null)
@@ -160,6 +172,12 @@ const LegacyCaissePage = () => {
     const res = await api.get<DailySummary>('/legacy/caisse/cash-session/summary', { params: { salon_id: salonId, business_date: todayDate() } })
     setSummary(res.data)
   }, [salonId])
+
+  const loadFicheAudit = useCallback(async (saleId: number) => {
+    const res = await api.get<FicheAuditRead[]>(`/legacy/caisse/fiches/${saleId}/audit`)
+    setFicheAudit((current) => ({ ...current, [saleId]: res.data || [] }))
+    setActiveFicheId(saleId)
+  }, [])
 
   useEffect(() => { void loadContext(); void loadFiches(); void loadSummary() }, [loadContext, loadFiches, loadSummary])
   useEffect(() => { firstInputRef.current?.focus() }, [ctx?.salon_id])
@@ -367,15 +385,22 @@ const LegacyCaissePage = () => {
   }
 
   const voidFiche = async (fiche: FicheRead) => {
+    setActiveFicheId(fiche.sale_id)
     if (fiche.status === 'VOID') {
+      await loadFicheAudit(fiche.sale_id)
       setMessage('Fiszka juz anulowana / Fiche deja annulee')
       return
     }
-    if (!window.confirm(`Anulowac fiszke #${fiche.sale_id}? / Annuler la fiche?`)) return
-    await api.post(`/legacy/caisse/fiches/${fiche.sale_id}/void`)
+    const reason = window.prompt(`Powod anulowania fiszki #${fiche.sale_id} / Motif d'annulation`, '')?.trim()
+    if (!reason) {
+      setMessage('Powod anulowania jest wymagany / Motif obligatoire')
+      return
+    }
+    await api.post(`/legacy/caisse/fiches/${fiche.sale_id}/void`, { reason })
     await loadFiches()
     await loadSummary()
-    setMessage('Fiszka anulowana / Fiche annulee')
+    await loadFicheAudit(fiche.sale_id)
+    setMessage('Fiszka anulowana z historia korekty / Fiche annulee avec historique')
   }
 
   const saveCashSession = async (status: 'OPEN' | 'CLOSED') => {
@@ -594,8 +619,20 @@ const LegacyCaissePage = () => {
       </Dialog>
 
       <Dialog open={modal === 'fiches'} onClose={() => setModal(null)} maxWidth="md" fullWidth>
-        <DialogTitle>Lista fiszek <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Liste des fiches — kliknij fiszke aby anulowac</Typography></DialogTitle>
-        <DialogContent sx={{ height: 500 }}><LegacyTable rows={fiches} columns={['Data', 'Total', 'Reglement', 'Status']} render={(row: FicheRead) => [row.sale_time.slice(0, 10), money(row.total_gross), row.payment_method || '-', row.status]} onPick={voidFiche} /></DialogContent>
+        <DialogTitle>Lista fiszek <Typography component="span" sx={{ fontSize: 12, ml: 1 }}>Liste des fiches — kliknij fiszke aby anulowac/pokazac historie</Typography></DialogTitle>
+        <DialogContent sx={{ height: 500 }}>
+          <LegacyTable rows={fiches} columns={['Data', 'Total', 'Reglement', 'Status']} render={(row: FicheRead) => [row.sale_time.slice(0, 10), money(row.total_gross), row.payment_method || '-', row.status]} onPick={voidFiche} />
+          {activeFicheId && (ficheAudit[activeFicheId] || []).length > 0 && (
+            <Box sx={{ mt: 1, p: 1, bgcolor: '#eef6ff', borderRadius: 1 }}>
+              <Typography sx={{ fontWeight: 900 }}>Historia korekt / Historique #{activeFicheId}</Typography>
+              {(ficheAudit[activeFicheId] || []).map((audit) => (
+                <Typography key={audit.id} variant="body2">
+                  {audit.created_at.slice(0, 19).replace('T', ' ')} — {audit.action_type}: {audit.previous_status} → {audit.new_status}; {audit.reason}
+                </Typography>
+              ))}
+            </Box>
+          )}
+        </DialogContent>
       </Dialog>
 
       <Dialog open={modal === 'expenses'} onClose={() => setModal(null)} maxWidth="md" fullWidth>

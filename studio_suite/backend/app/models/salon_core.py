@@ -922,6 +922,25 @@ class CashierExpense(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class CashierCorrectionAudit(Base):
+    __tablename__ = "cashier_correction_audits"
+    __table_args__ = (
+        Index("ix_cashier_correction_audits_sale", "sale_id", "created_at"),
+        Index("ix_cashier_correction_audits_salon", "tenant_id", "salon_id", "created_at"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False, index=True, default=1, server_default="1")
+    salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False, index=True)
+    sale_id = Column(Integer, ForeignKey("sales.id"), nullable=False, index=True)
+    actor_user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    action_type = Column(String(24), nullable=False, default="VOID", index=True)
+    reason = Column(String(512), nullable=False)
+    previous_status = Column(String(16), nullable=False)
+    new_status = Column(String(16), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+
 class StaffPresenceEntry(Base):
     __tablename__ = "staff_presence_entries"
     __table_args__ = (

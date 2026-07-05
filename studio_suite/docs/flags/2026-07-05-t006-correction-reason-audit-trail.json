@@ -2,30 +2,23 @@
   "task_id": "T-006",
   "objective": "AIOS-OBJ-SS-006",
   "title": "Correction Reason / Audit Trail",
-  "status": "ready-for-implementation",
-  "execution_status": "not_started",
+  "status": "ready-for-review",
+  "execution_status": "completed_pending_review",
   "authority": {
     "project_authority": "Sponsor",
-    "acceptance_authority": "Sponsor",
-    "deployment_authority": "unresolved"
+    "acceptance_authority": "Sponsor / PM operational acceptance within approved Objective",
+    "deployment_authority": "UNRESOLVED"
   },
   "branch": "feature/legacy-caisse-flow",
-  "depends_on": [
-    "T-003 accepted",
-    "T-004 accepted",
-    "T-005 accepted",
-    "Controlled Pilot Track accepted",
-    "38183b9 impl(t005): protect legacy caisse fiche void flow",
-    "f927fe0 docs(aios): accept T-005 fiche correction delivery"
-  ],
   "scope_paths": [
     "studio_suite/backend/app/models/salon_core.py",
     "studio_suite/backend/app/api/v1/legacy_caisse.py",
     "studio_suite/backend/app/schemas/legacy_caisse.py",
-    "studio_suite/backend/tests/",
+    "studio_suite/backend/tests/test_legacy_caisse_correction_audit.py",
+    "studio_suite/backend/tests/test_legacy_caisse_fiche_correction.py",
     "studio_suite/frontend/src/pages/LegacyCaissePage.tsx",
-    "studio_suite/docs/handoffs/",
-    "studio_suite/docs/postmortems/"
+    "studio_suite/docs/handoffs/2026-07-05-t006-correction-reason-audit-trail.md",
+    "studio_suite/docs/postmortems/2026-07-05-t006-correction-reason-audit-trail.md"
   ],
   "forbidden_paths": [
     "studio_suite/backend/app/public_main.py",
@@ -33,26 +26,33 @@
     "studio_suite/frontend_public/",
     "studio_suite/scripts/",
     "studio_suite/nginx/",
-    ".env",
-    "**/.env",
-    "**/*secret*"
+    "secrets/env files"
   ],
-  "required_checks": [
-    "git status --short",
-    "cd studio_suite/backend && .venv/bin/python -m pytest tests/test_legacy_caisse_minimal_flow.py tests/test_legacy_caisse_cash_session.py tests/test_legacy_caisse_fiche_correction.py tests/test_legacy_caisse_correction_audit.py -q",
-    "cd studio_suite/backend && .venv/bin/python -m compileall app",
-    "cd studio_suite/frontend && npm run build -- --outDir /tmp/studio-suite-vite-build --emptyOutDir",
-    "runtime health backend/backend_public/public health when environment is available"
+  "checks": {
+    "backend_tests": "11 passed, 7 warnings",
+    "backend_compileall": "PASS",
+    "frontend_build": "PASS, built in 25.45s",
+    "health_backend": 200,
+    "health_backend_public": 200,
+    "health_public": 200
+  },
+  "delivered": [
+    "void reason required",
+    "correction audit model persisted",
+    "fiche audit read endpoint added",
+    "closed-day void still blocked with no success audit",
+    "voided payments remain excluded from daily summary",
+    "frontend prompts for reason and displays audit history"
   ],
-  "must_preserve": [
-    "tenant isolation",
-    "salon access validation",
-    "LEGACY_CAISSE module/license boundary",
-    "public/private separation",
-    "no committed secrets",
-    "no production deployment",
-    "no merge to master",
-    "no broad WinDev/Bureau reconstruction",
-    "no full accounting journal"
-  ]
+  "out_of_scope_retained": [
+    "production deployment",
+    "merge to master",
+    "branch-policy decision",
+    "Deployment Authority assignment",
+    "public booking changes",
+    "full accounting correction journal",
+    "fiscal/invoice correction semantics",
+    "receipt/fiscal printing"
+  ],
+  "updated_at": "2026-07-05"
 }

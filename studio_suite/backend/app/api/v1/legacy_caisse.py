@@ -15,6 +15,7 @@ from app.models.salon_core import (
     BundleCatalog,
     BundleCatalogItem,
     CashierCashSession,
+    CashierCorrectionAudit,
     CashierExpense,
     Customer,
     LegacyProductCatalogItem,
@@ -39,6 +40,7 @@ from app.schemas.legacy_caisse import (
     LegacyCaisseCashSessionRead,
     LegacyCaisseCashSessionWrite,
     LegacyCaisseContextResponse,
+    LegacyCaisseCorrectionAuditRead,
     LegacyCaisseDailySummaryRead,
     LegacyCaisseExpenseRead,
     LegacyCaisseExpenseWrite,
@@ -51,6 +53,7 @@ from app.schemas.legacy_caisse import (
     LegacyCaisseServiceRow,
     LegacyCaisseStaffRow,
     LegacyCaisseVoidResponse,
+    LegacyCaisseVoidWrite,
 )
 from app.services.legacy_catalog_service import get_legacy_catalog
 
@@ -550,6 +553,7 @@ async def create_fiche(
 @router.post("/fiches/{sale_id}/void", response_model=LegacyCaisseVoidResponse)
 async def void_fiche(
     sale_id: int,
+    payload: LegacyCaisseVoidWrite | None = None,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -557,18 +561,71 @@ async def void_fiche(
     if not sale:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Fiche not found")
     _ensure_access(db, current_user, sale.salon_id)
+    reason = (payload.reason if payload else "").strip()
+    if not reason:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Void reason is required")
     if sale.status == "VOID":
-        return LegacyCaisseVoidResponse(sale_id=sale.id, status=sale.status)
+        return LegacyCaisseVoidResponse(sale_id=sale.id, status=sale.status, reason=reason)
 
     business_date = sale.sale_time.date()
     cash_session = _load_cash_session(db, current_user.tenant_id, sale.salon_id, business_date)
     if cash_session and cash_session.status == "CLOSED":
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Cannot void fiche after cash session is closed")
 
+    previous_status = sale.status
     sale.status = "VOID"
     db.query(Payment).filter(Payment.sale_id == sale.id).update({"status": "void"})
+    db.add(
+        CashierCorrectionAudit(
+            tenant_id=current_user.tenant_id,
+            salon_id=sale.salon_id,
+            sale_id=sale.id,
+            actor_user_id=current_user.id,
+            action_type="VOID",
+            reason=reason,
+            previous_status=previous_status,
+            new_status="VOID",
+        )
+    )
     db.commit()
-    return LegacyCaisseVoidResponse(sale_id=sale.id, status=sale.status)
+    return LegacyCaisseVoidResponse(sale_id=sale.id, status=sale.status, reason=reason)
+
+
+@router.get("/fiches/{sale_id}/audit", response_model=list[LegacyCaisseCorrectionAuditRead])
+async def get_fiche_audit(
+    sale_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    sale = db.query(Sale).filter(Sale.id == sale_id, Sale.tenant_id == current_user.tenant_id).first()
+    if not sale:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Fiche not found")
+    _ensure_access(db, current_user, sale.salon_id)
+    rows = (
+        db.query(CashierCorrectionAudit)
+        .filter(
+            CashierCorrectionAudit.tenant_id == current_user.tenant_id,
+            CashierCorrectionAudit.salon_id == sale.salon_id,
+            CashierCorrectionAudit.sale_id == sale.id,
+        )
+        .order_by(CashierCorrectionAudit.created_at.asc(), CashierCorrectionAudit.id.asc())
+        .all()
+    )
+    return [
+        LegacyCaisseCorrectionAuditRead(
+            id=row.id,
+            tenant_id=row.tenant_id,
+            salon_id=row.salon_id,
+            sale_id=row.sale_id,
+            actor_user_id=row.actor_user_id,
+            action_type=row.action_type,
+            reason=row.reason,
+            previous_status=row.previous_status,
+            new_status=row.new_status,
+            created_at=row.created_at,
+        )
+        for row in rows
+    ]
 
 
 @router.get("/cash-session", response_model=LegacyCaisseCashSessionRead | None)

@@ -146,9 +146,27 @@ class LegacyCaisseFicheRead(BaseModel):
     lines: list[LegacyCaisseLineRead]
 
 
+class LegacyCaisseVoidWrite(BaseModel):
+    reason: str = Field(min_length=1, max_length=512)
+
+
+class LegacyCaisseCorrectionAuditRead(BaseModel):
+    id: int
+    tenant_id: int
+    salon_id: int
+    sale_id: int
+    actor_user_id: int
+    action_type: str
+    reason: str
+    previous_status: str
+    new_status: str
+    created_at: datetime
+
+
 class LegacyCaisseVoidResponse(BaseModel):
     sale_id: int
     status: str
+    reason: str | None = None
 
 
 class LegacyCaisseCashSessionWrite(BaseModel):

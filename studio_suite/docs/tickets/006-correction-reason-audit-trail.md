@@ -1,6 +1,6 @@
 # T-006 — Correction Reason / Audit Trail
 
-Status: ready-for-implementation
+Status: ready-for-review
 Project Objective: AIOS-OBJ-SS-006 — Legacy CAISSE Correction Reason / Audit Trail
 Authority: Sponsor
 Branch: `feature/legacy-caisse-flow`
