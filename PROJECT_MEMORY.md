@@ -67,21 +67,22 @@ Current AIOS status:
 - Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor;
 - T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
 - AIOS-OBJ-SS-001 controlled deployment to current development environment accepted by Sponsor as completed; authorization expired after completion; HTTP smoke completed by PM operationally; Objective closure completed;
-- PM evaluated `feature/legacy-caisse-flow` as ready for Sponsor promotion decision; Merge Recommendation prepared;
+- Sponsor approved Merge Recommendation and PM merged `feature/legacy-caisse-flow` into `master` using `--no-ff`;
 - next Objective must optimize execution strategy by using appropriate delegation where it reduces cost, execution time, or scarce execution-resource usage; PM remains responsible for outcome;
-- production deployment, merge to `master`, long-term Deployment Authority, and branch policy remain unresolved/separate decisions pending Sponsor decision.
+- production deployment, long-term Deployment Authority, and future branch policy remain unresolved/separate decisions.
 
 ## 3. Current Active State
 
 Resolved facts:
 
 ```text
-Current local branch: feature/legacy-caisse-flow
+Current local branch: master
 Remote default branch: origin/master
-Current dirty files: none after Objective closure commit
-Last closure/recommendation artifacts:
-  - aios/objectives/AIOS-OBJ-SS-001-final-closure.md
-  - aios/strategy/2026-07-05-merge-recommendation-feature-legacy-caisse-flow.md
+Current dirty files: none after promotion closure commit
+Promotion merge commit:
+  - b6aed27 merge: promote legacy caisse operational baseline
+Promotion closure artifact:
+  - aios/strategy/2026-07-05-promotion-activity-closure.md
 Last accepted delivery commits:
   - d715404 impl(t003): harden legacy caisse minimal flow
   - fdf9172 impl(t004): add legacy caisse cash day summary
@@ -104,9 +105,9 @@ Local compose state:
 
 Architecture Discovery update:
 
-- operational canonical branch for the current runtime is `feature/legacy-caisse-flow`;
-- `master` remains the remote default branch but is stale for the current runtime shape;
-- `master` is an ancestor of `feature/legacy-caisse-flow`; the feature branch is ahead and contains the legacy CAISSE/runtime binding changes;
+- `master` has been promoted as the repository baseline by Sponsor-approved `--no-ff` merge from `feature/legacy-caisse-flow`;
+- `feature/legacy-caisse-flow` remains the historical delivery branch containing the accepted Objective sequence;
+- future work should start from `master` unless Sponsor explicitly authorizes another branch policy;
 - active deployment target is `192.168.50.20` for the live compose runtime;
 - `192.168.200.116` references in docs/gateway files are historical/stale unless a future authority decision revives them;
 - live containers were built from `/home/witold/projects/projekt2_repo/studio_suite/docker-compose.yml` and publish on `192.168.50.20`;
@@ -120,7 +121,6 @@ Deployment script assessment:
 
 Authority decisions still required:
 
-- Sponsor decision whether to promote `feature/legacy-caisse-flow` to `master` based on prepared Merge Recommendation;
 - long-term deployment policy after accepted one-time controlled development deployment;
 - who owns long-term Deployment Authority.
 
@@ -139,13 +139,13 @@ Deployment Authority: UNRESOLVED long-term; one-time controlled development depl
 AIOS PM role: onboarding, operational evolution management within approved Objectives, planning/delegation/supervision/operational acceptance of implementation work, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
 Implementation authority: bounded to approved Objectives under existing AIOS governance
 Delegation authority: bounded to approved Objectives under existing AIOS governance; next Objective should use appropriate delegation where it reduces cost/time/resource pressure while PM retains outcome responsibility
-Delivery authority: T-003, T-004, T-005, and T-006 accepted; future delivery requires next Objective approval/preparation within accepted track
+Delivery authority: T-003, T-004, T-005, and T-006 accepted; `master` contains accepted delivery baseline after Sponsor-approved promotion; future delivery requires next Objective approval/preparation within accepted track
 ```
 
 Sponsor decision update:
 
 - evidence phase is complete;
-- branch policy may remain unchanged until an Objective provides sufficient evidence for promotion or merge decision;
+- Sponsor approved promotion of `feature/legacy-caisse-flow` to `master`; PM executed `--no-ff` merge and promotion activity closure;
 - first bounded delivery evidence exists: T-003 accepted as Legacy CAISSE minimal flow;
 - second bounded delivery evidence exists: T-004 accepted as Legacy CAISSE daily cash-session flow;
 - third bounded delivery evidence exists: T-005 accepted as Legacy CAISSE correction/void guard flow;
@@ -294,7 +294,7 @@ High-priority risks before delivery:
 
 UNRESOLVED facts that require Sponsor or designated Project Authority before delivery:
 
-- official branch policy for future work;
+- official long-term branch policy beyond current `master` baseline;
 - whether/when accepted development deployment should be promoted beyond the current development environment;
 - explicit Project Authority beyond Sponsor default if Sponsor delegates it;
 - Deployment Authority;
