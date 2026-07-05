@@ -66,7 +66,8 @@ Current AIOS status:
 - PM operational acceptance concludes implementation work within an approved Objective;
 - Sponsor approval is required only where AIOS governance explicitly reserves authority to Sponsor;
 - T-006 accepted by PM under delegated operational implementation authority as correction reason / audit trail slice;
-- production deployment, merge to `master`, and Deployment Authority remain unresolved/separate decisions.
+- single controlled deployment to current development environment authorized by Sponsor under AIOS-OBJ-SS-001; authorization expires after completion;
+- production deployment, merge to `master`, long-term Deployment Authority, and branch policy remain unresolved/separate decisions.
 
 ## 3. Current Active State
 
@@ -115,8 +116,8 @@ Deployment script assessment:
 Authority decisions still required:
 
 - whether to make `feature/legacy-caisse-flow` the official long-term branch for future AIOS work, merge it to `master`, or define another branch policy;
-- whether/when to deploy accepted T-003 beyond the current runtime baseline;
-- who owns Deployment Authority.
+- long-term deployment policy after the one-time controlled development deployment;
+- who owns long-term Deployment Authority.
 
 ## 4. Authority Snapshot
 
@@ -129,7 +130,7 @@ Current authority state:
 ```text
 Project Authority: Sponsor
 Acceptance Authority: Sponsor
-Deployment Authority: UNRESOLVED until operational responsibilities are formally assigned
+Deployment Authority: UNRESOLVED long-term; PM has one-time Sponsor authorization for controlled development deployment only
 AIOS PM role: onboarding, operational evolution management within approved Objectives, planning/delegation/supervision/operational acceptance of implementation work, Objective Proposal preparation, delivery review, recommendations for authority/strategy decisions
 Implementation authority: bounded to approved Objectives under existing AIOS governance
 Delegation authority: bounded to approved Objectives under existing AIOS governance
